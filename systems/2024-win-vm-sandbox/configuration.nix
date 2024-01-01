@@ -62,6 +62,7 @@
     gcc
     git
     gnumake
+    nerdfonts
     pinentry
     ripgrep
     silver-searcher
