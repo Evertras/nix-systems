@@ -31,6 +31,7 @@
   # https://nixos.wiki/wiki/I3
   services.xserver = {
     enable = true;
+    xkb.layout = "jp106";
 
     desktopManager = {
       # TODO: what is this
@@ -59,7 +60,6 @@
   };
 
   # Configure keymap in X11
-  # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
   # Enable sound.
