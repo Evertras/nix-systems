@@ -12,7 +12,7 @@
     nixosConfigurations = {
       nixbox = lib.nixosSystem {
         system = "linux-x86_64";
-        modules = [ ./configuration.nix ];
+        modules = [ ./systems/2024-win-vm-sandbox/configuration.nix ];
       };
     };
   };
