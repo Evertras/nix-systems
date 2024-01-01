@@ -85,13 +85,14 @@
     git
     gnumake
     kitty
+    neovim
+    nodejs_21
     picom-next
     pinentry
     ripgrep
     silver-searcher
     tmux
     tmuxinator
-    neovim
   ];
 
   fonts.packages = with pkgs; [
