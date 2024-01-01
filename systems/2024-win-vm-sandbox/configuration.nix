@@ -81,6 +81,7 @@
   # System-wide packages
   environment.systemPackages = with pkgs; [
     dig
+    feh
     gcc
     git
     gnumake
