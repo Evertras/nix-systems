@@ -78,6 +78,7 @@
     dig
     gcc
     git
+    gnumake
     i3
     ripgrep
     silver-searcher
