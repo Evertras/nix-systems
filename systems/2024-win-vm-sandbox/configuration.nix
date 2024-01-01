@@ -91,6 +91,7 @@
     picom-next
     pinentry
     ripgrep
+    rustc
     silver-searcher
     tmux
     tmuxinator
