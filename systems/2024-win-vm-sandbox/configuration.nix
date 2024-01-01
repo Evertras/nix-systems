@@ -84,6 +84,7 @@
     gcc
     git
     gnumake
+    kitty
     nerdfonts
     pinentry
     ripgrep
