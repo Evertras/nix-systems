@@ -81,6 +81,7 @@
   environment.systemPackages = with pkgs; [
     dig
     feh
+    fzf
     gcc
     git
     gnumake
