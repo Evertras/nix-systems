@@ -86,6 +86,7 @@
     gnumake
     kitty
     nerdfonts
+    picom-next
     pinentry
     ripgrep
     silver-searcher
