@@ -31,7 +31,7 @@
   # https://nixos.wiki/wiki/I3
   services.xserver = {
     enable = true;
-    xkb.layout = "jp106";
+    xkb.layout = "jp";
 
     desktopManager = {
       # TODO: what is this
