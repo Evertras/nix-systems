@@ -1,10 +1,9 @@
 { config, lib, pkgs, ... }:
 
 {
-  imports =
-    [ # Include the results of the hardware scan.
-      ./hardware-configuration.nix
-    ];
+  imports = [
+    ./hardware-configuration.nix
+  ];
 
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
@@ -15,17 +14,10 @@
 
   boot.initrd.checkJournalingFS = false;
 
-  virtualisation.virtualbox.guest.enable = true;
-
   networking.hostName = "nixbox";
   networking.networkmanager.enable = true;
 
-  # Set your time zone.
   time.timeZone = "Asia/Tokyo";
-
-  # Configure network proxy if necessary
-  # networking.proxy.default = "http://user:password@proxy:port/";
-  # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
@@ -48,51 +40,37 @@
   # services.xserver.xkb.layout = "us";
   # services.xserver.xkb.options = "eurosign:e,caps:escape";
 
-  # Enable CUPS to print documents.
-  # services.printing.enable = true;
-
   # Enable sound.
   # sound.enable = true;
   # hardware.pulseaudio.enable = true;
-
-  # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
 
   users.mutableUsers = false;
   users.users.evertras = {
     isNormalUser = true;
     extraGroups = [ "wheel" ];
     hashedPasswordFile = "/etc/nixos/passwords/evertras";
-    #packages = with pkgs; [ ];
+    packages = with pkgs; [
+      starship
+    ];
   };
 
   security.sudo.wheelNeedsPassword = false;
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
+  # System-wide packages
   environment.systemPackages = with pkgs; [
     dig
     gcc
     git
     gnumake
-    i3
+    pinentry
     ripgrep
     silver-searcher
-    starship
     neovim
   ];
 
   environment.variables = {
     EDITOR = "nvim";
   };
-
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
   # List services that you want to enable:
 
@@ -110,11 +88,6 @@
   # networking.firewall.allowedUDPPorts = [ ... ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
-
-  # Copy the NixOS configuration file and link it from the resulting system
-  # (/run/current-system/configuration.nix). This is useful in case you
-  # accidentally delete configuration.nix.
-  # system.copySystemConfiguration = true;
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.
