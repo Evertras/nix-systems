@@ -79,6 +79,7 @@
 
   # System-wide packages
   environment.systemPackages = with pkgs; [
+    cargo
     dig
     feh
     fzf
