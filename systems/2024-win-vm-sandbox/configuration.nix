@@ -94,6 +94,7 @@
     ripgrep
     rustc
     silver-searcher
+    stylish
     tmux
     tmuxinator
   ];
