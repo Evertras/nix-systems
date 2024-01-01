@@ -85,12 +85,15 @@
     git
     gnumake
     kitty
-    nerdfonts
     picom-next
     pinentry
     ripgrep
     silver-searcher
     neovim
+  ];
+
+  fonts.packages = with pkgs; [
+    nerdfonts
   ];
 
   environment.variables = {
