@@ -89,6 +89,8 @@
     pinentry
     ripgrep
     silver-searcher
+    tmux
+    tmuxinator
     neovim
   ];
 
