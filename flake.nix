@@ -1,5 +1,5 @@
 {
-  description = "2024 Windows VM NixOS Sandbox";
+  description = "My systems";
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-23.11";

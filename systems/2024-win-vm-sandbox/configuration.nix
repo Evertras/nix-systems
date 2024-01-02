@@ -72,13 +72,6 @@
     fallbackDns = [ "8.8.8.8" ];
   };
 
-  # Configure keymap in X11
-  # services.xserver.xkb.options = "eurosign:e,caps:escape";
-
-  # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
-
   users.mutableUsers = false;
   users.users.evertras = {
     isNormalUser = true;
