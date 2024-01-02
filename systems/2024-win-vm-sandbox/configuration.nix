@@ -77,6 +77,7 @@
     extraGroups = [ "wheel" ];
     hashedPasswordFile = "/etc/nixos/passwords/evertras";
     packages = with pkgs; [
+      imagemagick
       librewolf
       starship
     ];
