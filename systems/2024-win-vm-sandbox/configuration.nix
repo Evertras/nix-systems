@@ -41,6 +41,7 @@
       sessionCommands = ''
         xrandr --output Virtual1 --mode 1920x1200
         picom -f &
+        (sleep 1s && setxkbmap -layout jp && styli.sh -s mountain) &
       '';
 
       lightdm = {
