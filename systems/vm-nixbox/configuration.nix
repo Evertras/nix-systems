@@ -39,7 +39,7 @@
       # Sleep seems to be required for avoiding some init race,
       # not great but works for now
       sessionCommands = ''
-        xrandr --output Virtual1 --mode 1920x1200
+        xrandr --output Virtual1 --mode 2560x1440
         picom -f &
         (sleep 1s && setxkbmap -layout jp && styli.sh -s mountain) &
       '';
