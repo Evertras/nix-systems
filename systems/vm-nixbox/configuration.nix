@@ -80,11 +80,6 @@
       "wheel"
     ];
     hashedPasswordFile = "/etc/nixos/passwords/evertras";
-    packages = with pkgs; [
-      imagemagick
-      librewolf
-      starship
-    ];
   };
 
   security.sudo.wheelNeedsPassword = false;
@@ -98,13 +93,16 @@
     gcc
     git
     gnumake
+    imagemagick
     kitty
+    librewolf
     neovim
     nodejs_21
     picom-next
     pinentry
     ripgrep
     rustc
+    starship
     silver-searcher
     stylish
     tmux
