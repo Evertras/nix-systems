@@ -36,6 +36,10 @@
     displayManager = {
       defaultSession = "none+i3";
 
+      sessionCommands = ''
+        xrandr --output Virtual1 --mode 1920x1200
+      '';
+
       lightdm = {
         enable = true;
       };
