@@ -2,5 +2,5 @@
 rebuild:
 	@./scripts/ensure-passwords.sh
 	sudo nixos-rebuild switch --flake .
-	@./scripts/ensure-rcs.sh
+	@sudo -u evertras ./scripts/ensure-rcs.sh
 

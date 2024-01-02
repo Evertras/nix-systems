@@ -10,7 +10,6 @@ if [ -d /home/evertras/dev/github/evertras/myrcs ]; then
   exit 0
 fi
 
-su evertras
 mkdir -p /home/evertras/dev/github/evertras
 git clone https://github.com/Evertras/MyRCs /home/evertras/dev/github/evertras/myrcs
 /home/evertras/dev/github/evertras/myrcs/scripts/install.sh
