@@ -7,11 +7,12 @@ hard way to learn.
 
 For regular updates, just run `make`.
 
-For bootstrapping a fresh NixOS install:
+For bootstrapping a fresh NixOS install as root:
 
 ```bash
 nix-shell -p git gnumake
 git clone https://github.com/Evertras/nix-systems
 cd nix-systems
 make
+reboot now
 ```
