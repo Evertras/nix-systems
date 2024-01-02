@@ -38,6 +38,8 @@
 
       sessionCommands = ''
         xrandr --output Virtual1 --mode 1920x1200
+        picom -f &
+        styli.sh -s mountains &
       '';
 
       lightdm = {
