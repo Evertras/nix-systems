@@ -36,10 +36,11 @@
     displayManager = {
       defaultSession = "none+i3";
 
+      autoLogin.user = "evertras";
+
       sessionCommands = ''
         xrandr --output Virtual1 --mode 1920x1200
         picom -f &
-        styli.sh -s mountains &
       '';
 
       lightdm = {
@@ -74,7 +75,10 @@
   users.mutableUsers = false;
   users.users.evertras = {
     isNormalUser = true;
-    extraGroups = [ "wheel" ];
+    extraGroups = [
+      "autologin"
+      "wheel"
+    ];
     hashedPasswordFile = "/etc/nixos/passwords/evertras";
     packages = with pkgs; [
       imagemagick
