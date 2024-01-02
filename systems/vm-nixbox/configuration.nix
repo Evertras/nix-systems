@@ -113,6 +113,7 @@
     gnumake
     go
     nodejs_21
+    python3
     rustc
   ];
 
