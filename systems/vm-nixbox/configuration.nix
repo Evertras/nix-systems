@@ -86,27 +86,33 @@
 
   # System-wide packages
   environment.systemPackages = with pkgs; [
-    cargo
+    # System/terminal
     dig
-    feh
     fzf
-    gcc
     git
-    gnumake
+    neovim
+    pinentry
+    ripgrep
+    starship
+    silver-searcher
+    tmux
+    tmuxinator
+
+    # Desktop
+    feh
     imagemagick
     kitty
     librewolf
-    neovim
-    nodejs_21
     picom-next
-    pinentry
-    ripgrep
-    rustc
-    starship
-    silver-searcher
     stylish
-    tmux
-    tmuxinator
+
+    # Coding
+    cargo
+    gcc
+    gnumake
+    go
+    nodejs_21
+    rustc
   ];
 
   fonts.packages = with pkgs; [
