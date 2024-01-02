@@ -22,9 +22,7 @@
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
   console = {
-  #   font = "Lat2-Terminus16";
     keyMap = "jp106";
-  #   useXkbConfig = true; # use xkb.options in tty.
   };
 
   # Desktop environment
@@ -38,12 +36,16 @@
 
       autoLogin.user = "evertras";
 
+      # Sleep seems to be required for avoiding some init race,
+      # not great but works for now
       sessionCommands = ''
         xrandr --output Virtual1 --mode 1920x1200
         picom -f &
         (sleep 1s && setxkbmap -layout jp && styli.sh -s mountain) &
       '';
 
+      # Explicitly enable lightDM in case we log back out,
+      # just to remind ourselves which thing we're using...
       lightdm = {
         enable = true;
       };
@@ -58,6 +60,10 @@
         # TODO: look at i3blocks?
       ];
     };
+
+    # Disable capslock, trying to remap it to ctrl
+    # seems to do some weird things
+    xkb.options = "caps:none";
   };
 
   networking.nameservers = [ "8.8.8.8" ]; 
