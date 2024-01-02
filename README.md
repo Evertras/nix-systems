@@ -13,4 +13,5 @@ For bootstrapping a fresh NixOS install:
 nix-shell -p git gnumake
 git clone https://github.com/Evertras/nix-systems
 cd nix-systems
+make
 ```
