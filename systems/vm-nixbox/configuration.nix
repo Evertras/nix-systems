@@ -36,8 +36,9 @@
 
       autoLogin.user = "evertras";
 
-      # Sleep seems to be required for avoiding some init race,
-      # not great but works for now
+      # Sleep seems to be required for avoiding some init race
+      # not great but works for now.  Note that if the resolution
+      # doesn't change, check video memory in VM settings.
       sessionCommands = ''
         xrandr --output Virtual1 --mode 2560x1440
         picom -f &
