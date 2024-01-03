@@ -39,7 +39,20 @@
     homeDirectory = "/home/evertras";
 
     # Other local things
-    packages = with pkgs; [ librewolf ];
+    packages = with pkgs; [
+      # Desktop
+      feh
+      imagemagick
+      librewolf
+
+      # Coding
+      cargo
+      go
+      nixfmt
+      nodejs_21
+      python3
+      rustc
+    ];
 
     file = {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in

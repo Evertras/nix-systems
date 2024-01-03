@@ -55,26 +55,16 @@ in {
     dig
     file
     fzf
+    gcc
     git
+    gnumake
     neovim
     pinentry
     ripgrep
     silver-searcher
 
     # Desktop
-    feh
-    imagemagick
     stylish
-
-    # Coding
-    cargo
-    gcc
-    gnumake
-    go
-    nixfmt
-    nodejs_21
-    python3
-    rustc
   ];
 
   fonts.packages = with pkgs; [ nerdfonts ];
