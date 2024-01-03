@@ -107,5 +107,48 @@ in {
         }];
       };
     };
+
+    programs.i3status = {
+      enable = true;
+      enableDefault = false;
+
+      general = {
+        output_format = "i3bar";
+        colors = true;
+        color_good = colors.highlight;
+        color_bad = colors.urgent;
+        interval = 5;
+      };
+
+      modules = {
+        "load" = {
+          position = 1;
+          settings = { format = "%5min %15min"; };
+        };
+
+        "memory" = {
+          position = 2;
+          settings = { format = "Mem: %percentage_used used (%free free)"; };
+        };
+
+        "ethernet eno1" = {
+          position = 3;
+          settings = {
+            format_up = "%ip";
+            format_down = "NET DOWN";
+          };
+        };
+
+        "tztime UTC" = {
+          position = 4;
+          settings = { format = "%m-%d %H:%M:%S UTC"; };
+        };
+
+        "tztime local" = {
+          position = 5;
+          settings = { format = "%Y-%m-%d %H:%M:%S %Z "; };
+        };
+      };
+    };
   };
 }
