@@ -2,8 +2,8 @@
 
 {
   imports = [
-    ./bash/bash.nix
-    ./kitty/kitty.nix
+    ../modules/bash/bash.nix
+    ../modules/kitty/kitty.nix
   ];
 
   evertras.home = {

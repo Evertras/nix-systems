@@ -25,7 +25,7 @@
     homeConfigurations = {
       evertras = home-manager.lib.homeManagerConfiguration {
         inherit pkgs;
-        modules = [ ./home/evertras.nix ];
+        modules = [ ./home/users/evertras.nix ];
       };
     };
   };
