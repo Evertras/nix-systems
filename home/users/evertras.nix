@@ -1,6 +1,11 @@
 { config, pkgs, ... }:
 
-{
+let
+  cursorTheme = {
+    name = "Numix-Cursor";
+    package = pkgs.numix-cursor-theme;
+  };
+in {
   imports = [
     ../modules/all.nix
   ];
@@ -13,6 +18,34 @@
     tmux.enable = true;
   };
 
+  gtk = {
+    enable = true;
+
+    iconTheme = {
+      name = "Papirus-Dark";
+      package = pkgs.papirus-icon-theme;
+    };
+
+    theme = {
+      name = "palenight";
+      package = pkgs.palenight-theme;
+    };
+
+    inherit cursorTheme;
+
+    gtk3.extraConfig = {
+      Settings = ''
+        gtk-application-prefer-dark-theme=1
+      '';
+    };
+
+    gtk4.extraConfig = {
+      Settings = ''
+        gtk-application-prefer-dark-theme=1
+      '';
+    };
+  };
+
   home = {
     username = "evertras";
     homeDirectory = "/home/evertras";
@@ -21,6 +54,8 @@
     packages = with pkgs; [
       librewolf
     ];
+
+    pointerCursor = cursorTheme;
 
     file = {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in
