@@ -47,22 +47,44 @@
     bash = {
       enable = true;
       shellAliases = {
-        ls = "ls --color";
         grep = "grep --color=auto";
+        k = "kubectl";
+        ls = "ls --color";
         mux = "tmuxinator";
+        nr = "npm run";
         reloadbash = "source ~/.bashrc";
         vim = "nvim";
       };
-      sessionVariables = {
-        VISUAL = "nvim";
-      };
+
       # bashrcExtra for all shells, initExtra for interactive only
       initExtra = ''
+        # Don't show control characters
+        stty -echoctl
+
         # Make GPG signing happen in the correct terminal
         export GPG_TTY="$(tty)"
 
         # Simple Makefile completion
         complete -W "\`grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_-]*$//'\`" make
+
+        # Usage: up [n]
+        #
+        # Example: 'up 3' goes up 3 directories
+        up() {
+          local d=""
+          limit=$1
+          for((i=1 ; i <= limit ; i++))
+            do
+              d=$d/..
+            done
+
+          d=$(echo $d | sed 's/^\///')
+          if [ -z "$d" ]; then
+            d=..
+          fi
+
+          cd $d
+        }
 
         function git-merged() {
           branch=$(git rev-parse --abbrev-ref HEAD)
