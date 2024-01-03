@@ -6,6 +6,7 @@
     ./bash/bash.nix
     ./core/core.nix
     ./editorconfig/editorconfig.nix
+    ./i3/i3.nix
     ./kitty/kitty.nix
     ./starship/starship.nix
     ./theme/theme.nix
