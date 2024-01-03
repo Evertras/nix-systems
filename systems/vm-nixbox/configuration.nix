@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 
-let
-  kbLayout = "jp";
+let kbLayout = "jp";
 in {
   imports = [
     ../../modules/all.nix
@@ -37,11 +36,9 @@ in {
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
-  console = {
-    keyMap = "jp106";
-  };
+  console = { keyMap = "jp106"; };
 
-  networking.nameservers = [ "8.8.8.8" ]; 
+  networking.nameservers = [ "8.8.8.8" ];
   services.resolved = {
     enable = true;
     fallbackDns = [ "8.8.8.8" ];
@@ -73,18 +70,15 @@ in {
     gcc
     gnumake
     go
+    nixfmt
     nodejs_21
     python3
     rustc
   ];
 
-  fonts.packages = with pkgs; [
-    nerdfonts
-  ];
+  fonts.packages = with pkgs; [ nerdfonts ];
 
-  environment.variables = {
-    EDITOR = "nvim";
-  };
+  environment.variables = { EDITOR = "nvim"; };
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
