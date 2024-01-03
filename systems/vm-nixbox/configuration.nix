@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 
-{
+let
+  kbLayout = "jp";
+in {
   imports = [
     ../../base/base.nix
     ../../desktops/i3-standard/i3.nix
@@ -10,8 +12,12 @@
   ];
 
   evertras.desktop.i3 = {
+    inherit kbLayout;
     enable = true;
-    kbLayout = "jp";
+    extraSessionCommands = ''
+      xrandr --output Virtual1 --mode 2560x1440
+      (sleep 1s && setxkbmap -layout ${kbLayout} && styli.sh -s mountain) &
+    '';
   };
 
   # Use the systemd-boot EFI boot loader.

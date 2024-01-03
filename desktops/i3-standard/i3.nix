@@ -12,6 +12,11 @@ in {
       type = types.str;
       default = "us";
     };
+
+    extraSessionCommands = mkOption {
+      type = types.str;
+      default = "";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -26,9 +31,8 @@ in {
         # not great but works for now.  Note that if the resolution
         # doesn't change, check video memory in VM settings.
         sessionCommands = ''
-          xrandr --output Virtual1 --mode 2560x1440
           picom -f &
-          (sleep 1s && setxkbmap -layout ${cfg.kbLayout} && styli.sh -s mountain) &
+          ${cfg.extraSessionCommands}
         '';
 
         # Explicitly enable lightDM in case we log back out,
