@@ -2,11 +2,11 @@
 
 {
   imports = [
+    ../../base/base.nix
     ./hardware-configuration.nix
     ../../desktops/i3-standard/i3.nix
+    ../../users/users.nix
   ];
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -31,18 +31,6 @@
     enable = true;
     fallbackDns = [ "8.8.8.8" ];
   };
-
-  users.mutableUsers = false;
-  users.users.evertras = {
-    isNormalUser = true;
-    extraGroups = [
-      "autologin"
-      "wheel"
-    ];
-    hashedPasswordFile = "/etc/nixos/passwords/evertras";
-  };
-
-  security.sudo.wheelNeedsPassword = false;
 
   services.xserver.displayManager.autoLogin.user = "evertras";
 
