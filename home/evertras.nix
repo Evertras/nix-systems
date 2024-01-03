@@ -6,7 +6,8 @@
     homeDirectory = "/home/evertras";
 
     # Local things
-    packages = [
+    packages = with pkgs; [
+      librewolf
     ];
 
     file = {
@@ -104,13 +105,13 @@
             column -t
         }
 
-        function kitty-theme() {
-          kitten theme --reload-in=all --config-file-name theme.conf
+        function kitty-reload() {
           kill -SIGUSR1 $(pgrep kitty)
         }
 
-        function kitty-reload() {
-          kill -SIGUSR1 $(pgrep kitty)
+        function kitty-theme() {
+          kitten theme --reload-in=all --config-file-name theme.conf
+          sleep 1 && kitty-reload
         }
 
         function fonts() {
@@ -154,6 +155,36 @@
           done
         fi
       '';
+    };
+
+    kitty = {
+      enable = true;
+
+      font = {
+        name = "Hasklug Nerd Font Mono";
+        size = 14;
+        package = pkgs.nerdfonts;
+      };
+
+      extraConfig = ''
+        # I like changing the theme a lot on a whim, this
+        # file is created/modified by the bash function kitty-theme
+        include theme.conf
+
+        # Overriding things in a pinch, such as demo font size switch
+        include override.conf
+      '';
+
+      settings = {
+        background_opacity = "0.8";
+        # No blinking
+        cursor_blink_interval = 0;
+        cursor_shape = "block";
+        enable_audio_bell = "no";
+        # Don't change to bar when typing
+        shell_integration = "no-cursor";
+        strip_trailing_spaces = "smart";
+      };
     };
 
     starship = {
