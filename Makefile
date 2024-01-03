@@ -12,7 +12,7 @@ home: .git/hooks/pre-commit
 	home-manager switch --flake .
 
 .PHONY: fmt
-fmt:
+fmt: .git/hooks/pre-commit
 	@nixfmt .
 
 .git/hooks/pre-commit: .evertras/pre-commit.sh
