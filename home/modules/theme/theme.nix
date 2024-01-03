@@ -52,6 +52,18 @@ in {
         default = 12;
       };
     };
+
+    overall = {
+      name = mkOption {
+        type = types.str;
+        default = "palenight";
+      };
+
+      package = mkOption {
+        type = types.package;
+        default = pkgs.palenight-theme;
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -65,8 +77,8 @@ in {
       };
 
       theme = {
-        name = "palenight";
-        package = pkgs.palenight-theme;
+        name = cfg.overall.name;
+        package = cfg.overall.package;
       };
 
       inherit cursorTheme;

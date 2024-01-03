@@ -14,10 +14,19 @@ in {
     theme = {
       enable = true;
 
+      # Fun ones to go back to:
+      # nordzy-cursor-theme / Nordzy-cursors-white
       cursor = {
-        name = "Nordzy-cursors-white";
-        package = pkgs.nordzy-cursor-theme;
+        name = "Bibata-Modern-Ice";
+        package = pkgs.bibata-cursors;
         size = 30;
+      };
+
+      # Fun ones to go back to:
+      # orchis-theme / Orchis-Purple-Dark-Compact
+      overall = {
+        name = "Layan-Dark";
+        package = pkgs.layan-gtk-theme;
       };
     };
   };

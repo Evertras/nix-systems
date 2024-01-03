@@ -117,13 +117,21 @@ in {
           fi
 
           # This is maddening to find otherwise
-          function nix-find-theme-names() {
+          function nix-find-cursor-names() {
             if [ -z "$1" ]; then
-              echo "Usage: nix-explore <pkgname>"
+              echo "Usage: nix-find-cursor-names <pkgname>"
             fi
             package=$1
             storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
             ls "''${storepath}/share/icons"
+          }
+          function nix-find-theme-names() {
+            if [ -z "$1" ]; then
+              echo "Usage: nix-find-theme-names <pkgname>"
+            fi
+            package=$1
+            storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
+            ls "''${storepath}/share/themes"
           }
         '';
       };
