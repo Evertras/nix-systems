@@ -7,7 +7,15 @@ let
     package = cfg.cursor.package;
     size = cfg.cursor.size;
   };
+  font = {
+    name = cfg.font.name;
+    package = cfg.font.package;
+    size = cfg.font.size;
+  };
 in {
+  # For ideas: https://www.gnome-look.org/browse?cat=135&ord=rating
+  # For names: try to follow the symbolic links in .icons after install,
+  #            but it would be nice to have a better system...
   options.evertras.home.theme = {
     enable = mkEnableOption "theme";
 
@@ -20,6 +28,23 @@ in {
       package = mkOption {
         type = types.package;
         default = pkgs.numix-cursor-theme;
+      };
+
+      size = mkOption {
+        type = types.int;
+        default = 12;
+      };
+    };
+
+    font = {
+      name = mkOption {
+        type = types.str;
+        default = "CaskaydiaCove Nerd Font";
+      };
+
+      package = mkOption {
+        type = types.package;
+        default = pkgs.nerdfonts;
       };
 
       size = mkOption {
@@ -45,6 +70,8 @@ in {
       };
 
       inherit cursorTheme;
+
+      inherit font;
 
       gtk3.extraConfig = {
         Settings = ''

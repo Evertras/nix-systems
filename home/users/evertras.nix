@@ -15,8 +15,8 @@ in {
       enable = true;
 
       cursor = {
-        name = "Numix-Cursor";
-        package = pkgs.numix-cursor-theme;
+        name = "ComixCursors-Opaque-Orange";
+        package = pkgs.comixcursors.Opaque_Orange;
         size = 18;
       };
     };
