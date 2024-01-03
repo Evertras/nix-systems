@@ -6,3 +6,6 @@ rebuild:
 	home-manager switch --flake .
 	@sudo -u evertras ./scripts/ensure-rcs.sh
 
+.PHONY: home
+home:
+	home-manager switch --flake .
