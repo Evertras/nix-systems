@@ -2,11 +2,7 @@
 
 {
   imports = [
-    ../modules/core/core.nix
-    ../modules/bash/bash.nix
-    ../modules/kitty/kitty.nix
-    ../modules/starship/starship.nix
-    ../modules/tmux/tmux.nix
+    ../modules/all.nix
   ];
 
   evertras.home = {
