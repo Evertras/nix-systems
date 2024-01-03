@@ -60,8 +60,6 @@ in {
     pinentry
     ripgrep
     silver-searcher
-    tmux
-    tmuxinator
 
     # Desktop
     feh

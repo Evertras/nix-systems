@@ -6,19 +6,21 @@
     ../modules/bash/bash.nix
     ../modules/kitty/kitty.nix
     ../modules/starship/starship.nix
+    ../modules/tmux/tmux.nix
   ];
 
   evertras.home = {
     bash.enable = true;
     kitty.enable = true;
     starship.enable = true;
+    tmux.enable = true;
   };
 
   home = {
     username = "evertras";
     homeDirectory = "/home/evertras";
 
-    # Local things
+    # Other local things
     packages = with pkgs; [
       librewolf
     ];
