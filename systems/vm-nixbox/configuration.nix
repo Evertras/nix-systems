@@ -44,6 +44,8 @@
 
   security.sudo.wheelNeedsPassword = false;
 
+  services.xserver.displayManager.autoLogin.user = "evertras";
+
   # System-wide packages
   environment.systemPackages = with pkgs; [
     # System/terminal
@@ -63,7 +65,6 @@
     imagemagick
     kitty
     librewolf
-    picom-next
     stylish
 
     # Coding
