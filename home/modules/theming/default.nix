@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  cfg = config.evertras.home.theme;
+  cfg = config.evertras.home.theming;
   cursorTheme = {
     name = cfg.cursor.name;
     package = cfg.cursor.package;
@@ -16,8 +16,8 @@ in {
   # For ideas: https://www.gnome-look.org/browse?cat=135&ord=rating
   # For names: try to follow the symbolic links in .icons after install,
   #            but it would be nice to have a better system...
-  options.evertras.home.theme = {
-    enable = mkEnableOption "theme";
+  options.evertras.home.theming = {
+    enable = mkEnableOption "theming";
 
     cursor = {
       name = mkOption {

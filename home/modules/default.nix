@@ -10,7 +10,7 @@
     ./i3
     ./kitty
     ./starship
-    ./theme
+    ./theming
     ./tmux
   ];
 }

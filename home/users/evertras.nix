@@ -12,7 +12,7 @@
     starship.enable = true;
     tmux.enable = true;
 
-    theme = {
+    theming = {
       enable = true;
 
       font.name = "ComicShannsMono Nerd Font";
