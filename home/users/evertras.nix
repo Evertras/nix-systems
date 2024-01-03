@@ -14,7 +14,7 @@ in {
     theme = {
       enable = true;
 
-      font = { name = "ComicShannsMono Nerd Font"; };
+      font.name = "ComicShannsMono Nerd Font";
 
       # Fun ones to go back to:
       # nordzy-cursor-theme / Nordzy-cursors-white
