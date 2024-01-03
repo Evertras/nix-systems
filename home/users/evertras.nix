@@ -1,12 +1,12 @@
 { config, pkgs, ... }:
 
-let
-in {
+{
   imports = [ ../modules ];
 
   evertras.home = {
     bash.enable = true;
     editorconfig.enable = true;
+    git.enable = true;
     i3.enable = true;
     kitty.enable = true;
     starship.enable = true;
