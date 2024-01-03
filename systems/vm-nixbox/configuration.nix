@@ -11,6 +11,7 @@
 
   evertras.desktop.i3 = {
     enable = true;
+    kbLayout = "jp";
   };
 
   # Use the systemd-boot EFI boot loader.
