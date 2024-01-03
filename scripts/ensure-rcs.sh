@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# TODO: Swap this out for full home-manager
+
 # This is a bit hardcoded at the moment,
 # but works enough for now.  I don't want
 # to use home-manager because I like my
