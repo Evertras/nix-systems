@@ -2,11 +2,13 @@
 with lib;
 let
   cfg = config.evertras.home.i3;
+  # https://coolors.co/ef6f6c-2e394d-dcf9eb-59c9a5-7a907c
   colors = {
-    primary = "#3b1261";
-    background = "#000000";
-    text = "#ffffff";
-    urgent = "#900000";
+    primary = "#59C9A5";
+    highlight = "#A7F1CD";
+    background = "#2e394d";
+    text = "#DCF9EB";
+    urgent = "#EF6F6C";
   };
 in {
   options.evertras.home.i3 = {
@@ -51,9 +53,9 @@ in {
           focused = {
             background = colors.background;
             border = colors.primary;
-            childBorder = "#3b1261";
+            childBorder = colors.highlight;
             text = colors.text;
-            indicator = "#662b9c";
+            indicator = colors.urgent;
           };
         };
 
@@ -73,17 +75,17 @@ in {
             focusedWorkspace = {
               background = colors.primary;
               border = colors.primary;
-              text = colors.text;
+              text = colors.background;
             };
 
             # Visible on another monitor, but not the thing we're in right now
             activeWorkspace = {
               background = colors.background;
               border = colors.primary;
-              text = colors.text;
+              text = colors.background;
             };
 
-            # On another monitor and not visible
+            # Not visible, regardless of monitor
             inactiveWorkspace = {
               background = colors.background;
               border = colors.primary;
@@ -93,7 +95,7 @@ in {
             # Something on fire (like opening a link in an inactive workspace)
             urgentWorkspace = {
               background = colors.urgent;
-              border = colors.primary;
+              border = colors.urgent;
               text = colors.text;
             };
           };
