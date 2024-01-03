@@ -7,6 +7,7 @@
   ];
 
   evertras.home = {
+    bash.enable = true;
     kitty.enable = true;
   };
 
