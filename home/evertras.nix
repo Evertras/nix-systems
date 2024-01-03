@@ -40,6 +40,21 @@
     stateVersion = "23.05"; # Please read the comment before changing.
   };
 
-  # Let Home Manager install and manage itself.
-  programs.home-manager.enable = true;
+  programs = {
+    # Let Home Manager install and manage itself.
+    home-manager.enable = true;
+
+    bash = {
+      enable = true;
+      shellAliases = {
+        ls = "ls --color";
+        grep = "grep --color=auto";
+        vim = "nvim";
+      };
+    };
+
+    starship = {
+      enable = true;
+    };
+  };
 }

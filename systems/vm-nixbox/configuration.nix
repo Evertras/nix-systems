@@ -59,7 +59,6 @@ in {
     neovim
     pinentry
     ripgrep
-    starship
     silver-searcher
     tmux
     tmuxinator
