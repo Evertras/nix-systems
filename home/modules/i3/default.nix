@@ -103,6 +103,10 @@ in {
 
           inherit fonts;
 
+          extraConfig = ''
+            separator_symbol " | "
+          '';
+
           statusCommand = "i3status";
           trayOutput = "none";
         }];
