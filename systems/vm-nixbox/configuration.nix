@@ -55,6 +55,7 @@ in {
     dig
     fzf
     git
+    home-manager
     neovim
     pinentry
     ripgrep
