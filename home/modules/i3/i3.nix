@@ -49,20 +49,25 @@ in {
           titlebar = false;
         };
 
-        colors = {
-          focused = {
+        colors = let
+          mkScheme = border: {
+            inherit border;
             background = colors.background;
-            border = colors.primary;
-            childBorder = colors.highlight;
-            text = colors.text;
+            childBorder = border;
             indicator = colors.urgent;
+            text = colors.text;
           };
+        in {
+          # "Focused" = current monitor
+          focused = mkScheme colors.highlight;
+          focusedInactive = mkScheme colors.primary;
+          unfocused = mkScheme colors.background;
         };
 
         bars = [{
           id = "main";
 
-          # "Focused" = current monitor, otherwise just background
+          # "Focused" = current monitor
           colors = {
             # Bar in general
             separator = colors.text;
