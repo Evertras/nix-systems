@@ -53,6 +53,7 @@ in {
 
     # System/terminal
     dig
+    file
     fzf
     git
     neovim
