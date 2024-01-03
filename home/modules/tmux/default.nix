@@ -1,6 +1,10 @@
 { config, lib, pkgs, ... }:
 with lib;
-let cfg = config.evertras.home.tmux;
+let
+  cfg = config.evertras.home.tmux;
+  themes = import ../../../themes/themes.nix;
+  theme = themes.${config.evertras.themes.selected};
+  colors = theme.colors;
 in {
   options.evertras.home.tmux = { enable = mkEnableOption "tmux"; };
 
@@ -69,17 +73,18 @@ in {
         set -g status-right-length 55
         set -g status-left-length 30
 
-        set -g status-style bg=default,fg=colour137
-        set -g status-right '#[fg=#5DB7DE,bg=colour237] %H:%M #[fg=#5DB7DE,bg=colour235] %m/%d '
-        setw -g window-status-current-style fg=colour255,bg='#5DB7DE',none
-        setw -g window-status-current-format '#[fg=colour255,bg=#5DB7DE] #I #[fg=colour235]#W #{?window_zoomed_flag,#[fg=#ff0000]Z ,}#[fg=#5DB7DE,bg=colour232]'
-        setw -g window-status-style fg=colour255,bg=colour065,none
-        setw -g window-status-format ' #I #[fg=colour232]#W '
+        # NOTE: This multiplies everything apparently
+        set -g status-style bg=default,fg=#ffffff
+        set -g status-right '#[fg=${colors.primary},bg=${colors.background}] %H:%M %m/%d '
+        set -g window-status-current-style 'fg=${colors.background},bg=${colors.primary},none'
+        set -g window-status-current-format '#[fg=${colors.text}] #I #W #{?window_zoomed_flag,#[fg=${colors.urgent}]Z ,}'
+        set -g window-status-style 'fg=${colors.primary},bg=${colors.background},none'
+        set -g window-status-format ' #I #[fg=${colors.text}]#W '
 
-        setw -g pane-border-format '#[fg=#888888]'
+        setw -g pane-border-format '#[fg=${colors.primary}]'
         setw -g pane-border-status bottom
 
-        setw -g pane-active-border-style 'fg=#5Db7DE'
+        setw -g pane-active-border-style 'fg=${colors.highlight}'
 
         setw -g window-status-bell-style fg=colour255,bg=colour1,bold
 
@@ -95,3 +100,4 @@ in {
     };
   };
 }
+
