@@ -7,6 +7,7 @@
 
   evertras.home = {
     bash.enable = true;
+    editorconfig.enable = true;
     kitty.enable = true;
     starship.enable = true;
     tmux.enable = true;
