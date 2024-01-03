@@ -19,6 +19,11 @@ in {
       default = "";
     };
 
+    monitorNetworkInterface = mkOption {
+      type = types.str;
+      default = "eno1";
+    };
+
     xrandrExec = mkOption {
       type = types.str;
       default = "";
@@ -161,7 +166,7 @@ in {
           settings = { format = "Mem: %percentage_used used (%free free)"; };
         };
 
-        "ethernet eno1" = {
+        "ethernet ${cfg.monitorNetworkInterface}" = {
           position = 3;
           settings = {
             format_up = "%ip";

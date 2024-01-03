@@ -12,11 +12,11 @@ in {
     git.enable = true;
     i3 = {
       enable = true;
+
       kbLayout = "jp";
-      xrandrExec = ''
-        xrandr --output Virtual1 --mode 2560x1440
-      '';
+      monitorNetworkInterface = "enp0s3";
       startupWallpaperTerm = "forest";
+      xrandrExec = "xrandr --output Virtual1 --mode 2560x1440";
     };
     kitty.enable = true;
     starship.enable = true;
