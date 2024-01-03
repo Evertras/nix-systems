@@ -2,6 +2,7 @@
 
 {
   imports = [
+    ../modules/core/core.nix
     ../modules/bash/bash.nix
     ../modules/kitty/kitty.nix
   ];
@@ -33,28 +34,11 @@
       # '';
     };
 
-    # You can also manage environment variables but you will have to manually
-    # source
-    #
-    #  ~/.nix-profile/etc/profile.d/hm-session-vars.sh
-    #
-    # or
-    #
-    #  /etc/profiles/per-user/evertras/etc/profile.d/hm-session-vars.sh
-    #
-    # if you don't want to manage your shell through Home Manager.
-    sessionVariables = {
-      # EDITOR = "emacs";
-    };
-
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
   };
 
   programs = {
-    # Let Home Manager install and manage itself.
-    home-manager.enable = true;
-
     starship = {
       enable = true;
 
