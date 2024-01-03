@@ -34,7 +34,7 @@ in {
       } else
         null;
 
-      extraConfig = { init = { defaultBranch = "main"; }; };
+      extraConfig.init.defaultBranch = "main";
     };
   };
 }
