@@ -58,6 +58,9 @@
       };
       # bashrcExtra for all shells, initExtra for interactive only
       initExtra = ''
+        # Make GPG signing happen in the correct terminal
+        export GPG_TTY="$(tty)"
+
         # Simple Makefile completion
         complete -W "\`grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_-]*$//'\`" make
 
@@ -118,6 +121,15 @@
           schemer2 -format img::kitty -in ~/.cache/styli.sh/wallpaper.jpg > ~/.config/kitty/theme.conf
           kill -SIGUSR1 $(pgrep kitty)
         }
+
+        # Machine-specific bash stuff should go in this directory
+        if [[ -d ~/.bashrc.d ]]; then
+          for src in ~/.bashrc.d/*; do
+            if [[ -f ''${src} ]]; then
+              source ''${src}
+            fi
+          done
+        fi
       '';
     };
 
