@@ -4,23 +4,23 @@ let
   kbLayout = "jp";
 in {
   imports = [
-    ../../base/core.nix
-    ../../desktops/i3-standard/i3.nix
-    ../../users/users.nix
+    ../../modules/all.nix
 
     ./hardware-configuration.nix
   ];
 
-  evertras.desktop.i3 = {
-    inherit kbLayout;
-    enable = true;
-    # Sleep seems to be required for avoiding some init race
-    # not great but works for now.  Note that if the resolution
-    # doesn't change, check video memory in VM settings.
-    extraSessionCommands = ''
-      xrandr --output Virtual1 --mode 2560x1440
-      (sleep 1s && setxkbmap -layout ${kbLayout} && styli.sh -s mountain) &
-    '';
+  evertras = {
+    desktop.i3 = {
+      inherit kbLayout;
+      enable = true;
+      # Sleep seems to be required for avoiding some init race
+      # not great but works for now.  Note that if the resolution
+      # doesn't change, check video memory in VM settings.
+      extraSessionCommands = ''
+        xrandr --output Virtual1 --mode 2560x1440
+        (sleep 1s && setxkbmap -layout ${kbLayout} && styli.sh -s mountain) &
+      '';
+    };
   };
 
   # Use the systemd-boot EFI boot loader.
