@@ -40,14 +40,28 @@
 
     # Other local things
     packages = with pkgs; [
+      # General terminal tools
+      dig
+      fzf
+      gcc
+      git
+      jq
+      neovim
+      pinentry
+      ripgrep
+      silver-searcher
+      yq
+
       # Desktop
       feh
       imagemagick
       librewolf
+      stylish
 
       # Coding
       cargo
       go
+      gnumake
       nixfmt
       nodejs_21
       python3

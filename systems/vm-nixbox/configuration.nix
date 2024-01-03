@@ -62,9 +62,6 @@ in {
     pinentry
     ripgrep
     silver-searcher
-
-    # Desktop
-    stylish
   ];
 
   fonts.packages = with pkgs; [ nerdfonts ];
