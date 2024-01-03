@@ -1,11 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
-let
-  cfg = config.evertras.home.tmux;
+let cfg = config.evertras.home.tmux;
 in {
-  options.evertras.home.tmux = {
-    enable = mkEnableOption "tmux";
-  };
+  options.evertras.home.tmux = { enable = mkEnableOption "tmux"; };
 
   config = mkIf cfg.enable {
     programs.tmux = {

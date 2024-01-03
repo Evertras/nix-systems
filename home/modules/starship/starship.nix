@@ -1,11 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
-let
-  cfg = config.evertras.home.starship;
+let cfg = config.evertras.home.starship;
 in {
-  options.evertras.home.starship = {
-    enable = mkEnableOption "starship";
-  };
+  options.evertras.home.starship = { enable = mkEnableOption "starship"; };
 
   config = mkIf cfg.enable {
     programs.starship = {

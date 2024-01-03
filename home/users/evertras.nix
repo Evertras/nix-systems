@@ -6,9 +6,7 @@ let
     package = pkgs.numix-cursor-theme;
   };
 in {
-  imports = [
-    ../modules/all.nix
-  ];
+  imports = [ ../modules/all.nix ];
 
   evertras.home = {
     bash.enable = true;
@@ -51,9 +49,7 @@ in {
     homeDirectory = "/home/evertras";
 
     # Other local things
-    packages = with pkgs; [
-      librewolf
-    ];
+    packages = with pkgs; [ librewolf ];
 
     pointerCursor = cursorTheme;
 

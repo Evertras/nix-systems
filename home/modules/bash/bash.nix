@@ -1,11 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
-let
-  cfg = config.evertras.home.bash;
+let cfg = config.evertras.home.bash;
 in {
-  options.evertras.home.bash = {
-    enable = mkEnableOption "bash";
-  };
+  options.evertras.home.bash = { enable = mkEnableOption "bash"; };
 
   config = mkIf cfg.enable {
     programs = {

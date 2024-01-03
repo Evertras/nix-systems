@@ -2,8 +2,7 @@
 # https://nixos.wiki/wiki/I3
 { config, lib, pkgs, ... }:
 with lib;
-let
-  cfg = config.evertras.desktop.i3;
+let cfg = config.evertras.desktop.i3;
 in {
   options.evertras.desktop.i3 = {
     enable = mkEnableOption "i3 desktop";
@@ -34,9 +33,7 @@ in {
 
         # Explicitly enable lightDM in case we log back out,
         # just to remind ourselves which thing we're using...
-        lightdm = {
-          enable = true;
-        };
+        lightdm = { enable = true; };
       };
 
       windowManager.i3 = {
@@ -57,8 +54,6 @@ in {
 
     # Needed for GTK tweaks
     # https://github.com/nix-community/home-manager/issues/3113
-    programs.dconf = {
-      enable = true;
-    };
+    programs.dconf = { enable = true; };
   };
 }
