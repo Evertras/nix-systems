@@ -15,9 +15,9 @@ in {
       enable = true;
 
       cursor = {
-        name = "ComixCursors-Opaque-Orange";
-        package = pkgs.comixcursors.Opaque_Orange;
-        size = 18;
+        name = "Nordzy-cursors-white";
+        package = pkgs.nordzy-cursor-theme;
+        size = 30;
       };
     };
   };
