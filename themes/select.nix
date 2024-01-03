@@ -1,9 +1,11 @@
 { lib, ... }:
-with lib; {
+with lib;
+let themes = import ./themes.nix;
+in {
   options.evertras.themes = {
     selected = mkOption {
-      type = types.str;
-      default = "mint";
+      type = with types; attrsOf anything;
+      default = themes.mint;
     };
   };
 }

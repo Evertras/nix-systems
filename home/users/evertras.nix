@@ -1,7 +1,10 @@
 { pkgs, ... }:
 
-{
+let themes = import ../../themes/themes.nix;
+in {
   imports = [ ../modules ];
+
+  evertras.themes.selected = themes.mountain;
 
   evertras.home = {
     bash.enable = true;

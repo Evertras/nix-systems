@@ -12,5 +12,7 @@
     ./starship
     ./theming
     ./tmux
+
+    ../../themes/select.nix
   ];
 }

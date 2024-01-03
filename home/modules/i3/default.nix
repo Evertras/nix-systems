@@ -2,8 +2,7 @@
 with lib;
 let
   cfg = config.evertras.home.i3;
-  themes = import ../../../themes/themes.nix;
-  theme = themes.${config.evertras.themes.selected};
+  theme = config.evertras.themes.selected;
 in {
   imports = [ ../../../themes/select.nix ];
 

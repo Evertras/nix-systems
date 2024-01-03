@@ -12,4 +12,14 @@
       urgent = "#EF6F6C";
     };
   };
+
+  mountain = {
+    colors = {
+      primary = "#9A8493";
+      highlight = "#E7D2C5";
+      background = "#223843";
+      text = "#EFF1F3";
+      urgent = "#D2694B";
+    };
+  };
 }

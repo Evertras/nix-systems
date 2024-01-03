@@ -2,9 +2,7 @@
 with lib;
 let
   cfg = config.evertras.home.tmux;
-  themes = import ../../../themes/themes.nix;
-  theme = themes.${config.evertras.themes.selected};
-  colors = theme.colors;
+  colors = config.evertras.themes.selected.colors;
 in {
   options.evertras.home.tmux = { enable = mkEnableOption "tmux"; };
 
