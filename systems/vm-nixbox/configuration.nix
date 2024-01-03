@@ -3,9 +3,10 @@
 {
   imports = [
     ../../base/base.nix
-    ./hardware-configuration.nix
     ../../desktops/i3-standard/i3.nix
     ../../users/users.nix
+
+    ./hardware-configuration.nix
   ];
 
   # Use the systemd-boot EFI boot loader.
