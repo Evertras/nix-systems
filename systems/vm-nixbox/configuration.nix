@@ -51,11 +51,13 @@ in {
 
   # System-wide packages
   environment.systemPackages = with pkgs; [
+    # Home manager so we don't have to do weird imperative installs
+    home-manager
+
     # System/terminal
     dig
     fzf
     git
-    home-manager
     neovim
     pinentry
     ripgrep
