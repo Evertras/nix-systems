@@ -4,7 +4,7 @@ let themes = import ../../themes/themes.nix;
 in {
   imports = [ ../modules ];
 
-  evertras.themes.selected = themes.mountain;
+  evertras.themes.selected = themes.mint;
 
   evertras.home = {
     bash.enable = true;
