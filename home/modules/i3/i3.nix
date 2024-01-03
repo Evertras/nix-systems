@@ -2,10 +2,10 @@
 with lib;
 let
   cfg = config.evertras.home.i3;
-  theme = config.evertras.theme;
-  colors = theme.colors;
+  themes = import ../../../themes/themes.nix;
+  theme = themes.${config.evertras.themes.selected};
 in {
-  imports = [ ../../../themes/themes.nix ];
+  imports = [ ../../../themes/select.nix ];
 
   options.evertras.home.i3 = {
     enable = mkEnableOption "i3 desktop";
@@ -48,16 +48,16 @@ in {
         colors = let
           mkScheme = border: {
             inherit border;
-            background = colors.background;
+            background = theme.colors.background;
             childBorder = border;
-            indicator = colors.urgent;
-            text = colors.text;
+            indicator = theme.colors.urgent;
+            text = theme.colors.text;
           };
         in {
           # "Focused" = current monitor
-          focused = mkScheme colors.highlight;
-          focusedInactive = mkScheme colors.primary;
-          unfocused = mkScheme colors.background;
+          focused = mkScheme theme.colors.highlight;
+          focusedInactive = mkScheme theme.colors.primary;
+          unfocused = mkScheme theme.colors.background;
         };
 
         bars = [{
@@ -66,38 +66,38 @@ in {
           # "Focused" = current monitor
           colors = {
             # Bar in general
-            separator = colors.text;
-            statusline = colors.text;
-            focusedStatusline = colors.text;
-            focusedBackground = colors.background;
-            background = colors.background;
+            separator = theme.colors.text;
+            statusline = theme.colors.text;
+            focusedStatusline = theme.colors.text;
+            focusedBackground = theme.colors.background;
+            background = theme.colors.background;
 
             # Currently active workspace we're doing stuff in right now
             focusedWorkspace = {
-              background = colors.primary;
-              border = colors.primary;
-              text = colors.background;
+              background = theme.colors.primary;
+              border = theme.colors.primary;
+              text = theme.colors.background;
             };
 
             # Visible on another monitor, but not the thing we're in right now
             activeWorkspace = {
-              background = colors.background;
-              border = colors.primary;
-              text = colors.background;
+              background = theme.colors.background;
+              border = theme.colors.primary;
+              text = theme.colors.background;
             };
 
             # Not visible, regardless of monitor
             inactiveWorkspace = {
-              background = colors.background;
-              border = colors.primary;
-              text = colors.text;
+              background = theme.colors.background;
+              border = theme.colors.primary;
+              text = theme.colors.text;
             };
 
             # Something on fire (like opening a link in an inactive workspace)
             urgentWorkspace = {
-              background = colors.urgent;
-              border = colors.urgent;
-              text = colors.text;
+              background = theme.colors.urgent;
+              border = theme.colors.urgent;
+              text = theme.colors.text;
             };
           };
 
@@ -116,8 +116,8 @@ in {
       general = {
         output_format = "i3bar";
         colors = true;
-        color_good = colors.highlight;
-        color_bad = colors.urgent;
+        color_good = theme.colors.highlight;
+        color_bad = theme.colors.urgent;
         interval = 5;
       };
 
