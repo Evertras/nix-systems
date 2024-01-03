@@ -27,9 +27,6 @@ in {
       displayManager = {
         defaultSession = "none+i3";
 
-        # Sleep seems to be required for avoiding some init race
-        # not great but works for now.  Note that if the resolution
-        # doesn't change, check video memory in VM settings.
         sessionCommands = ''
           picom -f &
           ${cfg.extraSessionCommands}

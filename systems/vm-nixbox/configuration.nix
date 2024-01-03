@@ -14,6 +14,9 @@ in {
   evertras.desktop.i3 = {
     inherit kbLayout;
     enable = true;
+    # Sleep seems to be required for avoiding some init race
+    # not great but works for now.  Note that if the resolution
+    # doesn't change, check video memory in VM settings.
     extraSessionCommands = ''
       xrandr --output Virtual1 --mode 2560x1440
       (sleep 1s && setxkbmap -layout ${kbLayout} && styli.sh -s mountain) &
