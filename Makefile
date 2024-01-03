@@ -1,15 +1,14 @@
-.PHONY: rebuild
-rebuild: .git/hooks/pre-commit
-	@./scripts/ensure-passwords.sh
-	@./scripts/ensure-channel.sh
-	sudo nixos-rebuild switch --flake .
-	home-manager switch --flake .
-	@sudo -u evertras ./scripts/ensure-rcs.sh
-
 .PHONY: home
 home: .git/hooks/pre-commit
 	@./scripts/ensure-channel.sh
 	home-manager switch --flake .
+	@sudo -u evertras ./scripts/ensure-rcs.sh
+
+.PHONY: system
+system: .git/hooks/pre-commit
+	@./scripts/ensure-passwords.sh
+	@./scripts/ensure-channel.sh
+	sudo nixos-rebuild switch --flake .
 
 .PHONY: fmt
 fmt: .git/hooks/pre-commit

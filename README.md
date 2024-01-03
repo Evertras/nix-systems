@@ -5,9 +5,9 @@ hard way to learn.
 
 ## Using this
 
-For regular system updates, just run `make`.
+For regular system updates, just run `make system`.
 
-For updating just home, run `make home`.
+For updating just home, run `make home` or just `make`.
 
 For bootstrapping a fresh NixOS install as root:
 
@@ -15,6 +15,7 @@ For bootstrapping a fresh NixOS install as root:
 nix-shell -p git gnumake
 git clone https://github.com/Evertras/nix-systems
 cd nix-systems
-make
+make system
+sudo -u evertras make home
 reboot now
 ```
