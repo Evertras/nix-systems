@@ -33,6 +33,14 @@ in {
       type = types.str;
       default = "mountain";
     };
+
+    font = mkOption {
+      type = types.attrsOf types.anything;
+      default = {
+        name = "CaskaydiaCove Nerd Font";
+        size = 14.0;
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -41,8 +49,8 @@ in {
 
       config = let
         fonts = {
-          names = [ "CaskaydiaCove Nerd Font" ];
-          size = 14.0;
+          names = [ cfg.font.name ];
+          size = cfg.font.size;
         };
       in {
         modifier = "Mod4";

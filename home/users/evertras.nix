@@ -17,6 +17,11 @@ in {
       monitorNetworkInterface = "enp0s3";
       startupWallpaperTerm = "forest";
       xrandrExec = "xrandr --output Virtual1 --mode 2560x1440";
+
+      font = {
+        name = "Terminess Nerd Font";
+        size = 16.0;
+      };
     };
     kitty.enable = true;
     starship.enable = true;
