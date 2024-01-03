@@ -6,6 +6,10 @@
     ./kitty/kitty.nix
   ];
 
+  evertras.home = {
+    kitty.enable = true;
+  };
+
   home = {
     username = "evertras";
     homeDirectory = "/home/evertras";
