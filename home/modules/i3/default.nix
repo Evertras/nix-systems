@@ -44,6 +44,11 @@ in {
           titlebar = false;
         };
 
+        startup = [{
+          command = "styli.sh -s mountain";
+          notification = false;
+        }];
+
         colors = let
           mkScheme = border: {
             inherit border;

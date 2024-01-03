@@ -17,7 +17,7 @@ in {
       # doesn't change, check video memory in VM settings.
       extraSessionCommands = ''
         xrandr --output Virtual1 --mode 2560x1440
-        (sleep 1s && setxkbmap -layout ${kbLayout} && styli.sh -s mountain) &
+        (sleep 1s && setxkbmap -layout ${kbLayout}) &
       '';
     };
   };
