@@ -115,6 +115,16 @@ in {
               fi
             done
           fi
+
+          # This is maddening to find otherwise
+          function nix-find-theme-names() {
+            if [ -z "$1" ]; then
+              echo "Usage: nix-explore <pkgname>"
+            fi
+            package=$1
+            storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
+            ls "''${storepath}/share/icons"
+          }
         '';
       };
     };
