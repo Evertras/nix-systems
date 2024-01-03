@@ -5,7 +5,9 @@ hard way to learn.
 
 ## Using this
 
-For regular updates, just run `make`.
+For regular system updates, just run `make`.
+
+For updating just home, run `make home`.
 
 For bootstrapping a fresh NixOS install as root:
 
