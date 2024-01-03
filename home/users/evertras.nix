@@ -7,6 +7,8 @@ in {
   evertras.themes.selected = themes.mint;
 
   evertras.home = {
+    core.username = "evertras";
+
     bash.enable = true;
     editorconfig.enable = true;
     git.enable = true;
@@ -50,9 +52,6 @@ in {
   };
 
   home = {
-    username = "evertras";
-    homeDirectory = "/home/evertras";
-
     # Other local things
     packages = with pkgs; [
       # General terminal tools
