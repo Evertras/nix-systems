@@ -10,7 +10,13 @@ in {
     bash.enable = true;
     editorconfig.enable = true;
     git.enable = true;
-    i3.enable = true;
+    i3 = {
+      enable = true;
+      kbLayout = "jp";
+      xrandrExec = ''
+        xrandr --output Virtual1 --mode 2560x1440
+      '';
+    };
     kitty.enable = true;
     starship.enable = true;
     tmux.enable = true;

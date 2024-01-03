@@ -18,6 +18,11 @@ in {
       type = types.str;
       default = "";
     };
+
+    xrandrExec = mkOption {
+      type = types.str;
+      default = "";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -44,10 +49,21 @@ in {
           titlebar = false;
         };
 
-        startup = [{
-          command = "styli.sh -s mountain";
-          notification = false;
-        }];
+        startup = [
+          {
+            command = if cfg.xrandrExec == "" then "true" else cfg.xrandrExec;
+            notification = false;
+          }
+          {
+            command = "setxkbmap -layout ${cfg.kbLayout}";
+            notification = false;
+          }
+          {
+            # Need a sleep to make xrandr take effect, not great... find better way later
+            command = "sleep 1s && styli.sh -s mountain &> ~/log";
+            notification = false;
+          }
+        ];
 
         colors = let
           mkScheme = border: {
