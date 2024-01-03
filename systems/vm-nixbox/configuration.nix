@@ -4,7 +4,7 @@ let
   kbLayout = "jp";
 in {
   imports = [
-    ../../base/base.nix
+    ../../base/core.nix
     ../../desktops/i3-standard/i3.nix
     ../../users/users.nix
 
