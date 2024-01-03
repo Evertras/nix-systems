@@ -60,7 +60,7 @@ in {
           }
           {
             # Need a sleep to make xrandr take effect, not great... find better way later
-            command = "sleep 1s && styli.sh -s mountain &> ~/log";
+            command = "sleep 1s && styli.sh -s mountain";
             notification = false;
           }
         ];
