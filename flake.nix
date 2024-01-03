@@ -16,7 +16,7 @@
       nixosConfigurations = {
         nixbox = lib.nixosSystem {
           inherit system;
-          modules = [ ./systems/vm-nixbox/configuration.nix ];
+          modules = [ ./system/machines/vm-nixbox/configuration.nix ];
         };
       };
 
