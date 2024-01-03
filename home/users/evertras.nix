@@ -5,11 +5,13 @@
     ../modules/core/core.nix
     ../modules/bash/bash.nix
     ../modules/kitty/kitty.nix
+    ../modules/starship/starship.nix
   ];
 
   evertras.home = {
     bash.enable = true;
     kitty.enable = true;
+    starship.enable = true;
   };
 
   home = {
@@ -36,19 +38,5 @@
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
-  };
-
-  programs = {
-    starship = {
-      enable = true;
-
-      settings = {
-        # TODO: only do this in WSL
-        # This fixes a weird thing where it says "Systemd"
-        # at the start of the prompt in WSL.
-        # https://www.reddit.com/r/fishshell/comments/yhoi28/im_using_starship_prompt_in_wsl_and_it_keep/
-        #container.disabled = true;
-      };
-    };
   };
 }

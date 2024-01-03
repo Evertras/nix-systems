@@ -8,4 +8,5 @@ rebuild:
 
 .PHONY: home
 home:
+	@./scripts/ensure-channel.sh
 	home-manager switch --flake .
