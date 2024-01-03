@@ -1,7 +1,5 @@
-{ config, lib, ... }:
-with lib;
-let cfg = config.evertras.themes;
-in {
+{ lib, ... }:
+with lib; {
   options.evertras.themes = {
     selected = mkOption {
       type = types.str;

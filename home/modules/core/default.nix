@@ -1,5 +1,5 @@
 # Non-negotiables that every user should have
-{ config, pkgs, ... }:
+{ ... }:
 
 {
   programs = {

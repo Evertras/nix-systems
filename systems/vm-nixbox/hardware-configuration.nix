@@ -1,5 +1,5 @@
 # Carefully modified to allow reuse in other VMs
-{ config, lib, pkgs, modulesPath, ... }:
+{ lib, ... }:
 
 {
   imports = [ ];
