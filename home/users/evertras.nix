@@ -16,6 +16,7 @@ in {
       xrandrExec = ''
         xrandr --output Virtual1 --mode 2560x1440
       '';
+      startupWallpaperTerm = "forest";
     };
     kitty.enable = true;
     starship.enable = true;
