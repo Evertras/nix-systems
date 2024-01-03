@@ -3,16 +3,23 @@
 set -e
 
 if ! type nixfmt &>/dev/null; then
+  # nixfmt is annoying to install outside of nix, so don't
+  # lock ourselves out of tweaking things
   echo "WARNING: Skipping format step, no nixfmt found"
   exit 0
 fi
 
-# https://prettier.io/docs/en/precommit.html#option-6-shell-script
-FILES=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
-[ -z "$FILES" ] && exit 0
+# Only look at changed files
+files=$(git diff --cached --name-only --diff-filter=ACMR | sed 's| |\\ |g')
+[ -z "${files}" ] && exit 0
 
-# Prettify all selected files
-echo "$FILES" | xargs nixfmt
-
-# Add back the modified/prettified files to staging
-echo "$FILES" | xargs git add
+IFS=$'\n'
+for file in ${files}; do
+  if ! nixfmt -c "${file}" &>/dev/null; then
+    nixfmt "${file}"
+    git add "${file}"
+    echo "${file} -> FORMATTED"
+  else
+    echo "${file} -> ok"
+  fi
+done
