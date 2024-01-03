@@ -66,7 +66,6 @@ in {
     # Desktop
     feh
     imagemagick
-    librewolf
     stylish
 
     # Coding
