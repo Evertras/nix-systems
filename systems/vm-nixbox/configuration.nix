@@ -3,7 +3,7 @@
 let kbLayout = "jp";
 in {
   imports = [
-    ../../modules/all.nix
+    ../../modules
 
     ./hardware-configuration.nix
   ];

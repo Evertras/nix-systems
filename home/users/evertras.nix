@@ -2,7 +2,7 @@
 
 let
 in {
-  imports = [ ../modules/all.nix ];
+  imports = [ ../modules ];
 
   evertras.home = {
     bash.enable = true;
