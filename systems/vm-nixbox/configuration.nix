@@ -52,16 +52,7 @@ in {
     home-manager
 
     # System/terminal
-    dig
     file
-    fzf
-    gcc
-    git
-    gnumake
-    neovim
-    pinentry
-    ripgrep
-    silver-searcher
   ];
 
   fonts.packages = with pkgs; [ nerdfonts ];
