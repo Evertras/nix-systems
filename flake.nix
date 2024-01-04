@@ -3,11 +3,19 @@
 
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-23.11";
-    home-manager.url = "github:nix-community/home-manager/release-23.11";
-    home-manager.inputs.nixpkgs.follows = "nixpkgs";
+
+    home-manager = {
+      url = "github:nix-community/home-manager/release-23.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixvim = {
+      url = "github:nix-community/nixvim/nixos-23.11";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, ... }:
+  outputs = { nixpkgs, home-manager, nixvim, ... }:
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
@@ -23,7 +31,8 @@
       homeConfigurations = {
         evertras = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
-          modules = [ ./home/users/evertras.nix ];
+          modules =
+            [ nixvim.homeManagerModules.nixvim ./home/users/evertras.nix ];
         };
       };
     };

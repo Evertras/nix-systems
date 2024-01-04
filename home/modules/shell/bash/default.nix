@@ -16,6 +16,7 @@ in {
           nr = "npm run";
           reloadbash = "source ~/.bashrc";
           vim = "nvim";
+          vi = "nvim";
         };
 
         # bashrcExtra for all shells, initExtra for interactive only

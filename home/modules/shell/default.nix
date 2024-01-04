@@ -2,7 +2,7 @@
 with lib;
 let cfg = config.evertras.home.shell;
 in {
-  imports = [ ./bash ./editorconfig ./git ./starship ./tmux ];
+  imports = [ ./bash ./editorconfig ./git ./neovim ./starship ./tmux ];
 
   options.evertras.home.shell = {
     shell = mkOption {
@@ -25,7 +25,6 @@ in {
       git
       htop
       jq
-      neovim
       pinentry
       ripgrep
       silver-searcher
