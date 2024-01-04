@@ -1,7 +1,6 @@
 # nix-systems
 
-All my Nix systems.  Very much WIP and chaotic, intentionally doing things the
-hard way to learn.
+All my Nix systems and home-manager config.
 
 ## Using this
 
