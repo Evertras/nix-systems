@@ -3,6 +3,8 @@
 # easily switched
 let
   defaults = {
+    inspiration = "gradient";
+
     # Fun ones:
     # - CaskaydiaCove Nerd Font
     # - Terminess Nerd Font
@@ -29,10 +31,13 @@ let
       name = "Bibata-Modern-Ice";
       packageName = "bibata-cursors";
     };
+
+    kittyTheme = "Catppuccin-Mocha";
+    kittyOpacity = "0.8";
   };
 in {
-  mint = {
-    inspiration = "forest";
+  mint = defaults // {
+    inspiration = "rainforest";
 
     # https://coolors.co/ef6f6c-2e394d-dcf9eb-59c9a5-7a907c
     colors = {
@@ -42,14 +47,9 @@ in {
       text = "#DCF9EB";
       urgent = "#EF6F6C";
     };
-
-    fonts = defaults.fonts;
-
-    cursorTheme = defaults.cursorTheme;
-    gtkTheme = defaults.gtkTheme;
   };
 
-  mountain = {
+  mountain = defaults // {
     inspiration = "mountain";
 
     colors = {
@@ -59,10 +59,5 @@ in {
       text = "#EFF1F3";
       urgent = "#D2694B";
     };
-
-    fonts = defaults.fonts;
-
-    cursorTheme = defaults.cursorTheme;
-    gtkTheme = defaults.gtkTheme;
   };
 }
