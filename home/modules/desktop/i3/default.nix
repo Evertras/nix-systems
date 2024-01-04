@@ -66,6 +66,7 @@ in {
         };
 
         startup = [
+          # TODO: Cleaner way to do this with merge after learning more nix
           {
             command = if cfg.xrandrExec == "" then "true" else cfg.xrandrExec;
             notification = false;
