@@ -1,18 +1,12 @@
 { ... }:
 
 {
-  # These are all controlled by enable flags
   imports = [
-    ./bash
+    # Strictly necessary settings
     ./core
-    ./editorconfig
-    ./git
-    ./i3
-    ./kitty
-    ./starship
-    ./theming
-    ./tmux
 
-    ../../themes/select.nix
+    # These are all controlled by enable flags
+    ./desktop
+    ./shell
   ];
 }

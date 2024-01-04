@@ -2,7 +2,7 @@
 
 let themes = import ../../themes/themes.nix;
 in {
-  imports = [ ../modules ];
+  imports = [ ../modules ../../themes/select.nix ];
 
   evertras.themes.selected = themes.mint;
 

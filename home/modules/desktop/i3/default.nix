@@ -4,8 +4,6 @@ let
   cfg = config.evertras.home.i3;
   theme = config.evertras.themes.selected;
 in {
-  imports = [ ../../../themes/select.nix ];
-
   options.evertras.home.i3 = {
     enable = mkEnableOption "i3 desktop";
 
