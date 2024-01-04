@@ -30,9 +30,11 @@ let
     # For names: use nix-find-cursor-names
     # Fun ones to go back to:
     # nordzy-cursor-theme / Nordzy-cursors-white
+    # bibata-cursors / Bibata-Modern-Ice
     cursorTheme = {
       name = "Bibata-Modern-Ice";
       packageName = "bibata-cursors";
+      packageOutput = "out";
     };
 
     kittyTheme = "Catppuccin-Mocha";
@@ -49,6 +51,12 @@ in {
       background = "#2E394D";
       text = "#DCF9EB";
       urgent = "#EF6F6C";
+    };
+
+    cursorTheme = {
+      name = "Catppuccin-Mocha-Peach-Cursors";
+      packageName = "catppuccin-cursors";
+      packageOutput = "mochaPeach";
     };
 
     gtkTheme = {

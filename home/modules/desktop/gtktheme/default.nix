@@ -9,7 +9,7 @@ let
     else
       cfg.cursor.name;
     package = if cfg.cursor.package == null then
-      pkgs.${theme.cursorTheme.packageName}
+      pkgs.${theme.cursorTheme.packageName}.${theme.cursorTheme.packageOutput}
     else
       cfg.cursor.package;
     size = cfg.cursor.size;
@@ -38,7 +38,7 @@ in {
 
       size = mkOption {
         type = types.int;
-        default = 30;
+        default = 32;
       };
     };
 
