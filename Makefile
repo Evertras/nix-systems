@@ -2,7 +2,6 @@
 home: .git/hooks/pre-commit
 	@./scripts/ensure-channel.sh
 	home-manager switch --flake .
-	@sudo -u evertras ./scripts/ensure-rcs.sh
 
 .PHONY: system
 system: .git/hooks/pre-commit
