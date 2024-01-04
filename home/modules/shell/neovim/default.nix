@@ -41,6 +41,12 @@
         lua = true;
       }
 
+      {
+        mode = "n";
+        key = "<leader>f";
+        action = "vim.lsp.buf.code_action({apply=true})";
+      }
+
       # TODO: Good chance to learn how to map in nix
       (genNav "H")
       (genNav "J")

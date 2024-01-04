@@ -31,7 +31,11 @@
     lualine = {
       enable = true;
 
-      sections = { lualine_x = [ "navic" ]; };
+      sections = {
+        lualine_b = [ "branch" "diff" "diagnostics" ];
+        lualine_c = [ "vim.fn.expand('%:.')" ];
+        lualine_x = [ "navic" ];
+      };
 
       inactiveSections = { };
     };
