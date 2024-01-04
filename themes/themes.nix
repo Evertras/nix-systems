@@ -3,10 +3,14 @@
 # easily switched
 let
   defaults = {
+    # Fun ones:
+    # - CaskaydiaCove Nerd Font
+    # - Terminess Nerd Font
+    # - ComicShannsMono Nerd Font
     fonts = {
       main = { name = "Terminess Nerd Font"; };
       mono = { name = "Terminess Nerd Font Mono"; };
-      desktop = { name = "ComicShannsMono Nerd Font"; };
+      desktop = { name = "CaskaydiaCove Nerd Font"; };
     };
 
     # For ideas: https://www.gnome-look.org/browse?cat=135&ord=rating
