@@ -19,6 +19,8 @@ let
     # For names: use nix-find-theme-names
     # Fun ones to go back to:
     # orchis-theme / Orchis-Purple-Dark-Compact
+    # catppuccin-gtk / Catppuccin-Frappe-Standard-Blue-Dark
+    # matcha-gtk-theme / (Has good red / blue / green / seagreen)
     gtkTheme = {
       name = "Layan-Dark";
       packageName = "layan-gtk-theme";
@@ -46,6 +48,11 @@ in {
       background = "#2E394D";
       text = "#DCF9EB";
       urgent = "#EF6F6C";
+    };
+
+    gtkTheme = {
+      name = "Matcha-dark-pueril";
+      packageName = "matcha-gtk-theme";
     };
   };
 
