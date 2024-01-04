@@ -13,9 +13,34 @@
           "<leader>h" = "signature_help";
         };
       };
+
+      # https://github.com/nix-community/nixvim/blob/10d114f5a6e0a9591d13a28a92905e71cc100b39/plugins/lsp/language-servers/default.nix
+      servers = {
+        bashls.enable = true;
+        cssls.enable = true;
+        gopls.enable = true;
+        html.enable = true;
+        lua-ls.enable = true;
+        rnix-lsp.enable = true;
+        terraformls.enable = true;
+        tsserver.enable = true;
+        yamlls.enable = true;
+      };
     };
 
-    lualine.enable = true;
+    lualine = {
+      enable = true;
+
+      sections = { lualine_x = [ "navic" ]; };
+
+      inactiveSections = { };
+    };
+
+    navic = {
+      enable = true;
+
+      lsp.autoAttach = true;
+    };
 
     nvim-cmp = {
       enable = true;
