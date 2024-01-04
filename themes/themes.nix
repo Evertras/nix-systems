@@ -21,9 +21,10 @@ let
     # orchis-theme / Orchis-Purple-Dark-Compact
     # catppuccin-gtk / Catppuccin-Frappe-Standard-Blue-Dark
     # matcha-gtk-theme / (Has good red / blue / green / seagreen)
+    # layan-gtk-theme / Layan-Dark (nice purple)
     gtkTheme = {
-      name = "Layan-Dark";
-      packageName = "layan-gtk-theme";
+      name = "catppuccin-gtk";
+      packageName = "Catppuccin-Frappe-Standard-Blue-Dark";
     };
 
     # For names: use nix-find-cursor-names
