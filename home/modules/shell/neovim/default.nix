@@ -77,5 +77,10 @@
       splitright = true;
       splitbelow = true;
     };
+
+    # Things we can't do anywhere else
+    extraConfigLua = ''
+      vim.keymap.set('n', '<leader>gs', function() require('telescope.builtin').grep_string({ search = vim.fn.input("ag > ") }); end)
+    '';
   };
 }
