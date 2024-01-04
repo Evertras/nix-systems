@@ -1,8 +1,11 @@
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 # Defines a bunch of constants for use in other
 # modules to create a consistent theme that can be
 # easily switched
+with lib;
 let
+  palette = { catppuccin = import ./palette-catppuccin.nix; };
+
   defaults = {
     inspiration = "gradient";
 
@@ -44,12 +47,22 @@ let
   # Rosewater, Flamingo, Pink, Mauve, Red, Maroon, Peach, Yellow,
   # Green, teal, Sky, Sapphire, Blue, Lavender, Dark, Light
   # https://github.com/catppuccin/cursors
-  mkCatppuccinCursor = color: {
-    name = "Catppuccin-Frappe-${color}-Cursors";
-    package = pkgs.catppuccin-cursors."frappe${color}";
+  mkCatppuccinCursor = { color, flavor ? "Frappe" }: {
+    name = "Catppuccin-${flavor}-${color}-Cursors";
+    package = pkgs.catppuccin-cursors."${toLower flavor}${color}";
+  };
+
+  mkCatppuccinTheme = { color, flavor ? "Frappe" }: {
+    # https://github.com/NixOS/nixpkgs/blob/nixos-23.11/pkgs/data/themes/catppuccin-gtk/default.nix
+    name = "Catppuccin-${flavor}-Standard-${color}-Dark";
+    package = pkgs.catppuccin-gtk.override {
+      variant = toLower flavor;
+      accents = [ (toLower color) ];
+    };
   };
 in {
-  mint = defaults // {
+  mint = let color = "Green";
+  in defaults // {
     inspiration = "rainforest";
 
     # https://coolors.co/ef6f6c-2e394d-dcf9eb-59c9a5-7a907c
@@ -61,17 +74,27 @@ in {
       urgent = "#EF6F6C";
     };
 
-    cursorTheme = mkCatppuccinCursor "Green";
+    cursorTheme = mkCatppuccinCursor { inherit color; };
 
-    gtkTheme = {
-      # https://github.com/NixOS/nixpkgs/blob/nixos-23.11/pkgs/data/themes/catppuccin-gtk/default.nix
-      name = "Catppuccin-Frappe-Standard-Green-Dark";
-      package = pkgs.catppuccin-gtk.override {
-        variant = "frappe";
-        accents = [ "green" ];
-      };
-    };
+    gtkTheme = mkCatppuccinTheme { inherit color; };
   };
+
+  mkCatppuccin = { color, flavor ? "Frappe" }:
+    defaults // {
+      inspiration = toLower color;
+
+      colors = {
+        primary = palette.catppuccin.${flavor}.${color};
+        highlight = palette.catppuccin.${flavor}.${color};
+        background = palette.catppuccin.${flavor}.Base;
+        text = palette.catppuccin.${flavor}.Text;
+        urgent = "#EF6F6C";
+      };
+
+      cursorTheme = mkCatppuccinCursor { inherit color flavor; };
+
+      gtkTheme = mkCatppuccinTheme { inherit color flavor; };
+    };
 
   mountain = defaults // {
     inspiration = "mountain";
