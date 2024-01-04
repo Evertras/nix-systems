@@ -9,46 +9,45 @@ in {
   evertras.home = {
     core.username = "evertras";
 
+    desktop = {
+      enable = true;
+      i3 = {
+        kbLayout = "jp";
+        monitorNetworkInterface = "enp0s3";
+        startupWallpaperTerm = "forest";
+        xrandrExec = "xrandr --output Virtual1 --mode 2560x1440";
+
+        font = {
+          name = "Terminess Nerd Font";
+          size = 16.0;
+        };
+      };
+
+      theming = {
+        font.name = "ComicShannsMono Nerd Font";
+
+        # Fun ones to go back to:
+        # nordzy-cursor-theme / Nordzy-cursors-white
+        cursor = {
+          name = "Bibata-Modern-Ice";
+          package = pkgs.bibata-cursors;
+          size = 30;
+        };
+
+        # Fun ones to go back to:
+        # orchis-theme / Orchis-Purple-Dark-Compact
+        overall = {
+          name = "Layan-Dark";
+          package = pkgs.layan-gtk-theme;
+        };
+      };
+    };
+
     bash.enable = true;
     editorconfig.enable = true;
     git.enable = true;
-    i3 = {
-      enable = true;
-
-      kbLayout = "jp";
-      monitorNetworkInterface = "enp0s3";
-      startupWallpaperTerm = "forest";
-      xrandrExec = "xrandr --output Virtual1 --mode 2560x1440";
-
-      font = {
-        name = "Terminess Nerd Font";
-        size = 16.0;
-      };
-    };
-    kitty.enable = true;
     starship.enable = true;
     tmux.enable = true;
-
-    theming = {
-      enable = true;
-
-      font.name = "ComicShannsMono Nerd Font";
-
-      # Fun ones to go back to:
-      # nordzy-cursor-theme / Nordzy-cursors-white
-      cursor = {
-        name = "Bibata-Modern-Ice";
-        package = pkgs.bibata-cursors;
-        size = 30;
-      };
-
-      # Fun ones to go back to:
-      # orchis-theme / Orchis-Purple-Dark-Compact
-      overall = {
-        name = "Layan-Dark";
-        package = pkgs.layan-gtk-theme;
-      };
-    };
   };
 
   home = {

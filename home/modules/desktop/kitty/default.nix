@@ -1,8 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
-let cfg = config.evertras.home.kitty;
+let cfg = config.evertras.home.desktop.kitty;
 in {
-  options.evertras.home.kitty = { enable = mkEnableOption "kitty"; };
+  options.evertras.home.desktop.kitty = { enable = mkEnableOption "kitty"; };
 
   config = mkIf cfg.enable {
     programs = {

@@ -1,10 +1,10 @@
 { config, lib, ... }:
 with lib;
 let
-  cfg = config.evertras.home.i3;
+  cfg = config.evertras.home.desktop.i3;
   theme = config.evertras.themes.selected;
 in {
-  options.evertras.home.i3 = {
+  options.evertras.home.desktop.i3 = {
     enable = mkEnableOption "i3 desktop";
 
     kbLayout = mkOption {
