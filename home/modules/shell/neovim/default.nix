@@ -1,6 +1,8 @@
 { ... }:
 
 {
+  imports = [ ./plugins.nix ];
+
   config.programs.nixvim = {
     enable = true;
 
@@ -14,60 +16,13 @@
 
     globals = { mapleader = ","; };
 
-    plugins = {
-      gitsigns.enable = true;
-
-      lsp = {
-        enable = true;
-
-        keymaps = {
-          lspBuf = {
-            "<leader>d" = "definition";
-            "K" = "hover";
-            "<leader>r" = "references";
-            "<leader>h" = "signature_help";
-          };
-        };
+    keymaps = let
+      genNav = key: {
+        mode = "n";
+        key = "<C-${key}>";
+        action = "<C-W><C-${key}>";
       };
-
-      lualine.enable = true;
-
-      nvim-cmp = {
-        enable = true;
-
-        sources = [
-          { name = "path"; }
-          { name = "nvim_lsp"; }
-          {
-            name = "nvim_lsp_signature_help";
-          }
-          #{ name = "buffer"; }
-        ];
-      };
-
-      nvim-tree.enable = true;
-
-      rust-tools.enable = true;
-
-      telescope = {
-        enable = true;
-        keymaps = {
-          "<leader>gg" = { action = "git_files"; };
-          "<leader>gG" = { action = "find_files"; };
-        };
-      };
-
-      #vim.keymap.set('n', '<leader>gs', function()
-      #builtin.grep_string({ search = vim.fn.input("ag > ") });
-      #d)
-
-      treesitter = { enable = true; };
-
-      # For other things
-      packer.enable = true;
-    };
-
-    keymaps = [
+    in [
       {
         mode = "i";
         key = "jk";
@@ -79,13 +34,35 @@
         key = ";";
         action = ":";
       }
+
+      {
+        mode = "n";
+        key = "<leader><space>";
+        options.expr = true;
+        action = "vim.cmd.nohlsearch";
+      }
+
+      # TODO: Good chance to learn how to map in nix
+      (genNav "H")
+      (genNav "J")
+      (genNav "K")
+      (genNav "L")
     ];
 
     options = {
       number = true;
       relativenumber = true;
 
+      # Find search results as we type
+      incsearch = true;
+
       shiftwidth = 2;
+
+      mouse = "";
+
+      # Split down-right instead of up-left
+      splitright = true;
+      splitbelow = true;
     };
   };
 }
