@@ -1,18 +1,10 @@
 { ... }:
 
 {
-  imports = [ ./plugins.nix ];
+  imports = [ ./colorscheme.nix ./plugins.nix ];
 
   config.programs.nixvim = {
     enable = true;
-
-    colorschemes.catppuccin = {
-      enable = true;
-
-      flavour = "mocha";
-
-      transparentBackground = true;
-    };
 
     globals = { mapleader = ","; };
 
@@ -38,7 +30,8 @@
       {
         mode = "n";
         key = "<leader><space>";
-        lua = "vim.cmd.nohlsearch";
+        action = "vim.cmd.nohlsearch";
+        lua = true;
       }
 
       # TODO: Good chance to learn how to map in nix
@@ -46,6 +39,14 @@
       (genNav "J")
       (genNav "K")
       (genNav "L")
+
+      # Filetree
+      {
+        mode = "n";
+        key = "<C-N>";
+        action = "vim.cmd.NvimTreeToggle";
+        lua = true;
+      }
     ];
 
     options = {
