@@ -55,7 +55,13 @@
       ];
     };
 
-    nvim-tree.enable = true;
+    nvim-tree = {
+      enable = true;
+
+      sortBy = "case_sensitive";
+
+      filters.dotfiles = true;
+    };
 
     rainbow-delimiters.enable = true;
 

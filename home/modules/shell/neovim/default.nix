@@ -38,8 +38,7 @@
       {
         mode = "n";
         key = "<leader><space>";
-        options.expr = true;
-        action = "vim.cmd.nohlsearch";
+        lua = "vim.cmd.nohlsearch";
       }
 
       # TODO: Good chance to learn how to map in nix
