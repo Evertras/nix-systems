@@ -24,3 +24,4 @@ reboot now
 - Explore better [types](https://github.com/NixOS/nixpkgs/blob/master/lib/types.nix) like nonEmptyString
 - Better null checks
 - Enum checks with asserts for things like desktop as "i3"
+- Different user variants and a good way to select them (direnv?)
