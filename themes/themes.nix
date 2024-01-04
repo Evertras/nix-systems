@@ -45,7 +45,7 @@ let
   };
 
   # Rosewater, Flamingo, Pink, Mauve, Red, Maroon, Peach, Yellow,
-  # Green, teal, Sky, Sapphire, Blue, Lavender, Dark, Light
+  # Green, Teal, Sky, Sapphire, Blue, Lavender, Dark, Light
   # https://github.com/catppuccin/cursors
   mkCatppuccinCursor = { color, flavor ? "Frappe" }: {
     name = "Catppuccin-${flavor}-${color}-Cursors";
