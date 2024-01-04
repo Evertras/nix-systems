@@ -15,7 +15,6 @@ in {
 
       i3 = {
         monitorNetworkInterface = "enp0s3";
-        startupWallpaperTerm = "forest";
         xrandrExec = "xrandr --output Virtual1 --mode 2560x1440";
       };
     };

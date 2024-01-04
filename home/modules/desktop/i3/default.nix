@@ -6,6 +6,11 @@ let
 
   fontName =
     if cfg.fontName == null then theme.fonts.main.name else cfg.fontName;
+
+  startupWallpaperTerm = if cfg.startupWallpaperTerm == null then
+    theme.inspiration
+  else
+    cfg.startupWallpaperTerm;
 in {
   options.evertras.home.desktop.i3 = {
     enable = mkEnableOption "i3 desktop";
@@ -31,8 +36,8 @@ in {
     };
 
     startupWallpaperTerm = mkOption {
-      type = types.str;
-      default = "mountain";
+      type = with types; nullOr str;
+      default = null;
     };
 
     fontName = mkOption {
@@ -82,7 +87,7 @@ in {
           }
           {
             # Need a sleep to make xrandr take effect, not great... find better way later
-            command = "sleep 1s && styli.sh -s '${cfg.startupWallpaperTerm}'";
+            command = "sleep 1s && styli.sh -s '${startupWallpaperTerm}'";
             notification = false;
           }
         ];
