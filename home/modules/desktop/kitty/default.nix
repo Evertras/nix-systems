@@ -51,6 +51,7 @@ in {
         enable_audio_bell = "no";
         # Don't change to bar when typing
         shell_integration = "no-cursor";
+        # Smarter copying without trailing newlines/whitespace
         strip_trailing_spaces = "smart";
       };
     };
