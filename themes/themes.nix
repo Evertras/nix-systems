@@ -3,13 +3,26 @@
 # easily switched
 let
   defaultFonts = {
-    # TODO: Define package here or just assume nerdfonts
-    # is always installed?
     main = { name = "Terminess Nerd Font"; };
-
     mono = { name = "Terminess Nerd Font Mono"; };
-
     desktop = { name = "ComicShannsMono Nerd Font"; };
+  };
+
+  # For ideas: https://www.gnome-look.org/browse?cat=135&ord=rating
+  # For names: use nix-find-theme-names
+  # Fun ones to go back to:
+  # orchis-theme / Orchis-Purple-Dark-Compact
+  defaultGtkTheme = {
+    name = "Layan-Dark";
+    packageName = "layan-gtk-theme";
+  };
+
+  # For names: use nix-find-cursor-names
+  # Fun ones to go back to:
+  # nordzy-cursor-theme / Nordzy-cursors-white
+  defaultCursorTheme = {
+    name = "Bibata-Modern-Ice";
+    packageName = "bibata-cursors";
   };
 in {
   mint = {
@@ -23,6 +36,9 @@ in {
     };
 
     fonts = defaultFonts;
+
+    cursorTheme = defaultCursorTheme;
+    gtkTheme = defaultGtkTheme;
   };
 
   mountain = {
@@ -35,5 +51,8 @@ in {
     };
 
     fonts = defaultFonts;
+
+    cursorTheme = defaultCursorTheme;
+    gtkTheme = defaultGtkTheme;
   };
 }

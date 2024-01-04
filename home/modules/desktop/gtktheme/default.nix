@@ -4,8 +4,14 @@ let
   cfg = config.evertras.home.desktop.gtktheme;
   theme = config.evertras.themes.selected;
   cursorTheme = {
-    name = cfg.cursor.name;
-    package = cfg.cursor.package;
+    name = if cfg.cursor.name == null then
+      theme.cursorTheme.name
+    else
+      cfg.cursor.name;
+    package = if cfg.cursor.package == null then
+      pkgs.${theme.cursorTheme.packageName}
+    else
+      cfg.cursor.package;
     size = cfg.cursor.size;
   };
   font = {
@@ -16,26 +22,23 @@ let
     size = cfg.font.size;
   };
 in {
-  # For ideas: https://www.gnome-look.org/browse?cat=135&ord=rating
-  # For names: try to follow the symbolic links in .icons after install,
-  #            but it would be nice to have a better system...
   options.evertras.home.desktop.gtktheme = {
     enable = mkEnableOption "gtktheme";
 
     cursor = {
       name = mkOption {
-        type = types.str;
-        default = "Numix-Cursor";
+        type = with types; nullOr str;
+        default = null;
       };
 
       package = mkOption {
-        type = types.package;
-        default = pkgs.numix-cursor-theme;
+        type = with types; nullOr package;
+        default = null;
       };
 
       size = mkOption {
         type = types.int;
-        default = 12;
+        default = 30;
       };
     };
 
@@ -61,13 +64,13 @@ in {
 
     overall = {
       name = mkOption {
-        type = types.str;
-        default = "palenight";
+        type = with types; nullOr str;
+        default = null;
       };
 
       package = mkOption {
-        type = types.package;
-        default = pkgs.palenight-theme;
+        type = with types; nullOr package;
+        default = null;
       };
     };
   };
@@ -83,8 +86,14 @@ in {
       };
 
       theme = {
-        name = cfg.overall.name;
-        package = cfg.overall.package;
+        name = if cfg.overall.name == null then
+          theme.gtkTheme.name
+        else
+          cfg.overall.name;
+        package = if cfg.overall.package == null then
+          pkgs.${theme.gtkTheme.packageName}
+        else
+          cfg.overall.package;
       };
 
       inherit cursorTheme;

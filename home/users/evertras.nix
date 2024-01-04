@@ -18,23 +18,6 @@ in {
         startupWallpaperTerm = "forest";
         xrandrExec = "xrandr --output Virtual1 --mode 2560x1440";
       };
-
-      gtktheme = {
-        # Fun ones to go back to:
-        # nordzy-cursor-theme / Nordzy-cursors-white
-        cursor = {
-          name = "Bibata-Modern-Ice";
-          package = pkgs.bibata-cursors;
-          size = 30;
-        };
-
-        # Fun ones to go back to:
-        # orchis-theme / Orchis-Purple-Dark-Compact
-        overall = {
-          name = "Layan-Dark";
-          package = pkgs.layan-gtk-theme;
-        };
-      };
     };
   };
 
