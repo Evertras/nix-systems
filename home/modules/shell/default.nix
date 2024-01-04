@@ -20,6 +20,7 @@ in {
     home.packages = with pkgs; [
       # General terminal tools
       dig
+      fx
       fzf
       gcc
       git
