@@ -20,7 +20,17 @@ in {
   };
 
   config = {
-    home.packages = with pkgs; [ feh imagemagick librewolf stylish ];
+    home.packages = with pkgs; [
+      # Browser
+      librewolf
+
+      # Wallpapers
+      feh
+      stylish
+
+      # Quick image manipulation with 'convert'
+      imagemagick
+    ];
 
     evertras.home.desktop = mkIf cfg.enable {
       i3.enable = cfg.wm == "i3";
