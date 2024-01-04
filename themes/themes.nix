@@ -19,7 +19,7 @@ let
     # For names: use nix-find-theme-names
     # Fun ones to go back to:
     # orchis-theme / Orchis-Purple-Dark-Compact
-    # catppuccin-gtk / Catppuccin-Frappe-Standard-Blue-Dark
+    # catppuccin-gtk / (figure out overrides: https://github.com/catppuccin/gtk#for-nix-users)
     # matcha-gtk-theme / (Has good red / blue / green / seagreen)
     # layan-gtk-theme / Layan-Dark (nice purple)
     gtkTheme = {
@@ -40,6 +40,15 @@ let
     kittyTheme = "Catppuccin-Mocha";
     kittyOpacity = "0.8";
   };
+
+  # Rosewater, Flamingo, Pink, Mauve, Red, Maroon, Peach, Yellow,
+  # Green, teal, Sky, Sapphire, Blue, Lavender, Dark, Light
+  # https://github.com/catppuccin/cursors
+  mkCatppuccinCursor = color: {
+    name = "Catppuccin-Frappe-${color}-Cursors";
+    packageName = "catppuccin-cursors";
+    packageOutput = "frappe${color}";
+  };
 in {
   mint = defaults // {
     inspiration = "rainforest";
@@ -53,11 +62,7 @@ in {
       urgent = "#EF6F6C";
     };
 
-    cursorTheme = {
-      name = "Catppuccin-Mocha-Peach-Cursors";
-      packageName = "catppuccin-cursors";
-      packageOutput = "mochaPeach";
-    };
+    cursorTheme = mkCatppuccinCursor "Green";
 
     gtkTheme = {
       name = "Matcha-dark-pueril";
