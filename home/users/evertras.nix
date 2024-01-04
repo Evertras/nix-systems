@@ -42,12 +42,6 @@ in {
         };
       };
     };
-
-    bash.enable = true;
-    editorconfig.enable = true;
-    git.enable = true;
-    starship.enable = true;
-    tmux.enable = true;
   };
 
   home = {

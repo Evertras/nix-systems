@@ -1,10 +1,10 @@
 { config, lib, ... }:
 with lib;
 let
-  cfg = config.evertras.home.tmux;
+  cfg = config.evertras.home.shell.tmux;
   colors = config.evertras.themes.selected.colors;
 in {
-  options.evertras.home.tmux = { enable = mkEnableOption "tmux"; };
+  options.evertras.home.shell.tmux = { enable = mkEnableOption "tmux"; };
 
   config = mkIf cfg.enable {
     programs.tmux = {

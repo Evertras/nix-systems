@@ -1,8 +1,8 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.home.editorconfig;
+let cfg = config.evertras.home.shell.editorconfig;
 in {
-  options.evertras.home.editorconfig = {
+  options.evertras.home.shell.editorconfig = {
     enable = mkEnableOption "editorconfig";
   };
 

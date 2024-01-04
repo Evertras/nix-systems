@@ -1,8 +1,8 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.home.git;
+let cfg = config.evertras.home.shell.git;
 in {
-  options.evertras.home.git = {
+  options.evertras.home.shell.git = {
     enable = mkEnableOption "git";
 
     userEmail = mkOption {
