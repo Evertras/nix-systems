@@ -46,34 +46,7 @@ in {
 
   home = {
     # Other local things
-    packages = with pkgs; [
-      # General terminal tools
-      dig
-      fzf
-      gcc
-      git
-      jq
-      neovim
-      pinentry
-      ripgrep
-      silver-searcher
-      yq
-
-      # Desktop
-      feh
-      imagemagick
-      librewolf
-      stylish
-
-      # Coding
-      cargo
-      go
-      gnumake
-      nixfmt
-      nodejs_21
-      python3
-      rustc
-    ];
+    packages = [ ];
 
     file = {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in

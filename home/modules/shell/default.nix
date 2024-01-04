@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let cfg = config.evertras.home.shell;
 in {
@@ -16,11 +16,36 @@ in {
     };
   };
 
-  config.evertras.home.shell = {
-    bash.enable = cfg.shell == "bash";
-    editorconfig.enable = mkDefault true;
-    git.enable = mkDefault true;
-    starship.enable = cfg.prompt == "starship";
-    tmux.enable = mkDefault true;
+  config = {
+    home.packages = with pkgs; [
+      # General terminal tools
+      dig
+      fzf
+      gcc
+      git
+      jq
+      neovim
+      pinentry
+      ripgrep
+      silver-searcher
+      yq
+
+      # Coding
+      cargo
+      go
+      gnumake
+      nixfmt
+      nodejs_21
+      python3
+      rustc
+    ];
+
+    evertras.home.shell = {
+      bash.enable = cfg.shell == "bash";
+      editorconfig.enable = mkDefault true;
+      git.enable = mkDefault true;
+      starship.enable = cfg.prompt == "starship";
+      tmux.enable = mkDefault true;
+    };
   };
 }

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 let cfg = config.evertras.home.desktop;
@@ -19,10 +19,14 @@ in {
     };
   };
 
-  config.evertras.home.desktop = mkIf cfg.enable {
-    i3.enable = cfg.wm == "i3";
-    kitty.enable = cfg.terminal == "kitty";
+  config = {
+    home.packages = with pkgs; [ feh imagemagick librewolf stylish ];
 
-    theming.enable = true;
+    evertras.home.desktop = mkIf cfg.enable {
+      i3.enable = cfg.wm == "i3";
+      kitty.enable = cfg.terminal == "kitty";
+
+      theming.enable = true;
+    };
   };
 }
