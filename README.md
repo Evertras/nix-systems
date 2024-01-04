@@ -19,3 +19,9 @@ make system
 sudo -u evertras make home
 reboot now
 ```
+
+## Random todos for later
+
+- Explore better [types](https://github.com/NixOS/nixpkgs/blob/master/lib/types.nix) like nonEmptyString
+- Better null checks
+- Enum checks with asserts for things like desktop as "i3"

@@ -1,14 +1,17 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  cfg = config.evertras.home.desktop.theming;
+  cfg = config.evertras.home.desktop.gtktheme;
+  theme = config.evertras.themes.selected;
   cursorTheme = {
     name = cfg.cursor.name;
     package = cfg.cursor.package;
     size = cfg.cursor.size;
   };
   font = {
-    name = cfg.font.name;
+    # TODO: Cleaner null check, but 'or' doesn't work...
+    name =
+      if cfg.font.name == null then theme.fonts.desktop.name else cfg.font.name;
     package = cfg.font.package;
     size = cfg.font.size;
   };
@@ -16,8 +19,8 @@ in {
   # For ideas: https://www.gnome-look.org/browse?cat=135&ord=rating
   # For names: try to follow the symbolic links in .icons after install,
   #            but it would be nice to have a better system...
-  options.evertras.home.desktop.theming = {
-    enable = mkEnableOption "theming";
+  options.evertras.home.desktop.gtktheme = {
+    enable = mkEnableOption "gtktheme";
 
     cursor = {
       name = mkOption {
@@ -38,8 +41,11 @@ in {
 
     font = {
       name = mkOption {
-        type = types.str;
-        default = "CaskaydiaCove Nerd Font";
+        description = ''
+          Override the selected Evertras theme font.
+        '';
+        type = with types; nullOr str;
+        default = null;
       };
 
       package = mkOption {

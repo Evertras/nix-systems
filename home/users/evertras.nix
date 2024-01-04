@@ -17,16 +17,9 @@ in {
         monitorNetworkInterface = "enp0s3";
         startupWallpaperTerm = "forest";
         xrandrExec = "xrandr --output Virtual1 --mode 2560x1440";
-
-        font = {
-          name = "Terminess Nerd Font";
-          size = 16.0;
-        };
       };
 
-      theming = {
-        font.name = "ComicShannsMono Nerd Font";
-
+      gtktheme = {
         # Fun ones to go back to:
         # nordzy-cursor-theme / Nordzy-cursors-white
         cursor = {

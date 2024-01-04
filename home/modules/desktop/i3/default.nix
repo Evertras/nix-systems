@@ -3,6 +3,9 @@ with lib;
 let
   cfg = config.evertras.home.desktop.i3;
   theme = config.evertras.themes.selected;
+
+  fontName =
+    if cfg.fontName == null then theme.fonts.main.name else cfg.fontName;
 in {
   options.evertras.home.desktop.i3 = {
     enable = mkEnableOption "i3 desktop";
@@ -32,12 +35,14 @@ in {
       default = "mountain";
     };
 
-    font = mkOption {
-      type = types.attrsOf types.anything;
-      default = {
-        name = "CaskaydiaCove Nerd Font";
-        size = 14.0;
-      };
+    fontName = mkOption {
+      type = with types; nullOr str;
+      default = null;
+    };
+
+    fontSize = mkOption {
+      type = types.float;
+      default = 16.0;
     };
   };
 
@@ -47,8 +52,8 @@ in {
 
       config = let
         fonts = {
-          names = [ cfg.font.name ];
-          size = cfg.font.size;
+          names = [ fontName ];
+          size = cfg.fontSize;
         };
       in {
         modifier = "Mod4";

@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.evertras.home.desktop;
 in {
-  imports = [ ./i3 ./kitty ./theming ];
+  imports = [ ./i3 ./kitty ./gtktheme ];
 
   options.evertras.home.desktop = {
     enable = mkEnableOption "desktop";
@@ -44,7 +44,7 @@ in {
       };
       kitty.enable = cfg.terminal == "kitty";
 
-      theming.enable = true;
+      gtktheme.enable = true;
     };
   };
 }
