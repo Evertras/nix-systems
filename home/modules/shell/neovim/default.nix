@@ -63,19 +63,25 @@
     ];
 
     options = {
+      # Line numbers are relative
       number = true;
       relativenumber = true;
 
       # Find search results as we type
       incsearch = true;
 
+      # If we don't have editorconfig, keep tabs at 2
       shiftwidth = 2;
 
+      # No mouse
       mouse = "";
 
       # Split down-right instead of up-left
       splitright = true;
       splitbelow = true;
+
+      # Keep some buffer at the bottom so we can see more context
+      scrolloff = 8;
     };
 
     # Things we can't do anywhere else
