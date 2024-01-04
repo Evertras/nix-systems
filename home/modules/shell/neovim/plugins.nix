@@ -57,6 +57,8 @@
 
     nvim-tree.enable = true;
 
+    rainbow-delimiters.enable = true;
+
     rust-tools.enable = true;
 
     telescope = {
