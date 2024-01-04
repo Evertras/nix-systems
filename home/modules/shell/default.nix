@@ -23,11 +23,13 @@ in {
       fzf
       gcc
       git
+      htop
       jq
       neovim
       pinentry
       ripgrep
       silver-searcher
+      tldr
       yq
 
       # Coding
