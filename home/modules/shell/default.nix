@@ -20,20 +20,23 @@ in {
     home.packages = with pkgs; [
       # General terminal tools
       dig
-      fx
-      fzf
-      gcc
       git
       htop
-      jq
       pinentry
       ripgrep
       silver-searcher
       tldr
+      wget
+
+      # Data processing
+      fx
+      fzf
+      jq
       yq
 
       # Coding
       cargo
+      gcc
       go
       gnumake
       nixfmt
