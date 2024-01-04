@@ -120,6 +120,7 @@ in {
           function nix-find-cursor-names() {
             if [ -z "$1" ]; then
               echo "Usage: nix-find-cursor-names <pkgname>"
+              exit 1
             fi
             package=$1
             storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
@@ -128,6 +129,7 @@ in {
           function nix-find-theme-names() {
             if [ -z "$1" ]; then
               echo "Usage: nix-find-theme-names <pkgname>"
+              exit 1
             fi
             package=$1
             storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
