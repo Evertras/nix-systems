@@ -91,9 +91,6 @@ in {
 
         # Turn focus events on for GitGutter in Vim
         set -g focus-events on
-
-        # Machine-specific settings
-        source-file ~/.tmux.local.conf
       '';
     };
   };
