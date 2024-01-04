@@ -63,7 +63,7 @@ in {
       in {
         modifier = "Mod4";
 
-        terminal = "kitty";
+        terminal = config.evertras.home.desktop.terminal;
 
         defaultWorkspace = "workspace number 1";
 
