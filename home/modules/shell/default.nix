@@ -40,6 +40,8 @@ in {
       rustc
     ];
 
+    programs.direnv.enable = true;
+
     evertras.home.shell = {
       bash.enable = cfg.shell == "bash";
       editorconfig.enable = mkDefault true;
