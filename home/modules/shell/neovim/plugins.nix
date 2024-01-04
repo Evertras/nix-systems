@@ -57,6 +57,12 @@
         }
         #{ name = "buffer"; }
       ];
+
+      mapping = {
+        "<C-y>" = "cmp.mapping.confirm({ select = true })";
+        "<up>" = "cmp.mapping.select_prev_item()";
+        "<down>" = "cmp.mapping.select_next_item()";
+      };
     };
 
     nvim-tree = {
