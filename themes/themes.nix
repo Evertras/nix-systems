@@ -64,8 +64,12 @@ in {
     cursorTheme = mkCatppuccinCursor "Green";
 
     gtkTheme = {
-      name = "Matcha-dark-pueril";
-      package = pkgs.matcha-gtk-theme;
+      # https://github.com/NixOS/nixpkgs/blob/nixos-23.11/pkgs/data/themes/catppuccin-gtk/default.nix
+      name = "Catppuccin-Frappe-Standard-Green-Dark";
+      package = pkgs.catppuccin-gtk.override {
+        variant = "frappe";
+        accents = [ "green" ];
+      };
     };
   };
 
