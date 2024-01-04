@@ -8,6 +8,13 @@
 
     globals = { mapleader = ","; };
 
+    autoCmd = [{
+      event = "BufEnter";
+      pattern = "*.nomad";
+      command = "set filetype=hcl";
+      desc = "Nomad files are HCL";
+    }];
+
     keymaps = let
       genNav = key: {
         mode = "n";
