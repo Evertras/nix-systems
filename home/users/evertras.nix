@@ -1,6 +1,6 @@
-{ ... }:
+{ pkgs, ... }:
 
-let themes = import ../../themes/themes.nix;
+let themes = import ../../themes/themes.nix { inherit pkgs; };
 in {
   imports = [ ../modules ../../themes/select.nix ];
 

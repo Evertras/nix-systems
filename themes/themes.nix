@@ -1,3 +1,4 @@
+{ pkgs, ... }:
 # Defines a bunch of constants for use in other
 # modules to create a consistent theme that can be
 # easily switched
@@ -23,8 +24,8 @@ let
     # matcha-gtk-theme / (Has good red / blue / green / seagreen)
     # layan-gtk-theme / Layan-Dark (nice purple)
     gtkTheme = {
-      name = "catppuccin-gtk";
-      packageName = "Catppuccin-Frappe-Standard-Blue-Dark";
+      name = "Layan-Dark";
+      package = pkgs.layan-gtk-theme;
     };
 
     # For names: use nix-find-cursor-names
@@ -33,8 +34,7 @@ let
     # bibata-cursors / Bibata-Modern-Ice
     cursorTheme = {
       name = "Bibata-Modern-Ice";
-      packageName = "bibata-cursors";
-      packageOutput = "out";
+      package = pkgs.bibata-cursors;
     };
 
     kittyTheme = "Catppuccin-Mocha";
@@ -46,8 +46,7 @@ let
   # https://github.com/catppuccin/cursors
   mkCatppuccinCursor = color: {
     name = "Catppuccin-Frappe-${color}-Cursors";
-    packageName = "catppuccin-cursors";
-    packageOutput = "frappe${color}";
+    package = pkgs.catppuccin-cursors."frappe${color}";
   };
 in {
   mint = defaults // {
@@ -66,7 +65,7 @@ in {
 
     gtkTheme = {
       name = "Matcha-dark-pueril";
-      packageName = "matcha-gtk-theme";
+      package = pkgs.matcha-gtk-theme;
     };
   };
 

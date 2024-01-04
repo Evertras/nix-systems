@@ -9,7 +9,7 @@ let
     else
       cfg.cursor.name;
     package = if cfg.cursor.package == null then
-      pkgs.${theme.cursorTheme.packageName}.${theme.cursorTheme.packageOutput}
+      theme.cursorTheme.package
     else
       cfg.cursor.package;
     size = cfg.cursor.size;
@@ -91,7 +91,7 @@ in {
         else
           cfg.overall.name;
         package = if cfg.overall.package == null then
-          pkgs.${theme.gtkTheme.packageName}
+          theme.gtkTheme.package
         else
           cfg.overall.package;
       };

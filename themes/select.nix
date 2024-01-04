@@ -1,6 +1,6 @@
-{ lib, ... }:
+{ lib, pkgs, ... }:
 with lib;
-let themes = import ./themes.nix;
+let themes = import ./themes.nix { inherit pkgs; };
 in {
   options.evertras.themes = {
     selected = mkOption {
