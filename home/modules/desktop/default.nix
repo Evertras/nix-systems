@@ -17,6 +17,11 @@ in {
       type = types.str;
       default = "i3";
     };
+
+    kbLayout = mkOption {
+      type = types.str;
+      default = "us";
+    };
   };
 
   config = {
@@ -33,7 +38,10 @@ in {
     ];
 
     evertras.home.desktop = mkIf cfg.enable {
-      i3.enable = cfg.wm == "i3";
+      i3 = {
+        enable = cfg.wm == "i3";
+        kbLayout = mkDefault cfg.kbLayout;
+      };
       kitty.enable = cfg.terminal == "kitty";
 
       theming.enable = true;
