@@ -1,5 +1,5 @@
 { }: {
-  mkColorPatch = { colorSelection }:
+  mkColorPatch = { colors }:
     builtins.toFile "dmenu-color-patch.diff" ''
       ---
        config.def.h | 4 ++--
@@ -15,8 +15,8 @@
        	/*     fg         bg       */
       -	[SchemeNorm] = { "#bbbbbb", "#222222" },
       -	[SchemeSel] = { "#eeeeee", "#005577" },
-      +	[SchemeNorm] = { "#f8f8f2", "#282a36" },
-      +	[SchemeSel] = { "#f8f8f2", "${colorSelection}" },
+      +	[SchemeNorm] = { "${colors.text}", "${colors.background}" },
+      +	[SchemeSel] = { "${colors.background}", "${colors.primary}" },
        	[SchemeOut] = { "#000000", "#00ffff" },
        };
        /* -l option; if nonzero, dmenu uses vertical list with given number of lines */

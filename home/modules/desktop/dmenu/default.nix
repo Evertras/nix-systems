@@ -4,7 +4,7 @@ let
   cfg = config.evertras.home.desktop.dmenu;
   theme = config.evertras.themes.selected;
   patchlib = import ./patches { };
-  patchColor = patchlib.mkColorPatch { colorSelection = theme.colors.primary; };
+  patchColor = patchlib.mkColorPatch { colors = theme.colors; };
 in {
   options.evertras.home.desktop.dmenu = with lib; {
     enable = mkEnableOption "dmenu";
