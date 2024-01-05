@@ -23,15 +23,9 @@ in {
   };
 
   home = let
-    dmenuPatches = import ../modules/desktop/dmenu/patches { };
-    dmenuPatchColor =
-      dmenuPatches.mkColorPatch { colorSelection = theme.colors.primary; };
   in {
     # Other local things
-    packages = [
-      (pkgs.dmenu.overrideAttrs
-        (self: super: { patches = [ dmenuPatchColor ]; }))
-    ];
+    packages = [ ];
 
     file = {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in

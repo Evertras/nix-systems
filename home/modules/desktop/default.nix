@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.evertras.home.desktop;
 in {
-  imports = [ ./i3 ./kitty ./gtktheme ];
+  imports = [ ./dmenu ./i3 ./kitty ./gtktheme ];
 
   options.evertras.home.desktop = {
     enable = mkEnableOption "desktop";
@@ -38,6 +38,7 @@ in {
     ];
 
     evertras.home.desktop = mkIf cfg.enable {
+      dmenu.enable = cfg.wm == "i3";
       i3 = {
         enable = cfg.wm == "i3";
         kbLayout = mkDefault cfg.kbLayout;
