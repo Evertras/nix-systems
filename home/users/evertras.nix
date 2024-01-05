@@ -5,7 +5,7 @@ in {
   imports = [ ../modules ../../themes/select.nix ];
 
   evertras.themes.selected = themes.mkCatppuccin { color = "Green"; } // {
-    inspiration = "rainforest";
+    inspiration = "forest";
   };
 
   evertras.home = {
@@ -22,9 +22,14 @@ in {
     };
   };
 
-  home = {
+  home = let
+  in {
     # Other local things
-    packages = [ ];
+    packages = [
+      (pkgs.dmenu.overrideAttrs (oldAttrs: rec {
+        patches = [ ../modules/desktop/dmenu/patches/colors.diff ];
+      }))
+    ];
 
     file = {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in

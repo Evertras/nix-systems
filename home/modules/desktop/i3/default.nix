@@ -67,6 +67,10 @@ in {
 
         defaultWorkspace = "workspace number 1";
 
+        # Override to use our patched version...
+        # TODO: point to the actual result of our patch
+        menu = "dmenu_run";
+
         inherit fonts;
 
         window = {
