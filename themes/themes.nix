@@ -81,7 +81,7 @@ in {
 
   mkCatppuccin = { color, flavor ? "Frappe" }:
     defaults // {
-      inspiration = toLower color;
+      inspiration = "hd ${toLower color} wallpapers";
 
       colors = {
         primary = palette.catppuccin.${flavor}.${color};

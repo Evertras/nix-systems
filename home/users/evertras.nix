@@ -4,9 +4,7 @@ let themes = import ../../themes/themes.nix { inherit pkgs lib; };
 in {
   imports = [ ../modules ../../themes/select.nix ];
 
-  evertras.themes.selected = themes.mkCatppuccin { color = "Green"; } // {
-    inspiration = "forest";
-  };
+  evertras.themes.selected = themes.mkCatppuccin { color = "Green"; };
 
   evertras.home = {
     core.username = "evertras";
