@@ -1,10 +1,12 @@
 { lib, pkgs, ... }:
 
-let themes = import ../../themes/themes.nix { inherit pkgs lib; };
+let
+  themes = import ../../themes/themes.nix { inherit pkgs lib; };
+  theme = themes.mkCatppuccin { color = "Green"; };
 in {
   imports = [ ../modules ../../themes/select.nix ];
 
-  evertras.themes.selected = themes.mkCatppuccin { color = "Green"; };
+  evertras.themes.selected = theme;
 
   evertras.home = {
     core.username = "evertras";
@@ -21,12 +23,14 @@ in {
   };
 
   home = let
+    dmenuPatches = import ../modules/desktop/dmenu/patches { };
+    dmenuPatchColor =
+      dmenuPatches.mkColorPatch { colorSelection = theme.colors.primary; };
   in {
     # Other local things
     packages = [
-      (pkgs.dmenu.overrideAttrs (oldAttrs: rec {
-        patches = [ ../modules/desktop/dmenu/patches/colors.diff ];
-      }))
+      (pkgs.dmenu.overrideAttrs
+        (self: super: { patches = [ dmenuPatchColor ]; }))
     ];
 
     file = {
