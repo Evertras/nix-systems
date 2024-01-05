@@ -1,4 +1,6 @@
 { }: {
+  # Note to future self: be VERY careful about preserving
+  # whitespace/tabs inside the actual strings...
   mkColorPatch = { colors }:
     builtins.toFile "dmenu-color-patch.diff" ''
       ---
