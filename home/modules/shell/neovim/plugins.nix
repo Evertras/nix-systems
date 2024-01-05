@@ -37,7 +37,7 @@
         lualine_x = [ "navic" ];
       };
 
-      inactiveSections = { };
+      inactiveSections = { lualine_c = [ "vim.fn.expand('%:.')" ]; };
     };
 
     navic = {
