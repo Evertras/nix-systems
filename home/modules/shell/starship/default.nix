@@ -1,6 +1,8 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.home.shell.starship;
+let
+  cfg = config.evertras.home.shell.starship;
+  theme = config.evertras.themes.selected;
 in {
   options.evertras.home.shell.starship = {
     enable = mkEnableOption "starship";
@@ -17,6 +19,8 @@ in {
         # Additionally, I can't imagine a situation where I'm using starship in a container and being
         # unaware of it, so just disable it everywhere for simplicity.
         container.disabled = true;
+
+        directory = { style = "bold ${theme.colors.primary}"; };
       };
     };
   };
