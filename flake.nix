@@ -16,11 +16,23 @@
   };
 
   outputs = { nixpkgs, home-manager, nixvim, ... }:
+
     let
       lib = nixpkgs.lib;
       system = "x86_64-linux";
-      pkgs = nixpkgs.legacyPackages.${system};
+      pkgs = import nixpkgs {
+        inherit system;
+
+        # Explicitly allow certain unfree software
+        config = {
+          allowUnfreePredicate = pkg:
+            builtins.elem (nixpkgs.lib.getName pkg) [ "obsidian" ];
+
+          permittedInsecurePackages = [ "electron-25.9.0" ];
+        };
+      };
     in {
+
       nixosConfigurations = {
         nixbox = lib.nixosSystem {
           inherit system;

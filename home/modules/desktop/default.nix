@@ -35,6 +35,9 @@ in {
 
       # Quick image manipulation with 'convert'
       imagemagick
+
+      # Notes
+      obsidian
     ];
 
     evertras.home.desktop = mkIf cfg.enable {
