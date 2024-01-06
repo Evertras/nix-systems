@@ -16,12 +16,13 @@
     }];
 
     keymaps = let
-      genNav = key: {
+      # Jump between panes more easily
+      keymapsNav = map (key: {
         mode = "n";
         key = "<C-${key}>";
         action = "<C-W><C-${key}>";
-      };
-    in [
+      }) [ "H" "J" "K" "L" ];
+    in keymapsNav ++ [
       {
         mode = "i";
         key = "jk";
@@ -46,12 +47,6 @@
         key = "<leader>f";
         action = "vim.lsp.buf.code_action({apply=true})";
       }
-
-      # TODO: Good chance to learn how to map in nix
-      (genNav "H")
-      (genNav "J")
-      (genNav "K")
-      (genNav "L")
 
       # Filetree
       {
