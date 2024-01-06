@@ -49,6 +49,11 @@ in {
       type = types.float;
       default = 16.0;
     };
+
+    keybindOverrides = mkOption {
+      type = types.attrs;
+      default = { };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -125,7 +130,7 @@ in {
                         i3-nagbar --message 'Screenshot created' --type warning & \
                         sleep 3; pkill i3-nagbar"
           '';
-        });
+        } // cfg.keybindOverrides);
 
         bars = [{
           id = "main";
