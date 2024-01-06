@@ -1,6 +1,9 @@
 { }: {
   # Note to future self: be VERY careful about preserving
   # whitespace/tabs inside the actual strings...
+
+  # Colors can be configured by command line options, but let's
+  # overengineer and learn how to do dynamic patches!
   mkColorPatch = { colors }:
     builtins.toFile "dmenu-color-patch.diff" ''
       ---

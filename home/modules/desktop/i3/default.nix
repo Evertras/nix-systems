@@ -67,9 +67,7 @@ in {
 
         defaultWorkspace = "workspace number 1";
 
-        # Override to use our patched version...
-        # TODO: point to the actual result of our patch
-        menu = "dmenu_run";
+        menu = "dmenu_run -p 'run >' -fn '${theme.fonts.mono.name}'";
 
         inherit fonts;
 
