@@ -19,6 +19,35 @@ in {
       enable = true;
       # TODO:
       # iconTheme = theme.iconTheme;
+
+      settings = {
+        global = {
+          corner_radius = 10;
+          font = theme.fonts.desktop.name;
+          frame_color = theme.colors.background;
+        };
+
+        urgency_normal = {
+          background = theme.colors.primary;
+          foreground = theme.colors.background;
+          highlight = theme.colors.background;
+          timeout = 10;
+        };
+
+        urgency_low = {
+          background = theme.colors.primary;
+          foreground = theme.colors.background;
+          highlight = theme.colors.background;
+          timeout = 10;
+        };
+
+        urgency_critical = {
+          background = theme.colors.urgent;
+          foreground = theme.colors.background;
+          highlight = theme.colors.background;
+          timeout = 10;
+        };
+      };
     };
   };
 }
