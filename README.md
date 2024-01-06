@@ -25,4 +25,3 @@ reboot now
 - Better null checks
 - Enum checks with asserts for things like desktop as "i3"
 - Different user variants and a good way to select them (direnv?)
-- Fix themes file to include actual packages, check [this file](https://github.com/nix-community/nixvim/blob/10d114f5a6e0a9591d13a28a92905e71cc100b39/lib/helpers.nix) for some ideas
