@@ -132,6 +132,7 @@ in {
             fi
             package=$1
             storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
+            echo "Store path: ''${storepath}"
             ls "''${storepath}/share/icons"
           }
           function nix-find-theme-names() {
@@ -141,6 +142,7 @@ in {
             fi
             package=$1
             storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
+            echo "Store path: ''${storepath}"
             ls "''${storepath}/share/themes"
           }
         '';
