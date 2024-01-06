@@ -30,6 +30,11 @@ in {
       default = "eno1";
     };
 
+    monitorNetworkWireless = mkOption {
+      type = types.bool;
+      default = false;
+    };
+
     xrandrExec = mkOption {
       type = types.str;
       default = "";
@@ -185,7 +190,26 @@ in {
       };
     };
 
-    programs.i3status = {
+    programs.i3status = let
+      networkingModule = if cfg.monitorNetworkWireless then {
+        "wireless ${cfg.monitorNetworkInterface}" = {
+          position = 3;
+          settings = {
+            format_up = "%quality %essid %ip";
+            format_down = "NO WIFI";
+            format_quality = "%02d%s";
+          };
+        };
+      } else {
+        "ethernet ${cfg.monitorNetworkInterface}" = {
+          position = 3;
+          settings = {
+            format_up = "%ip";
+            format_down = "NET DOWN";
+          };
+        };
+      };
+    in {
       enable = true;
       enableDefault = false;
 
@@ -208,14 +232,6 @@ in {
           settings = { format = "Mem: %percentage_used used (%free free)"; };
         };
 
-        "ethernet ${cfg.monitorNetworkInterface}" = {
-          position = 3;
-          settings = {
-            format_up = "%ip";
-            format_down = "NET DOWN";
-          };
-        };
-
         "tztime UTC" = {
           position = 4;
           settings = { format = "%m-%d %H:%M:%S UTC"; };
@@ -225,7 +241,7 @@ in {
           position = 5;
           settings = { format = "%Y-%m-%d %H:%M:%S %Z "; };
         };
-      };
+      } // networkingModule;
     };
   };
 }
