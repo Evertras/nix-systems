@@ -17,38 +17,45 @@ in {
   };
 
   config = {
-    home.packages = with pkgs; [
-      # General terminal tools
-      dig
-      git
-      htop
-      pinentry
-      ripgrep
-      silver-searcher
-      tldr
-      wget
+    home = {
+      packages = with pkgs; [
+        # General terminal tools
+        dig
+        git
+        htop
+        pinentry
+        ripgrep
+        silver-searcher
+        tldr
+        wget
 
-      # Data processing
-      fx
-      fzf
-      jq
-      yq
+        # Data processing
+        fx
+        fzf
+        jq
+        yq
 
-      # Coding
-      cargo
-      gcc
-      go
-      gnumake
-      nixfmt
-      nodejs_21
-      python3
-      rustc
+        # Coding
+        cargo
+        gcc
+        go
+        gnumake
+        nixfmt
+        nodejs_21
+        python3
+        rustc
 
-      # Funsies
-      fastfetch
-    ];
+        # Funsies
+        fastfetch
+      ];
 
-    programs.direnv.enable = true;
+      sessionVariables = { EDITOR = "nvim"; };
+    };
+
+    programs = {
+      direnv.enable = true;
+      gpg.enable = true;
+    };
 
     evertras.home.shell = {
       bash.enable = cfg.shell == "bash";
