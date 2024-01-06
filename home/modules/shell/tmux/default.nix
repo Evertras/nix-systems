@@ -13,16 +13,7 @@ in {
       # Always want tmuxinator with tmux
       tmuxinator.enable = true;
 
-      # TODO: just copy/pasted old config, revisit what's needed
       extraConfig = ''
-        # Some tweaks to the status line
-        set -g window-status-current-style underscore
-
-        # If running inside tmux ($TMUX is set), then change the status line to red
-        %if #{TMUX}
-        set -g status-bg red
-        %endif
-
         # Enable RGB colour if running in xterm(1)
         set-option -sa terminal-overrides ",xterm*:Tc"
 
@@ -61,8 +52,8 @@ in {
         # Turn off repeat entirely so we can instantly type after moving
         set -g repeat-time 0
 
-        # Turn escape time to tiny so we can quickly escape in vim without breaking tmux
-        set -g escape-time 20
+        # Turn off escape time to so we can quickly escape in vim without breaking tmux
+        set -g escape-time 0
 
         # Statusbar formatting
         set -g status-position bottom
