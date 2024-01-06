@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.evertras.home.desktop;
 in {
-  imports = [ ./dmenu ./i3 ./kitty ./gtktheme ];
+  imports = [ ./dmenu ./i3 ./kitty ./gtktheme ./notifications ];
 
   options.evertras.home.desktop = {
     enable = mkEnableOption "desktop";
@@ -55,13 +55,13 @@ in {
 
     evertras.home.desktop = mkIf cfg.enable {
       dmenu.enable = cfg.wm == "i3";
+      gtktheme.enable = true;
       i3 = {
         enable = cfg.wm == "i3";
         kbLayout = mkDefault cfg.kbLayout;
       };
       kitty.enable = cfg.terminal == "kitty";
-
-      gtktheme.enable = true;
+      notifications.enable = true;
     };
   };
 }
