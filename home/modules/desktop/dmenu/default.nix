@@ -11,8 +11,14 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = [
-      (pkgs.dmenu.overrideAttrs (self: super: { patches = [ patchColor ]; }))
+    home.packages = let patchList = [ patchColor ];
+    in [
+      (pkgs.dmenu.overrideAttrs (self: super: {
+        patches = if super.patches == null then
+          patchList
+        else
+          super.patches ++ patchList;
+      }))
     ];
   };
 }
