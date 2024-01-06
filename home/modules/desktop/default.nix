@@ -26,6 +26,13 @@ in {
 
   config = {
     home.packages = with pkgs; [
+      # Clipboard
+      xclip
+
+      # Window management utilities
+      # https://www.semicomplete.com/projects/xdotool/
+      xdotool
+
       # Browser
       librewolf
 
