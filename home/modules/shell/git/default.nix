@@ -16,8 +16,8 @@ in {
     };
 
     gpgKey = mkOption {
-      type = types.str;
-      default = "";
+      type = with types; nullOr str;
+      default = null;
     };
   };
 
@@ -28,7 +28,7 @@ in {
       userEmail = cfg.userEmail;
       userName = cfg.userName;
 
-      signing = if cfg.gpgKey != "" then {
+      signing = if cfg.gpgKey != null then {
         signByDefault = true;
         key = cfg.gpgKey;
       } else

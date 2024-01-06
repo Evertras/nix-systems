@@ -54,7 +54,12 @@ in {
 
     programs = {
       direnv.enable = true;
-      gpg.enable = true;
+      gpg = {
+        enable = true;
+        settings = {
+          #pinentry-program = "${pkgs.pinentry}/bin/pinentry";
+        };
+      };
     };
 
     evertras.home.shell = {

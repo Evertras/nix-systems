@@ -11,6 +11,8 @@ in {
   evertras.home = {
     core.username = "evertras";
 
+    shell = { git.gpgKey = "ABFFF058F479311F"; };
+
     desktop = {
       enable = true;
       kbLayout = "jp";

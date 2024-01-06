@@ -54,6 +54,12 @@
     file
   ];
 
+  programs.gnupg.agent = {
+    enable = true;
+    pinentryFlavor = "curses";
+    enableSSHSupport = true;
+  };
+
   # TODO: Doing this because local DNS doesn't work, investigate
   networking.nameservers = [ "8.8.8.8" ];
   services.resolved = {
