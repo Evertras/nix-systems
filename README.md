@@ -17,8 +17,24 @@ nix-shell -p git gnumake
 git clone https://github.com/Evertras/nix-systems
 cd nix-systems
 make system
-sudo -u evertras make home
+# Specify actual desired user here
+sudo -u evertras make home EVERTRAS_USER_PROFILE="some-profile-name"
+# Set user profile here, direnv will use this later outside of root
+cp .envrc.example .envrc
 reboot now
+```
+
+### Troubleshooting
+
+#### No suitable profile directory error message
+
+```text
+Could not find suitable profile directory, tried /home/evertras/.local/state/home-manager/profiles and /nix/var/nix/profiles/per-user/evertras
+```
+
+```bash
+# The error message is misleading, make this directory
+mkdir -p ~/.local/state/nix/profiles/
 ```
 
 ## Random todos for later
@@ -26,4 +42,3 @@ reboot now
 - Explore better [types](https://github.com/NixOS/nixpkgs/blob/master/lib/types.nix) like nonEmptyString
 - Better null checks
 - Enum checks with asserts for things like desktop as "i3"
-- Different user variants and a good way to select them (direnv?)

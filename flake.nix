@@ -38,13 +38,26 @@
           inherit system;
           modules = [ ./system/machines/vm-nixbox/configuration.nix ];
         };
+
+        nixtop = lib.nixosSystem {
+          inherit system;
+          modules = [ ./system/machines/nixtop/configuration.nix ];
+        };
       };
 
       homeConfigurations = {
-        evertras = home-manager.lib.homeManagerConfiguration {
+        evertras-vm = home-manager.lib.homeManagerConfiguration {
           inherit pkgs;
           modules =
-            [ nixvim.homeManagerModules.nixvim ./home/users/evertras.nix ];
+            [ nixvim.homeManagerModules.nixvim ./home/users/evertras-vm.nix ];
+        };
+
+        evertras-nixtop = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [
+            nixvim.homeManagerModules.nixvim
+            ./home/users/evertras-nixtop.nix
+          ];
         };
       };
     };

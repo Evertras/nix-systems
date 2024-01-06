@@ -1,7 +1,7 @@
 .PHONY: home
 home: .git/hooks/pre-commit
 	@./scripts/ensure-channel.sh
-	home-manager switch --flake .
+	home-manager switch --flake .#${EVERTRAS_USER_PROFILE}
 
 .PHONY: system
 system: .git/hooks/pre-commit
