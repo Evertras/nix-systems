@@ -38,7 +38,8 @@ in {
       # Image viewing
       feh
 
-      # Screenshot taker
+      # Screenshot taker and more
+      # https://github.com/naelstrof/maim#examples
       maim
 
       # Notes

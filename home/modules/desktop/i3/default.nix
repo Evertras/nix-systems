@@ -114,9 +114,18 @@ in {
 
         # Add/override existing defaults via mkOptionDefault
         # https://github.com/nix-community/home-manager/blob/master/modules/services/window-managers/i3-sway/i3.nix
-        keybindings = mkOptionDefault {
+        keybindings = mkOptionDefault (let
+          homeDir = (import ../../core/homedir.nix { inherit config; }).homeDir;
+          screenshotsDir = "${homeDir}/screenshots";
+        in {
           "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
-        };
+          "${modifier}+s" = ''
+            exec "\
+                        maim ${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr A-Z a-z).png &> /tmp/maim-last.log; \
+                        i3-nagbar --message 'Screenshot created' --type warning & \
+                        sleep 3; pkill i3-nagbar"
+          '';
+        });
 
         bars = [{
           id = "main";

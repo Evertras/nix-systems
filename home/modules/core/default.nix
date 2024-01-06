@@ -11,17 +11,15 @@ in {
         Defaults to /home/{username}, but may need
         to override in some environments such as Darwin
       '';
-      type = types.str;
-      default = "";
+      type = with types; nullOr str;
+      default = null;
     };
   };
+
   config = {
     home = {
       username = cfg.username;
-      homeDirectory = if cfg.homeDirectory == "" then
-        "/home/${cfg.username}"
-      else
-        cfg.homeDirectory;
+      homeDirectory = (import ./homedir.nix { inherit config; }).homeDir;
     };
 
     programs = {
