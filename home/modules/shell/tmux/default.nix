@@ -64,7 +64,7 @@ in {
 
         # NOTE: This multiplies everything apparently
         set -g status-style bg=default,fg=#ffffff
-        set -g status-right '#[fg=${colors.primary},bg=${colors.background}] %H:%M %m/%d '
+        set -g status-right '#[fg=${colors.primary}] %H:%M %m/%d '
         set -g window-status-current-style 'fg=${colors.background},bg=${colors.primary},none'
         set -g window-status-current-format ' #I #W #{?window_zoomed_flag,#[fg=${colors.urgent}]Z ,}'
         set -g window-status-style 'fg=${colors.primary},bg=${colors.background},none'
