@@ -11,10 +11,11 @@ in {
       enable = true;
 
       settings = {
-        # TODO: only do this in WSL
-        # This fixes a weird thing where it says "Systemd"
-        # at the start of the prompt in WSL.
+        # Don't show info about being in a container.
+        # This fixes a weird thing where it says "Systemd" at the start of the prompt in WSL.
         # https://www.reddit.com/r/fishshell/comments/yhoi28/im_using_starship_prompt_in_wsl_and_it_keep/
+        # Additionally, I can't imagine a situation where I'm using starship in a container and being
+        # unaware of it, so just disable it everywhere for simplicity.
         container.disabled = true;
       };
     };
