@@ -3,6 +3,10 @@ home: .git/hooks/pre-commit
 	@./scripts/ensure-channel.sh
 	home-manager switch --flake .#${EVERTRAS_USER_PROFILE}
 
+.PHONY: home-news
+home-news: .git/hooks/pre-commit
+	home-manager news --flake .#${EVERTRAS_USER_PROFILE}
+
 .PHONY: system
 system: .git/hooks/pre-commit
 	@./scripts/ensure-passwords.sh
