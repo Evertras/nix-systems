@@ -2,6 +2,8 @@
 
 All my Nix systems and home-manager config.
 
+![Sample screenshot](https://github.com/Evertras/nix-systems/assets/5923958/e56307ec-d4a5-4cfa-8ae9-492eefee684a)
+
 ## Using this
 
 For regular system updates, just run `make system`.
