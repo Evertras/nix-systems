@@ -24,7 +24,11 @@ in {
   home = let
   in {
     # Other local things
-    packages = [ ];
+    packages = with pkgs;
+      [
+        # Laptop things
+        brightnessctl
+      ];
 
     file = {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in
