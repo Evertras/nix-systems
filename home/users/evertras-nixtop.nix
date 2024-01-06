@@ -33,6 +33,8 @@ in {
             "exec ~/.evertras/i3funcs/brightnessChange.sh ${brightnessIncrement}%+";
           XF86MonBrightnessDown =
             "exec ~/.evertras/i3funcs/brightnessChange.sh ${brightnessIncrement}%-";
+          XF86AudioRaiseVolume = "exec ~/.evertras/i3funcs/volumeUp.sh";
+          XF86AudioLowerVolume = "exec ~/.evertras/i3funcs/volumeDown.sh";
           "Mod4+h" = "exec ~/.evertras/i3funcs/headphonesConnect.sh";
           "Mod4+shift+h" = "exec ~/.evertras/i3funcs/headphonesDisconnect.sh";
         };
@@ -49,6 +51,9 @@ in {
 
       # GUI audio controller
       pavucontrol
+
+      # CLI audio controller
+      pamixer
     ];
 
     file = {
@@ -91,6 +96,44 @@ in {
           else
             notify-send "Headphones disconnected" -t 2000
           fi
+        '';
+      };
+
+      ".evertras/i3funcs/volumeUp.sh" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          logfile=/tmp/last-volumeUp.log
+          pamixer -i 5 &> $logfile
+          if [ $? != 0 ]; then
+            notify-send "Volume up failure" "$(cat $logfile)" \
+              -u critical
+            exit 1
+          fi
+
+          value=$(pamixer --get-volume)
+          notify-send "Volume $value%" \
+            -h string:synchronous:volume \
+            -h "int:value:$value" &> /tmp/idk
+        '';
+      };
+
+      ".evertras/i3funcs/volumeDown.sh" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          logfile=/tmp/last-volumeDown.log
+          pamixer -d 5 &> $logfile
+          if [ $? != 0 ]; then
+            notify-send "Volume down failure" "$(cat $logfile)" \
+              -u critical
+            exit 1
+          fi
+
+          value=$(pamixer --get-volume)
+          notify-send "Volume $value%" \
+            -h string:synchronous:volume \
+            -h "int:value:$value"
         '';
       };
     };
