@@ -43,6 +43,9 @@ in {
       nodejs_21
       python3
       rustc
+
+      # Funsies
+      fastfetch
     ];
 
     programs.direnv.enable = true;
