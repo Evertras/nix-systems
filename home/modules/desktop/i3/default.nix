@@ -70,6 +70,8 @@ in {
 
         defaultWorkspace = "workspace number 1";
 
+        # TODO: The default references the dmenu package, seems cleaner
+        #       to reference our custom-built package somehow...
         menu = "dmenu_run -p 'run >' -fn '${theme.fonts.mono.name}'";
 
         window = {
