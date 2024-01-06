@@ -6,6 +6,26 @@ with lib;
 let
   palette = { catppuccin = import ./palette-catppuccin.nix; };
 
+  catppuccinColors = [
+    "Rosewater"
+    "Flamingo"
+    "Pink"
+    "Mauve"
+    "Red"
+    "Maroon"
+    "Peach"
+    "Yellow"
+    "Green"
+    "Teal"
+    "Sky"
+    "Sapphire"
+    "Blue"
+    "Lavender"
+  ];
+
+  assertCatppuccinColor = color:
+    lib.asserts.assertOneOf "catppuccin color" color catppuccinColors;
+
   defaults = {
     inspiration = "gradient";
 
@@ -43,28 +63,6 @@ let
     kittyTheme = "Catppuccin-Mocha";
     kittyOpacity = "0.8";
   };
-
-  catppuccinColors = [
-    "Rosewater"
-    "Flamingo"
-    "Pink"
-    "Mauve"
-    "Red"
-    "Maroon"
-    "Peach"
-    "Yellow"
-    "Green"
-    "Teal"
-    "Sky"
-    "Sapphire"
-    "Blue"
-    "Lavender"
-    "Dark"
-    "Light"
-  ];
-
-  assertCatppuccinColor = color:
-    lib.asserts.assertOneOf "catppuccin color" color catppuccinColors;
 
   # https://github.com/catppuccin/cursors
   mkCatppuccinCursor = { color, flavor ? "Frappe" }: {
