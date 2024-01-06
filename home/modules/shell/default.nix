@@ -45,6 +45,10 @@ in {
         python3
         rustc
 
+        # Password management
+        # https://www.passwordstore.org/
+        pass
+
         # Funsies
         fastfetch
       ];

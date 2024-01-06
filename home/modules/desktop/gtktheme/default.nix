@@ -42,6 +42,18 @@ in {
       };
     };
 
+    iconTheme = {
+      name = mkOption {
+        type = with types; nullOr str;
+        default = null;
+      };
+
+      package = mkOption {
+        type = with types; nullOr package;
+        default = null;
+      };
+    };
+
     font = {
       name = mkOption {
         description = ''
@@ -81,8 +93,14 @@ in {
       enable = true;
 
       iconTheme = {
-        name = "Papirus-Dark";
-        package = pkgs.papirus-icon-theme;
+        name = if cfg.iconTheme.name == null then
+          theme.iconTheme.name
+        else
+          cfg.iconTheme.name;
+        package = if cfg.iconTheme.package == null then
+          theme.iconTheme.package
+        else
+          cfg.iconTheme.package;
       };
 
       theme = {

@@ -51,6 +51,13 @@ let
       package = pkgs.layan-gtk-theme;
     };
 
+    # Fun ones to go back to:
+    # weather-icons (not generally, but for niche uses?)
+    iconTheme = {
+      name = "Zafiro-icons-Dark";
+      package = pkgs.zafiro-icons;
+    };
+
     # For names: use nix-find-cursor-names
     # Fun ones to go back to:
     # nordzy-cursor-theme / Nordzy-cursors-white

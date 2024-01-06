@@ -17,8 +17,10 @@ in {
 
     services.dunst = {
       enable = true;
-      # TODO:
-      # iconTheme = theme.iconTheme;
+      iconTheme = {
+        name = theme.iconTheme.name;
+        package = theme.iconTheme.package;
+      };
 
       settings = {
         global = {

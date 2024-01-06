@@ -1,6 +1,8 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
-let themes = import ./themes.nix { inherit pkgs lib; };
+let
+  themes = import ./themes.nix { inherit pkgs lib; };
+  selected = config.evertras.themes.selected;
 in {
   options.evertras.themes = {
     selected = mkOption {
@@ -8,4 +10,6 @@ in {
       default = themes.mint;
     };
   };
+
+  config = { home.packages = [ selected.iconTheme.package ]; };
 }

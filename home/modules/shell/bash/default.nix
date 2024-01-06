@@ -123,7 +123,8 @@ in {
             done
           fi
 
-          # This is maddening to find otherwise
+          # This is maddening to find otherwise... note this
+          # also works for icons
           function nix-find-cursor-names() {
             if [ -z "$1" ]; then
               echo "Usage: nix-find-cursor-names <pkgname>"
