@@ -31,4 +31,21 @@
     Mantle = "#292c3c";
     Crust = "#232634";
   };
+
+  inspiration = {
+    Rosewater = "sakura";
+    Flamingo = "flamingo";
+    Pink = "sakura";
+    Mauve = "sakura";
+    Red = "red";
+    Maroon = "red";
+    Peach = "peach";
+    Yellow = "yellow";
+    Green = "green";
+    Teal = "teal";
+    Sky = "sky";
+    Sapphire = "sky";
+    Blue = "ocean";
+    Lavender = "lavender";
+  };
 }

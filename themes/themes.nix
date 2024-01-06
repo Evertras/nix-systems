@@ -102,7 +102,7 @@ in {
   mkCatppuccin = { color, flavor ? "Frappe" }:
     defaults // {
       _checkColor = assertCatppuccinColor color;
-      inspiration = "hd ${toLower color} wallpapers";
+      inspiration = "hd ${palette.catppuccin.inspiration.${color}} wallpapers";
 
       colors = {
         primary = palette.catppuccin.${flavor}.${color};
