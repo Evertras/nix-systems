@@ -22,6 +22,11 @@ in {
       i3 = {
         monitorNetworkInterface = "wlo1";
         monitorNetworkWireless = true;
+        # Pipewire doesn't seem to want to start until
+        # something kicks it, so kick it
+        extraStartupCommand = ''
+          systemctl restart --user pipewire
+        '';
         keybindOverrides = let brightnessIncrement = "10";
         in {
           XF86MonBrightnessUp =

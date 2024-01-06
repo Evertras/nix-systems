@@ -20,9 +20,9 @@ in {
       default = "us";
     };
 
-    extraSessionCommands = mkOption {
+    extraStartupCommand = mkOption {
       type = types.str;
-      default = "";
+      default = "true";
     };
 
     monitorNetworkInterface = mkOption {
@@ -37,7 +37,7 @@ in {
 
     xrandrExec = mkOption {
       type = types.str;
-      default = "";
+      default = "true";
     };
 
     startupWallpaperTerm = mkOption {
@@ -111,9 +111,8 @@ in {
         };
 
         startup = [
-          # TODO: Cleaner way to do this with merge after learning more nix
           {
-            command = if cfg.xrandrExec == "" then "true" else cfg.xrandrExec;
+            command = cfg.xrandrExec;
             notification = false;
           }
           {
@@ -123,6 +122,10 @@ in {
           {
             # Need a sleep to make xrandr take effect, not great... find better way later
             command = "sleep 1s && styli.sh -s '${startupWallpaperTerm}'";
+            notification = false;
+          }
+          {
+            command = cfg.extraStartupCommand;
             notification = false;
           }
         ];

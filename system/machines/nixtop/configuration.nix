@@ -22,6 +22,7 @@
   services.xserver.displayManager.autoLogin.user = "evertras";
 
   # Sound stuff
+  # https://nixos.wiki/wiki/PipeWire
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
