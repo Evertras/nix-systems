@@ -63,5 +63,15 @@ in {
       kitty.enable = cfg.terminal == "kitty";
       notifications.enable = true;
     };
+
+    services = {
+      redshift = {
+        enable = true;
+
+        # Tokyo generic
+        latitude = 35.652832;
+        longitude = 139.839478;
+      };
+    };
   };
 }
