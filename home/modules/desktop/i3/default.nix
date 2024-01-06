@@ -229,7 +229,7 @@ in {
 
         "memory" = {
           position = 2;
-          settings = { format = "Mem: %percentage_used used (%free free)"; };
+          settings = { format = "%free free (%percentage_used used)"; };
         };
 
         "tztime UTC" = {
