@@ -20,9 +20,12 @@ in {
       i3 = {
         monitorNetworkInterface = "wlo1";
         monitorNetworkWireless = true;
-        keybindOverrides = {
-          XF86MonBrightnessUp = "exec brightnessctl set 10%+";
-          XF86MonBrightnessDown = "exec brightnessctl set 10%-";
+        keybindOverrides = let brightnessIncrement = "10";
+        in {
+          XF86MonBrightnessUp =
+            "exec ~/.evertras/i3funcs/brightnessChange.sh ${brightnessIncrement}%+";
+          XF86MonBrightnessDown =
+            "exec ~/.evertras/i3funcs/brightnessChange.sh ${brightnessIncrement}%-";
         };
       };
     };
@@ -38,16 +41,17 @@ in {
       ];
 
     file = {
-      # # Building this configuration will create a copy of 'dotfiles/screenrc' in
-      # # the Nix store. Activating the configuration will then make '~/.screenrc' a
-      # # symlink to the Nix store copy.
-      # ".screenrc".source = dotfiles/screenrc;
-
-      # # You can also set the file content immediately.
-      # ".gradle/gradle.properties".text = ''
-      #   org.gradle.console=verbose
-      #   org.gradle.daemon.idletimeout=3600000
-      # '';
+      ".evertras/i3funcs/brightnessChange.sh" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          level=$(brightnessctl -m set "$1" | awk -F, '{gsub(/%$/, "", $4); print $4}')
+          notify-send "Brightness $level%" \
+            -t 2000 \
+            -h string:synchronous:screenbrightness \
+            -h "int:value:$level"
+        '';
+      };
     };
 
     # Don't change this, this is the initial install version
