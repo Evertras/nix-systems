@@ -62,6 +62,26 @@ in {
   };
 
   config = mkIf cfg.enable {
+    home.file = let
+      screenshotsDir = "$HOME/.evertras/screenshots";
+      screenshotsLog = "/tmp/screenshot-lastlog";
+    in {
+      ".evertras/i3funcs/screenshot.sh" = {
+        executable = true;
+        text = ''
+          #!/usr/bin/env bash
+          mkdir -p ${screenshotsDir}
+          filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr A-Z a-z).png
+          maim "$filename" &> ${screenshotsLog}
+          if [ $? == 0 ]; then
+            notify-send 'Screenshot' "$filename"
+          else
+            notify-send -u critical "Screenshot error" "$(cat ${screenshotsLog})"
+          fi
+        '';
+      };
+    };
+
     xsession.windowManager.i3 = {
       enable = true;
 
@@ -124,18 +144,10 @@ in {
 
         # Add/override existing defaults via mkOptionDefault
         # https://github.com/nix-community/home-manager/blob/master/modules/services/window-managers/i3-sway/i3.nix
-        keybindings = mkOptionDefault (let
-          homeDir = (import ../../core/homedir.nix { inherit config; }).homeDir;
-          screenshotsDir = "${homeDir}/screenshots";
-        in {
+        keybindings = mkOptionDefault {
           "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
-          "${modifier}+s" = ''
-            exec "\
-                        maim ${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr A-Z a-z).png &> /tmp/maim-last.log; \
-                        i3-nagbar --message 'Screenshot created' --type warning & \
-                        sleep 3; pkill i3-nagbar"
-          '';
-        } // cfg.keybindOverrides);
+          "${modifier}+s" = "exec ~/.evertras/i3funcs/screenshot.sh";
+        } // cfg.keybindOverrides;
 
         bars = [{
           id = "main";
