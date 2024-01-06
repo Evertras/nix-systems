@@ -114,7 +114,9 @@ in {
 
         # Add/override existing defaults via mkOptionDefault
         # https://github.com/nix-community/home-manager/blob/master/modules/services/window-managers/i3-sway/i3.nix
-        keybindings = mkOptionDefault { };
+        keybindings = mkOptionDefault {
+          "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
+        };
 
         bars = [{
           id = "main";
