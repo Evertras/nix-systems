@@ -34,11 +34,13 @@ in {
   home = let
   in {
     # Other local things
-    packages = with pkgs;
-      [
-        # Laptop things
-        brightnessctl
-      ];
+    packages = with pkgs; [
+      # Laptop things
+      brightnessctl
+
+      # GUI audio controller
+      pavucontrol
+    ];
 
     file = {
       ".evertras/i3funcs/brightnessChange.sh" = {

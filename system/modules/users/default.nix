@@ -4,7 +4,7 @@
   users.mutableUsers = false;
   users.users.evertras = {
     isNormalUser = true;
-    extraGroups = [ "autologin" "wheel" ];
+    extraGroups = [ "audio" "docker" "autologin" "wheel" ];
     hashedPasswordFile = "/etc/nixos/passwords/evertras";
   };
 
