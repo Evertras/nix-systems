@@ -56,6 +56,7 @@ in {
       pamixer
     ];
 
+    # TODO: move all this out into a configurable module
     file = {
       ".evertras/i3funcs/brightnessChange.sh" = {
         executable = true;
