@@ -5,7 +5,7 @@
     colorschemes.catppuccin = {
       enable = true;
 
-      flavour = "mocha";
+      flavour = "frappe";
 
       transparentBackground = true;
 
