@@ -60,16 +60,17 @@ in {
           names = [ fontName ];
           size = cfg.fontSize;
         };
-      in {
+
+        # Win/cmd key
         modifier = "Mod4";
+      in {
+        inherit modifier fonts;
 
         terminal = config.evertras.home.desktop.terminal;
 
         defaultWorkspace = "workspace number 1";
 
         menu = "dmenu_run -p 'run >' -fn '${theme.fonts.mono.name}'";
-
-        inherit fonts;
 
         window = {
           border = 2;
@@ -108,6 +109,10 @@ in {
           focusedInactive = mkScheme theme.colors.primary;
           unfocused = mkScheme theme.colors.background;
         };
+
+        # Add/override existing defaults via mkOptionDefault
+        # https://github.com/nix-community/home-manager/blob/master/modules/services/window-managers/i3-sway/i3.nix
+        keybindings = mkOptionDefault { };
 
         bars = [{
           id = "main";
