@@ -21,6 +21,7 @@
 
   services.xserver.displayManager.autoLogin.user = "evertras";
 
+  # Sound stuff
   security.rtkit.enable = true;
   services.pipewire = {
     enable = true;
@@ -29,6 +30,17 @@
     pulse.enable = true;
   };
 
+  # https://nixos.wiki/wiki/Bluetooth
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      # Enable A2DP sink
+      General.Enable = "Source,Sink,Media,Socket";
+    };
+  };
+
+  # Networking stuff
   networking = {
     hostName = "nixtop";
     wireless = {
