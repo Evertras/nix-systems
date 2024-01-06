@@ -29,12 +29,17 @@ in {
       # Browser
       librewolf
 
-      # Wallpapers
-      feh
+      # Wallpaper changer
       stylish
 
       # Quick image manipulation with 'convert'
       imagemagick
+
+      # Image viewing
+      feh
+
+      # Screenshot taker
+      maim
 
       # Notes
       obsidian
