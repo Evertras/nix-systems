@@ -44,15 +44,37 @@ let
     kittyOpacity = "0.8";
   };
 
-  # Rosewater, Flamingo, Pink, Mauve, Red, Maroon, Peach, Yellow,
-  # Green, Teal, Sky, Sapphire, Blue, Lavender, Dark, Light
+  catppuccinColors = [
+    "Rosewater"
+    "Flamingo"
+    "Pink"
+    "Mauve"
+    "Red"
+    "Maroon"
+    "Peach"
+    "Yellow"
+    "Green"
+    "Teal"
+    "Sky"
+    "Sapphire"
+    "Blue"
+    "Lavender"
+    "Dark"
+    "Light"
+  ];
+
+  assertCatppuccinColor = color:
+    lib.asserts.assertOneOf "catppuccin color" color catppuccinColors;
+
   # https://github.com/catppuccin/cursors
   mkCatppuccinCursor = { color, flavor ? "Frappe" }: {
+    _checkColor = assertCatppuccinColor color;
     name = "Catppuccin-${flavor}-${color}-Cursors";
     package = pkgs.catppuccin-cursors."${toLower flavor}${color}";
   };
 
   mkCatppuccinTheme = { color, flavor ? "Frappe" }: {
+    _checkColor = assertCatppuccinColor color;
     # https://github.com/NixOS/nixpkgs/blob/nixos-23.11/pkgs/data/themes/catppuccin-gtk/default.nix
     name = "Catppuccin-${flavor}-Standard-${color}-Dark";
     package = pkgs.catppuccin-gtk.override {
@@ -81,6 +103,7 @@ in {
 
   mkCatppuccin = { color, flavor ? "Frappe" }:
     defaults // {
+      _checkColor = assertCatppuccinColor color;
       inspiration = "hd ${toLower color} wallpapers";
 
       colors = {
