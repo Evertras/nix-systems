@@ -1,6 +1,8 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.home.shell.bash;
+let
+  cfg = config.evertras.home.shell.bash;
+  theme = config.evertras.themes.selected;
 in {
   options.evertras.home.shell.bash = { enable = mkEnableOption "bash"; };
 
@@ -81,11 +83,15 @@ in {
           }
 
           function show-color() {
-              perl -e 'foreach $a(@ARGV){print "\e[48:2::".join(":",unpack("C*",pack("H*",$a)))."m \e[49m "};print "\n"' "$@"
+            perl -e 'foreach $a(@ARGV){print "\e[48:2::".join(":",unpack("C*",pack("H*",$a)))."m \e[49m "};print "\n"' "$@"
           }
 
-          # For funsies, only adjusts kitty theme for now
-          function retheme() {
+          function cycle-wallpaper() {
+            styli.sh -s '${theme.inspiration}'
+          }
+
+          # Keeping for reference but not actually using it...
+          function deprecated-retheme() {
             searchterm="$@"
             if [ -z "''${searchterm}" ]; then
               searchterm=mountain
