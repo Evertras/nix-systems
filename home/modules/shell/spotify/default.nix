@@ -4,6 +4,17 @@ let cfg = config.evertras.home.shell.spotify;
 in {
   options.evertras.home.shell.spotify = {
     enable = mkEnableOption "spotify (terminal/systemd)";
+
+    # https://docs.spotifyd.rs/config/File.html
+    device-name = mkOption {
+      type = types.str;
+      default = "nixbox";
+    };
+
+    device-type = mkOption {
+      type = types.str;
+      default = "computer";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -13,8 +24,8 @@ in {
       settings.global = {
         username = "bfullj@gmail.com";
         password_cmd = "pass spotify";
-        device-name = "nixtop";
-        device-type = "computer";
+        device_name = cfg.device-name;
+        device_type = "computer";
       };
     };
 
