@@ -33,8 +33,9 @@ in {
       # https://www.semicomplete.com/projects/xdotool/
       xdotool
 
-      # Browser
+      # Browsers (librewolf as default, chromium if needed)
       librewolf
+      chromium
 
       # Wallpaper changer
       stylish
