@@ -17,16 +17,15 @@ in {
 
     services.dunst = {
       enable = true;
-      iconTheme = {
-        name = theme.iconTheme.name;
-        package = theme.iconTheme.package;
-      };
 
       settings = {
         global = {
           corner_radius = 10;
           font = theme.fonts.desktop.name;
           frame_color = theme.colors.background;
+          enable_recursive_icon_lookup = true;
+          icon_theme = theme.iconTheme.name;
+          icon_path = "${theme.iconTheme.package}/share/icons";
         };
 
         urgency_normal = {
