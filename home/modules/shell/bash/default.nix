@@ -12,10 +12,10 @@ in {
         enable = true;
         shellAliases = {
           grep = "grep --color=auto";
+          jctluser = "journalctl --user";
           k = "kubectl";
           ls = "ls --color";
           mux = "tmuxinator";
-          jctluser = "journalctl --user";
           nr = "npm run";
           reloadbash = "source ~/.bashrc";
           sysctluser = "systemctl --user";
