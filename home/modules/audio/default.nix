@@ -36,6 +36,7 @@ in {
 
             value=$(pamixer --get-volume)
             notify-send "Volume $value%" \
+              -t 1000 \
               -i volume-knob \
               -h string:synchronous:volume \
               -h "int:value:$value"
@@ -56,6 +57,7 @@ in {
 
             value=$(pamixer --get-volume)
             notify-send "Volume $value%" \
+              -t 1000 \
               -i volume-knob \
               -h string:synchronous:volume \
               -h "int:value:$value"
