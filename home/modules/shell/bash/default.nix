@@ -15,10 +15,12 @@ in {
           k = "kubectl";
           ls = "ls --color";
           mux = "tmuxinator";
+          jctluser = "journalctl --user";
           nr = "npm run";
           reloadbash = "source ~/.bashrc";
-          vim = "nvim";
+          sysctluser = "systemctl --user";
           vi = "nvim";
+          vim = "nvim";
         };
 
         # bashrcExtra for all shells, initExtra for interactive only
