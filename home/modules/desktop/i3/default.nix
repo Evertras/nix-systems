@@ -147,10 +147,29 @@ in {
 
         # Add/override existing defaults via mkOptionDefault
         # https://github.com/nix-community/home-manager/blob/master/modules/services/window-managers/i3-sway/i3.nix
-        keybindings = mkOptionDefault ({
-          "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
-          "${modifier}+s" = "exec ~/.evertras/i3funcs/screenshot.sh";
-        } // cfg.keybindOverrides);
+        keybindings = let
+          kbBase = {
+            "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
+            "${modifier}+s" = "exec ~/.evertras/i3funcs/screenshot.sh";
+          };
+
+          cfgAudio = config.evertras.home.audio;
+          kbVolume = if cfgAudio.enable then {
+            XF86AudioRaiseVolume = "exec ~/.evertras/funcs/volumeUp.sh";
+            XF86AudioLowerVolume = "exec ~/.evertras/funcs/volumeDown.sh";
+          } else
+            { };
+
+          kbBluetooth = if (cfgAudio.headphonesMacAddress != null) then {
+            "${modifier}+h" = "exec ~/.evertras/funcs/headphonesConnect.sh";
+            "${modifier}+shift+h" =
+              "exec ~/.evertras/funcs/headphonesDisconnect.sh";
+          } else
+            { };
+
+          allOverrides = kbBase // kbVolume // kbBluetooth
+            // cfg.keybindOverrides;
+        in mkOptionDefault allOverrides;
 
         bars = [{
           id = "main";
