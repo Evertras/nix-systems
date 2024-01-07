@@ -35,14 +35,9 @@ in {
         lightdm = { enable = true; };
       };
 
-      windowManager.i3 = {
-        enable = true;
-        extraPackages = with pkgs; [
-          i3status
-          i3lock
-          # TODO: look at i3blocks?
-        ];
-      };
+      # Only really want this so we can use the defaultSession
+      # value above, this should be managed by home-manager
+      windowManager.i3.enable = true;
 
       # Disable capslock, trying to remap it to ctrl
       # seems to do some weird things
