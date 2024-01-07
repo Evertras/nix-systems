@@ -13,6 +13,19 @@ in {
       type = with types; nullOr str;
       default = null;
     };
+
+    volumeLimit = mkOption {
+      description = ''
+        0-100 max volume that can be raised to via volume controls.
+        Does NOT apply a global limit!
+      '';
+      default = 40;
+    };
+
+    volumeIncrement = mkOption {
+      type = types.int;
+      default = 5;
+    };
   };
 
   config = let
@@ -27,7 +40,9 @@ in {
           text = ''
             #!/usr/bin/env bash
             logfile=/tmp/last-volumeUp.log
-            pamixer -i 5 &> $logfile
+            pamixer -i ${toString cfg.volumeIncrement} --set-limit ${
+              toString cfg.volumeLimit
+            } &> $logfile
             if [ $? != 0 ]; then
               notify-send "Volume up failure" "$(cat $logfile)" \
                 -u critical -i volume-knob
@@ -48,7 +63,7 @@ in {
           text = ''
             #!/usr/bin/env bash
             logfile=/tmp/last-volumeDown.log
-            pamixer -d 5 &> $logfile
+            pamixer -d ${toString cfg.volumeIncrement} &> $logfile
             if [ $? != 0 ]; then
               notify-send "Volume down failure" "$(cat $logfile)" \
                 -u critical -i volume-knob
