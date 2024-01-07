@@ -157,6 +157,7 @@ in {
           kbVolume = if cfgAudio.enable then {
             XF86AudioRaiseVolume = "exec ~/.evertras/funcs/volumeUp.sh";
             XF86AudioLowerVolume = "exec ~/.evertras/funcs/volumeDown.sh";
+            XF86AudioMute = "exec ~/.evertras/funcs/volumeMuteToggle.sh";
           } else
             { };
 

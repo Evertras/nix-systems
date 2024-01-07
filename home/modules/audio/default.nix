@@ -34,7 +34,29 @@ in {
     home = {
       packages = with pkgs; [ libnotify pamixer ] ++ desktopPackages;
 
-      file = {
+      # TODO: This should probably be its own package in the store somewhere
+      file = let
+        volumeNotify = ''
+          if [ $? != 0 ]; then
+            notify-send "Volume failure" "$(cat $logfile)" \
+              -u critical -i volume-knob
+            exit 1
+          fi
+
+          value=$(pamixer --get-volume)
+          msg="Volume $value%"
+
+          if [ $(pamixer --get-mute) == "true" ]; then
+            msg="Volume $value% (MUTE)"
+          fi
+
+          notify-send "$msg" \
+            -t 1000 \
+            -i volume-knob \
+            -h string:synchronous:volume \
+            -h "int:value:$value"
+        '';
+      in {
         ".evertras/funcs/volumeUp.sh" = {
           executable = true;
           text = ''
@@ -43,18 +65,8 @@ in {
             pamixer -i ${toString cfg.volumeIncrement} --set-limit ${
               toString cfg.volumeLimit
             } &> $logfile
-            if [ $? != 0 ]; then
-              notify-send "Volume up failure" "$(cat $logfile)" \
-                -u critical -i volume-knob
-              exit 1
-            fi
 
-            value=$(pamixer --get-volume)
-            notify-send "Volume $value%" \
-              -t 1000 \
-              -i volume-knob \
-              -h string:synchronous:volume \
-              -h "int:value:$value"
+            ${volumeNotify}
           '';
         };
 
@@ -64,18 +76,23 @@ in {
             #!/usr/bin/env bash
             logfile=/tmp/last-volumeDown.log
             pamixer -d ${toString cfg.volumeIncrement} &> $logfile
-            if [ $? != 0 ]; then
-              notify-send "Volume down failure" "$(cat $logfile)" \
-                -u critical -i volume-knob
-              exit 1
+
+            ${volumeNotify}
+          '';
+        };
+
+        ".evertras/funcs/volumeMuteToggle.sh" = {
+          executable = true;
+          text = ''
+            #!/usr/bin/env bash
+            logfile=/tmp/last-volumeMute.log
+            if [ $(pamixer --get-mute) == "false" ]; then
+              pamixer -m &> $logfile
+            else
+              pamixer -u &> $logfile
             fi
 
-            value=$(pamixer --get-volume)
-            notify-send "Volume $value%" \
-              -t 1000 \
-              -i volume-knob \
-              -h string:synchronous:volume \
-              -h "int:value:$value"
+            ${volumeNotify}
           '';
         };
 
