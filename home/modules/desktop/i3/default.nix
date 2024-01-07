@@ -155,8 +155,8 @@ in {
           kbBase = let
             i3LockCategories =
               [ "time" "date" "layout" "verif" "wrong" "greeter" ];
-            i3LockFontFlags = strings.concatStrings (map (category:
-              "--${category}-font '${theme.fonts.main.name}' --${category}-size 150 ")
+            i3LockFontFlags = strings.concatStringsSep " " (map (category:
+              "--${category}-font '${theme.fonts.main.name}' --${category}-size 150")
               i3LockCategories);
             # TODO: Pass in current wallpaper from stylish as an option... also maybe make
             # this its own dedicated function with easier config to maintain
