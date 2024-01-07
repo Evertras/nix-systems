@@ -9,7 +9,19 @@ in {
   config.programs.nixvim.plugins = {
     gitsigns.enable = true;
 
-    copilot-lua = mkIf cfg.enableCopilot { enable = true; };
+    copilot-lua = mkIf cfg.enableCopilot {
+      enable = true;
+
+      panel = { keymap = { open = "<leader>c"; }; };
+
+      suggestion = {
+        # Experiment with this, may want it off for perf?
+        enabled = true;
+        autoTrigger = true;
+
+        keymap = { accept = "<Tab>"; };
+      };
+    };
 
     lsp = {
       enable = true;
