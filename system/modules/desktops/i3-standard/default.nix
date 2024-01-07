@@ -27,7 +27,6 @@ in {
         defaultSession = "none+i3";
 
         sessionCommands = ''
-          picom -f &
           ${cfg.extraSessionCommands}
         '';
 
@@ -41,7 +40,6 @@ in {
         extraPackages = with pkgs; [
           i3status
           i3lock
-          picom-next
           # TODO: look at i3blocks?
         ];
       };

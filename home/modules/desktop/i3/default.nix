@@ -225,6 +225,12 @@ in {
       };
     };
 
+    services.picom = {
+      enable = true;
+
+      vSync = true;
+    };
+
     programs.i3status = let
       networkingModule = if cfg.monitorNetworkWireless then {
         "wireless ${cfg.monitorNetworkInterface}" = {
