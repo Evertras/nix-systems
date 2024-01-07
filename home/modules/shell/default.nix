@@ -2,7 +2,8 @@
 with lib;
 let cfg = config.evertras.home.shell;
 in {
-  imports = [ ./bash ./editorconfig ./git ./neovim ./pass ./starship ./tmux ];
+  imports =
+    [ ./bash ./editorconfig ./git ./neovim ./pass ./spotify ./starship ./tmux ];
 
   options.evertras.home.shell = {
     shell = mkOption {

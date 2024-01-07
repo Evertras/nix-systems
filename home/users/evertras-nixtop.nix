@@ -15,7 +15,11 @@ in {
   evertras.home = {
     core.username = "evertras";
 
-    shell = { inherit gpgKey; };
+    shell = {
+      inherit gpgKey;
+
+      spotify.enable = true;
+    };
 
     desktop = {
       enable = true;
@@ -44,17 +48,6 @@ in {
     };
   };
 
-  services.spotifyd = {
-    enable = true;
-
-    settings.global = {
-      username = "bfullj@gmail.com";
-      password_cmd = "pass spotify";
-      device-name = "nixtop";
-      device-type = "computer";
-    };
-  };
-
   home = let
   in {
     # Other local things
@@ -67,8 +60,6 @@ in {
 
       # CLI audio controller
       pamixer
-
-      spotify-tui
     ];
 
     # TODO: move all this out into a configurable module
