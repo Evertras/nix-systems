@@ -77,6 +77,7 @@ in {
           #!/usr/bin/env bash
           level=$(brightnessctl -m set "$1" | awk -F, '{gsub(/%$/, "", $4); print $4}')
           notify-send "Brightness $level%" \
+            -i brightnesssettings \
             -t 2000 \
             -h string:synchronous:screenbrightness \
             -h "int:value:$level"
@@ -91,9 +92,9 @@ in {
           bluetoothctl connect ${headphonesMac} &> $logfile
           if [ $? != 0 ]; then
             notify-send "Headphones connect failure" "$(cat $logfile)" \
-              -u critical
+              -u critical -i audio-headset
           else
-            notify-send "Headphones connected" -t 2000
+            notify-send "Headphones connected" -t 2000 -i audio-headset
           fi
         '';
       };
@@ -106,9 +107,9 @@ in {
           bluetoothctl disconnect ${headphonesMac} &> $logfile
           if [ $? != 0 ]; then
             notify-send "Headphones disconnect failure" "$(cat $logfile)" \
-              -u critical
+              -u critical -i audio-headset
           else
-            notify-send "Headphones disconnected" -t 2000
+            notify-send "Headphones disconnected" -t 2000 -i audio-headset
           fi
         '';
       };
@@ -121,14 +122,15 @@ in {
           pamixer -i 5 &> $logfile
           if [ $? != 0 ]; then
             notify-send "Volume up failure" "$(cat $logfile)" \
-              -u critical
+              -u critical -i volume-knob
             exit 1
           fi
 
           value=$(pamixer --get-volume)
           notify-send "Volume $value%" \
+            -i volume-knob \
             -h string:synchronous:volume \
-            -h "int:value:$value" &> /tmp/idk
+            -h "int:value:$value"
         '';
       };
 
@@ -140,12 +142,13 @@ in {
           pamixer -d 5 &> $logfile
           if [ $? != 0 ]; then
             notify-send "Volume down failure" "$(cat $logfile)" \
-              -u critical
+              -u critical -i volume-knob
             exit 1
           fi
 
           value=$(pamixer --get-volume)
           notify-send "Volume $value%" \
+            -i volume-knob \
             -h string:synchronous:volume \
             -h "int:value:$value"
         '';
