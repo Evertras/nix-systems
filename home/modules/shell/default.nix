@@ -2,7 +2,7 @@
 with lib;
 let cfg = config.evertras.home.shell;
 in {
-  imports = [ ./bash ./editorconfig ./git ./neovim ./starship ./tmux ];
+  imports = [ ./bash ./editorconfig ./git ./neovim ./pass ./starship ./tmux ];
 
   options.evertras.home.shell = {
     shell = mkOption {
@@ -13,6 +13,13 @@ in {
     prompt = mkOption {
       type = types.str;
       default = "starship";
+    };
+
+    # Note: need to bootstrap a GPG key before setting this,
+    # maybe a better way in the future for fresh installs
+    gpgKey = mkOption {
+      type = with types; nullOr str;
+      default = null;
     };
   };
 
@@ -45,10 +52,6 @@ in {
         python3
         rustc
 
-        # Password management
-        # https://www.passwordstore.org/
-        pass
-
         # Funsies
         fastfetch
       ];
@@ -69,9 +72,18 @@ in {
     evertras.home.shell = {
       bash.enable = cfg.shell == "bash";
       editorconfig.enable = mkDefault true;
-      git.enable = mkDefault true;
       starship.enable = cfg.prompt == "starship";
       tmux.enable = mkDefault true;
+
+      git = {
+        enable = mkDefault true;
+        gpgKey = cfg.gpgKey;
+      };
+
+      pass = mkIf (cfg.gpgKey != null) {
+        enable = true;
+        gpgKey = cfg.gpgKey;
+      };
     };
   };
 }

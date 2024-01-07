@@ -15,7 +15,7 @@ in {
   evertras.home = {
     core.username = "evertras";
 
-    shell = { git.gpgKey = gpgKey; };
+    shell = { inherit gpgKey; };
 
     desktop = {
       enable = true;
