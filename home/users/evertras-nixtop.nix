@@ -43,10 +43,6 @@ in {
             "exec ~/.evertras/funcs/brightnessChange.sh ${brightnessIncrement}%+";
           XF86MonBrightnessDown =
             "exec ~/.evertras/funcs/brightnessChange.sh ${brightnessIncrement}%-";
-          XF86AudioRaiseVolume = "exec ~/.evertras/funcs/volumeUp.sh";
-          XF86AudioLowerVolume = "exec ~/.evertras/funcs/volumeDown.sh";
-          "Mod4+h" = "exec ~/.evertras/funcs/headphonesConnect.sh";
-          "Mod4+shift+h" = "exec ~/.evertras/funcs/headphonesDisconnect.sh";
         };
       };
     };
