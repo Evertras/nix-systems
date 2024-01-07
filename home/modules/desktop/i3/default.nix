@@ -20,9 +20,14 @@ in {
       default = "us";
     };
 
-    extraStartupCommand = mkOption {
-      type = types.str;
-      default = "true";
+    startupPreCommands = mkOption {
+      type = with types; listOf str;
+      default = [ ];
+    };
+
+    startupPostCommands = mkOption {
+      type = with types; listOf str;
+      default = [ ];
     };
 
     monitorNetworkInterface = mkOption {
@@ -33,11 +38,6 @@ in {
     monitorNetworkWireless = mkOption {
       type = types.bool;
       default = false;
-    };
-
-    xrandrExec = mkOption {
-      type = types.str;
-      default = "true";
     };
 
     startupWallpaperTerm = mkOption {
@@ -110,11 +110,16 @@ in {
           titlebar = false;
         };
 
-        startup = [
-          {
-            command = cfg.xrandrExec;
+        startup = let
+          preCommands = map (cmd: {
+            command = cmd;
             notification = false;
-          }
+          }) cfg.startupPreCommands;
+          postCommands = map (cmd: {
+            command = cmd;
+            notification = false;
+          }) cfg.startupPostCommands;
+        in (preCommands ++ [
           {
             command = "setxkbmap -layout ${cfg.kbLayout}";
             notification = false;
@@ -124,11 +129,7 @@ in {
             command = "sleep 1s && styli.sh -s '${startupWallpaperTerm}'";
             notification = false;
           }
-          {
-            command = cfg.extraStartupCommand;
-            notification = false;
-          }
-        ];
+        ] ++ postCommands);
 
         colors = let
           mkScheme = border: {

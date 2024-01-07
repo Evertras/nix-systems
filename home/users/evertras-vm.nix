@@ -17,7 +17,7 @@ in {
 
       i3 = {
         monitorNetworkInterface = "enp0s3";
-        xrandrExec = "xrandr --output Virtual1 --mode 2560x1440";
+        startupPostCommands = [ "xrandr --output Virtual1 --mode 2560x1440" ];
       };
     };
   };
