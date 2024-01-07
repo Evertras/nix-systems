@@ -128,7 +128,7 @@ in {
           function nix-find-cursor-names() {
             if [ -z "$1" ]; then
               echo "Usage: nix-find-cursor-names <pkgname>"
-              exit 1
+              return
             fi
             package=$1
             storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
@@ -138,12 +138,24 @@ in {
           function nix-find-theme-names() {
             if [ -z "$1" ]; then
               echo "Usage: nix-find-theme-names <pkgname>"
-              exit 1
+              return
             fi
             package=$1
             storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
             echo "Store path: ''${storepath}"
             ls "''${storepath}/share/themes"
+          }
+          function nix-find-icon-name-in() {
+            if [ -z "$2" ]; then
+              echo "Usage: nix-find-icon-name-in <pkgname> <theme-name>"
+              return
+            fi
+            package=$1
+            themename=$2
+            storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
+            iconspath="''${storepath}/share/icons/''${themename}"
+            echo "Store path: ''${storepath}"
+            find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf
           }
         '';
       };
