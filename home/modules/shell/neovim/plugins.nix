@@ -13,6 +13,8 @@ in {
     copilot-lua = mkIf cfg.enableCopilot {
       enable = true;
 
+      filetypes = { markdown = true; };
+
       panel = { keymap = { open = "<leader>c"; }; };
 
       suggestion = {
