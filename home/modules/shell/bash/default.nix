@@ -10,6 +10,7 @@ in {
     programs = {
       bash = {
         enable = true;
+
         shellAliases = {
           grep = "grep --color=auto";
           jctluser = "journalctl --user";
@@ -24,6 +25,8 @@ in {
         };
 
         # bashrcExtra for all shells, initExtra for interactive only
+        # TODO: move functions into own package along with other
+        # random funcs scattered around other files
         initExtra = ''
           # Don't show control characters
           stty -echoctl
