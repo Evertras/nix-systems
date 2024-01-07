@@ -80,7 +80,7 @@ in {
         # Start from one so it's easier to switch
         set -g base-index 1
 
-        # Turn focus events on for GitGutter in Vim
+        # Turn focus events on for neovim
         set -g focus-events on
       '';
     };
