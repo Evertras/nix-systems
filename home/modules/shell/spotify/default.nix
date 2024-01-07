@@ -29,6 +29,9 @@ in {
       };
     };
 
-    home.packages = [ pkgs.spotify-tui ];
+    home.packages = [
+      # Binary is 'spt'
+      pkgs.spotify-tui
+    ];
   };
 }
