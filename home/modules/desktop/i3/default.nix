@@ -66,7 +66,7 @@ in {
       screenshotsDir = "$HOME/.evertras/screenshots";
       screenshotsLog = "/tmp/screenshot-lastlog";
     in {
-      ".evertras/i3funcs/screenshot.sh" = {
+      ".evertras/funcs/screenshot.sh" = {
         executable = true;
         text = ''
           #!/usr/bin/env bash
@@ -150,7 +150,7 @@ in {
         keybindings = let
           kbBase = {
             "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
-            "${modifier}+s" = "exec ~/.evertras/i3funcs/screenshot.sh";
+            "${modifier}+s" = "exec ~/.evertras/funcs/screenshot.sh";
           };
 
           cfgAudio = config.evertras.home.audio;
