@@ -23,6 +23,8 @@ in {
       inherit gpgKey;
 
       spotify.enable = true;
+
+      neovim.enableCopilot = true;
     };
 
     desktop = {

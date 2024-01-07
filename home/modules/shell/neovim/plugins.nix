@@ -1,6 +1,15 @@
-{ ... }: {
+{ config, lib, ... }:
+with lib;
+let cfg = config.evertras.home.shell.neovim;
+in {
+  options.evertras.home.shell.neovim = {
+    enableCopilot = mkEnableOption "copilot";
+  };
+
   config.programs.nixvim.plugins = {
     gitsigns.enable = true;
+
+    copilot-lua = mkIf cfg.enableCopilot { enable = true; };
 
     lsp = {
       enable = true;
