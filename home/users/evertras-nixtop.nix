@@ -5,6 +5,8 @@ let
   theme = themes.mkCatppuccin { color = "Sky"; };
 
   headphonesMac = "EC:66:D1:B8:95:88";
+
+  gpgKey = "ABFFF058F479311F";
 in {
   imports = [ ../modules ../../themes/select.nix ];
 
@@ -13,7 +15,7 @@ in {
   evertras.home = {
     core.username = "evertras";
 
-    shell = { git.gpgKey = "ABFFF058F479311F"; };
+    shell = { git.gpgKey = gpgKey; };
 
     desktop = {
       enable = true;
