@@ -15,8 +15,6 @@ in {
 
       filetypes = { markdown = true; };
 
-      panel = { keymap = { open = "<leader>c"; }; };
-
       suggestion = {
         # Experiment with this, may want it off for perf?
         enabled = true;
