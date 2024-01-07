@@ -34,6 +34,16 @@ in {
           # Simple Makefile completion
           complete -W "\`grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_-]*$//'\`" make
 
+          # For any secret env vars or emergency modifications
+          if [ ! -d ~/.bashrc.d ]; then
+            mkdir ~/.bashrc.d
+          fi
+          for src in ~/.bashrc.d/*; do
+            if [[ -f "''${src}" ]]; then
+              source "''${src}"
+            fi
+          done
+
           # Usage: up [n]
           #
           # Example: 'up 3' goes up 3 directories
