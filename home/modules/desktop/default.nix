@@ -54,6 +54,21 @@ in {
       obsidian
     ];
 
+    xdg = {
+      enable = true;
+      mimeApps = {
+        enable = true;
+        defaultApplications = let defaultBrowser = "librewolf.desktop";
+        in {
+          "text/html" = defaultBrowser;
+          "x-scheme-handler/http" = defaultBrowser;
+          "x-scheme-handler/https" = defaultBrowser;
+          "x-scheme-handler/about" = defaultBrowser;
+          "x-scheme-handler/unknown" = defaultBrowser;
+        };
+      };
+    };
+
     evertras.home.desktop = mkIf cfg.enable {
       dmenu.enable = cfg.wm == "i3";
       gtktheme.enable = true;
