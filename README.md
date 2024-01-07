@@ -37,8 +37,14 @@ Could not find suitable profile directory, tried /home/evertras/.local/state/hom
 mkdir -p ~/.local/state/nix/profiles/
 ```
 
+## Short term todos
+
+So I stop getting distracted by shiny things...
+
+- Quick terminal controls (demo mode, opacity)
+
 ## Random todos for later
 
 - Explore better [types](https://github.com/NixOS/nixpkgs/blob/master/lib/types.nix) like nonEmptyString
 - Better null checks
-- Enum checks with asserts for things like desktop as "i3"
+- More enum checks with asserts for things like desktop as "i3"
