@@ -20,7 +20,7 @@ in {
         enabled = true;
         autoTrigger = true;
 
-        keymap = { accept = "<Tab>"; };
+        # Keymaps: https://github.com/nix-community/nixvim/blob/main/plugins/completion/copilot-lua.nix
       };
     };
 
