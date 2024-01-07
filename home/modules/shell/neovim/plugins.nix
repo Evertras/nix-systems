@@ -3,6 +3,7 @@ with lib;
 let cfg = config.evertras.home.shell.neovim;
 in {
   options.evertras.home.shell.neovim = {
+    # Must explicitly enable to avoid running in sensitive environments
     enableCopilot = mkEnableOption "copilot";
   };
 
