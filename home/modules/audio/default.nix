@@ -102,13 +102,16 @@ in {
             text = ''
               #!/usr/bin/env bash
               logfile=/tmp/last-headphonesConnect.log
-              bluetoothctl connect ${cfg.headphonesMacAddress} &> $logfile
+
+              bluetoothctl connect "${cfg.headphonesMacAddress}" &> $logfile
+
               if [ $? != 0 ]; then
                 notify-send "Headphones connect failure" "$(cat $logfile)" \
                   -u critical -i audio-headset
-              else
-                notify-send "Headphones connected" -t 2000 -i audio-headset
+                exit 1
               fi
+
+              notify-send "Headphones connected" -t 2000 -i audio-headset
             '';
           };
 
@@ -118,13 +121,16 @@ in {
             text = ''
               #!/usr/bin/env bash
               logfile=/tmp/last-headphonesDisconnect.log
-              bluetoothctl disconnect ${cfg.headphonesMacAddress} &> $logfile
+
+              bluetoothctl disconnect "${cfg.headphonesMacAddress}" &> $logfile
+
               if [ $? != 0 ]; then
                 notify-send "Headphones disconnect failure" "$(cat $logfile)" \
                   -u critical -i audio-headset
-              else
-                notify-send "Headphones disconnected" -t 2000 -i audio-headset
+                exit 1
               fi
+
+              notify-send "Headphones disconnected" -t 2000 -i audio-headset
             '';
           };
       };
