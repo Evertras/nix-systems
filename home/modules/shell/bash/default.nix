@@ -18,7 +18,7 @@ in {
           mux = "tmuxinator";
           nr = "npm run";
           reloadbash = "source ~/.bashrc";
-          sysctluser = "systemctl --user";
+          sctluser = "systemctl --user";
           vi = "nvim";
           vim = "nvim";
         };
