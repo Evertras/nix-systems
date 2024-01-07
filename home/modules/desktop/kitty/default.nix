@@ -38,7 +38,10 @@ in {
         '' else
           ""}
 
-        # Overriding things in a pinch, such as demo font size switch
+        # Adjustments to the theme controlled by our commands
+        include mode-adjustments.conf
+
+        # Overriding things in a pinch
         include override.conf
       '';
 
