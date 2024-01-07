@@ -158,6 +158,7 @@ in {
             i3LockFontFlags = strings.concatStrings (map (category:
               "--${category}-font '${theme.fonts.main.name}' --${category}-size 150 ")
               i3LockCategories);
+            # TODO: Pass in current wallpaper from stylish as an option
             i3LockExpression =
               "i3lock-color -c '${theme.colors.background}' -e --line-uses-inside --separator-color '${theme.colors.urgent}' --ring-color '${theme.colors.primary}' --inside-color '${theme.colors.background}' --ringver-color '${theme.colors.highlight}' --insidever-color '${theme.colors.background}' --ringwrong-color '${theme.colors.urgent}' --insidewrong-color '${theme.colors.urgent}' --keyhl-color '${theme.colors.background}' --bshl-color '${theme.colors.urgent}' --verif-color '${theme.colors.text}' --wrong-color '${theme.colors.background}' --layout-color '${theme.colors.text}' --verif-text='...' --wrong-text 'nah' --noinput-text='?' ${i3LockFontFlags} --pass-volume-keys --pass-screen-keys --pass-media-keys --ring-width=100 --radius 400 &>/tmp/locklog";
           in {
