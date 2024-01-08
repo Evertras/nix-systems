@@ -41,6 +41,7 @@ in {
       packages = with pkgs; [
         # General terminal tools
         dig
+        eza
         git
         htop
         pinentry
