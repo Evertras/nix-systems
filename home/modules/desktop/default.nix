@@ -3,7 +3,7 @@
 with lib;
 let cfg = config.evertras.home.desktop;
 in {
-  imports = [ ./dmenu ./i3 ./kitty ./gtktheme ./notifications ];
+  imports = [ ./browsers ./dmenu ./i3 ./kitty ./gtktheme ./notifications ];
 
   options.evertras.home.desktop = {
     enable = mkEnableOption "desktop";
@@ -22,11 +22,6 @@ in {
       type = types.str;
       default = "us";
     };
-
-    defaultBrowser = mkOption {
-      type = types.str;
-      default = "librewolf";
-    };
   };
 
   config = {
@@ -37,13 +32,6 @@ in {
       # Window management utilities
       # https://www.semicomplete.com/projects/xdotool/
       xdotool
-
-      # Browsers (librewolf as default, chromium if needed)
-      # TODO: "Firefox Color" extension may be useful here
-      # to apply something like https://github.com/catppuccin/firefox
-      # but not sure how to apply it via nix, explore later
-      librewolf
-      chromium
 
       # Wallpaper changer
       stylish
@@ -66,15 +54,16 @@ in {
       enable = true;
       mimeApps = {
         enable = true;
-        defaultApplications =
-          let defaultBrowser = "${cfg.defaultBrowser}.desktop";
-          in {
-            "text/html" = defaultBrowser;
-            "x-scheme-handler/http" = defaultBrowser;
-            "x-scheme-handler/https" = defaultBrowser;
-            "x-scheme-handler/about" = defaultBrowser;
-            "x-scheme-handler/unknown" = defaultBrowser;
-          };
+        defaultApplications = let
+          defaultBrowser =
+            "${config.evertras.home.desktop.browsers.default}.desktop";
+        in {
+          "text/html" = defaultBrowser;
+          "x-scheme-handler/http" = defaultBrowser;
+          "x-scheme-handler/https" = defaultBrowser;
+          "x-scheme-handler/about" = defaultBrowser;
+          "x-scheme-handler/unknown" = defaultBrowser;
+        };
       };
     };
 

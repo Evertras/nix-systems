@@ -22,8 +22,14 @@ in {
     desktop = {
       enable = true;
 
-      # Already have firefox running/configured/bookmarked, maybe tweak later
-      defaultBrowser = "firefox";
+      browsers = {
+        enableLibrewolf = false;
+        enableChromium = true;
+
+        # Already have firefox running/configured/bookmarked, maybe tweak later
+        default = "firefox";
+      };
+
       kbLayout = "us";
 
       i3 = {
