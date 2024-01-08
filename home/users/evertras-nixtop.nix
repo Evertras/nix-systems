@@ -25,7 +25,16 @@ in {
 
       neovim.enableCopilot = true;
 
-      funcs = { "hello" = { body = "echo Hi"; }; };
+      funcs = {
+        brightness-change.body = ''
+          level=$(brightnessctl -m set "$1" | awk -F, '{gsub(/%$/, "", $4); print $4}')
+          notify-send "Brightness $level%" \
+            -i brightnesssettings \
+            -t 2000 \
+            -h string:synchronous:screenbrightness \
+            -h "int:value:$level"
+        '';
+      };
     };
 
     desktop = {
@@ -41,9 +50,9 @@ in {
         keybindOverrides = let brightnessIncrement = "10";
         in {
           XF86MonBrightnessUp =
-            "exec ~/.evertras/funcs/brightnessChange.sh ${brightnessIncrement}%+";
+            "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%+";
           XF86MonBrightnessDown =
-            "exec ~/.evertras/funcs/brightnessChange.sh ${brightnessIncrement}%-";
+            "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%-";
         };
       };
     };
@@ -59,20 +68,6 @@ in {
       ];
 
     # TODO: move all this out into a configurable module
-    file = {
-      ".evertras/funcs/brightnessChange.sh" = {
-        executable = true;
-        text = ''
-          #!/usr/bin/env bash
-          level=$(brightnessctl -m set "$1" | awk -F, '{gsub(/%$/, "", $4); print $4}')
-          notify-send "Brightness $level%" \
-            -i brightnesssettings \
-            -t 2000 \
-            -h string:synchronous:screenbrightness \
-            -h "int:value:$level"
-        '';
-      };
-    };
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
