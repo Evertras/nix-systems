@@ -57,6 +57,11 @@ in {
         shell_integration = "no-cursor";
         # Smarter copying without trailing newlines/whitespace
         strip_trailing_spaces = "smart";
+
+        # Override selection to look nicer
+
+        selection_foreground = theme.colors.background;
+        selection_background = theme.colors.primary;
       };
     };
   };
