@@ -44,7 +44,6 @@ in {
         ripgrep
         silver-searcher
         sipcalc
-        tldr
         wget
 
         # Data processing
@@ -78,6 +77,7 @@ in {
           #pinentry-program = "${pkgs.pinentry}/bin/pinentry";
         };
       };
+      tealdeer.enable = true;
     };
 
     evertras.home.shell = {
