@@ -106,6 +106,16 @@ in {
             styli.sh -s '${theme.inspiration}'
           }
 
+          function theme-firefox() {
+            # Can't really do this declaratively for now, so next best thing
+            xdg-open https://github.com/catppuccin/firefox
+          }
+
+          function theme-librewolf() {
+            # Can't really do this declaratively for now, so next best thing
+            xdg-open https://github.com/catppuccin/firefox
+          }
+
           # Keeping for reference but not actually using it...
           function deprecated-retheme() {
             searchterm="$@"
