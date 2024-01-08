@@ -3,7 +3,8 @@
 with lib;
 let cfg = config.evertras.home.desktop;
 in {
-  imports = [ ./browsers ./dmenu ./i3 ./kitty ./gtktheme ./notifications ];
+  imports =
+    [ ./browsers ./display ./dmenu ./i3 ./kitty ./gtktheme ./notifications ];
 
   options.evertras.home.desktop = {
     enable = mkEnableOption "desktop";

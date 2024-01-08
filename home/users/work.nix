@@ -32,6 +32,8 @@ in {
 
       kbLayout = "us";
 
+      display.sleep.enable = true;
+
       i3 = {
         monitorNetworkInterface = "eno1";
 
@@ -49,12 +51,6 @@ in {
 
           # Screensaver, eventually... maybe?  Keeping for now for quick reference/inspiration
           #"xset s 3600"
-
-          # Monitor sleep settings (TODO: pull this into desktop config)
-          # Units in seconds
-          # man xset -> "The first value given is for the ‘standby' mode, the second is for the ‘suspend' mode, and the third is for the ‘off' mode."
-          # So basically, standby after 10 minutes, then suspend after an hour, then turn off after 3 hours
-          "xset dpms 600 3600 10800"
         ];
 
         # Don't want status in right monitor since it's vertical

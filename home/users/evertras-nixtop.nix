@@ -42,6 +42,8 @@ in {
       enable = true;
       kbLayout = "jp";
 
+      display.sleep.enable = true;
+
       i3 = {
         monitorNetworkInterface = "wlo1";
         monitorNetworkWireless = true;
