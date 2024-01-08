@@ -28,8 +28,8 @@ in {
         ];
 
         startupPostCommands = [
-          # Let picom do its thing on our machine
-          "picom &"
+          # Prebuilt picom that works on this machine since it's not nixOS
+          "/home/brandon-fulljames/bin/picom &"
         ];
       };
     };
