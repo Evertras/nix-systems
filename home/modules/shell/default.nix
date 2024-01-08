@@ -43,6 +43,7 @@ in {
         pinentry
         ripgrep
         silver-searcher
+        sipcalc
         tldr
         wget
 
