@@ -166,6 +166,8 @@ in {
             "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
             "${modifier}+s" = "exec ~/.evertras/funcs/screenshot.sh";
             "${modifier}+Escape" = "exec ${i3LockExpression}";
+            "${modifier}+o" = "move workspace to output left";
+            "${modifier}+p" = "move workspace to output right";
           };
 
           cfgAudio = config.evertras.home.audio;
