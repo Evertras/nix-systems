@@ -14,7 +14,6 @@ in {
       };
 
       shellAliases = {
-        cycle-wallpaper = "styli.sh -s ${theme.inspiration}";
         grep = "grep --color=auto";
         ls = "ls --color";
         mux = "tmuxinator";
