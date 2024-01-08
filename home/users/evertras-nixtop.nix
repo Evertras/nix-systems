@@ -26,6 +26,7 @@ in {
       neovim.enableCopilot = true;
 
       funcs = {
+        # TODO: move all this out into a configurable module
         brightness-change.body = ''
           level=$(brightnessctl -m set "$1" | awk -F, '{gsub(/%$/, "", $4); print $4}')
           notify-send "Brightness $level%" \
@@ -66,8 +67,6 @@ in {
         # Laptop things
         brightnessctl
       ];
-
-    # TODO: move all this out into a configurable module
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
