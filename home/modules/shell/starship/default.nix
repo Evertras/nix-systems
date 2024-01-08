@@ -21,6 +21,8 @@ in {
         container.disabled = true;
 
         directory = { style = "bold ${theme.colors.primary}"; };
+
+        shell.disabled = false;
       };
     };
   };
