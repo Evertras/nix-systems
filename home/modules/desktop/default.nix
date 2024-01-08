@@ -22,6 +22,11 @@ in {
       type = types.str;
       default = "us";
     };
+
+    defaultBrowser = mkOption {
+      type = types.str;
+      default = "librewolf";
+    };
   };
 
   config = {
@@ -58,14 +63,15 @@ in {
       enable = true;
       mimeApps = {
         enable = true;
-        defaultApplications = let defaultBrowser = "librewolf.desktop";
-        in {
-          "text/html" = defaultBrowser;
-          "x-scheme-handler/http" = defaultBrowser;
-          "x-scheme-handler/https" = defaultBrowser;
-          "x-scheme-handler/about" = defaultBrowser;
-          "x-scheme-handler/unknown" = defaultBrowser;
-        };
+        defaultApplications =
+          let defaultBrowser = "${cfg.defaultBrowser}.desktop";
+          in {
+            "text/html" = defaultBrowser;
+            "x-scheme-handler/http" = defaultBrowser;
+            "x-scheme-handler/https" = defaultBrowser;
+            "x-scheme-handler/about" = defaultBrowser;
+            "x-scheme-handler/unknown" = defaultBrowser;
+          };
       };
     };
 
