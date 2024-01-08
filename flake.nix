@@ -13,6 +13,9 @@
       url = "github:nix-community/nixvim/nixos-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # For a rabbit hole: https://github.com/nix-community/NUR
+    # nurpkgs.url = "github:nix-community/NUR";
   };
 
   outputs = { nixpkgs, home-manager, nixvim, ... }:

@@ -2,6 +2,8 @@
 with lib;
 let cfg = config.evertras.home.desktop.browsers;
 in {
+  imports = [ ./firefox ];
+
   options.evertras.home.desktop.browsers = {
     enableLibrewolf = mkOption {
       type = types.bool;
