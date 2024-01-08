@@ -22,7 +22,13 @@ in {
 
         directory = { style = "bold ${theme.colors.primary}"; };
 
-        shell.disabled = false;
+        shell = {
+          disabled = false;
+
+          bash_indicator = "b";
+          fish_indicator = "f";
+          style = "bold ${theme.colors.primary}";
+        };
       };
     };
   };
