@@ -77,7 +77,11 @@ in {
           #pinentry-program = "${pkgs.pinentry}/bin/pinentry";
         };
       };
-      tealdeer.enable = true;
+      tealdeer = {
+        enable = true;
+
+        settings = { updates.auto_update = true; };
+      };
     };
 
     evertras.home.shell = {
