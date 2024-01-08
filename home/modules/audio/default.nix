@@ -58,7 +58,7 @@ in {
           -h "int:value:$value"
       '';
 
-      headphoneFuncs = mkIf (cfg.headphonesMacAddress != null) {
+      headphoneFuncs = if cfg.headphonesMacAddress != null then {
         headphones-connect.body = ''
           logfile=/tmp/last-headphonesConnect.log
 
@@ -86,34 +86,37 @@ in {
 
           notify-send "Headphones disconnected" -t 2000 -i audio-headset
         '';
+      } else
+        { };
+
+      volumeFuncs = {
+        volume-up.body = ''
+          logfile=/tmp/last-volumeUp.log
+          pamixer -i ${toString cfg.volumeIncrement} --set-limit ${
+            toString cfg.volumeLimit
+          } &> $logfile
+
+          ${volumeNotify}
+        '';
+
+        volume-down.body = ''
+          logfile=/tmp/last-volumeDown.log
+          pamixer -d ${toString cfg.volumeIncrement} &> $logfile
+
+          ${volumeNotify}
+        '';
+
+        volume-mute-toggle.body = ''
+          logfile=/tmp/last-volumeMute.log
+          if [ $(pamixer --get-mute) == "false" ]; then
+            pamixer -m &> $logfile
+          else
+            pamixer -u &> $logfile
+          fi
+
+          ${volumeNotify}
+        '';
       };
-    in ({
-      volume-up.body = ''
-        logfile=/tmp/last-volumeUp.log
-        pamixer -i ${toString cfg.volumeIncrement} --set-limit ${
-          toString cfg.volumeLimit
-        } &> $logfile
-
-        ${volumeNotify}
-      '';
-
-      volume-down.body = ''
-        logfile=/tmp/last-volumeDown.log
-        pamixer -d ${toString cfg.volumeIncrement} &> $logfile
-
-        ${volumeNotify}
-      '';
-
-      volume-mute-toggle.body = ''
-        logfile=/tmp/last-volumeMute.log
-        if [ $(pamixer --get-mute) == "false" ]; then
-          pamixer -m &> $logfile
-        else
-          pamixer -u &> $logfile
-        fi
-
-        ${volumeNotify}
-      '';
-    } // headphoneFuncs);
+    in (volumeFuncs // headphoneFuncs);
   };
 }
