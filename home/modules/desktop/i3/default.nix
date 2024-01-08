@@ -159,6 +159,7 @@ in {
         # https://github.com/nix-community/home-manager/blob/master/modules/services/window-managers/i3-sway/i3.nix
         # See key names with 'xmodmap -pke' or use xev, nix-shell -p as needed
         keybindings = let
+          execFunc = name: "exec ~/.evertras/funcs/${name}";
           kbBase = let
             i3LockCategories =
               [ "time" "date" "layout" "verif" "wrong" "greeter" ];
@@ -170,25 +171,24 @@ in {
             i3LockExpression =
               "i3lock-color -c '${theme.colors.background}' -e --line-uses-inside --separator-color '${theme.colors.urgent}' --ring-color '${theme.colors.primary}' --inside-color '${theme.colors.background}' --ringver-color '${theme.colors.highlight}' --insidever-color '${theme.colors.background}' --ringwrong-color '${theme.colors.urgent}' --insidewrong-color '${theme.colors.urgent}' --keyhl-color '${theme.colors.background}' --bshl-color '${theme.colors.urgent}' --verif-color '${theme.colors.text}' --wrong-color '${theme.colors.background}' --layout-color '${theme.colors.text}' --verif-text='...' --wrong-text 'nah' --noinput-text='?' ${i3LockFontFlags} --pass-volume-keys --pass-screen-keys --pass-media-keys --ring-width=100 --radius 400 &>/tmp/locklog";
           in {
-            "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
-            "${modifier}+s" = "exec ~/.evertras/funcs/screenshot";
             "${modifier}+Escape" = "exec ${i3LockExpression}";
+            "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
+            "${modifier}+s" = execFunc "screenshot";
             "${modifier}+o" = "move workspace to output left";
             "${modifier}+p" = "move workspace to output right";
           };
 
           cfgAudio = config.evertras.home.audio;
           kbVolume = if cfgAudio.enable then {
-            XF86AudioRaiseVolume = "exec ~/.evertras/funcs/volume-up";
-            XF86AudioLowerVolume = "exec ~/.evertras/funcs/volume-down";
-            XF86AudioMute = "exec ~/.evertras/funcs/volume-mute-toggle";
+            XF86AudioRaiseVolume = execFunc "volume-up";
+            XF86AudioLowerVolume = execFunc "volume-down";
+            XF86AudioMute = execFunc "volume-mute-toggle";
           } else
             { };
 
           kbBluetooth = if (cfgAudio.headphonesMacAddress != null) then {
-            "${modifier}+h" = "exec ~/.evertras/funcs/headphones-connect";
-            "${modifier}+shift+h" =
-              "exec ~/.evertras/funcs/headphones-disconnect";
+            "${modifier}+h" = execFunc "headphones-connect";
+            "${modifier}+shift+h" = execFunc "headphones-disconnect";
           } else
             { };
 
