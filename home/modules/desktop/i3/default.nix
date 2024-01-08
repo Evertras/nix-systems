@@ -179,16 +179,16 @@ in {
 
           cfgAudio = config.evertras.home.audio;
           kbVolume = if cfgAudio.enable then {
-            XF86AudioRaiseVolume = "exec ~/.evertras/funcs/volumeUp.sh";
-            XF86AudioLowerVolume = "exec ~/.evertras/funcs/volumeDown.sh";
-            XF86AudioMute = "exec ~/.evertras/funcs/volumeMuteToggle.sh";
+            XF86AudioRaiseVolume = "exec ~/.evertras/funcs/volume-up";
+            XF86AudioLowerVolume = "exec ~/.evertras/funcs/volume-down";
+            XF86AudioMute = "exec ~/.evertras/funcs/volume-mute-toggle";
           } else
             { };
 
           kbBluetooth = if (cfgAudio.headphonesMacAddress != null) then {
-            "${modifier}+h" = "exec ~/.evertras/funcs/headphonesConnect.sh";
+            "${modifier}+h" = "exec ~/.evertras/funcs/headphones-connect";
             "${modifier}+shift+h" =
-              "exec ~/.evertras/funcs/headphonesDisconnect.sh";
+              "exec ~/.evertras/funcs/headphones-disconnect";
           } else
             { };
 

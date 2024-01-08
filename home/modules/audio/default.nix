@@ -34,106 +34,86 @@ in {
     home = {
       packages = with pkgs; [ libnotify pamixer ] ++ desktopPackages;
 
-      # TODO: This should probably be its own package in the store somewhere
-      file = let
-        volumeNotify = ''
+    };
+
+    evertras.home.shell.funcs = let
+      volumeNotify = ''
+        if [ $? != 0 ]; then
+          notify-send "Volume failure" "$(cat $logfile)" \
+            -u critical -i volume-knob
+          exit 1
+        fi
+
+        value=$(pamixer --get-volume)
+        msg="Volume $value%"
+
+        if [ $(pamixer --get-mute) == "true" ]; then
+          msg="Volume $value% (MUTE)"
+        fi
+
+        notify-send "$msg" \
+          -t 1000 \
+          -i volume-knob \
+          -h string:synchronous:volume \
+          -h "int:value:$value"
+      '';
+
+      headphoneFuncs = mkIf (cfg.headphonesMacAddress != null) {
+        headphones-connect.body = ''
+          logfile=/tmp/last-headphonesConnect.log
+
+          bluetoothctl connect "${cfg.headphonesMacAddress}" &> $logfile
+
           if [ $? != 0 ]; then
-            notify-send "Volume failure" "$(cat $logfile)" \
-              -u critical -i volume-knob
+            notify-send "Headphones connect failure" "$(cat $logfile)" \
+              -u critical -i audio-headset
             exit 1
           fi
 
-          value=$(pamixer --get-volume)
-          msg="Volume $value%"
+          notify-send "Headphones connected" -t 2000 -i audio-headset
+        '';
 
-          if [ $(pamixer --get-mute) == "true" ]; then
-            msg="Volume $value% (MUTE)"
+        headphones-disconnect.body = ''
+          logfile=/tmp/last-headphonesDisconnect.log
+
+          bluetoothctl disconnect "${cfg.headphonesMacAddress}" &> $logfile
+
+          if [ $? != 0 ]; then
+            notify-send "Headphones disconnect failure" "$(cat $logfile)" \
+              -u critical -i audio-headset
+            exit 1
           fi
 
-          notify-send "$msg" \
-            -t 1000 \
-            -i volume-knob \
-            -h string:synchronous:volume \
-            -h "int:value:$value"
+          notify-send "Headphones disconnected" -t 2000 -i audio-headset
         '';
-      in {
-        ".evertras/funcs/volumeUp.sh" = {
-          executable = true;
-          text = ''
-            #!/usr/bin/env bash
-            logfile=/tmp/last-volumeUp.log
-            pamixer -i ${toString cfg.volumeIncrement} --set-limit ${
-              toString cfg.volumeLimit
-            } &> $logfile
-
-            ${volumeNotify}
-          '';
-        };
-
-        ".evertras/funcs/volumeDown.sh" = {
-          executable = true;
-          text = ''
-            #!/usr/bin/env bash
-            logfile=/tmp/last-volumeDown.log
-            pamixer -d ${toString cfg.volumeIncrement} &> $logfile
-
-            ${volumeNotify}
-          '';
-        };
-
-        ".evertras/funcs/volumeMuteToggle.sh" = {
-          executable = true;
-          text = ''
-            #!/usr/bin/env bash
-            logfile=/tmp/last-volumeMute.log
-            if [ $(pamixer --get-mute) == "false" ]; then
-              pamixer -m &> $logfile
-            else
-              pamixer -u &> $logfile
-            fi
-
-            ${volumeNotify}
-          '';
-        };
-
-        ".evertras/funcs/headphonesConnect.sh" =
-          mkIf (cfg.headphonesMacAddress != null) {
-            executable = true;
-            text = ''
-              #!/usr/bin/env bash
-              logfile=/tmp/last-headphonesConnect.log
-
-              bluetoothctl connect "${cfg.headphonesMacAddress}" &> $logfile
-
-              if [ $? != 0 ]; then
-                notify-send "Headphones connect failure" "$(cat $logfile)" \
-                  -u critical -i audio-headset
-                exit 1
-              fi
-
-              notify-send "Headphones connected" -t 2000 -i audio-headset
-            '';
-          };
-
-        ".evertras/funcs/headphonesDisconnect.sh" =
-          mkIf (cfg.headphonesMacAddress != null) {
-            executable = true;
-            text = ''
-              #!/usr/bin/env bash
-              logfile=/tmp/last-headphonesDisconnect.log
-
-              bluetoothctl disconnect "${cfg.headphonesMacAddress}" &> $logfile
-
-              if [ $? != 0 ]; then
-                notify-send "Headphones disconnect failure" "$(cat $logfile)" \
-                  -u critical -i audio-headset
-                exit 1
-              fi
-
-              notify-send "Headphones disconnected" -t 2000 -i audio-headset
-            '';
-          };
       };
-    };
+    in ({
+      volume-up.body = ''
+        logfile=/tmp/last-volumeUp.log
+        pamixer -i ${toString cfg.volumeIncrement} --set-limit ${
+          toString cfg.volumeLimit
+        } &> $logfile
+
+        ${volumeNotify}
+      '';
+
+      volume-down.body = ''
+        logfile=/tmp/last-volumeDown.log
+        pamixer -d ${toString cfg.volumeIncrement} &> $logfile
+
+        ${volumeNotify}
+      '';
+
+      volume-mute-toggle.body = ''
+        logfile=/tmp/last-volumeMute.log
+        if [ $(pamixer --get-mute) == "false" ]; then
+          pamixer -m &> $logfile
+        else
+          pamixer -u &> $logfile
+        fi
+
+        ${volumeNotify}
+      '';
+    } // headphoneFuncs);
   };
 }
