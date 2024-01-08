@@ -44,7 +44,7 @@ in {
 
   home = {
     # Other local things
-    packages = with pkgs; [ ];
+    packages = with pkgs; [ spotify-tui ];
 
     file = {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in
