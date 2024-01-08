@@ -24,6 +24,8 @@ in {
       };
     };
 
+    nvim-colorizer = { enable = true; };
+
     lsp = {
       enable = true;
 
