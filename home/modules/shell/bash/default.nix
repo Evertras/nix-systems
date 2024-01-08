@@ -172,6 +172,14 @@ in {
             echo "Store path: ''${storepath}"
             find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf
           }
+
+          function gen-theme-slack() {
+            # Slack doesn't have any nice config, but we want to make it uniform with everything else...
+            # we can import a slack theme as described below.
+            # https://github.com/catppuccin/slack
+            # Original string #303446,#F8F8FA,#CA9EE6,#303446,#232634,#C6D0F5,#CA9EE6,#EA999C,#303446,#C6D0F5
+            echo "${theme.colors.background},${theme.colors.text},${theme.colors.primary},${theme.colors.background},${theme.colors.background},#C6D0F5,${theme.colors.primary},${theme.colors.urgent},${theme.colors.background},#C6D0F5"
+          }
         '';
       };
     };
