@@ -15,6 +15,7 @@ in {
           jctluser = "journalctl --user";
           k = "kubectl";
           ls = "ls --color";
+          tree = "eza -T";
           mux = "tmuxinator";
           nr = "npm run";
           reloadbash = "source ~/.bashrc";

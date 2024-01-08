@@ -11,11 +11,12 @@ in {
         k = "kubectl";
         nr = "npm run";
         sctluser = "systemctl --user";
+        tree = "eza -T";
       };
 
       shellAliases = {
         grep = "grep --color=auto";
-        ls = "ls --color";
+        ls = "eza --total-size";
         mux = "tmuxinator";
         vi = "nvim";
         vim = "nvim";
