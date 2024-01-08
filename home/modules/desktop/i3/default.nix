@@ -210,7 +210,7 @@ in {
             activeWorkspace = {
               background = theme.colors.background;
               border = theme.colors.primary;
-              text = theme.colors.background;
+              text = theme.colors.primary;
             };
 
             # Not visible, regardless of monitor
