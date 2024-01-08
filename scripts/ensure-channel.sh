@@ -2,6 +2,10 @@
 
 set -e
 
+if [ -n "EVERTRAS_NO_UPDATE_CHANNEL" ]; then
+  exit 0
+fi
+
 if sudo nix-channel --list | grep home-manager &>/dev/null; then
   # Don't need to do anything
   exit 0

@@ -59,6 +59,11 @@
             ./home/users/evertras-nixtop.nix
           ];
         };
+
+        work = home-manager.lib.homeManagerConfiguration {
+          inherit pkgs;
+          modules = [ nixvim.homeManagerModules.nixvim ./home/users/work.nix ];
+        };
       };
     };
 }

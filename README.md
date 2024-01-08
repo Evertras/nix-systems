@@ -37,6 +37,16 @@ Could not find suitable profile directory, tried /home/evertras/.local/state/hom
 mkdir -p ~/.local/state/nix/profiles/
 ```
 
+#### OpenGL issues when only using home
+
+When running on a non-NixOS machine, problems may happen with openGL such as with Kitty:
+
+```text
+
+```
+
+Use [nixGL](https://github.com/nix-community/nixGL) and install
+
 ## Short term todos
 
 So I stop getting distracted by shiny things...

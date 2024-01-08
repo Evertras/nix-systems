@@ -1,1 +1,3 @@
 export EVERTRAS_USER_PROFILE=evertras-vm
+# Enable this to avoid channel bootstrap issues
+#export EVERTRAS_NO_UPDATE_CHANNEL=true
