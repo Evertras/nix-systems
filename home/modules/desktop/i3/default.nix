@@ -59,6 +59,17 @@ in {
       type = types.attrs;
       default = { };
     };
+
+    bars = mkOption {
+      type = with types; listOf anything;
+      default = [{
+        id = "main";
+        # Defaults to true
+        showStatus = true;
+        # Defaults to all
+        outputs = [ ];
+      }];
+    };
   };
 
   config = mkIf cfg.enable {
@@ -189,56 +200,59 @@ in {
             // cfg.keybindOverrides;
         in mkOptionDefault allOverrides;
 
-        bars = [{
-          id = "main";
+        bars = let
+          mkBarConfig = { id, showStatus ? true, outputs ? [ ] }: {
+            inherit id fonts;
 
-          # "Focused" = current monitor
-          colors = {
-            # Bar in general
-            separator = theme.colors.text;
-            statusline = theme.colors.text;
-            focusedStatusline = theme.colors.text;
-            focusedBackground = theme.colors.background;
-            background = theme.colors.background;
-
-            # Currently active workspace we're doing stuff in right now
-            focusedWorkspace = {
-              background = theme.colors.primary;
-              border = theme.colors.primary;
-              text = theme.colors.background;
-            };
-
-            # Visible on another monitor, but not the thing we're in right now
-            activeWorkspace = {
+            # "Focused" = current monitor
+            colors = {
+              # Bar in general
+              separator = theme.colors.text;
+              statusline = theme.colors.text;
+              focusedStatusline = theme.colors.text;
+              focusedBackground = theme.colors.background;
               background = theme.colors.background;
-              border = theme.colors.primary;
-              text = theme.colors.primary;
+
+              # Currently active workspace we're doing stuff in right now
+              focusedWorkspace = {
+                background = theme.colors.primary;
+                border = theme.colors.primary;
+                text = theme.colors.background;
+              };
+
+              # Visible on another monitor, but not the thing we're in right now
+              activeWorkspace = {
+                background = theme.colors.background;
+                border = theme.colors.primary;
+                text = theme.colors.primary;
+              };
+
+              # Not visible, regardless of monitor
+              inactiveWorkspace = {
+                background = theme.colors.background;
+                border = theme.colors.primary;
+                text = theme.colors.text;
+              };
+
+              # Something on fire (like opening a link in an inactive workspace)
+              urgentWorkspace = {
+                background = theme.colors.urgent;
+                border = theme.colors.urgent;
+                text = theme.colors.text;
+              };
             };
 
-            # Not visible, regardless of monitor
-            inactiveWorkspace = {
-              background = theme.colors.background;
-              border = theme.colors.primary;
-              text = theme.colors.text;
-            };
+            extraConfig =
+              let outputStrings = map (output: "output ${output}") outputs;
+              in ''
+                separator_symbol " | "
+                ${concatStringsSep "\n" outputStrings}
+              '';
 
-            # Something on fire (like opening a link in an inactive workspace)
-            urgentWorkspace = {
-              background = theme.colors.urgent;
-              border = theme.colors.urgent;
-              text = theme.colors.text;
-            };
+            statusCommand = mkIf showStatus "i3status";
+            trayOutput = "none";
           };
-
-          inherit fonts;
-
-          extraConfig = ''
-            separator_symbol " | "
-          '';
-
-          statusCommand = "i3status";
-          trayOutput = "none";
-        }];
+        in (map mkBarConfig cfg.bars);
       };
     };
 

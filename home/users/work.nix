@@ -5,6 +5,10 @@ let
   theme = themes.mkCatppuccin { color = "Green"; };
 
   gpgKey = "9C6A5922D90A8465";
+
+  displayLeft = "DP-1-3";
+  displayCenter = "DP-2";
+  displayRight = "HDMI-0";
 in {
   imports = [ ../modules ../../themes/select.nix ];
 
@@ -28,12 +32,24 @@ in {
         keybindOverrides = { "Mod4+space" = "exec nixGL kitty"; };
 
         startupPreCommands = [
-          "xrandr --output DP-2 --auto --output HDMI-0 --right-of DP-2 --auto --rotate left --output DP-1-3 --left-of DP-2 --auto"
+          "xrandr --output ${displayCenter} --auto --output ${displayRight} --right-of ${displayCenter} --auto --rotate left --output ${displayLeft} --left-of ${displayCenter} --auto"
         ];
 
         startupPostCommands = [
           # Prebuilt picom that works on this machine since it's not nixOS
           "/home/brandon-fulljames/bin/picom &"
+        ];
+
+        bars = [
+          {
+            id = "main";
+            outputs = [ displayLeft displayCenter ];
+          }
+          {
+            id = "right";
+            outputs = [ displayRight ];
+            showStatus = false;
+          }
         ];
       };
     };
