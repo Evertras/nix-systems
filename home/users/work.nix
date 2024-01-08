@@ -40,7 +40,7 @@ in {
 
   home = {
     # Other local things
-    packages = with pkgs; [ awscli2 ];
+    packages = with pkgs; [ ];
 
     file = {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in
