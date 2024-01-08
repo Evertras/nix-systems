@@ -39,6 +39,9 @@ in {
       xdotool
 
       # Browsers (librewolf as default, chromium if needed)
+      # TODO: "Firefox Color" extension may be useful here
+      # to apply something like https://github.com/catppuccin/firefox
+      # but not sure how to apply it via nix, explore later
       librewolf
       chromium
 
