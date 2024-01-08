@@ -3,6 +3,8 @@
 let
   themes = import ../../themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
+
+  gpgKey = "9C6A5922D90A8465";
 in {
   imports = [ ../modules ../../themes/select.nix ];
 
@@ -10,6 +12,8 @@ in {
 
   evertras.home = {
     core.username = "brandon-fulljames";
+
+    shell = { inherit gpgKey; };
 
     desktop = {
       enable = true;
