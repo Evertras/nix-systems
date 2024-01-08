@@ -12,6 +12,7 @@ in {
         enable = true;
 
         shellAliases = {
+          f = "fish";
           grep = "grep --color=auto";
           jctluser = "journalctl --user";
           k = "kubectl";
