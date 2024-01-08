@@ -19,6 +19,40 @@ in {
   };
 
   config = mkIf cfg.enable {
+    evertras.home.shell.funcs = {
+      "kitty-reload".body = "kill -SIGUSR1 $(pgrep kitty)";
+      "kitty-theme".body = if cfg.allowThemeOverrides then ''
+        kitten theme --reload-in=all --config-file-name theme.conf
+        sleep 1 && kitty-reload
+      '' else
+        "echo 'Kitty theme overrides are disabled'";
+
+      /* # Keeping for reference but not actually using it...
+         "retheme".body = ''
+               searchterm="$@"
+               if [ -z "''${searchterm}" ]; then
+                 searchterm=mountain
+               fi
+
+               if ! type schemer2 &> /dev/null; then
+                 mkdir -p ~/bin
+                 GOBIN=~/bin/schemer2 go install github.com/thefryscorer/schemer2@latest
+               fi
+
+               echo "Retheming to ''${searchterm}"
+               styli.sh -s "''${searchterm}"
+               colors=$(schemer2 -format img::colors -in ~/.cache/styli.sh/wallpaper.jpg)
+               IFS=$'\n'
+               for color in ''${colors}; do
+                 # Hijacked from show-color above
+                 perl -e 'foreach $a(@ARGV){print "\e[48:2::".join(":",unpack("C*",pack("H*",$a)))."m \e[49m"};' "''${color:1}"
+               done
+               schemer2 -format img::kitty -in ~/.cache/styli.sh/wallpaper.jpg > ~/.config/kitty/theme.conf
+               kill -SIGUSR1 $(pgrep kitty)
+             }
+      */
+    };
+
     programs.kitty = {
       enable = true;
 

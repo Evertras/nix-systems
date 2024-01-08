@@ -24,6 +24,8 @@ in {
       spotify.enable = true;
 
       neovim.enableCopilot = true;
+
+      funcs = { "hello" = { body = "echo Hi"; }; };
     };
 
     desktop = {
