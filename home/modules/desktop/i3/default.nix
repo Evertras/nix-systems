@@ -241,7 +241,7 @@ in {
     };
 
     services.picom = {
-      enable = true;
+      enable = mkDefault true;
 
       vSync = true;
     };
