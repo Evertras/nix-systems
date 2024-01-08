@@ -44,7 +44,11 @@ in {
 
   home = {
     # Other local things
-    packages = with pkgs; [ spotify-tui ];
+    packages = with pkgs;
+      [
+        # Even without sound, allows remote control
+        spotify-tui
+      ];
 
     file = {
       # # Building this configuration will create a copy of 'dotfiles/screenrc' in
