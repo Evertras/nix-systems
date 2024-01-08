@@ -77,6 +77,9 @@ in {
 
         setw -g window-status-bell-style fg=colour255,bg=colour1,bold
 
+        # When selecting different windows
+        set -g mode-style 'fg=${colors.background},bg=${colors.primary}'
+
         # Start from one so it's easier to switch
         set -g base-index 1
 
