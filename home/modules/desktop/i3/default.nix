@@ -73,24 +73,20 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.file = let
+    evertras.home.shell.funcs = let
       screenshotsDir = "$HOME/.evertras/screenshots";
       screenshotsLog = "/tmp/screenshot-lastlog";
     in {
-      ".evertras/funcs/screenshot.sh" = {
-        executable = true;
-        text = ''
-          #!/usr/bin/env bash
-          mkdir -p ${screenshotsDir}
-          filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr A-Z a-z).png
-          maim "$filename" &> ${screenshotsLog}
-          if [ $? == 0 ]; then
-            notify-send 'Screenshot' "$filename"
-          else
-            notify-send -u critical "Screenshot error" "$(cat ${screenshotsLog})"
-          fi
-        '';
-      };
+      screenshot.body = ''
+        mkdir -p ${screenshotsDir}
+        filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr A-Z a-z).png
+        maim "$filename" &> ${screenshotsLog}
+        if [ $? == 0 ]; then
+          notify-send 'Screenshot' "$filename"
+        else
+          notify-send -u critical "Screenshot error" "$(cat ${screenshotsLog})"
+        fi
+      '';
     };
 
     home.packages = with pkgs; [ i3lock-color ];
