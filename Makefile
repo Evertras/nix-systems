@@ -13,6 +13,11 @@ system: .git/hooks/pre-commit
 	@./scripts/ensure-channel.sh
 	sudo nixos-rebuild switch --flake .
 
+.PHONY: clean
+clean: .git/hooks/pre-commit
+	sudo nix store gc --delete-older-than 7d
+	sudo nixos-rebuild boot --flake .
+
 .PHONY: fmt
 fmt: .git/hooks/pre-commit
 	@nixfmt .
