@@ -142,7 +142,14 @@ in {
             ls "''${storepath}/share/themes"
           }
         '';
-        nix-find-icon-name-in.body = ''
+        nix-find-icon-names.body = ''
+          storepath=${theme.iconTheme.package};
+          themename=${theme.iconTheme.name};
+          iconspath="''${storepath}/share/icons/''${themename}"
+          echo "Store path: ''${storepath}"
+          find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf
+        '';
+        nix-find-icon-names-in.body = ''
           if [ -z "$2" ]; then
             echo "Usage: nix-find-icon-name-in <pkgname> <theme-name>"
             return
