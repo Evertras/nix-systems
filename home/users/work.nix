@@ -14,15 +14,18 @@ in {
 
   evertras.themes.selected = theme;
 
-  evertras.home = {
+  evertras.home = let shellBin = "${pkgs.fish}/bin/fish";
+  in {
     core.username = "brandon-fulljames";
 
     shell = {
       inherit gpgKey;
       funcs = { aws-login.body = "aws sso login"; };
+      tmux.shell = shellBin;
     };
 
-    desktop = {
+    desktop = let
+    in {
       enable = true;
 
       browsers = {
@@ -36,6 +39,8 @@ in {
       kbLayout = "us";
 
       display.sleep.enable = true;
+
+      kitty.shell = shellBin;
 
       i3 = {
         monitorNetworkInterface = "eno1";

@@ -43,6 +43,8 @@ in {
       in ''
         set fish_greeting Everfish
 
+        fish_add_path -g ~/.evertras/funcs
+
         # Theme
         # TODO: Move this into theme file
         set fish_color_normal c6d0f5
