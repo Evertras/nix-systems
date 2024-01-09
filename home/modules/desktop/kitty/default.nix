@@ -16,6 +16,12 @@ in {
       type = with types; nullOr str;
       default = null;
     };
+
+    shell = mkOption {
+      description = "Which shell to use, defaults to user's configured default";
+      type = types.str;
+      default = ".";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -92,8 +98,12 @@ in {
         # Smarter copying without trailing newlines/whitespace
         strip_trailing_spaces = "smart";
 
-        # Override selection to look nicer
+        url_style = "dashed";
+        underline_hyperlinks = "always";
 
+        shell = cfg.shell;
+
+        # Override selection to look nicer
         selection_foreground = theme.colors.background;
         selection_background = theme.colors.primary;
       };
