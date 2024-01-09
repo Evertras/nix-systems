@@ -57,12 +57,6 @@
         lua = true;
       }
 
-      {
-        mode = "n";
-        key = "<leader>f";
-        action = "vim.lsp.buf.code_action({apply=true})";
-      }
-
       # Filetree
       {
         mode = "n";
@@ -110,9 +104,14 @@
       foldexpr = "nvim_treesitter#foldexpr()";
     };
 
-    # Things we can't do anywhere else
+    # Things we can't do anywhere else... the keymaps above get
+    # a little grouchy with complicated lua keymap formatting.
     extraConfigLua = ''
       vim.keymap.set('n', '<leader>gs', function() require('telescope.builtin').grep_string({ search = vim.fn.input("ag > ") }); end)
+      local function quickfix()
+        vim.lsp.buf.code_action({apply = true})
+      end
+      vim.keymap.set('n', '<leader>f', quickfix)
     '';
   };
 }
