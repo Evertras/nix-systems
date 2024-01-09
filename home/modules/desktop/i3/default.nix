@@ -87,6 +87,10 @@ in {
           notify-send -u critical "Screenshot error" "$(cat ${screenshotsLog})"
         fi
       '';
+
+      i3-hotkeys.body = ''
+        ag '^bindsym' ~/.config/i3/config | cut -d' ' -f2- | sort -u
+      '';
     };
 
     home.packages = with pkgs; [ i3lock-color ];
