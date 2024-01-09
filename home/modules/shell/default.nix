@@ -40,6 +40,7 @@ in {
     home = {
       packages = with pkgs; [
         # General terminal tools
+        btop
         dig
         eza
         git
