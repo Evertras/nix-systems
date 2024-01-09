@@ -21,12 +21,13 @@ in {
       settings = {
         global = {
           corner_radius = 10;
-          font = theme.fonts.desktop.name;
-          follow = "mouse";
-          frame_color = theme.colors.background;
           enable_recursive_icon_lookup = true;
-          icon_theme = theme.iconTheme.name;
+          follow = "mouse";
+          font = theme.fonts.desktop.name;
+          frame_color = theme.colors.background;
           icon_path = "${theme.iconTheme.package}/share/icons";
+          icon_theme = theme.iconTheme.name;
+          origin = "bottom-center";
         };
 
         urgency_normal = {
