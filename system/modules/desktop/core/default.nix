@@ -1,12 +1,8 @@
-# Desktop environment
-# https://nixos.wiki/wiki/I3
 { config, lib, pkgs, ... }:
 with lib;
-let cfg = config.evertras.desktop.i3;
+let cfg = config.evertras.desktop.core;
 in {
-  options.evertras.desktop.i3 = {
-    enable = mkEnableOption "i3 desktop";
-
+  options.evertras.desktop.core = {
     kbLayout = mkOption {
       type = types.str;
       default = "us";
@@ -18,26 +14,21 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
+  config = {
     services.xserver = {
       enable = true;
       layout = cfg.kbLayout;
 
       displayManager = {
-        defaultSession = "none+i3";
-
         sessionCommands = ''
           ${cfg.extraSessionCommands}
         '';
 
         # Explicitly enable lightDM in case we log back out,
         # just to remind ourselves which thing we're using...
+        # in the future, explore removing this and using xstart
         lightdm = { enable = true; };
       };
-
-      # Only really want this so we can use the defaultSession
-      # value above, this should be managed by home-manager
-      windowManager.i3.enable = true;
 
       # Disable capslock, trying to remap it to ctrl
       # seems to do some weird things
