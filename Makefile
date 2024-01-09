@@ -15,7 +15,7 @@ system: .git/hooks/pre-commit
 
 .PHONY: clean
 clean: .git/hooks/pre-commit
-	sudo nix store gc --delete-older-than 7d
+	sudo nix store gc
 	sudo nixos-rebuild boot --flake .
 
 .PHONY: fmt
