@@ -19,6 +19,7 @@ in {
       enable = true;
 
       shellAbbrs = {
+        g = "git";
         jctluser = "journalctl --user";
         k = "kubectl";
         nr = "npm run";
