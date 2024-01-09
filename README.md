@@ -39,13 +39,13 @@ mkdir -p ~/.local/state/nix/profiles/
 
 #### OpenGL issues when only using home
 
-When running on a non-NixOS machine, problems may happen with openGL such as with Kitty:
+When running on a non-NixOS machine, problems may happen with OpenGL such as with Kitty.
 
-```text
+Use [nixGL](https://github.com/nix-community/nixGL) to get around this.
 
+```bash
+nixGL kitty
 ```
-
-Use [nixGL](https://github.com/nix-community/nixGL) and install
 
 ## Short term todos
 
