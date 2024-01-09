@@ -10,6 +10,4 @@ in {
       default = themes.mint;
     };
   };
-
-  config = { home.packages = [ selected.iconTheme.package ]; };
 }

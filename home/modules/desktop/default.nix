@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.evertras.home.desktop;
+let
+  cfg = config.evertras.home.desktop;
+  theme = config.evertras.themes.selected;
 in {
   imports =
     [ ./browsers ./display ./dmenu ./i3 ./kitty ./gtktheme ./notifications ];
@@ -49,6 +51,9 @@ in {
 
       # Notes
       obsidian
+
+      # Theme stuff
+      theme.iconTheme.package
     ];
 
     xdg = {

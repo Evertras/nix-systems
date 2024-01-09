@@ -2,14 +2,19 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ pkgs, ... }:
+{ lib, pkgs, ... }:
 
-{
+let
+  themes = import ../../../themes/themes.nix { inherit pkgs lib; };
+  theme = themes.mkCatppuccin { color = "Sky"; };
+in {
   imports = [
     ../../modules
 
     ./hardware-configuration.nix
   ];
+
+  evertras.themes.selected = theme;
 
   evertras.desktop.dwm.enable = true;
 
