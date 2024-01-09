@@ -89,14 +89,21 @@ in {
         background_opacity =
           if cfg.opacity == null then theme.kittyOpacity else cfg.opacity;
         # No blinking
-        cursor_blink_interval = 0;
         cursor = theme.colors.primary;
+        cursor_blink_interval = 0;
         cursor_shape = "block";
+
+        # No bells
         enable_audio_bell = "no";
+
         # Don't change to bar when typing
         shell_integration = "no-cursor";
+
         # Smarter copying without trailing newlines/whitespace
         strip_trailing_spaces = "smart";
+
+        # Let the cursor stay a pointer
+        default_pointer_shape = "alias";
 
         url_style = "dashed";
         underline_hyperlinks = "always";
