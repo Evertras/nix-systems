@@ -8,7 +8,7 @@ in {
 
   config = mkIf cfg.enable {
     services.xserver = {
-      displayManager = { defaultSession = "none+i3"; };
+      displayManager.defaultSession = "none+i3";
 
       # Only really want this so we can use the defaultSession
       # value above, this should be managed by home-manager
