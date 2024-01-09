@@ -44,13 +44,13 @@ in {
         btop
         dig
         eza
+        gcc
         git
+        gnumake
         htop
         pinentry
         ripgrep
         silver-searcher
-        gcc
-        gnumake
         sipcalc
         wget
 
