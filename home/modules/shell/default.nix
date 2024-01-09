@@ -6,6 +6,7 @@ let
 in {
   imports = [
     ./bash
+    ./coding
     ./editorconfig
     ./fish
     ./funcs
@@ -58,14 +59,9 @@ in {
         yq
 
         # Coding
-        cargo
         gcc
-        go
         gnumake
         nixfmt
-        nodejs_21
-        python3
-        rustc
 
         # Funsies
         fastfetch
