@@ -41,6 +41,7 @@ in {
     home = {
       packages = with pkgs; [
         # General terminal tools
+        asciigraph
         btop
         dig
         eza
