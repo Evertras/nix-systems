@@ -49,6 +49,8 @@ in {
         pinentry
         ripgrep
         silver-searcher
+        gcc
+        gnumake
         sipcalc
         wget
 
@@ -58,9 +60,7 @@ in {
         jq
         yq
 
-        # Coding
-        gcc
-        gnumake
+        # Format nix things
         nixfmt
 
         # Funsies
