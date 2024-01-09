@@ -8,12 +8,27 @@
 
     globals = { mapleader = ","; };
 
-    autoCmd = [{
-      event = "BufEnter";
-      pattern = "*.nomad";
-      command = "set filetype=hcl";
-      desc = "Nomad files are HCL";
-    }];
+    autoCmd = [
+      {
+        event = "BufEnter";
+        pattern = "*.nomad";
+        command = "set filetype=hcl";
+        desc = "Nomad files are HCL";
+      }
+      {
+        event = "BufEnter";
+        pattern = "*";
+        command = "set formatoptions-=cro";
+        desc =
+          "Don't automatically create comment leads on new lines after a comment";
+      }
+      {
+        event = "BufEnter";
+        pattern = "*";
+        command = "normal zz";
+        desc = "Start unfolded";
+      }
+    ];
 
     keymaps = let
       # Jump between panes more easily
@@ -55,6 +70,18 @@
         action = "vim.cmd.NvimTreeToggle";
         lua = true;
       }
+
+      # Folding
+      {
+        mode = "n";
+        key = "<space>";
+        action = "za";
+      }
+      {
+        mode = "n";
+        key = "zz";
+        action = "zR";
+      }
     ];
 
     options = {
@@ -77,6 +104,10 @@
 
       # Keep some buffer at the bottom so we can see more context
       scrolloff = 8;
+
+      # Folding
+      foldmethod = "expr";
+      foldexpr = "nvim_treesitter#foldexpr()";
     };
 
     # Things we can't do anywhere else

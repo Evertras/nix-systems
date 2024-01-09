@@ -18,6 +18,12 @@ in {
   in {
     core.username = "brandon-fulljames";
 
+    audio = {
+      enable = true;
+      enableDesktop = true;
+      headphonesMacAddress = "EC:66:D1:B8:95:88";
+    };
+
     shell = {
       inherit gpgKey;
       funcs = { aws-login.body = "aws sso login"; };
