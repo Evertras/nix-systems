@@ -1,8 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 let cfg = config.evertras.desktop.core;
 in {
   options.evertras.desktop.core = {
+    enable = mkEnableOption "Desktop core xserver";
+
     kbLayout = mkOption {
       type = types.str;
       default = "us";
@@ -14,7 +16,7 @@ in {
     };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     services.xserver = {
       enable = true;
       layout = cfg.kbLayout;
