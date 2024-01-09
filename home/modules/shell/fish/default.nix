@@ -20,6 +20,7 @@ in {
 
       shellAbbrs = {
         g = "git";
+        gc = "git commit -m";
         jctluser = "journalctl --user";
         k = "kubectl";
         nr = "npm run";
