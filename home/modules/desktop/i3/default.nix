@@ -77,14 +77,23 @@ in {
       screenshotsDir = "$HOME/.evertras/screenshots";
       screenshotsLog = "/tmp/screenshot-lastlog";
     in {
-      screenshot.body = ''
+      screenshot-save.body = ''
         mkdir -p ${screenshotsDir}
         filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr A-Z a-z).png
-        maim "$filename" &> ${screenshotsLog}
+        maim -us "$filename" &> ${screenshotsLog}
         if [ $? == 0 ]; then
-          notify-send 'Screenshot' "$filename"
+          notify-send -i camera 'Screenshot' "$filename"
         else
-          notify-send -u critical "Screenshot error" "$(cat ${screenshotsLog})"
+          notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
+        fi
+      '';
+
+      screenshot-copy.body = ''
+        maim -us &> ${screenshotsLog} | xclip -selection clipboard -t image/png
+        if [ $? == 0 ]; then
+          notify-send -i camera 'Screen area copied'
+        else
+          notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
         fi
       '';
 
@@ -177,7 +186,8 @@ in {
           in {
             "${modifier}+Escape" = "exec ${i3LockExpression}";
             "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
-            "${modifier}+s" = execFunc "screenshot";
+            "${modifier}+s" = execFunc "screenshot-copy";
+            "${modifier}+shift+s" = execFunc "screenshot-save";
             "${modifier}+o" = "move workspace to output left";
             "${modifier}+p" = "move workspace to output right";
           };
