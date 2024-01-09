@@ -187,9 +187,13 @@ in {
             "${modifier}+Escape" = "exec ${i3LockExpression}";
             "${modifier}+w" = "exec styli.sh -s '${theme.inspiration}'";
             "${modifier}+s" = execFunc "screenshot-copy";
-            "${modifier}+shift+s" = execFunc "screenshot-save";
+            "${modifier}+Shift+s" = execFunc "screenshot-save";
             "${modifier}+o" = "move workspace to output left";
             "${modifier}+p" = "move workspace to output right";
+            "${modifier}+h" = "focus left";
+            "${modifier}+j" = "focus down";
+            "${modifier}+k" = "focus up";
+            "${modifier}+l" = "focus right";
           };
 
           cfgAudio = config.evertras.home.audio;
@@ -201,8 +205,8 @@ in {
             { };
 
           kbBluetooth = if (cfgAudio.headphonesMacAddress != null) then {
-            "${modifier}+h" = execFunc "headphones-connect";
-            "${modifier}+shift+h" = execFunc "headphones-disconnect";
+            "${modifier}+c" = execFunc "headphones-connect";
+            "${modifier}+Shift+c" = execFunc "headphones-disconnect";
           } else
             { };
 
