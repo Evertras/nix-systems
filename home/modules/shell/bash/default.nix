@@ -59,25 +59,6 @@ in {
             cd $d
           }
 
-          function git-merged() {
-            branch=$(git rev-parse --abbrev-ref HEAD)
-            git checkout main
-            git pull
-            git branch -d "''${branch}"
-          }
-
-          function aws-connect() {
-            aws ssm start-session --target "''${1}"
-          }
-
-          function aws-ec2-list() {
-            aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" |
-              jq -r '.Reservations | .[] | .Instances | .[] | { Id: .InstanceId, Name: (.Tags[] | select(.Key == "Name") | .Value) } | [.Name, .Id] | @tsv' |
-              sort |
-              column -t
-          }
-
-
           # Machine-specific bash stuff should go in this directory.
           # Mainly for any secret env vars or emergency modifications.
           if [ ! -d ~/.bashrc.d ]; then

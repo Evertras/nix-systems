@@ -17,7 +17,10 @@ in {
   evertras.home = {
     core.username = "brandon-fulljames";
 
-    shell = { inherit gpgKey; };
+    shell = {
+      inherit gpgKey;
+      funcs = { aws-login.body = "aws sso login"; };
+    };
 
     desktop = {
       enable = true;

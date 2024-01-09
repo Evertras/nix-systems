@@ -104,6 +104,13 @@ in {
 
         cycle-wallpaper.body = "styli.sh -s '${theme.inspiration}'";
 
+        git-merged.body = ''
+          branch=$(git rev-parse --abbrev-ref HEAD)
+          git checkout main
+          git pull
+          git branch -d "''${branch}"
+        '';
+
         # Theme helpers for things we can't set directly
         theme-slack.body = ''
           # Slack doesn't have any nice config, but we want to make it uniform with everything else...
@@ -149,6 +156,18 @@ in {
           iconspath="''${storepath}/share/icons/''${themename}"
           echo "Store path: ''${storepath}"
           find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf
+        '';
+
+        # Some AWS helpers
+        aws-connect.body = ''
+          aws ssm start-session --target "''${1}"
+        '';
+
+        aws-ec2-list.body = ''
+          aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" |
+            jq -r '.Reservations | .[] | .Instances | .[] | { Id: .InstanceId, Name: (.Tags[] | select(.Key == "Name") | .Value) } | [.Name, .Id] | @tsv' |
+            sort |
+            column -t
         '';
       };
 
