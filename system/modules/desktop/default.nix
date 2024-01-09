@@ -2,7 +2,7 @@
 with lib;
 let cfg = config.evertras.desktop;
 in {
-  imports = [ ./core ./i3 ];
+  imports = [ ./core ./dwm ./i3 ];
 
   options.evertras.desktop = { enable = mkEnableOption "desktop"; };
 
