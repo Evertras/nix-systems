@@ -25,7 +25,7 @@
       {
         event = "BufEnter";
         pattern = "*";
-        command = "normal zz";
+        command = "normal zR";
         desc = "Start unfolded";
       }
     ];
