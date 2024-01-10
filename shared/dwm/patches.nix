@@ -2,26 +2,31 @@
 with lib; {
   # Note to future self: be VERY careful about preserving
   # whitespace/tabs inside the actual strings...
-  mkBasePatch =
-    { terminal, colorPrimary, colorText, colorBackground, fontSize, fontName }:
+  mkBasePatch = { terminal, colorPrimary, colorText, colorBackground, fontSize
+    , fontName, gappx }:
     builtins.toFile "dwm-base-patch.diff" ''
 
-      From eed797585e03c3d1ec58adc0a8a5f3a0ad63a5f6 Mon Sep 17 00:00:00 2001
+      From a80d60fb7c69b636b26370987cde40fb82de26d8 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Wed, 10 Jan 2024 23:16:09 +0900
+      Date: Thu, 11 Jan 2024 00:14:35 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h | 32 ++++++++++++--------------
-       dwm.c        | 64 ++++++++++++++++++++++++++++++++++++++++++++++++++++
-       2 files changed, 79 insertions(+), 17 deletions(-)
+       config.def.h |  35 +++++++++--------
+       dwm.c        | 103 +++++++++++++++++++++++++++++++++++++++++++++++----
+       2 files changed, 113 insertions(+), 25 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..d14a489 100644
+      index 9efa774..b417667 100644
       --- a/config.def.h
       +++ b/config.def.h
-      @@ -5,17 +5,14 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
+      @@ -3,19 +3,17 @@
+       /* appearance */
+       static const unsigned int borderpx  = 1;        /* border pixel of windows */
        static const unsigned int snap      = 32;       /* snap pixel */
+      +static const unsigned int gappx     = ${
+        toString gappx
+      }; /* gaps between windows */
        static const int showbar            = 1;        /* 0 means no bar */
        static const int topbar             = 1;        /* 0 means bottom bar */
       -static const char *fonts[]          = { "monospace:size=10" };
@@ -47,7 +52,12 @@ with lib; {
        };
        
        /* tagging */
-      @@ -38,14 +35,15 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
+      @@ -34,18 +32,19 @@ static const Rule rules[] = {
+       /* layout(s) */
+       static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
+       static const int nmaster     = 1;    /* number of clients in master area */
+      -static const int resizehints = 1;    /* 1 means respect size hints in tiled resizals */
+      +static const int resizehints = 0;    /* 1 means respect size hints in tiled resizals */
        static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
        
        static const Layout layouts[] = {
@@ -66,7 +76,7 @@ with lib; {
        #define TAGKEYS(KEY,TAG) \
        	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
        	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-      @@ -57,8 +55,8 @@ static const Layout layouts[] = {
+      @@ -57,8 +56,8 @@ static const Layout layouts[] = {
        
        /* commands */
        static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -77,7 +87,7 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -76,7 +74,7 @@ static const Key keys[] = {
+      @@ -76,7 +75,7 @@ static const Key keys[] = {
        	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
        	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
        	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
@@ -86,7 +96,7 @@ with lib; {
        	{ MODKEY,                       XK_space,  setlayout,      {0} },
        	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-      @@ -102,7 +100,7 @@ static const Key keys[] = {
+      @@ -102,7 +101,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
@@ -96,9 +106,20 @@ with lib; {
        	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
        	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
       diff --git a/dwm.c b/dwm.c
-      index f1d86b2..177789e 100644
+      index f1d86b2..abe6a3c 100644
       --- a/dwm.c
       +++ b/dwm.c
+      @@ -52,8 +52,8 @@
+       #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
+       #define LENGTH(X)               (sizeof X / sizeof X[0])
+       #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
+      -#define WIDTH(X)                ((X)->w + 2 * (X)->bw)
+      -#define HEIGHT(X)               ((X)->h + 2 * (X)->bw)
+      +#define WIDTH(X)                ((X)->w + 2 * (X)->bw + gappx)
+      +#define HEIGHT(X)               ((X)->h + 2 * (X)->bw + gappx)
+       #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
+       #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
+       
       @@ -148,6 +148,8 @@ static void arrange(Monitor *m);
        static void arrangemon(Monitor *m);
        static void attach(Client *c);
@@ -177,6 +198,57 @@ with lib; {
        void
        buttonpress(XEvent *e)
        {
+      @@ -1286,12 +1350,37 @@ void
+       resizeclient(Client *c, int x, int y, int w, int h)
+       {
+       	XWindowChanges wc;
+      +	unsigned int n;
+      +	unsigned int gapoffset;
+      +	unsigned int gapincr;
+      +	Client *nbc;
+       
+      -	c->oldx = c->x; c->x = wc.x = x;
+      -	c->oldy = c->y; c->y = wc.y = y;
+      -	c->oldw = c->w; c->w = wc.width = w;
+      -	c->oldh = c->h; c->h = wc.height = h;
+       	wc.border_width = c->bw;
+      +
+      +	/* Get number of clients for the client's monitor */
+      +	for (n = 0, nbc = nexttiled(c->mon->clients); nbc; nbc = nexttiled(nbc->next), n++);
+      +
+      +	/* Do nothing if layout is floating */
+      +	if (c->isfloating || c->mon->lt[c->mon->sellt]->arrange == NULL) {
+      +		gapincr = gapoffset = 0;
+      +	} else {
+      +		/* Remove border and gap if layout is monocle or only one client */
+      +		if (c->mon->lt[c->mon->sellt]->arrange == monocle || n == 1) {
+      +			gapoffset = 0;
+      +			gapincr = -2 * borderpx;
+      +			wc.border_width = 0;
+      +		} else {
+      +			gapoffset = gappx;
+      +			gapincr = 2 * gappx;
+      +		}
+      +	}
+      +
+      +	c->oldx = c->x; c->x = wc.x = x + gapoffset;
+      +	c->oldy = c->y; c->y = wc.y = y + gapoffset;
+      +	c->oldw = c->w; c->w = wc.width = w - gapincr;
+      +	c->oldh = c->h; c->h = wc.height = h - gapincr;
+      +
+      +
+       	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
+       	configure(c);
+       	XSync(dpy, False);
+      @@ -1701,7 +1790,7 @@ tile(Monitor *m)
+       	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
+       		if (i < m->nmaster) {
+       			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
+      -			resize(c, m->wx, m->wy + my, mw - (2*c->bw), h - (2*c->bw), 0);
+      +			resize(c, m->wx, m->wy + my, mw - (2*c->bw) + (n > 1 ? gappx : 0), h - (2*c->bw), 0);
+       			if (my + HEIGHT(c) < m->wh)
+       				my += HEIGHT(c);
+       		} else {
       -- 
       2.42.0
 
