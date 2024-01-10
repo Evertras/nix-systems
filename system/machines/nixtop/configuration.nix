@@ -16,7 +16,13 @@ in {
 
   evertras.themes.selected = theme;
 
-  evertras.desktop.dwm.enable = true;
+  evertras.desktop = {
+    enable = true;
+
+    core.kbLayout = "jp";
+
+    dwm.enable = true;
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
