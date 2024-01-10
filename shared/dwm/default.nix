@@ -7,7 +7,7 @@ let
     colorText = theme.colors.text;
     colorBackground = theme.colors.background;
     fontName = theme.fonts.main.name;
-    fontSize = 14;
+    fontSize = 16;
     gappx = 10;
   };
   patchList = [ basePatch ];
