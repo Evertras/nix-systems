@@ -6,5 +6,5 @@ in {
 
   options.evertras.desktop = { enable = mkEnableOption "desktop"; };
 
-  config = { evertras.desktop.core.enable = true; };
+  config = mkIf cfg.enable { evertras.desktop.core.enable = true; };
 }
