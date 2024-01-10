@@ -57,6 +57,14 @@
         lua = true;
       }
 
+      # Format
+      {
+        mode = "n";
+        key = "<leader>F";
+        action = "vim.lsp.buf.format";
+        lua = true;
+      }
+
       # Filetree
       {
         mode = "n";
