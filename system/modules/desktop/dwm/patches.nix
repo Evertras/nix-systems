@@ -5,17 +5,18 @@ with lib; {
   mkBasePatch =
     { terminal, colorPrimary, colorText, colorBackground, fontSize, fontName }:
     builtins.toFile "dwm-base-patch.diff" ''
-      From d576b0c47e4e0c4abfd40b14d029a85783190245 Mon Sep 17 00:00:00 2001
+
+      From 9f259fa77043f035388fa53c514379a25c5f48e8 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Wed, 10 Jan 2024 22:45:58 +0900
+      Date: Wed, 10 Jan 2024 22:48:55 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h | 29 ++++++++++++-----------------
-       1 file changed, 12 insertions(+), 17 deletions(-)
+       config.def.h | 27 +++++++++++----------------
+       1 file changed, 11 insertions(+), 16 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..41271f1 100644
+      index 9efa774..b415119 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,17 +5,14 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -70,13 +71,11 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -75,8 +71,7 @@ static const Key keys[] = {
-       	{ MODKEY,                       XK_Tab,    view,           {0} },
+      @@ -76,7 +72,6 @@ static const Key keys[] = {
        	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
        	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-      -	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+       	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
       -	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
-      +	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[1]} },
        	{ MODKEY,                       XK_space,  setlayout,      {0} },
        	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
