@@ -28,6 +28,12 @@
         command = "normal zR";
         desc = "Start unfolded";
       }
+      {
+        event = "BufWrite";
+        pattern = "*.go";
+        callback.__raw = "function() vim.lsp.buf.format() end";
+        desc = "Format go files on write";
+      }
     ];
 
     keymaps = let
