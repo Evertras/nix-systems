@@ -6,18 +6,18 @@ with lib; {
     { terminal, colorPrimary, colorText, colorBackground, fontSize, fontName }:
     builtins.toFile "dwm-base-patch.diff" ''
 
-      From 6be529400e6689574db0a4d02ea10b6e7b30cecb Mon Sep 17 00:00:00 2001
+      From eed797585e03c3d1ec58adc0a8a5f3a0ad63a5f6 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Wed, 10 Jan 2024 23:05:09 +0900
+      Date: Wed, 10 Jan 2024 23:16:09 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h | 31 ++++++++++++-------------
+       config.def.h | 32 ++++++++++++--------------
        dwm.c        | 64 ++++++++++++++++++++++++++++++++++++++++++++++++++++
-       2 files changed, 78 insertions(+), 17 deletions(-)
+       2 files changed, 79 insertions(+), 17 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..5729edd 100644
+      index 9efa774..d14a489 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,17 +5,14 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -47,15 +47,17 @@ with lib; {
        };
        
        /* tagging */
-      @@ -39,13 +36,13 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
+      @@ -38,14 +35,15 @@ static const int resizehints = 1;    /* 1 means respect size hints in tiled resi
+       static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen window */
        
        static const Layout layouts[] = {
+      +    /* first entry is default */
        	/* symbol     arrange function */
       -	{ "[]=",      tile },    /* first entry is default */
       -	{ "><>",      NULL },    /* no layout function means floating behavior */
-      +	{ "[|3",      tile },    /* first entry is default */
+      +	{ "vvv",      bstack },
        	{ "[M]",      monocle },
-      +	{ "vvv",      bstackhoriz },
+      +	{ "[|3",      tile },
        };
        
        /* key definitions */
@@ -64,7 +66,7 @@ with lib; {
        #define TAGKEYS(KEY,TAG) \
        	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
        	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-      @@ -57,8 +54,8 @@ static const Layout layouts[] = {
+      @@ -57,8 +55,8 @@ static const Layout layouts[] = {
        
        /* commands */
        static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -75,7 +77,7 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -76,7 +73,7 @@ static const Key keys[] = {
+      @@ -76,7 +74,7 @@ static const Key keys[] = {
        	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
        	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
        	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
@@ -84,7 +86,7 @@ with lib; {
        	{ MODKEY,                       XK_space,  setlayout,      {0} },
        	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-      @@ -102,7 +99,7 @@ static const Key keys[] = {
+      @@ -102,7 +100,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
@@ -94,7 +96,7 @@ with lib; {
        	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
        	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
       diff --git a/dwm.c b/dwm.c
-      index f1d86b2..5a974fa 100644
+      index f1d86b2..177789e 100644
       --- a/dwm.c
       +++ b/dwm.c
       @@ -148,6 +148,8 @@ static void arrange(Monitor *m);
@@ -110,7 +112,7 @@ with lib; {
        	c->mon->stack = c;
        }
        
-      +static void
+      +void
       +bstack(Monitor *m) {
       +	int w, h, mh, mx, tx, ty, tw;
       +	unsigned int i, n;
@@ -142,7 +144,7 @@ with lib; {
       +	}
       +}
       +
-      +static void
+      +void
       +bstackhoriz(Monitor *m) {
       +	int w, mh, mx, tx, ty, th;
       +	unsigned int i, n;
