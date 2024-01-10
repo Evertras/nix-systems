@@ -23,13 +23,7 @@ in {
         patchList = [ basePatch ];
       in {
         enable = true;
-        package = pkgs.dwm.overrideAttrs (self: super: {
-          src = ./src;
-          patches = if super.patches == null then
-            patchList
-          else
-            super.patches ++ patchList;
-        });
+        package = import ../../../../shared/dwm { inherit lib pkgs theme; };
       };
     };
   };
