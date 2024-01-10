@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 
 let
-  themes = import ../../themes/themes.nix { inherit pkgs lib; };
+  themes = import ../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Teal"; };
 
   gpgKey = "9C6A5922D90A8465";
@@ -10,7 +10,7 @@ let
   displayCenter = "DP-2";
   displayRight = "HDMI-0";
 in {
-  imports = [ ../modules ../../themes/select.nix ];
+  imports = [ ../modules ../../shared/themes/select.nix ];
 
   evertras.themes.selected = theme;
 

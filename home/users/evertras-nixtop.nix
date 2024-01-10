@@ -1,11 +1,11 @@
 { lib, pkgs, ... }:
 let
-  themes = import ../../themes/themes.nix { inherit pkgs lib; };
+  themes = import ../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
 
   gpgKey = "ABFFF058F479311F";
 in {
-  imports = [ ../modules ../../themes/select.nix ];
+  imports = [ ../modules ../../shared/themes/select.nix ];
 
   evertras.themes.selected = theme;
 

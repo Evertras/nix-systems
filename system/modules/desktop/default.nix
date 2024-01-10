@@ -2,7 +2,7 @@
 with lib;
 let cfg = config.evertras.desktop;
 in {
-  imports = [ ./core ./dwm ./i3 ../../../themes/select.nix ];
+  imports = [ ./core ./dwm ./i3 ../../../shared/themes/select.nix ];
 
   options.evertras.desktop = { enable = mkEnableOption "desktop"; };
 

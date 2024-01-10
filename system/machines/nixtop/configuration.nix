@@ -5,7 +5,7 @@
 { lib, pkgs, ... }:
 
 let
-  themes = import ../../../themes/themes.nix { inherit pkgs lib; };
+  themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
 in {
   imports = [
