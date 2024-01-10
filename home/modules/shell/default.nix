@@ -118,12 +118,15 @@ in {
         '';
 
         # Theme helpers for things we can't set directly
-        theme-slack.body = ''
+        theme-slack.body = let colors = theme.colors;
+        in ''
           # Slack doesn't have any nice config, but we want to make it uniform with everything else...
-          # we can import a slack theme as described below.
-          # https://github.com/catppuccin/slack
-          # Original string #303446,#F8F8FA,#CA9EE6,#303446,#232634,#C6D0F5,#CA9EE6,#EA999C,#303446,#C6D0F5
-          echo "${theme.colors.background},${theme.colors.text},${theme.colors.primary},${theme.colors.background},${theme.colors.background},#C6D0F5,${theme.colors.primary},${theme.colors.urgent},${theme.colors.background},#C6D0F5"
+          # we can import by copying this string
+          #      background, selected, presence, notifications
+          theme="${colors.background},${colors.primary},${colors.highlight},${colors.urgent}"
+          echo "$theme" | xclip -selection clipboard
+          echo "Theme copied to clipboard"
+          echo "$theme"
         '';
         theme-firefox.body = "xdg-open https://github.com/catppuccin/firefox";
         theme-librewolf.body = "xdg-open https://github.com/catppuccin/firefox";
