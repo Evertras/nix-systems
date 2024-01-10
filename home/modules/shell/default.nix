@@ -44,6 +44,7 @@ in {
         asciigraph
         btop
         dig
+        entr
         eza
         gcc
         git
