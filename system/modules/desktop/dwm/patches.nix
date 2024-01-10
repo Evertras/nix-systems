@@ -6,18 +6,18 @@ with lib; {
     { terminal, colorPrimary, colorText, colorBackground, fontSize, fontName }:
     builtins.toFile "dwm-base-patch.diff" ''
 
-      From c669948b6ac5789ef56f29b99589781ae1202a26 Mon Sep 17 00:00:00 2001
+      From 6be529400e6689574db0a4d02ea10b6e7b30cecb Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Wed, 10 Jan 2024 23:02:57 +0900
+      Date: Wed, 10 Jan 2024 23:05:09 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h | 30 +++++++++++-------------
+       config.def.h | 31 ++++++++++++-------------
        dwm.c        | 64 ++++++++++++++++++++++++++++++++++++++++++++++++++++
-       2 files changed, 77 insertions(+), 17 deletions(-)
+       2 files changed, 78 insertions(+), 17 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..36f66b7 100644
+      index 9efa774..5729edd 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,17 +5,14 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -75,15 +75,16 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -76,7 +73,6 @@ static const Key keys[] = {
+      @@ -76,7 +73,7 @@ static const Key keys[] = {
        	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
        	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
        	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
       -	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+      +	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[2]} },
        	{ MODKEY,                       XK_space,  setlayout,      {0} },
        	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-      @@ -102,7 +98,7 @@ static const Key keys[] = {
+      @@ -102,7 +99,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
