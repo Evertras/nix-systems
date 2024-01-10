@@ -2,7 +2,7 @@
 
 let
   themes = import ../../themes/themes.nix { inherit pkgs lib; };
-  theme = themes.mkCatppuccin { color = "Yellow"; };
+  theme = themes.mkCatppuccin { color = "Teal"; };
 
   gpgKey = "9C6A5922D90A8465";
 
