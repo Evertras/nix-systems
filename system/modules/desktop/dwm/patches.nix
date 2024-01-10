@@ -6,17 +6,17 @@ with lib; {
     { terminal, colorPrimary, colorText, colorBackground, fontSize, fontName }:
     builtins.toFile "dwm-base-patch.diff" ''
 
-      From 96b4c4129449d4e509b2dc9ffe3f1ce3a647ceb9 Mon Sep 17 00:00:00 2001
+      From 2f9c50fe88d358177dead2973febe0d81c361325 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Wed, 10 Jan 2024 00:19:57 +0900
+      Date: Wed, 10 Jan 2024 22:06:58 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h | 22 +++++++++-------------
-       1 file changed, 9 insertions(+), 13 deletions(-)
+       config.def.h | 24 ++++++++++--------------
+       1 file changed, 10 insertions(+), 14 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..e96633e 100644
+      index 9efa774..3478cc0 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,17 +5,14 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -46,7 +46,7 @@ with lib; {
        };
        
        /* tagging */
-      @@ -40,7 +37,6 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
+      @@ -40,12 +37,11 @@ static const int lockfullscreen = 1; /* 1 will force focus on the fullscreen win
        static const Layout layouts[] = {
        	/* symbol     arrange function */
        	{ "[]=",      tile },    /* first entry is default */
@@ -54,6 +54,12 @@ with lib; {
        	{ "[M]",      monocle },
        };
        
+       /* key definitions */
+      -#define MODKEY Mod1Mask
+      +#define MODKEY Mod4Mask
+       #define TAGKEYS(KEY,TAG) \
+       	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
+       	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
       @@ -57,8 +53,8 @@ static const Layout layouts[] = {
        
        /* commands */
