@@ -1,7 +1,7 @@
 { lib, pkgs, ... }:
 let
   themes = import ../../themes/themes.nix { inherit pkgs lib; };
-  theme = themes.mkCatppuccin { color = "Sky"; };
+  theme = themes.mkCatppuccin { color = "Green"; };
 
   gpgKey = "ABFFF058F479311F";
 in {

@@ -6,7 +6,7 @@
 
 let
   themes = import ../../../themes/themes.nix { inherit pkgs lib; };
-  theme = themes.mkCatppuccin { color = "Sky"; };
+  theme = themes.mkCatppuccin { color = "Green"; };
 in {
   imports = [
     ../../modules
