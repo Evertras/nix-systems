@@ -24,13 +24,13 @@ in {
         jctluser = "journalctl --user";
         k = "kubectl";
         nr = "npm run";
+        ls = "eza";
         sctluser = "systemctl --user";
         tree = "eza -T";
       };
 
       shellAliases = {
         grep = "grep --color=auto";
-        ls = "eza --total-size";
         mux = "tmuxinator";
         vi = "nvim";
         vim = "nvim";
