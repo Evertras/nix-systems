@@ -21,6 +21,7 @@ in {
       shellAbbrs = {
         g = "git";
         gc = "git commit -m";
+        gs = "git status";
         jctluser = "journalctl --user";
         k = "kubectl";
         nr = "npm run";
