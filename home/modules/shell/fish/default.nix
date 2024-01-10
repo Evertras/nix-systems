@@ -44,7 +44,7 @@ in {
         colorText = rmp theme.colors.text;
         colorUrgent = rmp theme.colors.urgent;
       in ''
-        set fish_greeting Everfish
+        set fish_greeting ""
 
         fish_add_path -g ~/.evertras/funcs
 
