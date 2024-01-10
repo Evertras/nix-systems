@@ -108,6 +108,14 @@ in {
           git branch -d "''${branch}"
         '';
 
+        gadd.body = ''
+          to_add=$(git diff --name-only | fzf)
+          if [ -n "$to_add" ]; then
+            git add "$to_add"
+            echo "Added $to_add"
+          fi
+        '';
+
         # Theme helpers for things we can't set directly
         theme-slack.body = ''
           # Slack doesn't have any nice config, but we want to make it uniform with everything else...
