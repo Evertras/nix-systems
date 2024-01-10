@@ -5,18 +5,17 @@ with lib; {
   mkBasePatch =
     { terminal, colorPrimary, colorText, colorBackground, fontSize, fontName }:
     builtins.toFile "dwm-base-patch.diff" ''
-
-      From 2f9c50fe88d358177dead2973febe0d81c361325 Mon Sep 17 00:00:00 2001
+      From d576b0c47e4e0c4abfd40b14d029a85783190245 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Wed, 10 Jan 2024 22:06:58 +0900
+      Date: Wed, 10 Jan 2024 22:45:58 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h | 24 ++++++++++--------------
-       1 file changed, 10 insertions(+), 14 deletions(-)
+       config.def.h | 29 ++++++++++++-----------------
+       1 file changed, 12 insertions(+), 17 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..3478cc0 100644
+      index 9efa774..41271f1 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,17 +5,14 @@ static const unsigned int borderpx  = 1;        /* border pixel of windows */
@@ -71,6 +70,25 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
+      @@ -75,8 +71,7 @@ static const Key keys[] = {
+       	{ MODKEY,                       XK_Tab,    view,           {0} },
+       	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+       	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
+      -	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+      -	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+      +	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[1]} },
+       	{ MODKEY,                       XK_space,  setlayout,      {0} },
+       	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+       	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
+      @@ -102,7 +97,7 @@ static const Key keys[] = {
+       static const Button buttons[] = {
+       	/* click                event mask      button          function        argument */
+       	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
+      -	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[2]} },
+      +	{ ClkLtSymbol,          0,              Button3,        setlayout,      {.v = &layouts[1]} },
+       	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
+       	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
+       	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
       -- 
       2.42.0
 
