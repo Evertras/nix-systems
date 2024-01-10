@@ -63,6 +63,9 @@ in {
       inactiveSections = { lualine_c = [ "vim.fn.expand('%:.')" "navic" ]; };
     };
 
+    # Need this for nvim-cmp, revisit later
+    luasnip.enable = true;
+
     navic = {
       enable = true;
 
@@ -80,6 +83,9 @@ in {
         }
         #{ name = "buffer"; }
       ];
+
+      # Need this for completion to work, revisit later
+      snippet.expand = "luasnip";
 
       mapping = {
         "<C-y>" = "cmp.mapping.confirm({ select = true })";
