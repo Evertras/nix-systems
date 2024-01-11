@@ -66,19 +66,6 @@ in {
         # TODO: Fix 'Mod4'
         keybindOverrides = { "Mod4+space" = "exec ${terminal}"; };
 
-        startupPreCommands = [
-          # TODO: Could be fun making this a module?
-          "xrandr --output ${displayCenter} --auto --output ${displayRight} --right-of ${displayCenter} --auto --rotate left --output ${displayLeft} --left-of ${displayCenter} --auto"
-        ];
-
-        startupPostCommands = [
-          # Prebuilt picom that works on this machine since it's not nixOS
-          "/home/brandon-fulljames/bin/picom &"
-
-          # Screensaver, eventually... maybe?  Keeping for now for quick reference/inspiration
-          #"xset s 3600"
-        ];
-
         # Don't want status in right monitor since it's vertical
         bars = [
           {
@@ -97,6 +84,13 @@ in {
 
   # We have picom already installed and working via Ubuntu
   services.picom.enable = false;
+
+  xsession.initExtra = ''
+    # TODO: Could be fun making this a module?
+    xrandr --output ${displayCenter} --auto --output ${displayRight} --right-of ${displayCenter} --auto --rotate left --output ${displayLeft} --left-of ${displayCenter} --auto
+    # Prebuilt picom that works on this machine since it's not nixOS
+    /home/brandon-fulljames/bin/picom &
+  '';
 
   home = {
     # Other local things
