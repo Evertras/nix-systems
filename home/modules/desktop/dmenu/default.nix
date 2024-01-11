@@ -7,7 +7,7 @@ let
   mainPatch = patchlib.mkPatch {
     colors = theme.colors;
     fontName = theme.fonts.mono.name;
-    fontSize = 14;
+    fontSize = 16;
     # DWM top bar height
     lineHeight = 26;
   };
