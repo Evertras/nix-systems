@@ -14,6 +14,7 @@ in {
     ./i3
     ./kitty
     ./notifications
+    ./st
   ];
 
   options.evertras.home.desktop = {
@@ -24,10 +25,7 @@ in {
       default = "kitty";
     };
 
-    wm = mkOption {
-      type = types.str;
-      default = "i3";
-    };
+    wm = mkOption { type = types.str; };
 
     kbLayout = mkOption {
       type = types.str;
@@ -82,14 +80,21 @@ in {
     };
 
     evertras.home.desktop = {
-      dmenu.enable = cfg.wm == "i3";
-      gtktheme.enable = true;
       i3 = {
         enable = cfg.wm == "i3";
         kbLayout = mkDefault cfg.kbLayout;
       };
+
+      dwm.enable = cfg.wm == "dwm";
+
+      gtktheme.enable = true;
+      notifications.enable = mkDefault true;
+
+      dmenu.enable = mkDefault true;
+
+      # Terminals
       kitty.enable = mkDefault (cfg.terminal == "kitty");
-      notifications.enable = true;
+      st.enable = mkDefault (cfg.terminal == "st");
     };
 
     evertras.home.shell.funcs = let

@@ -49,6 +49,9 @@ in {
 
       display.sleep.enable = true;
 
+      wm = "dwm";
+
+      # Keeping for reference so I can switch back and forth
       i3 = {
         monitorNetworkInterface = "wlo1";
         monitorNetworkWireless = true;
