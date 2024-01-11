@@ -1,6 +1,6 @@
 { }: {
   mkPatch = { colors, fontName, fontSize, lineHeight }:
-    builtins.toFile "dmenu-color-patch.diff" ''
+    builtins.toFile "ever-dmenu.diff" ''
 
       From 14a496b22954768392a4b5f426f2ab29564977f3 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
