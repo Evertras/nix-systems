@@ -5,7 +5,7 @@ let
   theme = config.evertras.themes.selected;
   patchlib = import ./patch.nix { };
   mainPatch = patchlib.mkPatch {
-    fontName = theme.fonts.mono.name;
+    fontName = theme.fonts.terminal.name;
     fontSize = 22;
     # TODO: Can't use the shellBin that references pkgs here,
     # because toFile doesn't want to have dependencies to other

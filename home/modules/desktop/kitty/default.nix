@@ -66,8 +66,9 @@ in {
       theme = theme.kittyTheme;
 
       font = {
-        name = "Hasklug Nerd Font Mono";
+        name = theme.fonts.terminal.name;
         size = 14;
+        # TODO: Move to theme, just using nerdfonts everywhere for now
         package = pkgs.nerdfonts;
       };
 

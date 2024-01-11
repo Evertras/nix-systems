@@ -37,6 +37,7 @@ let
       main = { name = "Terminess Nerd Font"; };
       mono = { name = "Terminess Nerd Font Mono"; };
       desktop = { name = "CaskaydiaCove Nerd Font"; };
+      terminal = { name = "Hasklug Nerd Font"; };
     };
 
     # For ideas: https://www.gnome-look.org/browse?cat=135&ord=rating
