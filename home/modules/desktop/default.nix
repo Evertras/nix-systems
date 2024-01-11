@@ -92,6 +92,31 @@ in {
       notifications.enable = true;
     };
 
+    evertras.home.shell.funcs = let
+      screenshotsDir = "$HOME/.evertras/screenshots";
+      screenshotsLog = "/tmp/screenshot-lastlog";
+    in {
+      screenshot-save.body = ''
+        mkdir -p ${screenshotsDir}
+        filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr A-Z a-z).png
+        maim -us "$filename" &> ${screenshotsLog}
+        if [ $? == 0 ]; then
+          notify-send -i camera 'Screenshot' "$filename"
+        else
+          notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
+        fi
+      '';
+
+      screenshot-copy.body = ''
+        maim -us &> ${screenshotsLog} | xclip -selection clipboard -t image/png
+        if [ $? == 0 ]; then
+          notify-send -i camera 'Screen area copied'
+        else
+          notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
+        fi
+      '';
+    };
+
     services = {
       redshift = {
         enable = true;
