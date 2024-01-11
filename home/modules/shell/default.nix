@@ -117,6 +117,19 @@ in {
           fi
         '';
 
+        # Outside of code because I want to use this with ASDF on a non-NixOS system
+        # without installing Go, but it does feel odd
+        go-watch-test.body = ''
+          #!/usr/bin/env bash
+
+          watchdir=$(find . \( -name ".git" \) -prune -o -type d -exec sh -c 'ls -1 "{}"/*.go 2>/dev/null | wc -l | grep -q "[1-9]" && echo "{}"' \; | fzf)
+
+          if [ -n "$watchdir" ]; then
+            echo "Watching $watchdir"
+            ls "$watchdir"/*.go | entr -c go test -race "$watchdir"
+          fi
+        '';
+
         # Theme helpers for things we can't set directly
         theme-slack.body = let colors = theme.colors;
         in ''
