@@ -1,14 +1,15 @@
 { }: {
   mkPatch = { colors, fontName, fontSize }:
     builtins.toFile "dmenu-color-patch.diff" ''
-      From 48a59b266c18258ac4e7d8ee9a83923787412e26 Mon Sep 17 00:00:00 2001
+      From 332199ae623b0fcb3ec8ddddab5099b30cd801f2 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Thu, 11 Jan 2024 22:08:19 +0900
+      Date: Thu, 11 Jan 2024 22:24:40 +0900
       Subject: [PATCH] Changes
 
       ---
        config.def.h | 8 ++++----
-       1 file changed, 4 insertions(+), 4 deletions(-)
+       dmenu.c      | 4 ++++
+       2 files changed, 8 insertions(+), 4 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
       index 1edb647..b8630b3 100644
@@ -33,6 +34,21 @@
        };
        /* -l option; if nonzero, dmenu uses vertical list with given number of lines */
        static unsigned int lines      = 0;
+      diff --git a/dmenu.c b/dmenu.c
+      index 40f93e0..8b81ce1 100644
+      --- a/dmenu.c
+      +++ b/dmenu.c
+      @@ -761,6 +761,10 @@ main(int argc, char *argv[])
+       		else
+       			usage();
+       
+      +  if (prompt == NULL) {
+      +    prompt = "run >";
+      +  }
+      +
+       	if (!setlocale(LC_CTYPE, "") || !XSupportsLocale())
+       		fputs("warning: no locale support\n", stderr);
+       	if (!(dpy = XOpenDisplay(NULL)))
       -- 
       2.42.0
     '';
