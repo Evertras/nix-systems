@@ -9,6 +9,8 @@ let
   displayLeft = "DP-1-3";
   displayCenter = "DP-2";
   displayRight = "HDMI-0";
+
+  terminal = "nixGL kitty";
 in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
@@ -48,13 +50,17 @@ in {
 
       kitty.shell = shellBin;
 
-      dwm.enable = true;
+      dwm = {
+        enable = true;
+
+        inherit terminal;
+      };
 
       i3 = {
         monitorNetworkInterface = "eno1";
 
         # TODO: Fix 'Mod4'
-        keybindOverrides = { "Mod4+space" = "exec nixGL kitty"; };
+        keybindOverrides = { "Mod4+space" = "exec ${terminal}"; };
 
         startupPreCommands = [
           # TODO: Could be fun making this a module?
@@ -90,13 +96,11 @@ in {
 
   home = {
     # Other local things
-    packages = with pkgs; [
-      # Even without sound, allows remote control
-      spotify-tui
-
-      # User-accessible version of custom dwm
-      (import ../../shared/dwm { inherit lib pkgs theme; })
-    ];
+    packages = with pkgs;
+      [
+        # Even without sound, allows remote control
+        spotify-tui
+      ];
 
     file = { ".asdfrc".text = "legacy_version_file = yes"; };
 

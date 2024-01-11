@@ -6,18 +6,18 @@ with lib; {
     , fontName, gappx }:
     builtins.toFile "dwm-base-patch.diff" ''
 
-      From a80d60fb7c69b636b26370987cde40fb82de26d8 Mon Sep 17 00:00:00 2001
-      From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Thu, 11 Jan 2024 00:14:35 +0900
+      From 16baf2a23fb6b4a04a5d4f19c84c46eb9bf94b84 Mon Sep 17 00:00:00 2001
+      From: Brandon Fulljames <brandon.fulljames@woven-planet.global>
+      Date: Thu, 11 Jan 2024 12:19:40 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  35 +++++++++--------
+       config.def.h |  40 ++++++++++----------
        dwm.c        | 103 +++++++++++++++++++++++++++++++++++++++++++++++----
-       2 files changed, 113 insertions(+), 25 deletions(-)
+       2 files changed, 117 insertions(+), 26 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..b417667 100644
+      index 9efa774..27de8a9 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -3,19 +3,17 @@
@@ -76,7 +76,7 @@ with lib; {
        #define TAGKEYS(KEY,TAG) \
        	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
        	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-      @@ -57,8 +56,8 @@ static const Layout layouts[] = {
+      @@ -57,13 +56,15 @@ static const Layout layouts[] = {
        
        /* commands */
        static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -87,7 +87,21 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -76,7 +75,7 @@ static const Key keys[] = {
+       	{ MODKEY,                       XK_p,      spawn,          {.v = dmenucmd } },
+       	{ MODKEY|ShiftMask,             XK_Return, spawn,          {.v = termcmd } },
+      +	// Added for now
+      +	{ MODKEY,                       XK_Return, spawn,          {.v = termcmd } },
+       	{ MODKEY,                       XK_b,      togglebar,      {0} },
+       	{ MODKEY,                       XK_j,      focusstack,     {.i = +1 } },
+       	{ MODKEY,                       XK_k,      focusstack,     {.i = -1 } },
+      @@ -71,12 +72,13 @@ static const Key keys[] = {
+       	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+       	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
+       	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
+      -	{ MODKEY,                       XK_Return, zoom,           {0} },
+      +	// Changed from Return
+      +	{ MODKEY,                       XK_z,      zoom,           {0} },
+       	{ MODKEY,                       XK_Tab,    view,           {0} },
        	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
        	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
        	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
@@ -96,7 +110,7 @@ with lib; {
        	{ MODKEY,                       XK_space,  setlayout,      {0} },
        	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-      @@ -102,7 +101,7 @@ static const Key keys[] = {
+      @@ -102,7 +104,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },

@@ -3,19 +3,29 @@ with lib;
 let
   cfg = config.evertras.home.desktop.dwm;
   theme = config.evertras.themes.selected;
-  customDwm = import ../../../../shared/dwm { inherit lib pkgs theme; };
+  customDwm = import ../../../../shared/dwm {
+    inherit lib pkgs theme;
+    opts.terminal = cfg.terminal;
+  };
 in {
-  options.evertras.home.desktop.dwm = { enable = mkEnableOption "dwm"; };
+  options.evertras.home.desktop.dwm = {
+    enable = mkEnableOption "dwm";
+    terminal = mkOption {
+      type = types.str;
+      default = "kitty";
+    };
+  };
 
-  config = mkIf cfg.enable {
+  config = let systemfile-path = ".evertras/systemfiles/dwm.desktop";
+  in mkIf cfg.enable {
     home.packages = [ customDwm ];
 
     home.file = {
-      ".evertras/systemfiles/dwm.desktop" = {
+      "${systemfile-path}" = {
         text = ''
           [Desktop Entry]
-          Name=dwm
-          Comment=dynamic window manager
+          Name=dwm-nix-hm
+          Comment=dynamic window manager via home-manager
           Exec=${customDwm}/bin/dwm
           Type=XSession
           DesktopNames=dwm
@@ -26,7 +36,10 @@ in {
     # This unfortunately seems necessary if we're not using NixOS...
     evertras.home.shell.funcs = {
       "install-dwm-without-nixos".body = ''
-        sudo ln -s ~/.evertras/systemfiles/dwm.desktop /usr/share/xsessions/dwm.desktop
+        linkfile=/usr/share/xsessions/dwm-nix-hm.desktop
+        echo "Upserting linkfile $linkfile"
+        sudo rm -f "$linkfile"
+        sudo ln -s ~/${systemfile-path} "$linkfile"
       '';
     };
   };
