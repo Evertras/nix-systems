@@ -110,7 +110,7 @@ in {
         '';
 
         gadd.body = ''
-          to_add=$(git status --porcelain | awk '/^ M/ || /^\?\?/ {print $2}' | fzf)
+          to_add=$(git status --porcelain | awk '/^.M/ || /^\?\?/ {print $2}' | fzf)
           if [ -n "$to_add" ]; then
             git add "$to_add"
             echo "Added $to_add"
