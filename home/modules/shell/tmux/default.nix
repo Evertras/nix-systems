@@ -3,6 +3,7 @@ with lib;
 let
   cfg = config.evertras.home.shell.tmux;
   colors = config.evertras.themes.selected.colors;
+  shellBin = config.evertras.home.shell.core.shellBin;
 in {
   options.evertras.home.shell.tmux = {
     enable = mkEnableOption "tmux";
@@ -19,7 +20,7 @@ in {
       # Always want tmuxinator with tmux
       tmuxinator.enable = true;
 
-      shell = cfg.shell;
+      shell = if cfg.shell == null then shellBin else cfg.shell;
 
       extraConfig = ''
         # Enable RGB colour if running in xterm(1)

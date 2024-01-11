@@ -9,8 +9,7 @@ in {
 
   evertras.themes.selected = theme;
 
-  evertras.home = let shellBin = "${pkgs.fish}/bin/fish";
-  in {
+  evertras.home = {
     core.username = "evertras";
 
     audio = {
@@ -20,11 +19,9 @@ in {
     };
 
     shell = {
-      inherit gpgKey;
+      core = { inherit gpgKey; };
 
       spotify.enable = true;
-
-      tmux.shell = shellBin;
 
       neovim.enableCopilot = true;
 
@@ -45,11 +42,7 @@ in {
       enable = true;
       kbLayout = "jp";
 
-      kitty = {
-        enable = true;
-        shell = shellBin;
-      };
-
+      kitty.enable = true;
       st.enable = true;
 
       display.sleep.enable = true;

@@ -2,7 +2,9 @@
 with lib;
 let theme = config.evertras.themes.selected;
 in {
-  config = {
+  options.evertras.home.shell.fish = { enable = mkEnableOption "Fish shell"; };
+
+  config = mkIf config.evertras.home.shell.fish.enable {
     home.file = {
       ".config/fish/completions/aws.fish" = {
         text = ''

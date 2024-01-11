@@ -5,10 +5,13 @@ let
   theme = config.evertras.themes.selected;
   patchlib = import ./patch.nix { };
   mainPatch = patchlib.mkPatch {
-    /* colors = theme.colors;
-       fontName = theme.fonts.mono.name;
-       fontSize = 16;
-    */
+    fontName = theme.fonts.mono.name;
+    fontSize = 22;
+    # TODO: Can't use the shellBin that references pkgs here,
+    # because toFile doesn't want to have dependencies to other
+    # derivations.  The solution is to create a 'real' derivation here.
+    # Leaving that for another day and just using fish here, fix later.
+    shell = "fish";
   };
 in {
   options.evertras.home.desktop.st = with lib; {

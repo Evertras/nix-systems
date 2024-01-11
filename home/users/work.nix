@@ -17,8 +17,7 @@ in {
 
   evertras.themes.selected = theme;
 
-  evertras.home = let shellBin = "${pkgs.fish}/bin/fish";
-  in {
+  evertras.home = {
     core.username = "brandon-fulljames";
 
     audio = {
@@ -28,12 +27,12 @@ in {
     };
 
     shell = {
-      inherit gpgKey;
+      core = { inherit gpgKey; };
+
       funcs = {
         aws-login.body = "aws sso login";
         kitty-gl.body = "nixGL kitty";
       };
-      tmux.shell = shellBin;
     };
 
     desktop = let
@@ -52,7 +51,8 @@ in {
 
       display.sleep.enable = true;
 
-      kitty.shell = shellBin;
+      kitty.enable = true;
+      st.enable = true;
 
       dwm = {
         enable = true;

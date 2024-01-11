@@ -3,6 +3,7 @@ with lib;
 let
   cfg = config.evertras.home.desktop.kitty;
   theme = config.evertras.themes.selected;
+  shellBin = config.evertras.home.shell.core.shellBin;
 in {
   options.evertras.home.desktop.kitty = {
     enable = mkEnableOption "kitty";
@@ -19,8 +20,8 @@ in {
 
     shell = mkOption {
       description = "Which shell to use, defaults to user's configured default";
-      type = types.str;
-      default = ".";
+      type = with types; nullOr str;
+      default = null;
     };
   };
 
@@ -108,7 +109,7 @@ in {
         url_style = "dashed";
         underline_hyperlinks = "always";
 
-        shell = cfg.shell;
+        shell = if cfg.shell == null then shellBin else cfg.shell;
 
         # Override selection to look nicer
         selection_foreground = theme.colors.background;

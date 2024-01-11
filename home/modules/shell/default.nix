@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  cfg = config.evertras.home.shell;
+  cfg = config.evertras.home.shell.core;
   theme = config.evertras.themes.selected;
 in {
   imports = [
@@ -18,12 +18,7 @@ in {
     ./tmux
   ];
 
-  options.evertras.home.shell = {
-    shell = mkOption {
-      type = types.str;
-      default = "bash";
-    };
-
+  options.evertras.home.shell.core = {
     prompt = mkOption {
       type = types.str;
       default = "starship";
@@ -34,6 +29,11 @@ in {
     gpgKey = mkOption {
       type = with types; nullOr str;
       default = null;
+    };
+
+    shellBin = mkOption {
+      type = types.str;
+      default = "${pkgs.fish}/bin/fish";
     };
   };
 
@@ -88,7 +88,10 @@ in {
     };
 
     evertras.home.shell = {
-      bash.enable = cfg.shell == "bash";
+      # Actual shells
+      bash.enable = mkDefault true;
+      fish.enable = mkDefault true;
+
       editorconfig.enable = mkDefault true;
       starship.enable = cfg.prompt == "starship";
       tmux.enable = mkDefault true;
