@@ -5,9 +5,9 @@ with lib; {
   mkBasePatch = { terminal, colorPrimary, colorText, colorBackground, fontSize
     , fontName, gappx }:
     builtins.toFile "dwm-base-patch.diff" ''
-      From 7606eaee55a7ab46115e766f370edf7598f9b9c4 Mon Sep 17 00:00:00 2001
+      From 4c343977b8acc307db0b8e0f5d52c2737c1f5180 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Thu, 11 Jan 2024 23:44:05 +0900
+      Date: Thu, 11 Jan 2024 23:50:29 +0900
       Subject: [PATCH] Changes
 
       ---
@@ -16,7 +16,7 @@ with lib; {
        2 files changed, 200 insertions(+), 28 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..4bfd6a2 100644
+      index 9efa774..308aace 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -3,19 +3,24 @@
@@ -71,9 +71,9 @@ with lib; {
        	/* symbol     arrange function */
       -	{ "[]=",      tile },    /* first entry is default */
       -	{ "><>",      NULL },    /* no layout function means floating behavior */
+      +	{ "[|3",      tile },
       +	{ "vvv",      bstack },
        	{ "[M]",      monocle },
-      +	{ "[|3",      tile },
        };
        
        /* key definitions */
