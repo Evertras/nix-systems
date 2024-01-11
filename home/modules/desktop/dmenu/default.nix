@@ -3,7 +3,7 @@
 let
   cfg = config.evertras.home.desktop.dmenu;
   theme = config.evertras.themes.selected;
-  patchlib = import ./patches { };
+  patchlib = import ./patch.nix { colors = theme.colors; };
 in {
   options.evertras.home.desktop.dmenu = with lib; {
     enable = mkEnableOption "dmenu";
@@ -16,6 +16,7 @@ in {
       patchList = lib.lists.flatten [ patchColor ];
     in [
       (pkgs.dmenu.overrideAttrs (self: super: {
+        src = ./src;
         patches = if super.patches == null then
           patchList
         else
