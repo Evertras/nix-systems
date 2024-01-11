@@ -5,15 +5,15 @@ with lib; {
   mkBasePatch = { terminal, colorPrimary, colorText, colorBackground, fontSize
     , fontName, gappx }:
     builtins.toFile "dwm-base-patch.diff" ''
-      From d1e750356bb652b901e16824b585093eb066fdc8 Mon Sep 17 00:00:00 2001
+      From eb413d5946910c9003a3719acda0aba4e149c8b4 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Thu, 11 Jan 2024 22:48:09 +0900
+      Date: Thu, 11 Jan 2024 23:01:28 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  39 ++++++++++---------
-       dwm.c        | 107 ++++++++++++++++++++++++++++++++++++++++++++++-----
-       2 files changed, 118 insertions(+), 28 deletions(-)
+       config.def.h |  39 +++++++-------
+       dwm.c        | 145 +++++++++++++++++++++++++++++++++++++++++++++++----
+       2 files changed, 156 insertions(+), 28 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
       index 9efa774..b40df69 100644
@@ -111,10 +111,27 @@ with lib; {
        	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
        	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
       diff --git a/dwm.c b/dwm.c
-      index f1d86b2..a62d4bf 100644
+      index f1d86b2..bb19e12 100644
       --- a/dwm.c
       +++ b/dwm.c
-      @@ -52,14 +52,14 @@
+      @@ -20,6 +20,7 @@
+        *
+        * To understand everything else, start reading main().
+        */
+      +#include <assert.h>
+       #include <errno.h>
+       #include <locale.h>
+       #include <signal.h>
+      @@ -28,6 +29,8 @@
+       #include <stdlib.h>
+       #include <string.h>
+       #include <unistd.h>
+      +#include <libgen.h>
+      +#include <sys/stat.h>
+       #include <sys/types.h>
+       #include <sys/wait.h>
+       #include <X11/cursorfont.h>
+      @@ -52,14 +55,14 @@
        #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
        #define LENGTH(X)               (sizeof X / sizeof X[0])
        #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
@@ -132,7 +149,7 @@ with lib; {
        enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
               NetWMFullscreen, NetActiveWindow, NetWMWindowType,
               NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
-      @@ -148,6 +148,8 @@ static void arrange(Monitor *m);
+      @@ -148,6 +151,8 @@ static void arrange(Monitor *m);
        static void arrangemon(Monitor *m);
        static void attach(Client *c);
        static void attachstack(Client *c);
@@ -141,7 +158,7 @@ with lib; {
        static void buttonpress(XEvent *e);
        static void checkotherwm(void);
        static void cleanup(void);
-      @@ -415,6 +417,68 @@ attachstack(Client *c)
+      @@ -415,6 +420,68 @@ attachstack(Client *c)
        	c->mon->stack = c;
        }
        
@@ -210,7 +227,7 @@ with lib; {
        void
        buttonpress(XEvent *e)
        {
-      @@ -736,7 +800,7 @@ drawbar(Monitor *m)
+      @@ -736,7 +803,7 @@ drawbar(Monitor *m)
        
        	if ((w = m->ww - tw - x) > bh) {
        		if (m->sel) {
@@ -219,7 +236,7 @@ with lib; {
        			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
        			if (m->sel->isfloating)
        				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
-      @@ -1286,12 +1350,37 @@ void
+      @@ -1286,12 +1353,37 @@ void
        resizeclient(Client *c, int x, int y, int w, int h)
        {
        	XWindowChanges wc;
@@ -261,7 +278,56 @@ with lib; {
        	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
        	configure(c);
        	XSync(dpy, False);
-      @@ -1701,7 +1790,7 @@ tile(Monitor *m)
+      @@ -1644,6 +1736,8 @@ showhide(Client *c)
+       	}
+       }
+       
+      +#define SPAWN_CWD_DELIM " []{}()<>\"':"
+      +
+       void
+       spawn(const Arg *arg)
+       {
+      @@ -1654,6 +1748,39 @@ spawn(const Arg *arg)
+       	if (fork() == 0) {
+       		if (dpy)
+       			close(ConnectionNumber(dpy));
+      +		/* https://sunaku.github.io/dwm-spawn-cwd-patch.html */
+      +		if(selmon->sel) {
+      +			const char* const home = getenv("HOME");
+      +			assert(home && strchr(home, '/'));
+      +			const size_t homelen = strlen(home);
+      +			char *cwd, *pathbuf = NULL;
+      +			struct stat statbuf;
+      +
+      +			cwd = strtok(selmon->sel->name, SPAWN_CWD_DELIM);
+      +			/* NOTE: strtok() alters selmon->sel->name in-place,
+      +			 * but that does not matter because we are going to
+      +			 * exec() below anyway; nothing else will use it */
+      +			while(cwd) {
+      +				if(*cwd == '~') { /* replace ~ with $HOME */
+      +					if(!(pathbuf = malloc(homelen + strlen(cwd)))) /* ~ counts for NULL term */
+      +						die("fatal: could not malloc() %u bytes\n", homelen + strlen(cwd));
+      +					strcpy(strcpy(pathbuf, home) + homelen, cwd + 1);
+      +					cwd = pathbuf;
+      +				}
+      +
+      +				if(strchr(cwd, '/') && !stat(cwd, &statbuf)) {
+      +					if(!S_ISDIR(statbuf.st_mode))
+      +						cwd = dirname(cwd);
+      +
+      +					if(!chdir(cwd))
+      +						break;
+      +				}
+      +
+      +				cwd = strtok(NULL, SPAWN_CWD_DELIM);
+      +			}
+      +
+      +			free(pathbuf);
+      +		}
+       		setsid();
+       
+       		sigemptyset(&sa.sa_mask);
+      @@ -1701,7 +1828,7 @@ tile(Monitor *m)
        	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
        		if (i < m->nmaster) {
        			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
