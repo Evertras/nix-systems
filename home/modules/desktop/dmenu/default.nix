@@ -8,6 +8,8 @@ let
     colors = theme.colors;
     fontName = theme.fonts.mono.name;
     fontSize = 14;
+    # DWM top bar height
+    lineHeight = 26;
   };
 in {
   options.evertras.home.desktop.dmenu = with lib; {
