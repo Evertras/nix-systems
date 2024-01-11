@@ -10,7 +10,8 @@ let
   displayCenter = "DP-2";
   displayRight = "HDMI-0";
 
-  terminal = "nixGL kitty";
+  # Defined in funcs below
+  terminal = "kitty-gl";
 in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
@@ -28,7 +29,10 @@ in {
 
     shell = {
       inherit gpgKey;
-      funcs = { aws-login.body = "aws sso login"; };
+      funcs = {
+        aws-login.body = "aws sso login";
+        kitty-gl.body = "nixGL kitty";
+      };
       tmux.shell = shellBin;
     };
 
