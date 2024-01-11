@@ -3,17 +3,19 @@
 let
   cfg = config.evertras.home.desktop.dmenu;
   theme = config.evertras.themes.selected;
-  patchlib = import ./patch.nix { colors = theme.colors; };
+  patchlib = import ./patch.nix { };
+  mainPatch = patchlib.mkPatch {
+    colors = theme.colors;
+    fontName = theme.fonts.main.name;
+    fontSize = 14;
+  };
 in {
   options.evertras.home.desktop.dmenu = with lib; {
     enable = mkEnableOption "dmenu";
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = let
-      patchColor = patchlib.mkColorPatch { colors = theme.colors; };
-
-      patchList = lib.lists.flatten [ patchColor ];
+    home.packages = let patchList = [ mainPatch ];
     in [
       (pkgs.dmenu.overrideAttrs (self: super: {
         src = ./src;

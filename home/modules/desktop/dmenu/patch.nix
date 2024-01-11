@@ -1,25 +1,26 @@
-{ colors }: {
-  # Note to future self: be VERY careful about preserving
-  # whitespace/tabs inside the actual strings...
-
-  # Colors can be configured by command line options, but let's
-  # overengineer and learn how to do dynamic patches!
-  mkColorPatch = { colors }:
+{ }: {
+  mkPatch = { colors, fontName, fontSize }:
     builtins.toFile "dmenu-color-patch.diff" ''
-      From 7156b7d81c70e9381d19e62cfbc29c9295671516 Mon Sep 17 00:00:00 2001
+      From 48a59b266c18258ac4e7d8ee9a83923787412e26 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Thu, 11 Jan 2024 21:59:18 +0900
+      Date: Thu, 11 Jan 2024 22:08:19 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h | 6 +++---
-       1 file changed, 3 insertions(+), 3 deletions(-)
+       config.def.h | 8 ++++----
+       1 file changed, 4 insertions(+), 4 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 1edb647..67bb990 100644
+      index 1edb647..b8630b3 100644
       --- a/config.def.h
       +++ b/config.def.h
-      @@ -9,9 +9,9 @@ static const char *fonts[] = {
+      @@ -4,14 +4,14 @@
+       static int topbar = 1;                      /* -b  option; if 0, dmenu appears at bottom     */
+       /* -fn option overrides fonts[0]; default X11 font or font set */
+       static const char *fonts[] = {
+      -	"monospace:size=10"
+      +	"${fontName}:size=${toString fontSize}"
+       };
        static const char *prompt      = NULL;      /* -p  option; prompt to the left of input field */
        static const char *colors[SchemeLast][2] = {
        	/*     fg         bg       */
