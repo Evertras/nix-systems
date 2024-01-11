@@ -5,22 +5,21 @@ with lib; {
   mkBasePatch = { terminal, colorPrimary, colorText, colorBackground, fontSize
     , fontName, gappx }:
     builtins.toFile "dwm-base-patch.diff" ''
-
-      From 6bb9b0582744d4e011cc164b2f52042574c72b6a Mon Sep 17 00:00:00 2001
+      From d1e750356bb652b901e16824b585093eb066fdc8 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Thu, 11 Jan 2024 21:08:52 +0900
+      Date: Thu, 11 Jan 2024 22:48:09 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  38 +++++++++----------
-       dwm.c        | 103 +++++++++++++++++++++++++++++++++++++++++++++++----
-       2 files changed, 115 insertions(+), 26 deletions(-)
+       config.def.h |  39 ++++++++++---------
+       dwm.c        | 107 ++++++++++++++++++++++++++++++++++++++++++++++-----
+       2 files changed, 118 insertions(+), 28 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..180207f 100644
+      index 9efa774..b40df69 100644
       --- a/config.def.h
       +++ b/config.def.h
-      @@ -3,19 +3,17 @@
+      @@ -3,19 +3,18 @@
        /* appearance */
        static const unsigned int borderpx  = 1;        /* border pixel of windows */
        static const unsigned int snap      = 32;       /* snap pixel */
@@ -46,13 +45,14 @@ with lib; {
       -	/*               fg         bg         border   */
       -	[SchemeNorm] = { col_gray3, col_gray1, col_gray2 },
       -	[SchemeSel]  = { col_gray4, col_cyan,  col_cyan  },
-      +	/*               fg              bg              border   */
-      +	[SchemeNorm] = { col_text,       col_background, col_primary },
-      +	[SchemeSel]  = { col_background, col_primary,    col_primary },
+      +	/*                fg              bg              border   */
+      +	[SchemeNorm]  = { col_text,       col_background, col_primary },
+      +	[SchemeSel]   = { col_background, col_primary,    col_primary },
+      +	[SchemeTitle] = { col_primary,    col_background, col_primary },
        };
        
        /* tagging */
-      @@ -34,18 +32,19 @@ static const Rule rules[] = {
+      @@ -34,18 +33,19 @@ static const Rule rules[] = {
        /* layout(s) */
        static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
        static const int nmaster     = 1;    /* number of clients in master area */
@@ -76,7 +76,7 @@ with lib; {
        #define TAGKEYS(KEY,TAG) \
        	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
        	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-      @@ -57,8 +56,8 @@ static const Layout layouts[] = {
+      @@ -57,8 +57,8 @@ static const Layout layouts[] = {
        
        /* commands */
        static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -87,7 +87,7 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -73,10 +72,11 @@ static const Key keys[] = {
+      @@ -73,10 +73,11 @@ static const Key keys[] = {
        	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
        	{ MODKEY,                       XK_Return, zoom,           {0} },
        	{ MODKEY,                       XK_Tab,    view,           {0} },
@@ -101,7 +101,7 @@ with lib; {
        	{ MODKEY,                       XK_space,  setlayout,      {0} },
        	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-      @@ -102,7 +102,7 @@ static const Key keys[] = {
+      @@ -102,7 +103,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
@@ -111,10 +111,10 @@ with lib; {
        	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
        	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
       diff --git a/dwm.c b/dwm.c
-      index f1d86b2..abe6a3c 100644
+      index f1d86b2..a62d4bf 100644
       --- a/dwm.c
       +++ b/dwm.c
-      @@ -52,8 +52,8 @@
+      @@ -52,14 +52,14 @@
        #define ISVISIBLE(C)            ((C->tags & C->mon->tagset[C->mon->seltags]))
        #define LENGTH(X)               (sizeof X / sizeof X[0])
        #define MOUSEMASK               (BUTTONMASK|PointerMotionMask)
@@ -125,6 +125,13 @@ with lib; {
        #define TAGMASK                 ((1 << LENGTH(tags)) - 1)
        #define TEXTW(X)                (drw_fontset_getwidth(drw, (X)) + lrpad)
        
+       /* enums */
+       enum { CurNormal, CurResize, CurMove, CurLast }; /* cursor */
+      -enum { SchemeNorm, SchemeSel }; /* color schemes */
+      +enum { SchemeNorm, SchemeSel, SchemeTitle }; /* color schemes */
+       enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
+              NetWMFullscreen, NetActiveWindow, NetWMWindowType,
+              NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
       @@ -148,6 +148,8 @@ static void arrange(Monitor *m);
        static void arrangemon(Monitor *m);
        static void attach(Client *c);
@@ -203,6 +210,15 @@ with lib; {
        void
        buttonpress(XEvent *e)
        {
+      @@ -736,7 +800,7 @@ drawbar(Monitor *m)
+       
+       	if ((w = m->ww - tw - x) > bh) {
+       		if (m->sel) {
+      -			drw_setscheme(drw, scheme[m == selmon ? SchemeSel : SchemeNorm]);
+      +			drw_setscheme(drw, scheme[m == selmon ? SchemeTitle : SchemeNorm]);
+       			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
+       			if (m->sel->isfloating)
+       				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
       @@ -1286,12 +1350,37 @@ void
        resizeclient(Client *c, int x, int y, int w, int h)
        {
@@ -256,6 +272,5 @@ with lib; {
        		} else {
       -- 
       2.42.0
-
     '';
 }
