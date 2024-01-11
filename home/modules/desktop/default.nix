@@ -10,9 +10,9 @@ in {
     ./display
     ./dmenu
     ./dwm
+    ./gtktheme
     ./i3
     ./kitty
-    ./gtktheme
     ./notifications
   ];
 
@@ -35,7 +35,7 @@ in {
     };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     home.packages = with pkgs; [
       # Clipboard
       xclip
@@ -81,14 +81,14 @@ in {
       };
     };
 
-    evertras.home.desktop = mkIf cfg.enable {
+    evertras.home.desktop = {
       dmenu.enable = cfg.wm == "i3";
       gtktheme.enable = true;
       i3 = {
         enable = cfg.wm == "i3";
         kbLayout = mkDefault cfg.kbLayout;
       };
-      kitty.enable = cfg.terminal == "kitty";
+      kitty.enable = mkDefault (cfg.terminal == "kitty");
       notifications.enable = true;
     };
 
