@@ -6,7 +6,7 @@ let
   patchlib = import ./patch.nix { };
   mainPatch = patchlib.mkPatch {
     colors = theme.colors;
-    fontName = theme.fonts.main.name;
+    fontName = theme.fonts.mono.name;
     fontSize = 14;
   };
 in {
