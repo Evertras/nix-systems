@@ -4,7 +4,7 @@ with lib; {
   # whitespace/tabs inside the actual strings...
   mkBasePatch = { terminal, colorPrimary, colorText, colorBackground, fontSize
     , fontName, gappx }:
-    builtins.toFile "dwm-base-patch.diff" ''
+    builtins.toFile "ever-dwm.diff" ''
       From 4c343977b8acc307db0b8e0f5d52c2737c1f5180 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
       Date: Thu, 11 Jan 2024 23:50:29 +0900
