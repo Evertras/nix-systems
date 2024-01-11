@@ -5,11 +5,10 @@ let
   theme = config.evertras.themes.selected;
   patchlib = import ./patch.nix { };
   mainPatch = patchlib.mkPatch {
-    colors = theme.colors;
-    fontName = theme.fonts.mono.name;
-    fontSize = 16;
-    # DWM top bar height
-    lineHeight = 26;
+    /* colors = theme.colors;
+       fontName = theme.fonts.mono.name;
+       fontSize = 16;
+    */
   };
 in {
   options.evertras.home.desktop.st = with lib; {

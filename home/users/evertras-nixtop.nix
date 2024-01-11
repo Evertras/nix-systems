@@ -45,7 +45,12 @@ in {
       enable = true;
       kbLayout = "jp";
 
-      kitty.shell = shellBin;
+      kitty = {
+        enable = true;
+        shell = shellBin;
+      };
+
+      st.enable = true;
 
       display.sleep.enable = true;
 
