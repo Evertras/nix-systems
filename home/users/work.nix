@@ -48,6 +48,8 @@ in {
 
       kitty.shell = shellBin;
 
+      dwm.enable = true;
+
       i3 = {
         monitorNetworkInterface = "eno1";
 
