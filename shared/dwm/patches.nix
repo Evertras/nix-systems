@@ -5,21 +5,21 @@ with lib; {
   mkBasePatch = { terminal, colorPrimary, colorText, colorBackground, fontSize
     , fontName, gappx }:
     builtins.toFile "dwm-base-patch.diff" ''
-      From eb413d5946910c9003a3719acda0aba4e149c8b4 Mon Sep 17 00:00:00 2001
+      From 7606eaee55a7ab46115e766f370edf7598f9b9c4 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Thu, 11 Jan 2024 23:01:28 +0900
+      Date: Thu, 11 Jan 2024 23:44:05 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  39 +++++++-------
-       dwm.c        | 145 +++++++++++++++++++++++++++++++++++++++++++++++----
-       2 files changed, 156 insertions(+), 28 deletions(-)
+       config.def.h |  45 +++++++------
+       dwm.c        | 183 ++++++++++++++++++++++++++++++++++++++++++++++++---
+       2 files changed, 200 insertions(+), 28 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..b40df69 100644
+      index 9efa774..4bfd6a2 100644
       --- a/config.def.h
       +++ b/config.def.h
-      @@ -3,19 +3,18 @@
+      @@ -3,19 +3,24 @@
        /* appearance */
        static const unsigned int borderpx  = 1;        /* border pixel of windows */
        static const unsigned int snap      = 32;       /* snap pixel */
@@ -49,10 +49,16 @@ with lib; {
       +	[SchemeNorm]  = { col_text,       col_background, col_primary },
       +	[SchemeSel]   = { col_background, col_primary,    col_primary },
       +	[SchemeTitle] = { col_primary,    col_background, col_primary },
+      +};
+      +
+      +static const char *const autostart[] = {
+      +	/* TODO: Make this configurable */
+      +	"sh", "-c", "while true; do xsetroot -name \"$(date '+%a %m-%d %H:%M')\"; sleep 1m; done", NULL,
+      +	NULL /* terminate */
        };
        
        /* tagging */
-      @@ -34,18 +33,19 @@ static const Rule rules[] = {
+      @@ -34,18 +39,19 @@ static const Rule rules[] = {
        /* layout(s) */
        static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
        static const int nmaster     = 1;    /* number of clients in master area */
@@ -76,7 +82,7 @@ with lib; {
        #define TAGKEYS(KEY,TAG) \
        	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
        	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-      @@ -57,8 +57,8 @@ static const Layout layouts[] = {
+      @@ -57,8 +63,8 @@ static const Layout layouts[] = {
        
        /* commands */
        static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -87,7 +93,7 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -73,10 +73,11 @@ static const Key keys[] = {
+      @@ -73,10 +79,11 @@ static const Key keys[] = {
        	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
        	{ MODKEY,                       XK_Return, zoom,           {0} },
        	{ MODKEY,                       XK_Tab,    view,           {0} },
@@ -101,7 +107,7 @@ with lib; {
        	{ MODKEY,                       XK_space,  setlayout,      {0} },
        	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-      @@ -102,7 +103,7 @@ static const Key keys[] = {
+      @@ -102,7 +109,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
@@ -111,7 +117,7 @@ with lib; {
        	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
        	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
       diff --git a/dwm.c b/dwm.c
-      index f1d86b2..bb19e12 100644
+      index f1d86b2..ef77f48 100644
       --- a/dwm.c
       +++ b/dwm.c
       @@ -20,6 +20,7 @@
@@ -149,19 +155,53 @@ with lib; {
        enum { NetSupported, NetWMName, NetWMState, NetWMCheck,
               NetWMFullscreen, NetActiveWindow, NetWMWindowType,
               NetWMWindowTypeDialog, NetClientList, NetLast }; /* EWMH atoms */
-      @@ -148,6 +151,8 @@ static void arrange(Monitor *m);
+      @@ -148,6 +151,9 @@ static void arrange(Monitor *m);
        static void arrangemon(Monitor *m);
        static void attach(Client *c);
        static void attachstack(Client *c);
+      +static void autostart_exec(void);
       +static void bstack(Monitor *m);
       +static void bstackhoriz(Monitor *m);
        static void buttonpress(XEvent *e);
        static void checkotherwm(void);
        static void cleanup(void);
-      @@ -415,6 +420,68 @@ attachstack(Client *c)
+      @@ -274,6 +280,9 @@ static Window root, wmcheckwin;
+       /* compile-time check if all tags fit into an unsigned int bit array. */
+       struct NumTags { char limitexceeded[LENGTH(tags) > 31 ? -1 : 1]; };
+       
+      +static pid_t *autostart_pids;
+      +static size_t autostart_len;
+      +
+       /* function implementations */
+       void
+       applyrules(Client *c)
+      @@ -415,6 +424,91 @@ attachstack(Client *c)
        	c->mon->stack = c;
        }
        
+      +static void
+      +autostart_exec() {
+      +	const char *const *p;
+      +	size_t i = 0;
+      +
+      +	/* count entries */
+      +	for (p = autostart; *p; autostart_len++, p++)
+      +		while (*++p);
+      +
+      +	autostart_pids = malloc(autostart_len * sizeof(pid_t));
+      +	for (p = autostart; *p; i++, p++) {
+      +		if ((autostart_pids[i] = fork()) == 0) {
+      +			setsid();
+      +			execvp(*p, (char *const *)p);
+      +			fprintf(stderr, "dwm: execvp %s\n", *p);
+      +			perror(" failed");
+      +			_exit(EXIT_FAILURE);
+      +		}
+      +		/* skip arguments */
+      +		while (*++p);
+      +	}
+      +}
+      +
       +void
       +bstack(Monitor *m) {
       +	int w, h, mh, mx, tx, ty, tw;
@@ -227,7 +267,7 @@ with lib; {
        void
        buttonpress(XEvent *e)
        {
-      @@ -736,7 +803,7 @@ drawbar(Monitor *m)
+      @@ -736,7 +830,7 @@ drawbar(Monitor *m)
        
        	if ((w = m->ww - tw - x) > bh) {
        		if (m->sel) {
@@ -236,7 +276,24 @@ with lib; {
        			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
        			if (m->sel->isfloating)
        				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
-      @@ -1286,12 +1353,37 @@ void
+      @@ -1258,6 +1352,16 @@ propertynotify(XEvent *e)
+       void
+       quit(const Arg *arg)
+       {
+      +	size_t i;
+      +
+      +	/* kill child processes */
+      +	for (i = 0; i < autostart_len; i++) {
+      +		if (0 < autostart_pids[i]) {
+      +			kill(autostart_pids[i], SIGTERM);
+      +			waitpid(autostart_pids[i], NULL, 0);
+      +		}
+      +	}
+      +
+       	running = 0;
+       }
+       
+      @@ -1286,12 +1390,37 @@ void
        resizeclient(Client *c, int x, int y, int w, int h)
        {
        	XWindowChanges wc;
@@ -278,7 +335,7 @@ with lib; {
        	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
        	configure(c);
        	XSync(dpy, False);
-      @@ -1644,6 +1736,8 @@ showhide(Client *c)
+      @@ -1644,6 +1773,8 @@ showhide(Client *c)
        	}
        }
        
@@ -287,7 +344,7 @@ with lib; {
        void
        spawn(const Arg *arg)
        {
-      @@ -1654,6 +1748,39 @@ spawn(const Arg *arg)
+      @@ -1654,6 +1785,39 @@ spawn(const Arg *arg)
        	if (fork() == 0) {
        		if (dpy)
        			close(ConnectionNumber(dpy));
@@ -327,7 +384,7 @@ with lib; {
        		setsid();
        
        		sigemptyset(&sa.sa_mask);
-      @@ -1701,7 +1828,7 @@ tile(Monitor *m)
+      @@ -1701,7 +1865,7 @@ tile(Monitor *m)
        	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
        		if (i < m->nmaster) {
        			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
@@ -336,6 +393,14 @@ with lib; {
        			if (my + HEIGHT(c) < m->wh)
        				my += HEIGHT(c);
        		} else {
+      @@ -2152,6 +2316,7 @@ main(int argc, char *argv[])
+       	if (!(dpy = XOpenDisplay(NULL)))
+       		die("dwm: cannot open display");
+       	checkotherwm();
+      +	autostart_exec();
+       	setup();
+       #ifdef __OpenBSD__
+       	if (pledge("stdio rpath proc exec", NULL) == -1)
       -- 
       2.42.0
     '';
