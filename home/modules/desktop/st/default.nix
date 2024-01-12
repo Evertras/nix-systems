@@ -49,6 +49,52 @@ in {
   };
 
   config = lib.mkIf cfg.enable {
+    evertras.home.shell.funcs = {
+      gen-st-bg.body = ''
+        set -e
+
+        if [ -z "$1" ]; then
+          echo "Usage: gen-st-bg <base-image> [target]"
+          echo "  base-image: Image to use as a base"
+          echo "  target:     Output file (defaults to <base-image>.ff)"
+          exit 1
+        fi
+
+        img="$1"
+        target="$2"
+
+        if [ ! -f "$img" ]; then
+          echo "File not found: $img"
+          exit 1
+        fi
+
+        if [ -z "$target" ]; then
+          target="$img.ff"
+        fi
+
+        if [ "$(file -b --mime-type "$img")" = "image/jpeg" ]; then
+          tool="jpg2ff"
+          tmpName=/tmp/altered.jpg
+        elif [ "$(file -b --mime-type "$img")" = "image/png" ]; then
+          tool="png2ff"
+          tmpName=/tmp/altered.png
+        else
+          echo "Unsupported image type (jpg/png): $img"
+          exit 1
+        fi
+
+        echo "Darkening/blurring..."
+        convert "$img" -fill black -colorize 80% -gaussian-blur 0x8 -resize 2560x1440 "$tmpName"
+
+        echo "Converting $img to farbfeld..."
+        "$tool" < "$tmpName" > "$target"
+
+        if [ ! -f "$target" ]; then
+          echo "Failed to convert $img to farbfeld"
+          exit 1
+        fi
+      '';
+    };
     home.packages = let patchList = [ mainPatch ];
     in [
       # To generate background images with jpg2ff and png2ff
