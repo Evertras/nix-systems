@@ -10,8 +10,7 @@ let
   displayCenter = "DP-2";
   displayRight = "HDMI-0";
 
-  # Defined in funcs below
-  terminal = "kitty-gl";
+  terminal = "st";
 in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
