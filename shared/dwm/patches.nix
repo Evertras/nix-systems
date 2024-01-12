@@ -5,18 +5,19 @@ with lib; {
   mkBasePatch = { terminal, colorPrimary, colorText, colorBackground, fontSize
     , fontName, gappx }:
     builtins.toFile "ever-dwm.diff" ''
-      From 4c343977b8acc307db0b8e0f5d52c2737c1f5180 Mon Sep 17 00:00:00 2001
-      From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Thu, 11 Jan 2024 23:50:29 +0900
+
+      From ffe9ca6947569c9f717fbea9c144cdcf7a29041d Mon Sep 17 00:00:00 2001
+      From: Brandon Fulljames <brandon.fulljames@woven-planet.global>
+      Date: Fri, 12 Jan 2024 11:14:55 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  45 +++++++------
+       config.def.h |  52 +++++++++------
        dwm.c        | 183 ++++++++++++++++++++++++++++++++++++++++++++++++---
-       2 files changed, 200 insertions(+), 28 deletions(-)
+       2 files changed, 205 insertions(+), 30 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..308aace 100644
+      index 9efa774..196b921 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -3,19 +3,24 @@
@@ -93,7 +94,7 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -73,10 +79,11 @@ static const Key keys[] = {
+      @@ -73,12 +79,16 @@ static const Key keys[] = {
        	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
        	{ MODKEY,                       XK_Return, zoom,           {0} },
        	{ MODKEY,                       XK_Tab,    view,           {0} },
@@ -103,11 +104,18 @@ with lib; {
        	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
        	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
       -	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
+      -	{ MODKEY,                       XK_space,  setlayout,      {0} },
+      -	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
       +	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[2]} },
-       	{ MODKEY,                       XK_space,  setlayout,      {0} },
-       	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
+      +	/* Repurposed to match i3's mod+space to spawn terminal, moved
+      +	   regular space to shift+space to allow layout toggles */
+      +	/*{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },*/
+      +	{ MODKEY|ShiftMask,             XK_space,  setlayout,      {0} },
+      +	{ MODKEY,                       XK_space,  spawn,          {.v = termcmd } },
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
-      @@ -102,7 +109,7 @@ static const Key keys[] = {
+       	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
+       	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
+      @@ -102,7 +112,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
@@ -403,5 +411,6 @@ with lib; {
        	if (pledge("stdio rpath proc exec", NULL) == -1)
       -- 
       2.42.0
+
     '';
 }
