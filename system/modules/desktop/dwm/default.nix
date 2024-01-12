@@ -12,6 +12,11 @@ in {
       default = "st";
       description = "Terminal to use";
     };
+    lock = mkOption {
+      type = types.str;
+      default = "slock";
+      description = "Lock command to use";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -21,7 +26,10 @@ in {
       windowManager.dwm = let
         customDwm = import ../../../../shared/dwm {
           inherit lib pkgs theme;
-          opts.terminal = cfg.terminal;
+          opts = {
+            lock = cfg.lock;
+            terminal = cfg.terminal;
+          };
         };
       in {
         enable = true;
