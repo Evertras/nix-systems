@@ -25,8 +25,6 @@ in {
       default = "kitty";
     };
 
-    wm = mkOption { type = types.str; };
-
     kbLayout = mkOption {
       type = types.str;
       default = "us";
@@ -81,11 +79,9 @@ in {
 
     evertras.home.desktop = {
       i3 = {
-        enable = cfg.wm == "i3";
+        enable = mkDefault true;
         kbLayout = mkDefault cfg.kbLayout;
       };
-
-      dwm.enable = cfg.wm == "dwm";
 
       gtktheme.enable = true;
       notifications.enable = mkDefault true;
