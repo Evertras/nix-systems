@@ -3,9 +3,9 @@
 
     builtins.toFile "ever-st.diff" ''
 
-      From 6eea7699668616303c239e1847ec3fe4c3533514 Mon Sep 17 00:00:00 2001
+      From a9d1435818698f112c90f0b2b9b4bafca2e77e6d Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Fri, 12 Jan 2024 13:28:57 +0900
+      Date: Fri, 12 Jan 2024 13:43:28 +0900
       Subject: [PATCH] Changes
 
       ---
@@ -16,7 +16,7 @@
        4 files changed, 87 insertions(+), 101 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 91ab8ca..1902303 100644
+      index 91ab8ca..de8184b 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,7 +5,7 @@
@@ -70,7 +70,7 @@
       -static unsigned int mouseshape = XC_xterm;
       -static unsigned int mousefg = 7;
       -static unsigned int mousebg = 0;
-      +static char* mouseshape = "xterm";
+      +static char* mouseshape = "default";
        
        /*
         * Color used to display font attributes when fontconfig selected a font which
