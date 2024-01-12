@@ -36,6 +36,7 @@ in {
           patchList
         else
           super.patches ++ patchList;
+        buildInputs = super.buildInputs ++ [ pkgs.xorg.libXcursor ];
       }))
     ];
   };

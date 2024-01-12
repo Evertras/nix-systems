@@ -3,19 +3,20 @@
 
     builtins.toFile "ever-st.diff" ''
 
-      From 3b235a7f1abefec7f14379ed63a204f438a8cf81 Mon Sep 17 00:00:00 2001
+      From 6eea7699668616303c239e1847ec3fe4c3533514 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Fri, 12 Jan 2024 09:04:28 +0900
+      Date: Fri, 12 Jan 2024 13:28:57 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  18 +++----
-       st.h         |   6 +++
-       x.c          | 138 +++++++++++++++++++++++++--------------------------
-       3 files changed, 82 insertions(+), 80 deletions(-)
+       config.def.h |  24 ++++----
+       config.mk    |   2 +-
+       st.h         |   6 ++
+       x.c          | 156 +++++++++++++++++++++++----------------------------
+       4 files changed, 87 insertions(+), 101 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 91ab8ca..9549b0e 100644
+      index 91ab8ca..1902303 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,7 +5,7 @@
@@ -59,6 +60,33 @@
        };
        
        
+      @@ -151,11 +151,9 @@ static unsigned int cols = 80;
+       static unsigned int rows = 24;
+       
+       /*
+      - * Default colour and shape of the mouse cursor
+      + * Default shape of the mouse cursor
+        */
+      -static unsigned int mouseshape = XC_xterm;
+      -static unsigned int mousefg = 7;
+      -static unsigned int mousebg = 0;
+      +static char* mouseshape = "xterm";
+       
+       /*
+        * Color used to display font attributes when fontconfig selected a font which
+      diff --git a/config.mk b/config.mk
+      index 1e306f8..2bbc6be 100644
+      --- a/config.mk
+      +++ b/config.mk
+      @@ -16,7 +16,7 @@ PKG_CONFIG = pkg-config
+       INCS = -I$(X11INC) \
+              `$(PKG_CONFIG) --cflags fontconfig` \
+              `$(PKG_CONFIG) --cflags freetype2`
+      -LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft \
+      +LIBS = -L$(X11LIB) -lm -lrt -lX11 -lutil -lXft -lXcursor \
+              `$(PKG_CONFIG) --libs fontconfig` \
+              `$(PKG_CONFIG) --libs freetype2`
+       
       diff --git a/st.h b/st.h
       index fd3b0d8..19d81b0 100644
       --- a/st.h
@@ -77,10 +105,18 @@
        	SEL_IDLE = 0,
        	SEL_EMPTY = 1,
       diff --git a/x.c b/x.c
-      index b36fb8c..aa42ab0 100644
+      index b36fb8c..a308600 100644
       --- a/x.c
       +++ b/x.c
-      @@ -142,7 +142,7 @@ typedef struct {
+      @@ -14,6 +14,7 @@
+       #include <X11/keysym.h>
+       #include <X11/Xft/Xft.h>
+       #include <X11/XKBlib.h>
+      +#include <X11/Xcursor/Xcursor.h>
+       
+       char *argv0;
+       #include "arg.h"
+      @@ -142,7 +143,7 @@ typedef struct {
        
        static inline ushort sixd_to_16bit(int);
        static int xmakeglyphfontspecs(XftGlyphFontSpec *, const Glyph *, int, int, int);
@@ -89,7 +125,33 @@
        static void xdrawglyph(Glyph, int, int);
        static void xclear(int, int, int, int);
        static int xgeommasktogravity(int);
-      @@ -1372,7 +1372,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
+      @@ -1196,24 +1197,9 @@ xinit(int cols, int rows)
+       	                                       ximinstantiate, NULL);
+       	}
+       
+      -	/* white cursor, black outline */
+      -	cursor = XCreateFontCursor(xw.dpy, mouseshape);
+      +	cursor = XcursorLibraryLoadCursor(xw.dpy, mouseshape);
+       	XDefineCursor(xw.dpy, xw.win, cursor);
+       
+      -	if (XParseColor(xw.dpy, xw.cmap, colorname[mousefg], &xmousefg) == 0) {
+      -		xmousefg.red   = 0xffff;
+      -		xmousefg.green = 0xffff;
+      -		xmousefg.blue  = 0xffff;
+      -	}
+      -
+      -	if (XParseColor(xw.dpy, xw.cmap, colorname[mousebg], &xmousebg) == 0) {
+      -		xmousebg.red   = 0x0000;
+      -		xmousebg.green = 0x0000;
+      -		xmousebg.blue  = 0x0000;
+      -	}
+      -
+      -	XRecolorCursor(xw.dpy, cursor, &xmousefg, &xmousebg);
+      -
+       	xw.xembed = XInternAtom(xw.dpy, "_XEMBED", False);
+       	xw.wmdeletewin = XInternAtom(xw.dpy, "WM_DELETE_WINDOW", False);
+       	xw.netwmname = XInternAtom(xw.dpy, "_NET_WM_NAME", False);
+      @@ -1372,7 +1358,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
        }
        
        void
@@ -98,7 +160,7 @@
        {
        	int charlen = len * ((base.mode & ATTR_WIDE) ? 2 : 1);
        	int winx = borderpx + x * win.cw, winy = borderpx + y * win.ch,
-      @@ -1412,10 +1412,6 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+      @@ -1412,10 +1398,6 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
        		bg = &dc.col[base.bg];
        	}
        
@@ -109,7 +171,7 @@
        	if (IS_SET(MODE_REVERSE)) {
        		if (fg == &dc.col[defaultfg]) {
        			fg = &dc.col[defaultbg];
-      @@ -1463,47 +1459,40 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+      @@ -1463,47 +1445,40 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
        	if (base.mode & ATTR_INVISIBLE)
        		fg = bg;
        
@@ -191,7 +253,7 @@
        }
        
        void
-      @@ -1513,7 +1502,7 @@ xdrawglyph(Glyph g, int x, int y)
+      @@ -1513,7 +1488,7 @@ xdrawglyph(Glyph g, int x, int y)
        	XftGlyphFontSpec spec;
        
        	numspecs = xmakeglyphfontspecs(&spec, &g, 1, x, y);
@@ -200,7 +262,7 @@
        }
        
        void
-      @@ -1648,32 +1637,39 @@ xstartdraw(void)
+      @@ -1648,32 +1623,39 @@ xstartdraw(void)
        void
        xdrawline(Line line, int x1, int y1, int x2)
        {
