@@ -9,7 +9,7 @@ let
     colorBackground = theme.colors.background;
     fontName = theme.fonts.main.name;
     fontSize = 16;
-    gappx = 15;
+    gappx = 25;
   };
   patchList = [ basePatch ];
 in pkgs.dwm.overrideAttrs (self: super: {
