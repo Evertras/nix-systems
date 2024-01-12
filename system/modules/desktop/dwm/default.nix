@@ -5,25 +5,27 @@ let
   patches = import ./patches.nix { lib = lib; };
   theme = config.evertras.themes.selected;
 in {
-  options.evertras.desktop.dwm = { enable = mkEnableOption "dwm"; };
+  options.evertras.desktop.dwm = {
+    enable = mkEnableOption "dwm";
+    terminal = mkOption {
+      type = types.str;
+      default = "st";
+      description = "Terminal to use";
+    };
+  };
 
   config = mkIf cfg.enable {
     services.xserver = {
       displayManager.defaultSession = "none+dwm";
 
       windowManager.dwm = let
-        basePatch = patches.mkBasePatch {
-          terminal = "kitty";
-          colorPrimary = theme.colors.primary;
-          colorText = theme.colors.text;
-          colorBackground = theme.colors.background;
-          fontName = theme.fonts.main.name;
-          fontSize = 14;
+        customDwm = import ../../../../shared/dwm {
+          inherit lib pkgs theme;
+          opts.terminal = cfg.terminal;
         };
-        patchList = [ basePatch ];
       in {
         enable = true;
-        package = import ../../../../shared/dwm { inherit lib pkgs theme; };
+        package = customDwm;
       };
     };
   };

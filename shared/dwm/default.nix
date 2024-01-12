@@ -1,4 +1,4 @@
-{ lib, pkgs, theme, opts ? { terminal = "kitty"; } }:
+{ lib, pkgs, theme, opts }:
 let
   patches = (import ./patches.nix) { lib = lib; };
   basePatch = patches.mkBasePatch {
