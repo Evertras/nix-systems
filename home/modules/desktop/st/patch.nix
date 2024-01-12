@@ -1,21 +1,21 @@
 { }: {
-  mkPatch = { fontName, fontSize, shell, colors }:
+  mkPatch = { fontName, fontSize, colors }:
 
     builtins.toFile "ever-st.diff" ''
 
-      From c4fd1be11043d56d7389b736d655d1fac90b48d4 Mon Sep 17 00:00:00 2001
+      From 3b235a7f1abefec7f14379ed63a204f438a8cf81 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Fri, 12 Jan 2024 08:59:08 +0900
+      Date: Fri, 12 Jan 2024 09:04:28 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  20 ++++----
+       config.def.h |  18 +++----
        st.h         |   6 +++
        x.c          | 138 +++++++++++++++++++++++++--------------------------
-       3 files changed, 83 insertions(+), 81 deletions(-)
+       3 files changed, 82 insertions(+), 80 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 91ab8ca..e7cb66a 100644
+      index 91ab8ca..9549b0e 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,7 +5,7 @@
@@ -29,15 +29,6 @@
        static int borderpx = 2;
        
        /*
-      @@ -16,7 +16,7 @@ static int borderpx = 2;
-        * 4: value of shell in /etc/passwd
-        * 5: value of shell in config.h
-        */
-      -static char *shell = "/bin/sh";
-      +static char *shell = "${shell}";
-       char *utmp = NULL;
-       /* scroll program: to enable use a string like "scroll" */
-       char *scroll = NULL;
       @@ -97,12 +97,12 @@ unsigned int tabspaces = 8;
        static const char *colorname[] = {
        	/* 8 normal colors */

@@ -9,11 +9,6 @@ let
   mainPatch = patchlib.mkPatch {
     fontName = theme.fonts.terminal.name;
     fontSize = 22;
-    # TODO: Can't use the shellBin that references pkgs here,
-    # because toFile doesn't want to have dependencies to other
-    # derivations.  The solution is to create a 'real' derivation here.
-    # Leaving that for another day and just using fish here, fix later.
-    shell = "fish";
 
     colors = {
       foreground = theme.colors.text;

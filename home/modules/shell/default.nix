@@ -69,7 +69,10 @@ in {
         fastfetch
       ];
 
-      sessionVariables = { EDITOR = "nvim"; };
+      sessionVariables = {
+        EDITOR = "nvim";
+        SHELL = cfg.shellBin;
+      };
     };
 
     programs = {
