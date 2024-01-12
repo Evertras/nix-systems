@@ -47,6 +47,7 @@ in {
         enable = true;
 
         bgImage = "/home/evertras/Pictures/wallpaper.ff";
+        fontSize = 20;
       };
 
       display.sleep.enable = true;

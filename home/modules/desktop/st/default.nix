@@ -8,7 +8,7 @@ let
   colorsFrappe = catppuccinPalette.Frappe;
   mainPatch = patchlib.mkPatch {
     fontName = theme.fonts.terminal.name;
-    fontSize = 22;
+    fontSize = cfg.fontSize;
 
     colors = {
       foreground = theme.colors.text;
@@ -37,6 +37,14 @@ in {
       '';
       type = types.str;
       default = "";
+    };
+
+    fontSize = mkOption {
+      description = ''
+        Font size to use.
+      '';
+      type = types.int;
+      default = 22;
     };
   };
 
