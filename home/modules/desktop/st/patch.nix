@@ -1,20 +1,21 @@
 { }: {
-  mkPatch = { fontName, fontSize, shell }:
+  mkPatch = { fontName, fontSize, shell, colors }:
+
     builtins.toFile "ever-st.diff" ''
 
-      From 834a6227d8674a5ad098f5700189dffe8aa80f31 Mon Sep 17 00:00:00 2001
+      From c4fd1be11043d56d7389b736d655d1fac90b48d4 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Fri, 12 Jan 2024 08:46:22 +0900
+      Date: Fri, 12 Jan 2024 08:59:08 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |   4 +-
+       config.def.h |  20 ++++----
        st.h         |   6 +++
-       x.c          | 134 +++++++++++++++++++++++++--------------------------
-       3 files changed, 75 insertions(+), 69 deletions(-)
+       x.c          | 138 +++++++++++++++++++++++++--------------------------
+       3 files changed, 83 insertions(+), 81 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 91ab8ca..fe0fe08 100644
+      index 91ab8ca..e7cb66a 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,7 +5,7 @@
@@ -37,6 +38,36 @@
        char *utmp = NULL;
        /* scroll program: to enable use a string like "scroll" */
        char *scroll = NULL;
+      @@ -97,12 +97,12 @@ unsigned int tabspaces = 8;
+       static const char *colorname[] = {
+       	/* 8 normal colors */
+       	"black",
+      -	"red3",
+      -	"green3",
+      -	"yellow3",
+      -	"blue2",
+      -	"magenta3",
+      -	"cyan3",
+      +	"${colors.red}",
+      +	"${colors.green}",
+      +	"${colors.yellow}",
+      +	"${colors.blue}",
+      +	"${colors.magenta}",
+      +	"${colors.cyan}",
+       	"gray90",
+       
+       	/* 8 bright colors */
+      @@ -120,8 +120,8 @@ static const char *colorname[] = {
+       	/* more colors can be added after 255 to use with DefaultXX */
+       	"#cccccc",
+       	"#555555",
+      -	"gray90", /* default foreground colour */
+      -	"black", /* default background colour */
+      +	"${colors.foreground}", /* default foreground colour */
+      +	"${colors.background}", /* default background colour */
+       };
+       
+       
       diff --git a/st.h b/st.h
       index fd3b0d8..19d81b0 100644
       --- a/st.h
@@ -55,7 +86,7 @@
        	SEL_IDLE = 0,
        	SEL_EMPTY = 1,
       diff --git a/x.c b/x.c
-      index b36fb8c..6320a7d 100644
+      index b36fb8c..aa42ab0 100644
       --- a/x.c
       +++ b/x.c
       @@ -142,7 +142,7 @@ typedef struct {
@@ -76,7 +107,18 @@
        {
        	int charlen = len * ((base.mode & ATTR_WIDE) ? 2 : 1);
        	int winx = borderpx + x * win.cw, winy = borderpx + y * win.ch,
-      @@ -1463,47 +1463,40 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+      @@ -1412,10 +1412,6 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+       		bg = &dc.col[base.bg];
+       	}
+       
+      -	/* Change basic system colors [0-7] to bright system colors [8-15] */
+      -	if ((base.mode & ATTR_BOLD_FAINT) == ATTR_BOLD && BETWEEN(base.fg, 0, 7))
+      -		fg = &dc.col[base.fg + 8];
+      -
+       	if (IS_SET(MODE_REVERSE)) {
+       		if (fg == &dc.col[defaultfg]) {
+       			fg = &dc.col[defaultbg];
+      @@ -1463,47 +1459,40 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
        	if (base.mode & ATTR_INVISIBLE)
        		fg = bg;
        
@@ -158,7 +200,7 @@
        }
        
        void
-      @@ -1513,7 +1506,7 @@ xdrawglyph(Glyph g, int x, int y)
+      @@ -1513,7 +1502,7 @@ xdrawglyph(Glyph g, int x, int y)
        	XftGlyphFontSpec spec;
        
        	numspecs = xmakeglyphfontspecs(&spec, &g, 1, x, y);
@@ -167,7 +209,7 @@
        }
        
        void
-      @@ -1648,32 +1641,39 @@ xstartdraw(void)
+      @@ -1648,32 +1637,39 @@ xstartdraw(void)
        void
        xdrawline(Line line, int x1, int y1, int x2)
        {
