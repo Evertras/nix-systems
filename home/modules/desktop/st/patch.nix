@@ -1,25 +1,25 @@
 { }: {
-  mkPatch = { fontName, fontSize, colors }:
+  mkPatch = { fontName, fontSize, colors, bgImage }:
 
     builtins.toFile "ever-st.diff" ''
 
-      From a9d1435818698f112c90f0b2b9b4bafca2e77e6d Mon Sep 17 00:00:00 2001
+      From 3d4eee8af9ec776aec9f942790190ba8e1926199 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Fri, 12 Jan 2024 13:43:28 +0900
+      Date: Fri, 12 Jan 2024 22:33:16 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  24 ++++----
+       config.def.h |  32 +++---
        config.mk    |   2 +-
        st.h         |   6 ++
-       x.c          | 156 +++++++++++++++++++++++----------------------------
-       4 files changed, 87 insertions(+), 101 deletions(-)
+       x.c          | 293 ++++++++++++++++++++++++++++++++++-----------------
+       4 files changed, 224 insertions(+), 109 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 91ab8ca..de8184b 100644
+      index 91ab8ca..88b492c 100644
       --- a/config.def.h
       +++ b/config.def.h
-      @@ -5,7 +5,7 @@
+      @@ -5,9 +5,17 @@
         *
         * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
         */
@@ -29,8 +29,18 @@
       }:antialias=true:autohint=true";
        static int borderpx = 2;
        
+      +/*
+      + * background image
+      + * expects farbfeld format
+      + * pseudo transparency fixes coordinates to the screen origin
+      + */
+      +static const char *bgfile = "${bgImage}";
+      +static const int pseudotransparency = 1;
+      +
        /*
-      @@ -97,12 +97,12 @@ unsigned int tabspaces = 8;
+        * What program is execed by st depends of these precedence rules:
+        * 1: program passed with -e
+      @@ -97,12 +105,12 @@ unsigned int tabspaces = 8;
        static const char *colorname[] = {
        	/* 8 normal colors */
        	"black",
@@ -49,7 +59,7 @@
        	"gray90",
        
        	/* 8 bright colors */
-      @@ -120,8 +120,8 @@ static const char *colorname[] = {
+      @@ -120,8 +128,8 @@ static const char *colorname[] = {
        	/* more colors can be added after 255 to use with DefaultXX */
        	"#cccccc",
        	"#555555",
@@ -60,7 +70,7 @@
        };
        
        
-      @@ -151,11 +151,9 @@ static unsigned int cols = 80;
+      @@ -151,11 +159,9 @@ static unsigned int cols = 80;
        static unsigned int rows = 24;
        
        /*
@@ -105,18 +115,35 @@
        	SEL_IDLE = 0,
        	SEL_EMPTY = 1,
       diff --git a/x.c b/x.c
-      index b36fb8c..a308600 100644
+      index b36fb8c..3953a83 100644
       --- a/x.c
       +++ b/x.c
-      @@ -14,6 +14,7 @@
+      @@ -14,6 +14,8 @@
        #include <X11/keysym.h>
        #include <X11/Xft/Xft.h>
        #include <X11/XKBlib.h>
       +#include <X11/Xcursor/Xcursor.h>
+      +#include <arpa/inet.h>
        
        char *argv0;
        #include "arg.h"
-      @@ -142,7 +143,7 @@ typedef struct {
+      @@ -81,6 +83,7 @@ typedef XftGlyphFontSpec GlyphFontSpec;
+       typedef struct {
+       	int tw, th; /* tty width and height */
+       	int w, h; /* window width and height */
+      +	int x, y; /* window location */
+       	int ch; /* char height */
+       	int cw; /* char width  */
+       	int mode; /* window state/mode flags */
+      @@ -101,6 +104,7 @@ typedef struct {
+       		XVaNestedList spotlist;
+       	} ime;
+       	Draw draw;
+      +	GC bggc; /* Graphics Context for background */
+       	Visual *vis;
+       	XSetWindowAttributes attrs;
+       	int scr;
+      @@ -142,7 +146,7 @@ typedef struct {
        
        static inline ushort sixd_to_16bit(int);
        static int xmakeglyphfontspecs(XftGlyphFontSpec *, const Glyph *, int, int, int);
@@ -125,7 +152,66 @@
        static void xdrawglyph(Glyph, int, int);
        static void xclear(int, int, int, int);
        static int xgeommasktogravity(int);
-      @@ -1196,24 +1197,9 @@ xinit(int cols, int rows)
+      @@ -151,6 +155,9 @@ static void ximinstantiate(Display *, XPointer, XPointer);
+       static void ximdestroy(XIM, XPointer, XPointer);
+       static int xicdestroy(XIC, XPointer, XPointer);
+       static void xinit(int, int);
+      +static void updatexy(void);
+      +static XImage *loadff(const char*);
+      +static void bginit();
+       static void cresize(int, int);
+       static void xresize(int, int);
+       static void xhints(void);
+      @@ -515,6 +522,12 @@ propnotify(XEvent *e)
+       			 xpev->atom == clipboard)) {
+       		selnotify(e);
+       	}
+      +
+      +	if (pseudotransparency &&
+      +			!strncmp(XGetAtomName(xw.dpy, e->xproperty.atom), "_NET_WM_STATE", 13)) {
+      +		updatexy();
+      +		redraw();
+      +	}
+       }
+       
+       void
+      @@ -545,16 +558,19 @@ selnotify(XEvent *e)
+       			return;
+       		}
+       
+      -		if (e->type == PropertyNotify && nitems == 0 && rem == 0) {
+      +		if (e->type == PropertyNotify && nitems == 0 && rem == 0 &&
+      +				!pseudotransparency) {
+       			/*
+       			 * If there is some PropertyNotify with no data, then
+       			 * this is the signal of the selection owner that all
+       			 * data has been transferred. We won't need to receive
+       			 * PropertyNotify events anymore.
+       			 */
+      -			MODBIT(xw.attrs.event_mask, 0, PropertyChangeMask);
+      -			XChangeWindowAttributes(xw.dpy, xw.win, CWEventMask,
+      +			if (!pseudotransparency) {
+      +				MODBIT(xw.attrs.event_mask, 0, PropertyChangeMask);
+      +				XChangeWindowAttributes(xw.dpy, xw.win, CWEventMask,
+       					&xw.attrs);
+      +			}
+       		}
+       
+       		if (type == incratom) {
+      @@ -851,9 +867,9 @@ xsetcolorname(int x, const char *name)
+       void
+       xclear(int x1, int y1, int x2, int y2)
+       {
+      -	XftDrawRect(xw.draw,
+      -			&dc.col[IS_SET(MODE_REVERSE)? defaultfg : defaultbg],
+      -			x1, y1, x2-x1, y2-y1);
+      +	if (pseudotransparency)
+      +		XSetTSOrigin(xw.dpy, xw.bggc, -win.x, -win.y);
+      +	XFillRectangle(xw.dpy, xw.buf, xw.bggc, x1, y1, x2 - x1, y2 - y1);
+       }
+       
+       void
+      @@ -1196,24 +1212,9 @@ xinit(int cols, int rows)
        	                                       ximinstantiate, NULL);
        	}
        
@@ -151,7 +237,107 @@
        	xw.xembed = XInternAtom(xw.dpy, "_XEMBED", False);
        	xw.wmdeletewin = XInternAtom(xw.dpy, "WM_DELETE_WINDOW", False);
        	xw.netwmname = XInternAtom(xw.dpy, "_NET_WM_NAME", False);
-      @@ -1372,7 +1358,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
+      @@ -1239,6 +1240,99 @@ xinit(int cols, int rows)
+       		xsel.xtarget = XA_STRING;
+       }
+       
+      +void
+      +updatexy()
+      +{
+      +	Window child;
+      +	XTranslateCoordinates(xw.dpy, xw.win, DefaultRootWindow(xw.dpy), 0, 0, &win.x, &win.y, &child);
+      +}
+      +
+      +/*
+      + * load farbfeld file to XImage
+      + */
+      +XImage*
+      +loadff(const char *filename)
+      +{
+      +	uint32_t i, hdr[4], w, h, size;
+      +	uint64_t *data;
+      +	FILE *f = fopen(filename, "rb");
+      +
+      +	if (f == NULL) {
+      +		fprintf(stderr, "Can not open background image file\n");
+      +		return NULL;
+      +	}
+      +
+      +	if (fread(hdr, sizeof(*hdr), LEN(hdr), f) != LEN(hdr))
+      +		if (ferror(f)) {
+      +			fprintf(stderr, "fread:");
+      +			return NULL;
+      +		}
+      +		else {
+      +			fprintf(stderr, "fread: Unexpected end of file\n");
+      +			return NULL;
+      +		}
+      +
+      +	if (memcmp("farbfeld", hdr, sizeof("farbfeld") - 1)) {
+      +		fprintf(stderr, "Invalid magic value\n");
+      +		return NULL;
+      +	}
+      +
+      +	w = ntohl(hdr[2]);
+      +	h = ntohl(hdr[3]);
+      +	size = w * h;
+      +	data = malloc(size * sizeof(uint64_t));
+      +
+      +	if (fread(data, sizeof(uint64_t), size, f) != size)
+      +		if (ferror(f)) {
+      +			fprintf(stderr, "fread:");
+      +			return NULL;
+      +		}
+      +		else {
+      +			fprintf(stderr, "fread: Unexpected end of file\n");
+      +			return NULL;
+      +		}
+      +
+      +	fclose(f);
+      +
+      +	for (i = 0; i < size; i++)
+      +		data[i] = (data[i] & 0x00000000000000FF) << 16 |
+      +			  (data[i] & 0x0000000000FF0000) >> 8  |
+      +			  (data[i] & 0x000000FF00000000) >> 32;
+      +
+      +	XImage *xi = XCreateImage(xw.dpy, DefaultVisual(xw.dpy, xw.scr),
+      +	                            DefaultDepth(xw.dpy, xw.scr), ZPixmap, 0,
+      +	                            (char *)data, w, h, 32, w * 8);
+      +	xi->bits_per_pixel = 64;
+      +	return xi;
+      +}
+      +
+      +/*
+      + * initialize background image
+      + */
+      +void
+      +bginit()
+      +{
+      +	XGCValues gcvalues;
+      +	Drawable bgimg;
+      +	XImage *bgxi = loadff(bgfile);
+      +
+      +	memset(&gcvalues, 0, sizeof(gcvalues));
+      +	xw.bggc = XCreateGC(xw.dpy, xw.win, 0, &gcvalues);
+      +	if (!bgxi) return;
+      +	bgimg = XCreatePixmap(xw.dpy, xw.win, bgxi->width, bgxi->height,
+      +	                      DefaultDepth(xw.dpy, xw.scr));
+      +	XPutImage(xw.dpy, bgimg, dc.gc, bgxi, 0, 0, 0, 0, bgxi->width,
+      +	          bgxi->height);
+      +	XDestroyImage(bgxi);
+      +	XSetTile(xw.dpy, xw.bggc, bgimg);
+      +	XSetFillStyle(xw.dpy, xw.bggc, FillTiled);
+      +	if (pseudotransparency) {
+      +		updatexy();
+      +		MODBIT(xw.attrs.event_mask, 1, PropertyChangeMask);
+      +		XChangeWindowAttributes(xw.dpy, xw.win, CWEventMask, &xw.attrs);
+      +	}
+      +}
+      +
+       int
+       xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x, int y)
+       {
+      @@ -1372,7 +1466,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
        }
        
        void
@@ -160,7 +346,7 @@
        {
        	int charlen = len * ((base.mode & ATTR_WIDE) ? 2 : 1);
        	int winx = borderpx + x * win.cw, winy = borderpx + y * win.ch,
-      @@ -1412,10 +1398,6 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+      @@ -1412,10 +1506,6 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
        		bg = &dc.col[base.bg];
        	}
        
@@ -171,7 +357,7 @@
        	if (IS_SET(MODE_REVERSE)) {
        		if (fg == &dc.col[defaultfg]) {
        			fg = &dc.col[defaultbg];
-      @@ -1463,47 +1445,40 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+      @@ -1463,47 +1553,43 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
        	if (base.mode & ATTR_INVISIBLE)
        		fg = bg;
        
@@ -232,7 +418,10 @@
       +        if (winy + win.ch >= borderpx + win.th)
       +            xclear(winx, winy + win.ch, winx + width, win.h);
       +        /* Fill the background */
-      +        XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
+      +		if (bg == &dc.col[defaultbg])
+      +			xclear(winx, winy, winx + width, winy + win.ch);
+      +		else
+      +			XftDrawRect(xw.draw, bg, winx, winy, width, win.ch);
       +    }
       +
       +    if (dmode & DRAW_FG) {
@@ -253,7 +442,7 @@
        }
        
        void
-      @@ -1513,7 +1488,7 @@ xdrawglyph(Glyph g, int x, int y)
+      @@ -1513,7 +1599,7 @@ xdrawglyph(Glyph g, int x, int y)
        	XftGlyphFontSpec spec;
        
        	numspecs = xmakeglyphfontspecs(&spec, &g, 1, x, y);
@@ -262,7 +451,7 @@
        }
        
        void
-      @@ -1648,32 +1623,39 @@ xstartdraw(void)
+      @@ -1648,32 +1734,39 @@ xstartdraw(void)
        void
        xdrawline(Line line, int x1, int y1, int x2)
        {
@@ -325,6 +514,34 @@
        }
        
        void
+      @@ -1905,8 +1998,17 @@ cmessage(XEvent *e)
+       void
+       resize(XEvent *e)
+       {
+      -	if (e->xconfigure.width == win.w && e->xconfigure.height == win.h)
+      -		return;
+      +	if (pseudotransparency) {
+      +		if (e->xconfigure.width == win.w &&
+      +		    e->xconfigure.height == win.h &&
+      +		    e->xconfigure.x == win.x && e->xconfigure.y == win.y)
+      +			return;
+      +		updatexy();
+      +	} else {
+      +		if (e->xconfigure.width == win.w &&
+      +		    e->xconfigure.height == win.h)
+      +			return;
+      +	}
+       
+       	cresize(e->xconfigure.width, e->xconfigure.height);
+       }
+      @@ -2091,6 +2193,7 @@ run:
+       	rows = MAX(rows, 1);
+       	tnew(cols, rows);
+       	xinit(cols, rows);
+      +	bginit();
+       	xsetenv();
+       	selinit();
+       	run();
       -- 
       2.42.0
 

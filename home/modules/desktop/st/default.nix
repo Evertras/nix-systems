@@ -21,15 +21,30 @@ let
       magenta = colorsFrappe.Mauve;
       cyan = colorsFrappe.Sky;
     };
+
+    bgImage = cfg.bgImage;
   };
 in {
   options.evertras.home.desktop.st = with lib; {
     enable = mkEnableOption "st";
+
+    bgImage = mkOption {
+      description = ''
+        Path to background image.  Must be in farfeld (.ff),
+        use jpg2ff or png2ff to convert.
+
+        https://st.suckless.org/patches/background_image/
+      '';
+      type = types.str;
+      default = "";
+    };
   };
 
   config = lib.mkIf cfg.enable {
     home.packages = let patchList = [ mainPatch ];
     in [
+      # To generate background images with jpg2ff and png2ff
+      pkgs.farbfeld
       (pkgs.st.overrideAttrs (self: super: {
         src = ./src;
         patches = if super.patches == null then

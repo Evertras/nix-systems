@@ -43,7 +43,11 @@ in {
       kbLayout = "jp";
 
       kitty.enable = true;
-      st.enable = true;
+      st = {
+        enable = true;
+
+        bgImage = "/home/evertras/Pictures/wallpaper.ff";
+      };
 
       display.sleep.enable = true;
 
