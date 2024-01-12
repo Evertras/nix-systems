@@ -3,6 +3,7 @@ let
   patches = (import ./patches.nix) { lib = lib; };
   basePatch = patches.mkBasePatch {
     terminal = opts.terminal;
+    lock = opts.lock;
     colorPrimary = theme.colors.primary;
     colorText = theme.colors.text;
     colorBackground = theme.colors.background;

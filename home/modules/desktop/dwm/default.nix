@@ -5,7 +5,10 @@ let
   theme = config.evertras.themes.selected;
   customDwm = import ../../../../shared/dwm {
     inherit lib pkgs theme;
-    opts.terminal = cfg.terminal;
+    opts = {
+      terminal = cfg.terminal;
+      lock = cfg.lock;
+    };
   };
 in {
   options.evertras.home.desktop.dwm = {
@@ -14,6 +17,8 @@ in {
       type = types.str;
       default = "kitty";
     };
+
+    lock = mkOption { type = types.str; };
   };
 
   config = let systemfile-path = ".evertras/systemfiles/dwm.desktop";

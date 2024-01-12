@@ -11,6 +11,9 @@ let
   displayRight = "HDMI-0";
 
   terminal = "st";
+
+  # Custom lock script outside of home-manager
+  customLockCmd = "/home/brandon-fulljames/.evertras/funcs/lock";
 in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
@@ -57,6 +60,8 @@ in {
         enable = true;
 
         inherit terminal;
+
+        lock = customLockCmd;
       };
 
       i3 = {
@@ -66,7 +71,12 @@ in {
         monitorNetworkInterface = "eno1";
 
         # TODO: Fix 'Mod4'
-        keybindOverrides = { "Mod4+space" = "exec ${terminal}"; };
+        keybindOverrides = {
+          # For some reason space is lower case, so need this to override
+          "Mod4+space" = "exec ${terminal}";
+          # Custom local lock
+          "Mod4+Escape" = "exec ${customLockCmd}";
+        };
 
         startupPreCommands = [ "autorandr -l main" ];
 
@@ -88,7 +98,8 @@ in {
     };
   };
 
-  # We have picom already installed and working via Ubuntu
+  # We have picom already installed and working via Ubuntu,
+  # so use it to avoid OpenGL headaches
   services.picom.enable = false;
 
   programs.autorandr = {
