@@ -26,7 +26,13 @@ in {
 
   ############################################################################## 
   # General system environment stuff
-  time.timeZone = "Asia/Tokyo";
+  time = {
+    timeZone = "Asia/Tokyo";
+
+    # Need this for dual-booting with Windows
+    # https://nixos.wiki/wiki/Dual_Booting_NixOS_and_Windows
+    hardwareClockInLocalTime = true;
+  };
 
   # Select internationalisation properties.
   i18n.defaultLocale = "en_US.UTF-8";
