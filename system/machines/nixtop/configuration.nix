@@ -14,6 +14,28 @@ in {
     ./hardware-configuration.nix
   ];
 
+  ################################################################################
+  # Boot stuff
+
+  # Use the systemd-boot EFI boot loader.
+  boot.loader = {
+    systemd-boot.enable = true;
+    efi.canTouchEfiVariables = true;
+    timeout = 2;
+  };
+
+  ################################################################################ 
+  # General system environment stuff
+  time.timeZone = "Asia/Tokyo";
+
+  # Select internationalisation properties.
+  i18n.defaultLocale = "en_US.UTF-8";
+
+  console = { keyMap = "jp106"; };
+
+  ################################################################################
+  # Desktop stuff
+  # (keep minimal, use home-manager for most things)
   evertras.themes.selected = theme;
 
   evertras.desktop = {
@@ -24,16 +46,11 @@ in {
     dwm.enable = true;
   };
 
-  # Use the systemd-boot EFI boot loader.
-  boot.loader.systemd-boot.enable = true;
-  boot.loader.efi.canTouchEfiVariables = true;
-  boot.loader.timeout = 2;
-
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
-
   services.xserver.displayManager.autoLogin.user = "evertras";
 
+  ################################################################################
   # Sound stuff
+
   # https://nixos.wiki/wiki/PipeWire
   security.rtkit.enable = true;
   services.pipewire = {
@@ -53,7 +70,9 @@ in {
     };
   };
 
+  ################################################################################
   # Networking stuff
+
   networking = {
     hostName = "nixtop";
     wireless = {
@@ -71,15 +90,17 @@ in {
     };
   };
 
-  # Set your time zone.
-  time.timeZone = "Asia/Tokyo";
+  # TODO: Doing this because local DNS doesn't work, investigate
+  networking.nameservers = [ "8.8.8.8" ];
+  services.resolved = {
+    enable = true;
+    fallbackDns = [ "8.8.8.8" ];
+  };
 
-  # Select internationalisation properties.
-  # i18n.defaultLocale = "en_US.UTF-8";
+  ################################################################################
+  # Other system-wide packages/programs
+  # Keep this minimal, use home-manager for most things
 
-  console = { keyMap = "jp106"; };
-
-  # List packages installed in system profile. To search, run:
   environment.systemPackages = with pkgs; [
     home-manager
 
@@ -90,13 +111,6 @@ in {
   programs.gnupg.agent = {
     enable = true;
     enableSSHSupport = true;
-  };
-
-  # TODO: Doing this because local DNS doesn't work, investigate
-  networking.nameservers = [ "8.8.8.8" ];
-  services.resolved = {
-    enable = true;
-    fallbackDns = [ "8.8.8.8" ];
   };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
