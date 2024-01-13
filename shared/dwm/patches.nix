@@ -2,22 +2,22 @@
 with lib; {
   # Note to future self: be VERY careful about preserving
   # whitespace/tabs inside the actual strings...
-  mkBasePatch = { colorBackground, colorPrimary, colorText, fontName, fontSize
-    , gappx, lock, modKey, terminal, }:
+  mkBasePatch = { browser, colorBackground, colorPrimary, colorText, fontName
+    , fontSize, gappx, lock, modKey, terminal, }:
     builtins.toFile "ever-dwm.diff" ''
 
-      From 3b111c38efa6b2654303ac256249b16e3ad173ca Mon Sep 17 00:00:00 2001
+      From 91ed9e9e6f70492702aec30c540ac3788792bc6d Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Sat, 13 Jan 2024 12:53:51 +0900
+      Date: Sat, 13 Jan 2024 15:08:18 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  58 +++++++++-------
+       config.def.h |  60 ++++++++++-------
        dwm.c        | 183 ++++++++++++++++++++++++++++++++++++++++++++++++---
-       2 files changed, 210 insertions(+), 31 deletions(-)
+       2 files changed, 212 insertions(+), 31 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..a50f75f 100644
+      index 9efa774..ba317f2 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -3,19 +3,24 @@
@@ -83,7 +83,7 @@ with lib; {
        #define TAGKEYS(KEY,TAG) \
        	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
        	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-      @@ -57,8 +63,9 @@ static const Layout layouts[] = {
+      @@ -57,8 +63,10 @@ static const Layout layouts[] = {
        
        /* commands */
        static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
@@ -92,10 +92,11 @@ with lib; {
       +static const char *dmenucmd[] = { "dmenu_run", NULL };
       +static const char *termcmd[]  = { "${terminal}", NULL };
       +static const char *lockcmd[]  = { "${lock}", NULL };
+      +static const char *browsercmd[] = { "${browser}", NULL };
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -73,12 +80,16 @@ static const Key keys[] = {
+      @@ -73,12 +81,16 @@ static const Key keys[] = {
        	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
        	{ MODKEY,                       XK_Return, zoom,           {0} },
        	{ MODKEY,                       XK_Tab,    view,           {0} },
@@ -117,17 +118,18 @@ with lib; {
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
        	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
        	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-      @@ -95,6 +106,9 @@ static const Key keys[] = {
+      @@ -95,6 +107,10 @@ static const Key keys[] = {
        	TAGKEYS(                        XK_8,                      7)
        	TAGKEYS(                        XK_9,                      8)
        	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
       +
       +	/* Additional keybinds added here */
       +	{ MODKEY,                       XK_Escape, spawn,          {.v = lockcmd } },
+      +	{ MODKEY,                       XK_r,      spawn,          {.v = browsercmd } },
        };
        
        /* button definitions */
-      @@ -102,7 +116,7 @@ static const Key keys[] = {
+      @@ -102,7 +118,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },

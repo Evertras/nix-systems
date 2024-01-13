@@ -2,6 +2,7 @@
 let
   patches = (import ./patches.nix) { lib = lib; };
   basePatch = patches.mkBasePatch {
+    browser = opts.browser;
     colorBackground = theme.colors.background;
     colorPrimary = theme.colors.primary;
     colorText = theme.colors.text;

@@ -8,6 +8,12 @@ in {
   options.evertras.desktop.dwm = {
     enable = mkEnableOption "dwm";
 
+    browser = mkOption {
+      type = types.str;
+      default = "librewolf";
+      description = "Browser to open with hotkey";
+    };
+
     terminal = mkOption {
       type = types.str;
       default = "st";
@@ -41,6 +47,7 @@ in {
         customDwm = import ../../../../shared/dwm {
           inherit lib pkgs theme;
           opts = {
+            browser = cfg.browser;
             lock = cfg.lock;
             terminal = cfg.terminal;
             fontSize = 16;
