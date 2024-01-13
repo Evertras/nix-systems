@@ -86,7 +86,8 @@ in {
           prompt = theme.colors.primary;
 
           # What the selection is pointing at right now
-          pointer = theme.colors.urgent;
+          # Sits behind "fg+", so make it blend in with text
+          pointer = theme.colors.background;
 
           "bg+" = theme.colors.primary;
           "fg+" = theme.colors.background;
