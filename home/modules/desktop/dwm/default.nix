@@ -6,10 +6,11 @@ let
   customDwm = import ../../../../shared/dwm {
     inherit lib pkgs theme;
     opts = {
-      terminal = cfg.terminal;
-      lock = cfg.lock;
       fontSize = 16;
       gappx = 20;
+      lock = cfg.lock;
+      modKey = cfg.modKey;
+      terminal = cfg.terminal;
     };
   };
 in {
@@ -18,6 +19,17 @@ in {
     terminal = mkOption {
       type = types.str;
       default = "kitty";
+    };
+
+    modKey = mkOption {
+      type = types.str;
+      default = "Mod4Mask";
+      description = ''
+        The modifier key to use for dwm.
+
+        Mod4Mask is the windows/cmd super key.
+        Mod1Mask is the alt key.
+      '';
     };
 
     lock = mkOption { type = types.str; };

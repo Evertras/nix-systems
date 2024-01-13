@@ -9,6 +9,7 @@ let
     fontSize = opts.fontSize;
     gappx = opts.gappx;
     lock = opts.lock;
+    modKey = opts.modKey;
     terminal = opts.terminal;
   };
   patchList = [ basePatch ];

@@ -7,15 +7,29 @@ let
 in {
   options.evertras.desktop.dwm = {
     enable = mkEnableOption "dwm";
+
     terminal = mkOption {
       type = types.str;
       default = "st";
       description = "Terminal to use";
     };
+
     lock = mkOption {
       type = types.str;
       default = "slock";
       description = "Lock command to use";
+    };
+
+    modKey = mkOption {
+      type = types.str;
+      default = "Mod4Mask";
+      description = ''
+        The modifier key to use.
+
+        Mod4Mask is the windows/cmd super key.
+
+        Mod1Mask is the alt key.
+      '';
     };
   };
 
@@ -31,6 +45,8 @@ in {
             terminal = cfg.terminal;
             fontSize = 16;
             gappx = 20;
+            # Win/cmd key
+            modKey = cfg.modKey;
           };
         };
       in {

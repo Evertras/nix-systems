@@ -2,22 +2,22 @@
 with lib; {
   # Note to future self: be VERY careful about preserving
   # whitespace/tabs inside the actual strings...
-  mkBasePatch = { terminal, colorPrimary, colorText, colorBackground, fontSize
-    , fontName, gappx, lock }:
+  mkBasePatch = { colorBackground, colorPrimary, colorText, fontName, fontSize
+    , gappx, lock, modKey, terminal, }:
     builtins.toFile "ever-dwm.diff" ''
 
-      From c15ac8d60e15d83d2cc0737c40492ff4614ab28f Mon Sep 17 00:00:00 2001
-      From: Brandon Fulljames <brandon.fulljames@woven-planet.global>
-      Date: Fri, 12 Jan 2024 12:46:34 +0900
+      From 3b111c38efa6b2654303ac256249b16e3ad173ca Mon Sep 17 00:00:00 2001
+      From: Brandon Fulljames <bfullj@gmail.com>
+      Date: Sat, 13 Jan 2024 12:53:51 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  56 ++++++++++------
+       config.def.h |  58 +++++++++-------
        dwm.c        | 183 ++++++++++++++++++++++++++++++++++++++++++++++++---
-       2 files changed, 209 insertions(+), 30 deletions(-)
+       2 files changed, 210 insertions(+), 31 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..e2e7905 100644
+      index 9efa774..a50f75f 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -3,19 +3,24 @@
@@ -79,7 +79,7 @@ with lib; {
        
        /* key definitions */
       -#define MODKEY Mod1Mask
-      +#define MODKEY Mod4Mask
+      +#define MODKEY ${modKey}
        #define TAGKEYS(KEY,TAG) \
        	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
        	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
@@ -103,11 +103,12 @@ with lib; {
       +	/* Modified from shift+c */
       +	{ MODKEY,                       XK_q,      killclient,     {0} },
        	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
-       	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
+      -	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[1]} },
       -	{ MODKEY,                       XK_m,      setlayout,      {.v = &layouts[2]} },
       -	{ MODKEY,                       XK_space,  setlayout,      {0} },
       -	{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },
-      +	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[2]} },
+      +	{ MODKEY,                       XK_f,      setlayout,      {.v = &layouts[2]} },
+      +	{ MODKEY,                       XK_u,      setlayout,      {.v = &layouts[1]} },
       +	/* Repurposed to match i3's mod+space to spawn terminal, moved
       +	   regular space to shift+space to allow layout toggles */
       +	/*{ MODKEY|ShiftMask,             XK_space,  togglefloating, {0} },*/
