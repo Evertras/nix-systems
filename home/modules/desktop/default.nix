@@ -77,6 +77,16 @@ in {
       };
     };
 
+    services = {
+      redshift = {
+        enable = true;
+
+        # Tokyo generic
+        latitude = 35.652832;
+        longitude = 139.839478;
+      };
+    };
+
     evertras.home.desktop = {
       i3 = {
         enable = mkDefault true;
@@ -116,16 +126,6 @@ in {
           notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
         fi
       '';
-    };
-
-    services = {
-      redshift = {
-        enable = true;
-
-        # Tokyo generic
-        latitude = 35.652832;
-        longitude = 139.839478;
-      };
     };
   };
 }
