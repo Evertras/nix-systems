@@ -3,17 +3,17 @@
 
     builtins.toFile "ever-st.diff" ''
 
-      From 3d4eee8af9ec776aec9f942790190ba8e1926199 Mon Sep 17 00:00:00 2001
+      From 72fcc5038bc4298d6cbe269d1f7bf34c97779bc2 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Fri, 12 Jan 2024 22:33:16 +0900
+      Date: Sun, 14 Jan 2024 00:09:34 +0900
       Subject: [PATCH] Changes
 
       ---
        config.def.h |  32 +++---
        config.mk    |   2 +-
-       st.h         |   6 ++
-       x.c          | 293 ++++++++++++++++++++++++++++++++++-----------------
-       4 files changed, 224 insertions(+), 109 deletions(-)
+       st.h         |   6 +
+       x.c          | 320 +++++++++++++++++++++++++++++++++++----------------
+       4 files changed, 250 insertions(+), 110 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
       index 91ab8ca..88b492c 100644
@@ -115,7 +115,7 @@
        	SEL_IDLE = 0,
        	SEL_EMPTY = 1,
       diff --git a/x.c b/x.c
-      index b36fb8c..3953a83 100644
+      index b36fb8c..d239766 100644
       --- a/x.c
       +++ b/x.c
       @@ -14,6 +14,8 @@
@@ -135,15 +135,22 @@
        	int ch; /* char height */
        	int cw; /* char width  */
        	int mode; /* window state/mode flags */
-      @@ -101,6 +104,7 @@ typedef struct {
+      @@ -101,8 +104,14 @@ typedef struct {
        		XVaNestedList spotlist;
        	} ime;
        	Draw draw;
       +	GC bggc; /* Graphics Context for background */
        	Visual *vis;
        	XSetWindowAttributes attrs;
+      +	/* Here, we use the term *pointer* to differentiate the cursor
+      +	 * one sees when hovering the mouse over the terminal from, e.g.,
+      +	 * a green rectangle where text would be entered. */
+      +	Cursor vpointer, bpointer; /* visible and hidden pointers */
+      +	int pointerisvisible;
        	int scr;
-      @@ -142,7 +146,7 @@ typedef struct {
+       	int isfixed; /* is fixed geometry? */
+       	int l, t; /* left and top offset */
+      @@ -142,7 +151,7 @@ typedef struct {
        
        static inline ushort sixd_to_16bit(int);
        static int xmakeglyphfontspecs(XftGlyphFontSpec *, const Glyph *, int, int, int);
@@ -152,7 +159,7 @@
        static void xdrawglyph(Glyph, int, int);
        static void xclear(int, int, int, int);
        static int xgeommasktogravity(int);
-      @@ -151,6 +155,9 @@ static void ximinstantiate(Display *, XPointer, XPointer);
+      @@ -151,6 +160,9 @@ static void ximinstantiate(Display *, XPointer, XPointer);
        static void ximdestroy(XIM, XPointer, XPointer);
        static int xicdestroy(XIC, XPointer, XPointer);
        static void xinit(int, int);
@@ -162,7 +169,7 @@
        static void cresize(int, int);
        static void xresize(int, int);
        static void xhints(void);
-      @@ -515,6 +522,12 @@ propnotify(XEvent *e)
+      @@ -515,6 +527,12 @@ propnotify(XEvent *e)
        			 xpev->atom == clipboard)) {
        		selnotify(e);
        	}
@@ -175,7 +182,7 @@
        }
        
        void
-      @@ -545,16 +558,19 @@ selnotify(XEvent *e)
+      @@ -545,16 +563,19 @@ selnotify(XEvent *e)
        			return;
        		}
        
@@ -198,7 +205,21 @@
        		}
        
        		if (type == incratom) {
-      @@ -851,9 +867,9 @@ xsetcolorname(int x, const char *name)
+      @@ -716,6 +737,13 @@ brelease(XEvent *e)
+       void
+       bmotion(XEvent *e)
+       {
+      +	if (!xw.pointerisvisible) {
+      +		XDefineCursor(xw.dpy, xw.win, xw.vpointer);
+      +		xw.pointerisvisible = 1;
+      +		if (!IS_SET(MODE_MOUSEMANY))
+      +			xsetpointermotion(0);
+      +	}
+      +
+       	if (IS_SET(MODE_MOUSE) && !(e->xbutton.state & forcemousemod)) {
+       		mousereport(e);
+       		return;
+      @@ -851,9 +879,9 @@ xsetcolorname(int x, const char *name)
        void
        xclear(int x1, int y1, int x2, int y2)
        {
@@ -211,15 +232,26 @@
        }
        
        void
-      @@ -1196,24 +1212,9 @@ xinit(int cols, int rows)
+      @@ -1130,10 +1158,10 @@ void
+       xinit(int cols, int rows)
+       {
+       	XGCValues gcvalues;
+      -	Cursor cursor;
+       	Window parent;
+       	pid_t thispid = getpid();
+       	XColor xmousefg, xmousebg;
+      +	Pixmap blankpm;
+       
+       	if (!(xw.dpy = XOpenDisplay(NULL)))
+       		die("can't open display\n");
+      @@ -1196,23 +1224,13 @@ xinit(int cols, int rows)
        	                                       ximinstantiate, NULL);
        	}
        
       -	/* white cursor, black outline */
       -	cursor = XCreateFontCursor(xw.dpy, mouseshape);
-      +	cursor = XcursorLibraryLoadCursor(xw.dpy, mouseshape);
-       	XDefineCursor(xw.dpy, xw.win, cursor);
-       
+      -	XDefineCursor(xw.dpy, xw.win, cursor);
+      -
       -	if (XParseColor(xw.dpy, xw.cmap, colorname[mousefg], &xmousefg) == 0) {
       -		xmousefg.red   = 0xffff;
       -		xmousefg.green = 0xffff;
@@ -231,13 +263,18 @@
       -		xmousebg.green = 0x0000;
       -		xmousebg.blue  = 0x0000;
       -	}
-      -
+      +	xw.pointerisvisible = 1;
+      +	xw.vpointer = XcursorLibraryLoadCursor(xw.dpy, mouseshape);
+      +	XDefineCursor(xw.dpy, xw.win, xw.vpointer);
+       
       -	XRecolorCursor(xw.dpy, cursor, &xmousefg, &xmousebg);
-      -
+      +	blankpm = XCreateBitmapFromData(xw.dpy, xw.win, &(char){0}, 1, 1);
+      +	xw.bpointer = XCreatePixmapCursor(xw.dpy, blankpm, blankpm,
+      +					  &xmousefg, &xmousebg, 0, 0);
+       
        	xw.xembed = XInternAtom(xw.dpy, "_XEMBED", False);
        	xw.wmdeletewin = XInternAtom(xw.dpy, "WM_DELETE_WINDOW", False);
-       	xw.netwmname = XInternAtom(xw.dpy, "_NET_WM_NAME", False);
-      @@ -1239,6 +1240,99 @@ xinit(int cols, int rows)
+      @@ -1239,6 +1257,99 @@ xinit(int cols, int rows)
        		xsel.xtarget = XA_STRING;
        }
        
@@ -337,7 +374,7 @@
        int
        xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x, int y)
        {
-      @@ -1372,7 +1466,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
+      @@ -1372,7 +1483,7 @@ xmakeglyphfontspecs(XftGlyphFontSpec *specs, const Glyph *glyphs, int len, int x
        }
        
        void
@@ -346,7 +383,7 @@
        {
        	int charlen = len * ((base.mode & ATTR_WIDE) ? 2 : 1);
        	int winx = borderpx + x * win.cw, winy = borderpx + y * win.ch,
-      @@ -1412,10 +1506,6 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+      @@ -1412,10 +1523,6 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
        		bg = &dc.col[base.bg];
        	}
        
@@ -357,7 +394,7 @@
        	if (IS_SET(MODE_REVERSE)) {
        		if (fg == &dc.col[defaultfg]) {
        			fg = &dc.col[defaultbg];
-      @@ -1463,47 +1553,43 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
+      @@ -1463,47 +1570,43 @@ xdrawglyphfontspecs(const XftGlyphFontSpec *specs, Glyph base, int len, int x, i
        	if (base.mode & ATTR_INVISIBLE)
        		fg = bg;
        
@@ -442,7 +479,7 @@
        }
        
        void
-      @@ -1513,7 +1599,7 @@ xdrawglyph(Glyph g, int x, int y)
+      @@ -1513,7 +1616,7 @@ xdrawglyph(Glyph g, int x, int y)
        	XftGlyphFontSpec spec;
        
        	numspecs = xmakeglyphfontspecs(&spec, &g, 1, x, y);
@@ -451,7 +488,7 @@
        }
        
        void
-      @@ -1648,32 +1734,39 @@ xstartdraw(void)
+      @@ -1648,32 +1751,39 @@ xstartdraw(void)
        void
        xdrawline(Line line, int x1, int y1, int x2)
        {
@@ -514,7 +551,29 @@
        }
        
        void
-      @@ -1905,8 +1998,17 @@ cmessage(XEvent *e)
+      @@ -1721,6 +1831,8 @@ unmap(XEvent *ev)
+       void
+       xsetpointermotion(int set)
+       {
+      +	if (!set && !xw.pointerisvisible)
+      +		return;
+       	MODBIT(xw.attrs.event_mask, set, PointerMotionMask);
+       	XChangeWindowAttributes(xw.dpy, xw.win, CWEventMask, &xw.attrs);
+       }
+      @@ -1840,6 +1952,12 @@ kpress(XEvent *ev)
+       	Status status;
+       	Shortcut *bp;
+       
+      +	if (xw.pointerisvisible) {
+      +		XDefineCursor(xw.dpy, xw.win, xw.bpointer);
+      +		xsetpointermotion(1);
+      +		xw.pointerisvisible = 0;
+      +	}
+      +
+       	if (IS_SET(MODE_KBDLOCK))
+       		return;
+       
+      @@ -1905,8 +2023,17 @@ cmessage(XEvent *e)
        void
        resize(XEvent *e)
        {
@@ -534,7 +593,7 @@
        
        	cresize(e->xconfigure.width, e->xconfigure.height);
        }
-      @@ -2091,6 +2193,7 @@ run:
+      @@ -2091,6 +2218,7 @@ run:
        	rows = MAX(rows, 1);
        	tnew(cols, rows);
        	xinit(cols, rows);
