@@ -14,11 +14,16 @@ in {
       genPkgs = enabled: pkgList: if enabled then pkgList else [ ];
 
       pkgList = lists.flatten [
-        (genPkgs cfg.go.enable [ go ])
         (genPkgs cfg.python.enable [ python3 ])
         (genPkgs cfg.rust.enable [ cargo rustc ])
         (genPkgs cfg.nodejs.enable [ nodejs_21 ])
       ];
     in pkgList;
+
+    programs.go = mkIf cfg.go.enable {
+      enable = true;
+      goPath = ".evertras/go";
+      goBin = ".evertras/go/bin";
+    };
   };
 }

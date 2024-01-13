@@ -25,6 +25,8 @@ in {
 
       neovim.enableCopilot = true;
 
+      coding.go.enable = true;
+
       funcs = {
         # TODO: move all this out into a configurable module
         brightness-change.body = ''
