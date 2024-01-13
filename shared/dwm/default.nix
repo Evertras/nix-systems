@@ -8,8 +8,8 @@ let
     colorText = theme.colors.text;
     colorBackground = theme.colors.background;
     fontName = theme.fonts.main.name;
-    fontSize = 16;
-    gappx = 25;
+    fontSize = opts.fontSize;
+    gappx = opts.gappx;
   };
   patchList = [ basePatch ];
 in pkgs.dwm.overrideAttrs (self: super: {

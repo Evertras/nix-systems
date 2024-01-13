@@ -8,6 +8,8 @@ let
     opts = {
       terminal = cfg.terminal;
       lock = cfg.lock;
+      fontSize = 16;
+      gappx = 20;
     };
   };
 in {

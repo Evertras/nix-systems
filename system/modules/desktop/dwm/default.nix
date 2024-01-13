@@ -29,6 +29,8 @@ in {
           opts = {
             lock = cfg.lock;
             terminal = cfg.terminal;
+            fontSize = 16;
+            gappx = 20;
           };
         };
       in {
