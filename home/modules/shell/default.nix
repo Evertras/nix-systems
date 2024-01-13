@@ -58,7 +58,6 @@ in {
 
         # Data processing
         fx
-        fzf
         jq
         yq
 
@@ -77,12 +76,30 @@ in {
 
     programs = {
       direnv.enable = true;
+
+      fzf = {
+        enable = true;
+
+        # https://minsw.github.io/fzf-color-picker/
+        colors = {
+          # Where typing
+          prompt = theme.colors.primary;
+
+          # What the selection is pointing at right now
+          pointer = theme.colors.urgent;
+
+          "bg+" = theme.colors.primary;
+          "fg+" = theme.colors.background;
+        };
+      };
+
       gpg = {
         enable = true;
         settings = {
           #pinentry-program = "${pkgs.pinentry}/bin/pinentry";
         };
       };
+
       tealdeer = {
         enable = true;
 
