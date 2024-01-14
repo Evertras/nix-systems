@@ -47,6 +47,9 @@ in {
         customDwm = import ../../../../shared/dwm {
           inherit lib pkgs theme;
           opts = {
+            autostartCmds = [
+              "while ! styli.sh -s '${theme.inspiration}' &> /tmp/dwm-stylishlog; do sleep 1s; done"
+            ];
             browser = cfg.browser;
             lock = cfg.lock;
             terminal = cfg.terminal;

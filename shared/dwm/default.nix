@@ -1,7 +1,14 @@
+# TODO: opts is getting silly, make this better... but we
+# want to make this a package, not a module, so how?
 { lib, pkgs, theme, opts }:
+with lib;
 let
   patches = (import ./patches.nix) { lib = lib; };
+  makeCmd = cmd: ''"sh", "-c", "${strings.escape [ ''"'' ] cmd}", NULL,'';
+  converted = map makeCmd opts.autostartCmds;
+  autostartCmds = strings.concatStrings converted;
   basePatch = patches.mkBasePatch {
+    autostartCmds = autostartCmds;
     browser = opts.browser;
     colorBackground = theme.colors.background;
     colorPrimary = theme.colors.primary;

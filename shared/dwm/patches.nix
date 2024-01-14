@@ -2,25 +2,25 @@
 with lib; {
   # Note to future self: be VERY careful about preserving
   # whitespace/tabs inside the actual strings...
-  mkBasePatch = { browser, colorBackground, colorPrimary, colorText, fontName
-    , fontSize, gappx, lock, modKey, terminal, }:
+  mkBasePatch = { autostartCmds, browser, colorBackground, colorPrimary
+    , colorText, fontName, fontSize, gappx, lock, modKey, terminal }:
     builtins.toFile "ever-dwm.diff" ''
 
-      From 8bab739abb698612b014af7f575a2c79ca1b69bb Mon Sep 17 00:00:00 2001
+      From 56f1207b4ee7281fe2e144238129d35d42be72c8 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Sun, 14 Jan 2024 10:30:33 +0900
+      Date: Sun, 14 Jan 2024 10:54:49 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  86 ++++++++++++++++++------
+       config.def.h |  87 ++++++++++++++++++------
        dwm.c        | 185 ++++++++++++++++++++++++++++++++++++++++++++++++---
-       2 files changed, 239 insertions(+), 32 deletions(-)
+       2 files changed, 240 insertions(+), 32 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..eb9a26f 100644
+      index 9efa774..e7ce338 100644
       --- a/config.def.h
       +++ b/config.def.h
-      @@ -1,21 +1,28 @@
+      @@ -1,21 +1,29 @@
        /* See LICENSE file for copyright and license details. */
        
       +#include <X11/XF86keysym.h>
@@ -59,11 +59,12 @@ with lib; {
       +static const char *const autostart[] = {
       +	/* TODO: Make this configurable */
       +	"sh", "-c", "while true; do xsetroot -name \"$(date '+%a %m-%d %H:%M ')\"; sleep 1m; done", NULL,
+      +	${autostartCmds}
       +	NULL /* terminate */
        };
        
        /* tagging */
-      @@ -34,18 +41,19 @@ static const Rule rules[] = {
+      @@ -34,18 +42,19 @@ static const Rule rules[] = {
        /* layout(s) */
        static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
        static const int nmaster     = 1;    /* number of clients in master area */
@@ -87,7 +88,7 @@ with lib; {
        #define TAGKEYS(KEY,TAG) \
        	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
        	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-      @@ -55,10 +63,13 @@ static const Layout layouts[] = {
+      @@ -55,10 +64,13 @@ static const Layout layouts[] = {
        /* helper for spawning shell commands in the pre dwm-5.0 fashion */
        #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
        
@@ -103,7 +104,7 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -73,12 +84,16 @@ static const Key keys[] = {
+      @@ -73,12 +85,16 @@ static const Key keys[] = {
        	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
        	{ MODKEY,                       XK_Return, zoom,           {0} },
        	{ MODKEY,                       XK_Tab,    view,           {0} },
@@ -125,7 +126,7 @@ with lib; {
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
        	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
        	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-      @@ -95,6 +110,33 @@ static const Key keys[] = {
+      @@ -95,6 +111,33 @@ static const Key keys[] = {
        	TAGKEYS(                        XK_8,                      7)
        	TAGKEYS(                        XK_9,                      8)
        	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
@@ -159,7 +160,7 @@ with lib; {
        };
        
        /* button definitions */
-      @@ -102,7 +144,7 @@ static const Key keys[] = {
+      @@ -102,7 +145,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
