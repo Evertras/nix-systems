@@ -58,6 +58,9 @@ in {
           -h "int:value:$value"
       '';
 
+      incr = toString cfg.volumeIncrement;
+      limit = toString cfg.volumeLimit;
+
       headphoneFuncs = if cfg.headphonesMacAddress != null then {
         headphones-connect.body = ''
           logfile=/tmp/last-headphonesConnect.log
@@ -92,16 +95,14 @@ in {
       volumeFuncs = {
         volume-up.body = ''
           logfile=/tmp/last-volumeUp.log
-          pamixer -i ${toString cfg.volumeIncrement} --set-limit ${
-            toString cfg.volumeLimit
-          } &> $logfile
+          pamixer -i ${incr} --set-limit ${limit} &> $logfile
 
           ${volumeNotify}
         '';
 
         volume-down.body = ''
           logfile=/tmp/last-volumeDown.log
-          pamixer -d ${toString cfg.volumeIncrement} &> $logfile
+          pamixer -d ${incr} &> $logfile
 
           ${volumeNotify}
         '';
