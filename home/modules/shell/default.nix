@@ -91,6 +91,8 @@ in {
 
           "bg+" = theme.colors.primary;
           "fg+" = theme.colors.background;
+          "hl" = theme.colors.urgent;
+          "hl+" = theme.colors.urgent;
         };
       };
 
