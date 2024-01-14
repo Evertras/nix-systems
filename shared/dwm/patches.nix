@@ -6,21 +6,25 @@ with lib; {
     , fontSize, gappx, lock, modKey, terminal, }:
     builtins.toFile "ever-dwm.diff" ''
 
-      From 91ed9e9e6f70492702aec30c540ac3788792bc6d Mon Sep 17 00:00:00 2001
+      From ab13c6c671a49c79119852d0ccdb8376561ee538 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Sat, 13 Jan 2024 15:08:18 +0900
+      Date: Sun, 14 Jan 2024 09:57:28 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  60 ++++++++++-------
-       dwm.c        | 183 ++++++++++++++++++++++++++++++++++++++++++++++++---
-       2 files changed, 212 insertions(+), 31 deletions(-)
+       config.def.h |  88 ++++++++++++++++++------
+       dwm.c        | 185 ++++++++++++++++++++++++++++++++++++++++++++++++---
+       2 files changed, 241 insertions(+), 32 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..ba317f2 100644
+      index 9efa774..c0ef6f9 100644
       --- a/config.def.h
       +++ b/config.def.h
-      @@ -3,19 +3,24 @@
+      @@ -1,21 +1,28 @@
+       /* See LICENSE file for copyright and license details. */
+       
+      +#include <X11/XF86keysym.h>
+      +
        /* appearance */
        static const unsigned int borderpx  = 1;        /* border pixel of windows */
        static const unsigned int snap      = 32;       /* snap pixel */
@@ -59,7 +63,7 @@ with lib; {
        };
        
        /* tagging */
-      @@ -34,18 +39,19 @@ static const Rule rules[] = {
+      @@ -34,18 +41,19 @@ static const Rule rules[] = {
        /* layout(s) */
        static const float mfact     = 0.55; /* factor of master area size [0.05..0.95] */
        static const int nmaster     = 1;    /* number of clients in master area */
@@ -83,8 +87,13 @@ with lib; {
        #define TAGKEYS(KEY,TAG) \
        	{ MODKEY,                       KEY,      view,           {.ui = 1 << TAG} }, \
        	{ MODKEY|ControlMask,           KEY,      toggleview,     {.ui = 1 << TAG} }, \
-      @@ -57,8 +63,10 @@ static const Layout layouts[] = {
+      @@ -55,10 +63,15 @@ static const Layout layouts[] = {
+       /* helper for spawning shell commands in the pre dwm-5.0 fashion */
+       #define SHCMD(cmd) { .v = (const char*[]){ "/bin/sh", "-c", cmd, NULL } }
        
+      +/* helper for spawning simple commands */
+      +#define CMD(cmd) { .v = (const char*[]){ cmd, NULL } }
+      +
        /* commands */
        static char dmenumon[2] = "0"; /* component of dmenucmd, manipulated in spawn() */
       -static const char *dmenucmd[] = { "dmenu_run", "-m", dmenumon, "-fn", dmenufont, "-nb", col_gray1, "-nf", col_gray3, "-sb", col_cyan, "-sf", col_gray4, NULL };
@@ -96,7 +105,7 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -73,12 +81,16 @@ static const Key keys[] = {
+      @@ -73,12 +86,16 @@ static const Key keys[] = {
        	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
        	{ MODKEY,                       XK_Return, zoom,           {0} },
        	{ MODKEY,                       XK_Tab,    view,           {0} },
@@ -118,10 +127,33 @@ with lib; {
        	{ MODKEY,                       XK_0,      view,           {.ui = ~0 } },
        	{ MODKEY|ShiftMask,             XK_0,      tag,            {.ui = ~0 } },
        	{ MODKEY,                       XK_comma,  focusmon,       {.i = -1 } },
-      @@ -95,6 +107,10 @@ static const Key keys[] = {
+      @@ -95,6 +112,33 @@ static const Key keys[] = {
        	TAGKEYS(                        XK_8,                      7)
        	TAGKEYS(                        XK_9,                      8)
        	{ MODKEY|ShiftMask,             XK_q,      quit,           {0} },
+      +
+      +	/* Media keys, make more configurable in the future - uses funcs installed
+      +	   by nix in ~/.evertras/funcs, makes assumptions, but just want to get
+      +	   this up and running before making it fancy. */
+      +	{ 0,                       XF86XK_AudioLowerVolume,   spawn, CMD("/home/evertras/.evertras/funcs/volume-down") },
+      +	{ 0,                       XF86XK_AudioRaiseVolume,   spawn, CMD("/home/evertras/.evertras/funcs/volume-up") },
+      +	{ 0,                       XF86XK_AudioMute,          spawn, CMD("/home/evertras/.evertras/funcs/volume-mute-toggle") },
+      +	{ 0,                       XF86XK_MonBrightnessUp,    spawn, SHCMD("/home/evertras/.evertras/funcs/brightness-change 10%+") },
+      +	{ 0,                       XF86XK_MonBrightnessDown,  spawn, SHCMD("/home/evertras/.evertras/funcs/brightness-change 10%-") },
+      +	/* Some other ideas for the future */
+      +	/*
+      +	{ 0,                       XF86XK_AudioPlay,          spawn, {.v = SHCMD("playerctl play-pause") } },
+      +	{ 0,                       XF86XK_AudioNext,          spawn, {.v = SHCMD("playerctl next") } },
+      +	{ 0,                       XF86XK_AudioPrev,          spawn, {.v = SHCMD("playerctl previous") } },
+      +	{ 0,                       XF86XK_AudioStop,          spawn, {.v = SHCMD("playerctl stop") } },
+      +	{ 0,                       XF86XK_AudioRewind,        spawn, {.v = SHCMD("playerctl position 10-") } },
+      +	{ 0,                       XF86XK_AudioForward,       spawn, {.v = SHCMD("playerctl position 10+") } },
+      +	{ 0,                       XF86XK_AudioMicMute,       spawn, {.v = SHCMD("pactl set-source-mute @DEFAULT_SOURCE@ toggle") } },
+      +	{ 0,                       XF86XK_Display,            spawn, {.v = SHCMD("autorandr --change") } },
+      +	{ 0,                       XF86XK_TouchpadToggle,     spawn, {.v = SHCMD("touchpad-toggle") } },
+      +	{ 0,                       XF86XK_TouchpadOff,        spawn, {.v = SHCMD("touchpad-toggle off") } },
+      +	{ 0,                       XF86XK_TouchpadOn,         spawn, {.v = SHCMD("touchpad-toggle on") } },
+      +	*/
       +
       +	/* Additional keybinds added here */
       +	{ MODKEY,                       XK_Escape, spawn,          {.v = lockcmd } },
@@ -129,7 +161,7 @@ with lib; {
        };
        
        /* button definitions */
-      @@ -102,7 +118,7 @@ static const Key keys[] = {
+      @@ -102,7 +146,7 @@ static const Key keys[] = {
        static const Button buttons[] = {
        	/* click                event mask      button          function        argument */
        	{ ClkLtSymbol,          0,              Button1,        setlayout,      {0} },
@@ -139,7 +171,7 @@ with lib; {
        	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
        	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
       diff --git a/dwm.c b/dwm.c
-      index f1d86b2..ef77f48 100644
+      index f1d86b2..0ec8845 100644
       --- a/dwm.c
       +++ b/dwm.c
       @@ -20,6 +20,7 @@
@@ -298,6 +330,15 @@ with lib; {
        			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
        			if (m->sel->isfloating)
        				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
+      @@ -980,7 +1074,7 @@ grabkeys(void)
+       void
+       incnmaster(const Arg *arg)
+       {
+      -	selmon->nmaster = MAX(selmon->nmaster + arg->i, 0);
+      +	selmon->nmaster = MAX(selmon->nmaster + arg->i, 1);
+       	arrange(selmon);
+       }
+       
       @@ -1258,6 +1352,16 @@ propertynotify(XEvent *e)
        void
        quit(const Arg *arg)
