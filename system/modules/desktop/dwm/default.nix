@@ -55,7 +55,6 @@ in {
             terminal = cfg.terminal;
             fontSize = 16;
             gappx = 20;
-            # Win/cmd key
             modKey = cfg.modKey;
           };
         };
