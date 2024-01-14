@@ -6,9 +6,9 @@ with lib; {
     , fontSize, gappx, lock, modKey, terminal, }:
     builtins.toFile "ever-dwm.diff" ''
 
-      From 96ec31dd065906aef7d805d20b881bf5acbe04bd Mon Sep 17 00:00:00 2001
+      From 8bab739abb698612b014af7f575a2c79ca1b69bb Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Sun, 14 Jan 2024 10:18:25 +0900
+      Date: Sun, 14 Jan 2024 10:30:33 +0900
       Subject: [PATCH] Changes
 
       ---
@@ -17,7 +17,7 @@ with lib; {
        2 files changed, 239 insertions(+), 32 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..69cdf63 100644
+      index 9efa774..eb9a26f 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -1,21 +1,28 @@
@@ -136,8 +136,8 @@ with lib; {
       +	{ 0,                       XF86XK_AudioLowerVolume,   spawn, CMD("/home/evertras/.evertras/funcs/volume-down") },
       +	{ 0,                       XF86XK_AudioRaiseVolume,   spawn, CMD("/home/evertras/.evertras/funcs/volume-up") },
       +	{ 0,                       XF86XK_AudioMute,          spawn, CMD("/home/evertras/.evertras/funcs/volume-mute-toggle") },
-      +	{ 0,                       XF86XK_MonBrightnessUp,    spawn, SHCMD("/home/evertras/.evertras/funcs/brightness-change 10%+") },
-      +	{ 0,                       XF86XK_MonBrightnessDown,  spawn, SHCMD("/home/evertras/.evertras/funcs/brightness-change 10%-") },
+      +	{ 0,                       XF86XK_MonBrightnessUp,    spawn, CMD("/home/evertras/.evertras/funcs/brightness-up") },
+      +	{ 0,                       XF86XK_MonBrightnessDown,  spawn, CMD("/home/evertras/.evertras/funcs/brightness-down") },
       +	/* Some other ideas for the future */
       +	/*
       +	{ 0,                       XF86XK_AudioPlay,          spawn, {.v = SHCMD("playerctl play-pause") } },
