@@ -122,8 +122,8 @@ in {
             notification = false;
           }
           {
-            # Need a sleep to make xrandr take effect, not great... find better way later
-            command = "sleep 1s && styli.sh -s '${startupWallpaperTerm}'";
+            command =
+              "while ! styli.sh -s '${startupWallpaperTerm}'; do sleep 1; done";
             notification = false;
           }
         ] ++ postCommands);
