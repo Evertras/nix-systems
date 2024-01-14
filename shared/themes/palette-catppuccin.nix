@@ -34,6 +34,7 @@
     # Fill these in as needed
     #
     # Helpful tools: https://coolors.co/contrast-checker/531e75-a6d189
+    # https://mdigi.tools/lighten-color/#a6d189
     contrast = { Green = "#9480fa"; };
 
     highlight = { Green = "#d7eaca"; };
