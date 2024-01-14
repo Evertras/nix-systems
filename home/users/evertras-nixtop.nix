@@ -18,6 +18,11 @@ in {
       headphonesMacAddress = "EC:66:D1:B8:95:88";
     };
 
+    laptop = {
+      enable = true;
+      brightnessIncrement = 10;
+    };
+
     shell = {
       core = { inherit gpgKey; };
 
@@ -26,18 +31,6 @@ in {
       neovim.enableCopilot = true;
 
       coding.go.enable = true;
-
-      funcs = {
-        # TODO: move all this out into a configurable module
-        brightness-change.body = ''
-          level=$(brightnessctl -m set "$1" | awk -F, '{gsub(/%$/, "", $4); print $4}')
-          notify-send "Brightness $level%" \
-            -i brightnesssettings \
-            -t 2000 \
-            -h string:synchronous:screenbrightness \
-            -h "int:value:$level"
-        '';
-      };
     };
 
     desktop = {
