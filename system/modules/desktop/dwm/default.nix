@@ -49,6 +49,8 @@ in {
           opts = {
             autostartCmds = [
               "while ! styli.sh -s '${theme.inspiration}' &> /tmp/dwm-stylishlog; do sleep 1s; done"
+              # For some reason this needs a kick
+              "systemctl restart --user pipewire"
             ];
             browser = cfg.browser;
             lock = cfg.lock;
