@@ -136,7 +136,7 @@ in {
         '';
 
         gadd.body = ''
-          to_add=$(git status --porcelain | awk '/^.M/ || /^\?\?/ {print $2}' | fzf)
+          to_add=$(git status --porcelain | awk '/^.M/ || /^\?\?/ {print $2}' | fzf --scheme=path -i --tiebreak=end)
           if [ -n "$to_add" ]; then
             git add "$to_add"
             echo "Added $to_add"
@@ -148,7 +148,7 @@ in {
         go-watch-test.body = ''
           #!/usr/bin/env bash
 
-          watchdir=$(find . \( -name ".git" \) -prune -o -type d -exec sh -c 'ls -1 "{}"/*.go 2>/dev/null | wc -l | grep -q "[1-9]" && echo "{}"' \; | fzf)
+          watchdir=$(find . \( -name ".git" \) -prune -o -type d -exec sh -c 'ls -1 "{}"/*.go 2>/dev/null | wc -l | grep -q "[1-9]" && echo "{}"' \; | fzf --scheme=path -i --tiebreak=end)
 
           if [ -n "$watchdir" ]; then
             echo "Watching $watchdir"
@@ -198,7 +198,7 @@ in {
           themename=${theme.iconTheme.name};
           iconspath="''${storepath}/share/icons/''${themename}"
           echo "Store path: ''${storepath}"
-          find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf
+          find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf -i
         '';
         nix-find-icon-names-in.body = ''
           if [ -z "$2" ]; then
@@ -210,7 +210,7 @@ in {
           storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
           iconspath="''${storepath}/share/icons/''${themename}"
           echo "Store path: ''${storepath}"
-          find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf
+          find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf -i
         '';
 
         # Some AWS helpers
