@@ -37,6 +37,12 @@ in {
         Mod1Mask is the alt key.
       '';
     };
+
+    autoStartCmds = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      description = "Commands to run on startup";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -47,11 +53,7 @@ in {
         customDwm = import ../../../../shared/dwm {
           inherit lib pkgs theme;
           opts = {
-            autostartCmds = [
-              "while ! styli.sh -s '${theme.inspiration}' &> /tmp/dwm-stylishlog; do sleep 1s; done"
-              # For some reason this needs a kick
-              "systemctl restart --user pipewire"
-            ];
+            autostartCmds = cfg.autoStartCmds;
             browser = cfg.browser;
             lock = cfg.lock;
             terminal = cfg.terminal;

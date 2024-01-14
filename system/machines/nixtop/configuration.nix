@@ -49,7 +49,14 @@ in {
 
     core.kbLayout = "jp";
 
-    dwm.enable = true;
+    dwm = {
+      enable = true;
+      autoStartCmds = [
+        "while ! styli.sh -s '${theme.inspiration}' &> /tmp/dwm-stylishlog; do sleep 1s; done"
+        # For some reason this needs a kick
+        "systemctl restart --user pipewire"
+      ];
+    };
   };
 
   services.xserver.displayManager.autoLogin.user = "evertras";
