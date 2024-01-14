@@ -66,6 +66,8 @@ in {
 
         # Funsies
         fastfetch
+        steghide
+        stegseek
       ];
 
       sessionVariables = {
