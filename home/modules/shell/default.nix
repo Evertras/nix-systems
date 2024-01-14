@@ -89,10 +89,10 @@ in {
           # Sits behind "fg+", so make it blend in with text
           pointer = theme.colors.background;
 
-          "bg+" = theme.colors.primary;
+          "bg+" = theme.colors.highlight;
           "fg+" = theme.colors.background;
-          "hl" = theme.colors.urgent;
-          "hl+" = theme.colors.urgent;
+          "hl" = theme.colors.primary;
+          "hl+" = theme.colors.contrast;
         };
       };
 

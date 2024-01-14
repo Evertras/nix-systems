@@ -100,6 +100,7 @@ in {
       background = "#2E394D";
       text = "#DCF9EB";
       urgent = "#EF6F6C";
+      contrast = "#3F6FCC";
     };
 
     cursorTheme = mkCatppuccinCursor { inherit color; };
@@ -110,14 +111,17 @@ in {
   mkCatppuccin = { color, flavor ? "Frappe" }:
     defaults // {
       _checkColor = assertCatppuccinColor color;
+
       inspiration = "hd ${palette.catppuccin.inspiration.${color}} wallpapers";
 
-      colors = {
-        primary = palette.catppuccin.${flavor}.${color};
-        highlight = palette.catppuccin.${flavor}.${color};
-        background = palette.catppuccin.${flavor}.Base;
-        text = palette.catppuccin.${flavor}.Text;
-        urgent = "#EF6F6C";
+      colors = let p = palette.catppuccin.${flavor};
+      in {
+        primary = p.${color};
+        highlight = p.highlight.${color};
+        background = p.Base;
+        text = p.Text;
+        urgent = p.urgent.${color};
+        contrast = p.contrast.${color};
       };
 
       cursorTheme = mkCatppuccinCursor { inherit color flavor; };
@@ -134,6 +138,7 @@ in {
       background = "#223843";
       text = "#EFF1F3";
       urgent = "#D2694B";
+      contrast = "#3F6FCC";
     };
   };
 }

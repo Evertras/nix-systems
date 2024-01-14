@@ -30,6 +30,15 @@
     Base = "#303446";
     Mantle = "#292c3c";
     Crust = "#232634";
+
+    # Fill these in as needed
+    #
+    # Helpful tools: https://coolors.co/contrast-checker/531e75-a6d189
+    contrast = { Green = "#9480fa"; };
+
+    highlight = { Green = "#d7eaca"; };
+
+    urgent = { Green = "#e78284"; };
   };
 
   inspiration = {
