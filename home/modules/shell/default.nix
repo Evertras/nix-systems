@@ -43,7 +43,6 @@ in {
         # General terminal tools
         asciigraph
         btop
-        cloc
         dig
         entr
         eza
@@ -55,6 +54,7 @@ in {
         ripgrep
         silver-searcher
         sipcalc
+        tokei
         wget
 
         # Data processing
