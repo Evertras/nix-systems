@@ -3,11 +3,11 @@
 { lib, pkgs, theme, opts }:
 with lib;
 let
-  patches = (import ./patches.nix) { lib = lib; };
+  patch = (import ./patch.nix) { lib = lib; };
   makeCmd = cmd: ''"sh", "-c", "${strings.escape [ ''"'' ] cmd}", NULL,'';
   converted = map makeCmd opts.autostartCmds;
   autostartCmds = strings.concatStrings converted;
-  basePatch = patches.mkBasePatch {
+  basePatch = patch.mkBasePatch {
     autostartCmds = autostartCmds;
     browser = opts.browser;
     colorBackground = theme.colors.background;
