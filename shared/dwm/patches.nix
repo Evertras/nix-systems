@@ -6,15 +6,15 @@ with lib; {
     , colorText, fontName, fontSize, gappx, lock, modKey, terminal }:
     builtins.toFile "ever-dwm.diff" ''
 
-      From 56f1207b4ee7281fe2e144238129d35d42be72c8 Mon Sep 17 00:00:00 2001
-      From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Sun, 14 Jan 2024 10:54:49 +0900
+      From 7b99576e799040dbc24c2219b441745744ee76ec Mon Sep 17 00:00:00 2001
+      From: Brandon Fulljames <brandon.fulljames@woven-planet.global>
+      Date: Mon, 15 Jan 2024 11:31:19 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  87 ++++++++++++++++++------
-       dwm.c        | 185 ++++++++++++++++++++++++++++++++++++++++++++++++---
-       2 files changed, 240 insertions(+), 32 deletions(-)
+       config.def.h |  87 +++++++++++++++++------
+       dwm.c        | 192 ++++++++++++++++++++++++++++++++++++++++++++++++---
+       2 files changed, 247 insertions(+), 32 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
       index 9efa774..e7ce338 100644
@@ -170,7 +170,7 @@ with lib; {
        	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
        	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
       diff --git a/dwm.c b/dwm.c
-      index f1d86b2..0ec8845 100644
+      index f1d86b2..176228f 100644
       --- a/dwm.c
       +++ b/dwm.c
       @@ -20,6 +20,7 @@
@@ -329,7 +329,24 @@ with lib; {
        			drw_text(drw, x, 0, w, bh, lrpad / 2, m->sel->name, 0);
        			if (m->sel->isfloating)
        				drw_rect(drw, x + boxs, boxs, boxw, boxw, m->sel->isfixed, 0);
-      @@ -980,7 +1074,7 @@ grabkeys(void)
+      @@ -833,6 +927,8 @@ focusmon(const Arg *arg)
+       	unfocus(selmon->sel, 0);
+       	selmon = m;
+       	focus(NULL);
+      +	if (selmon->sel)
+      +		XWarpPointer(dpy, None, selmon->sel->win, 0, 0, 0, 0, selmon->sel->w/2, selmon->sel->h/2);
+       }
+       
+       void
+      @@ -858,6 +954,7 @@ focusstack(const Arg *arg)
+       	if (c) {
+       		focus(c);
+       		restack(selmon);
+      +		XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
+       	}
+       }
+       
+      @@ -980,7 +1077,7 @@ grabkeys(void)
        void
        incnmaster(const Arg *arg)
        {
@@ -338,7 +355,16 @@ with lib; {
        	arrange(selmon);
        }
        
-      @@ -1258,6 +1352,16 @@ propertynotify(XEvent *e)
+      @@ -1085,6 +1182,8 @@ manage(Window w, XWindowAttributes *wa)
+       	c->mon->sel = c;
+       	arrange(c->mon);
+       	XMapWindow(dpy, c->win);
+      +	if (c && c->mon == selmon)
+      +		XWarpPointer(dpy, None, c->win, 0, 0, 0, 0, c->w/2, c->h/2);
+       	focus(NULL);
+       }
+       
+      @@ -1258,6 +1357,16 @@ propertynotify(XEvent *e)
        void
        quit(const Arg *arg)
        {
@@ -355,7 +381,7 @@ with lib; {
        	running = 0;
        }
        
-      @@ -1286,12 +1390,37 @@ void
+      @@ -1286,12 +1395,37 @@ void
        resizeclient(Client *c, int x, int y, int w, int h)
        {
        	XWindowChanges wc;
@@ -397,7 +423,7 @@ with lib; {
        	XConfigureWindow(dpy, c->win, CWX|CWY|CWWidth|CWHeight|CWBorderWidth, &wc);
        	configure(c);
        	XSync(dpy, False);
-      @@ -1644,6 +1773,8 @@ showhide(Client *c)
+      @@ -1644,6 +1778,8 @@ showhide(Client *c)
        	}
        }
        
@@ -406,7 +432,7 @@ with lib; {
        void
        spawn(const Arg *arg)
        {
-      @@ -1654,6 +1785,39 @@ spawn(const Arg *arg)
+      @@ -1654,6 +1790,39 @@ spawn(const Arg *arg)
        	if (fork() == 0) {
        		if (dpy)
        			close(ConnectionNumber(dpy));
@@ -446,7 +472,7 @@ with lib; {
        		setsid();
        
        		sigemptyset(&sa.sa_mask);
-      @@ -1701,7 +1865,7 @@ tile(Monitor *m)
+      @@ -1701,7 +1870,7 @@ tile(Monitor *m)
        	for (i = my = ty = 0, c = nexttiled(m->clients); c; c = nexttiled(c->next), i++)
        		if (i < m->nmaster) {
        			h = (m->wh - my) / (MIN(n, m->nmaster) - i);
@@ -455,7 +481,16 @@ with lib; {
        			if (my + HEIGHT(c) < m->wh)
        				my += HEIGHT(c);
        		} else {
-      @@ -2152,6 +2316,7 @@ main(int argc, char *argv[])
+      @@ -1799,6 +1968,8 @@ unmanage(Client *c, int destroyed)
+       	focus(NULL);
+       	updateclientlist();
+       	arrange(m);
+      +	if (m == selmon && m->sel)
+      +		XWarpPointer(dpy, None, m->sel->win, 0, 0, 0, 0, m->sel->w/2, m->sel->h/2);
+       }
+       
+       void
+      @@ -2152,6 +2323,7 @@ main(int argc, char *argv[])
        	if (!(dpy = XOpenDisplay(NULL)))
        		die("dwm: cannot open display");
        	checkotherwm();
