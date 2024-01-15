@@ -54,10 +54,22 @@ in {
       display.sleep.enable = true;
 
       kitty.enable = true;
-      st.enable = true;
+
+      st = {
+        enable = true;
+
+        bgImage = "/home/brandon-fulljames/Pictures/desktops/koi.jpg.ff";
+      };
 
       dwm = {
         enable = true;
+
+        autostartCmds = [
+          "autorandr -l main"
+          "setxkbmap -layout us"
+          "while ! /home/brandon-fulljames/.evertras/funcs/cycle-wallpaper; sleep 1s; done"
+          "sleep 5s; systemctl --user restart dunst"
+        ];
 
         inherit terminal;
 

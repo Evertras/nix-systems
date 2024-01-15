@@ -84,7 +84,7 @@ in {
         fi
 
         echo "Darkening/blurring..."
-        convert "$img" -fill black -colorize 80% -gaussian-blur 0x8 -resize 2560x1440 "$tmpName"
+        convert "$img" -fill black -colorize 80% -gaussian-blur 0x8 -resize 3840x2160 "$tmpName"
 
         echo "Converting $img to farbfeld..."
         "$tool" < "$tmpName" > "$target"

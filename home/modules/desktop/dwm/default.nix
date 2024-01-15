@@ -6,6 +6,8 @@ let
   customDwm = import ../../../../shared/dwm {
     inherit lib pkgs theme;
     opts = {
+      autostartCmds = cfg.autostartCmds;
+      browser = cfg.browser;
       fontSize = 16;
       gappx = 20;
       lock = cfg.lock;
@@ -16,10 +18,15 @@ let
 in {
   options.evertras.home.desktop.dwm = {
     enable = mkEnableOption "dwm";
-    terminal = mkOption {
-      type = types.str;
-      default = "kitty";
+
+    autostartCmds = mkOption {
+      type = with types; listOf str;
+      default = [ ];
     };
+
+    browser = mkOption { type = types.str; };
+
+    lock = mkOption { type = types.str; };
 
     modKey = mkOption {
       type = types.str;
@@ -32,7 +39,10 @@ in {
       '';
     };
 
-    lock = mkOption { type = types.str; };
+    terminal = mkOption {
+      type = types.str;
+      default = "kitty";
+    };
   };
 
   config = let systemfile-path = ".evertras/systemfiles/dwm.desktop";

@@ -93,6 +93,11 @@ in {
         kbLayout = mkDefault cfg.kbLayout;
       };
 
+      dwm = {
+        enable = mkDefault false;
+        browser = mkDefault config.evertras.home.desktop.browsers.default;
+      };
+
       gtktheme.enable = true;
       notifications.enable = mkDefault true;
 
