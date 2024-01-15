@@ -43,6 +43,7 @@ in {
         # General terminal tools
         asciigraph
         btop
+        cloc
         dig
         entr
         eza
