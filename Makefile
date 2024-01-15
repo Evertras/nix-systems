@@ -13,8 +13,12 @@ system: .git/hooks/pre-commit
 	@./scripts/ensure-channel.sh
 	sudo nixos-rebuild switch --flake .
 
-.PHONY: clean
-clean: .git/hooks/pre-commit
+.PHONY: clean-home
+clean-home: .git/hooks/pre-commit
+	nix-collect-garbage -d
+
+.PHONY: clean-system
+clean-system: .git/hooks/pre-commit
 	sudo nix-collect-garbage -d
 	sudo nixos-rebuild boot --flake .
 
