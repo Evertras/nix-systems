@@ -63,8 +63,11 @@ in {
       inactiveSections = { lualine_c = [ "vim.fn.expand('%:.')" "navic" ]; };
     };
 
-    # Need this for nvim-cmp, revisit later
-    luasnip.enable = true;
+    luasnip = {
+      enable = true;
+
+      fromLua = [{ paths = ./snippets; }];
+    };
 
     navic = {
       enable = true;
@@ -78,8 +81,9 @@ in {
       sources = [
         { name = "path"; }
         { name = "nvim_lsp"; }
+        { name = "nvim_lsp_signature_help"; }
         {
-          name = "nvim_lsp_signature_help";
+          name = "luasnip";
         }
         #{ name = "buffer"; }
       ];
