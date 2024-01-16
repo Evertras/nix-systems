@@ -153,10 +153,12 @@ in {
 
           watchdir=$(find . \( -name ".git" \) -prune -o -type d -exec sh -c 'ls -1 "{}"/*.go 2>/dev/null | wc -l | grep -q "[1-9]" && echo "{}"' \; | fzf --scheme=path -i --tiebreak=end)
 
-          if [ -n "$watchdir" ]; then
-            echo "Watching $watchdir"
-            ls "$watchdir"/*.go | entr -c go test -race "$watchdir"
+          if [ -z "$watchdir" ]; then
+            echo "No directory selected"
+            exit 0
           fi
+
+          while sleep 0.1; do ls "$watchdir"/*.go | entr -c -d go test -race "$watchdir"; done
         '';
 
         # Theme helpers for things we can't set directly
