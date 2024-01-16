@@ -145,13 +145,6 @@ in {
       };
     };
 
-    #vim.keymap.set('n', '<leader>gs', function()
-    #builtin.grep_string({ search = vim.fn.input("ag > ") });
-    #d)
-
     treesitter = { enable = true; };
-
-    # For other things in the future
-    #packer.enable = true;
   };
 }
