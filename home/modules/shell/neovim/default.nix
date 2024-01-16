@@ -71,6 +71,14 @@
         lua = true;
       }
 
+      # Rename
+      {
+        mode = "n";
+        key = "<leader>R";
+        action = "vim.lsp.buf.rename";
+        lua = true;
+      }
+
       # Filetree
       {
         mode = "n";
