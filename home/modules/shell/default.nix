@@ -158,7 +158,7 @@ in {
             exit 0
           fi
 
-          while sleep 0.1; do ls "$watchdir"/*.go | entr -c -d go test -race "$watchdir"; done
+          while sleep 1; do ls "$watchdir"/*.go | entr -c -d go test -race "$watchdir"; done
         '';
 
         # Theme helpers for things we can't set directly
