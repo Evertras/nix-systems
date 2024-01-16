@@ -1,6 +1,7 @@
 return {
-  s('gomega-noerror', t('Expect(err).ToNot(HaveOccurred(), "Should not have errored"'))
-}, {
+  s('gomega-noerror', t(
+  'Expect(err).ToNot(HaveOccurred(), "Should not have errored")'
+  )),
   s('ginkgo-boilerplate', t([[
 package idk
 
