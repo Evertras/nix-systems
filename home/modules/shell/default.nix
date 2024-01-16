@@ -52,9 +52,9 @@ in {
         htop
         pinentry
         ripgrep
+        scc
         silver-searcher
         sipcalc
-        tokei
         wget
 
         # Data processing
