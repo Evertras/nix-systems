@@ -60,6 +60,7 @@ in {
 
         bgImage = "/home/brandon-fulljames/Pictures/desktops/koi.jpg.ff";
 
+        fontName = "0xProto Nerd Font Mono";
         fontSize = 16;
       };
 
