@@ -59,6 +59,8 @@ in {
         enable = true;
 
         bgImage = "/home/brandon-fulljames/Pictures/desktops/koi.jpg.ff";
+
+        fontSize = 16;
       };
 
       dwm = {
