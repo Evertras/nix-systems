@@ -6,6 +6,13 @@ local rep = require('luasnip.extras').rep
 local fmt = require('luasnip.extras.fmt').fmt
 
 return {
+  s('errcheck', fmt(
+    [[
+      if err != nil {{
+        return fmt.Errorf("{}: %w", err)
+      }}
+    ]], i(1)
+  )),
   s('gomega-noerror', t(
     'Expect(err).ToNot(HaveOccurred(), "Should not have errored")'
   )),
