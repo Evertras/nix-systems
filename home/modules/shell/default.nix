@@ -151,7 +151,7 @@ in {
         go-watch-test.body = ''
           #!/usr/bin/env bash
 
-          watchdir=$(find . \( -name ".git" \) -prune -o -type d -exec sh -c 'ls -1 "{}"/*.go 2>/dev/null | wc -l | grep -q "[1-9]" && echo "{}"' \; | fzf --scheme=path -i --tiebreak=end)
+          watchdir=$(find . \( -name ".git" -or -name "vendor" \) -prune -o -type d -exec sh -c 'ls -1 "{}"/*.go 2>/dev/null | wc -l | grep -q "[1-9]" && echo "{}"' \; | fzf --scheme=path -i --tiebreak=end)
 
           if [ -z "$watchdir" ]; then
             echo "No directory selected"
