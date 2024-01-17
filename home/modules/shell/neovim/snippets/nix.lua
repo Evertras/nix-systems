@@ -12,6 +12,6 @@ return {
       description = "{}";
       type = types.{};
     }};
-  ]], {i(1), i(2), i(3, 'string')}
+  ]], {i(1), i(2), i(3, 'str')}
   )),
 }
