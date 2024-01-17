@@ -3,20 +3,20 @@
 
     builtins.toFile "ever-st.diff" ''
 
-      From 72fcc5038bc4298d6cbe269d1f7bf34c97779bc2 Mon Sep 17 00:00:00 2001
+      From fa9976f35a630be2393984a1005dd48ffded3b82 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Sun, 14 Jan 2024 00:09:34 +0900
+      Date: Wed, 17 Jan 2024 12:54:29 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  32 +++---
+       config.def.h |  40 ++++---
        config.mk    |   2 +-
        st.h         |   6 +
        x.c          | 320 +++++++++++++++++++++++++++++++++++----------------
-       4 files changed, 250 insertions(+), 110 deletions(-)
+       4 files changed, 254 insertions(+), 114 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 91ab8ca..88b492c 100644
+      index 91ab8ca..69ecbb2 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,9 +5,17 @@
@@ -84,6 +84,29 @@
        
        /*
         * Color used to display font attributes when fontconfig selected a font which
+      @@ -177,9 +183,9 @@ static uint forcemousemod = ShiftMask;
+       static MouseShortcut mshortcuts[] = {
+       	/* mask                 button   function        argument       release */
+       	{ XK_ANY_MOD,           Button2, selpaste,       {.i = 0},      1 },
+      -	{ ShiftMask,            Button4, ttysend,        {.s = "\033[5;2~"} },
+      +	{ ShiftMask,            Button4, zoom,           {.f = +1} },
+       	{ XK_ANY_MOD,           Button4, ttysend,        {.s = "\031"} },
+      -	{ ShiftMask,            Button5, ttysend,        {.s = "\033[6;2~"} },
+      +	{ ShiftMask,            Button5, zoom,           {.f = -1} },
+       	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
+       };
+       
+      @@ -193,8 +199,8 @@ static Shortcut shortcuts[] = {
+       	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
+       	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
+       	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
+      -	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
+      -	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
+      +	{ TERMMOD,              XK_I,           zoom,           {.f = +1} },
+      +	{ TERMMOD,              XK_O,           zoom,           {.f = -1} },
+       	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
+       	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
+       	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
       diff --git a/config.mk b/config.mk
       index 1e306f8..2bbc6be 100644
       --- a/config.mk
