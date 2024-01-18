@@ -51,6 +51,7 @@ in {
         gnumake
         htop
         pinentry
+        ranger # file explorer
         ripgrep
         scc
         silver-searcher
