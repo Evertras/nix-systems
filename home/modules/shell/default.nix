@@ -56,6 +56,7 @@ in {
         silver-searcher
         sipcalc
         wget
+        xh # Friendlier curl
 
         # Data processing
         fx
