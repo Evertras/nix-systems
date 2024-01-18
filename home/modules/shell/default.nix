@@ -42,6 +42,7 @@ in {
       packages = with pkgs; [
         # General terminal tools
         asciigraph # graphing stuff in terminal
+        bat # cat with syntax highlighting
         btop # fancy top
         dig # DNS lookup
         entr # run commands on file changes
