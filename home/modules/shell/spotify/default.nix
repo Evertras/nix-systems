@@ -23,7 +23,7 @@ in {
 
       settings.global = {
         username = "bfullj@gmail.com";
-        password_cmd = "pass spotify";
+        password_cmd = "${pkgs.pass}/bin/pass spotify";
         device_name = cfg.device-name;
         device_type = "computer";
       };
