@@ -11,7 +11,9 @@ return {
       if err != nil {{
         return {}fmt.Errorf("{}: %w", err)
       }}
-    ]], i(1), i(2)
+    ]], {
+      i(1), i(2)
+    }
   )),
   s('gomega-noerror', t(
     'Expect(err).ToNot(HaveOccurred(), "Should not have errored")'
