@@ -3,20 +3,20 @@
 
     builtins.toFile "ever-st.diff" ''
 
-      From fa9976f35a630be2393984a1005dd48ffded3b82 Mon Sep 17 00:00:00 2001
+      From 076ac1279695b81055c414809881c70549f4a6e3 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Wed, 17 Jan 2024 12:54:29 +0900
+      Date: Thu, 18 Jan 2024 10:59:07 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  40 ++++---
+       config.def.h |  42 ++++---
        config.mk    |   2 +-
        st.h         |   6 +
        x.c          | 320 +++++++++++++++++++++++++++++++++++----------------
-       4 files changed, 254 insertions(+), 114 deletions(-)
+       4 files changed, 255 insertions(+), 115 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 91ab8ca..69ecbb2 100644
+      index 91ab8ca..da1f0e0 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -5,9 +5,17 @@
@@ -96,17 +96,19 @@
        	{ XK_ANY_MOD,           Button5, ttysend,        {.s = "\005"} },
        };
        
-      @@ -193,8 +199,8 @@ static Shortcut shortcuts[] = {
+      @@ -193,9 +199,9 @@ static Shortcut shortcuts[] = {
        	{ ControlMask,          XK_Print,       toggleprinter,  {.i =  0} },
        	{ ShiftMask,            XK_Print,       printscreen,    {.i =  0} },
        	{ XK_ANY_MOD,           XK_Print,       printsel,       {.i =  0} },
       -	{ TERMMOD,              XK_Prior,       zoom,           {.f = +1} },
       -	{ TERMMOD,              XK_Next,        zoom,           {.f = -1} },
+      -	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
       +	{ TERMMOD,              XK_I,           zoom,           {.f = +1} },
       +	{ TERMMOD,              XK_O,           zoom,           {.f = -1} },
-       	{ TERMMOD,              XK_Home,        zoomreset,      {.f =  0} },
+      +	{ TERMMOD,              XK_U,           zoomreset,      {.f =  0} },
        	{ TERMMOD,              XK_C,           clipcopy,       {.i =  0} },
        	{ TERMMOD,              XK_V,           clippaste,      {.i =  0} },
+       	{ TERMMOD,              XK_Y,           selpaste,       {.i =  0} },
       diff --git a/config.mk b/config.mk
       index 1e306f8..2bbc6be 100644
       --- a/config.mk
