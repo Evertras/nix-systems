@@ -124,7 +124,7 @@ in {
 
       funcs = {
         fonts.body =
-          "fc-list : family | awk -F, '{print $1}' | grep Nerd | grep -E 'Mono$' | sort -u";
+          "fc-list : family | awk -F, '{print $1}' | grep Nerd | grep -E 'Mono$' | sort -fu";
         show-color.body = ''
           perl -e 'foreach $a(@ARGV){print "\e[48:2::".join(":",unpack("C*",pack("H*",$a)))."m \e[49m "};print "\n"' "$@"
         '';
