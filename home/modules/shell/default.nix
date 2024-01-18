@@ -41,22 +41,22 @@ in {
     home = {
       packages = with pkgs; [
         # General terminal tools
-        asciigraph
-        btop
-        dig
-        entr
-        eza
-        gcc
-        git
-        gnumake
-        htop
-        pinentry
+        asciigraph # graphing stuff in terminal
+        btop # fancy top
+        dig # DNS lookup
+        entr # run commands on file changes
+        eza # nicer ls
+        gcc # for compiling things
+        git # for git
+        gnumake # for everything
+        htop # simpler fancy top
+        pinentry # for gpg
         ranger # file explorer
-        ripgrep
-        scc
-        silver-searcher
-        sipcalc
-        wget
+        ripgrep # for nvim plugin searching
+        scc # code stats
+        silver-searcher # for searching, may replace with rg later
+        sipcalc # for IP calculations
+        wget # for downloading things quickly
         xh # Friendlier curl
 
         # Data processing
