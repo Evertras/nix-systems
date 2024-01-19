@@ -21,6 +21,7 @@ in {
       enable = true;
 
       shellAbbrs = {
+        cat = "bat";
         g = "git";
         gc = "git commit -m";
         gd = "git diff";
