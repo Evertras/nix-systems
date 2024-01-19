@@ -88,7 +88,8 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.pointerCursor = cursorTheme;
+    home.pointerCursor = cursorTheme // { x11.enable = true; };
+
     gtk = {
       enable = true;
 
