@@ -2,7 +2,7 @@
 with lib;
 let cfg = config.evertras.home.desktop.browsers;
 in {
-  imports = [ ./firefox ];
+  imports = [ ./firefox ./surf ];
 
   options.evertras.home.desktop.browsers = {
     enableLibrewolf = mkOption {
