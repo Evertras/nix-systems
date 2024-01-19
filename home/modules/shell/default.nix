@@ -115,6 +115,10 @@ in {
 
         settings = { updates.auto_update = true; };
       };
+
+      # Nicer cd
+      # https://github.com/ajeetdsouza/zoxide
+      zoxide.enable = true;
     };
 
     evertras.home.shell = {
