@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 let cfg = config.evertras.home.shell.git;
 in {
@@ -22,6 +22,11 @@ in {
   };
 
   config = mkIf cfg.enable {
+    home.packages = [
+      # Don't need this often, but useful to have when needed
+      pkgs.git-filter-repo
+    ];
+
     programs.git = {
       enable = true;
 
