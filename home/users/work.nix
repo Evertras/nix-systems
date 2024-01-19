@@ -68,9 +68,8 @@ in {
         enable = true;
 
         autostartCmds = [
-          "autorandr -l main"
+          "autorandr -l main && sleep 1 && feh --bg-fill /home/brandon-fulljames/Pictures/desktops/forest-butterflies.jpeg"
           "setxkbmap -layout us"
-          "feh --bg-fill /home/brandon-fulljames/Pictures/desktops/forest-butterflies.jpeg"
           "sleep 5s; systemctl --user restart dunst"
         ];
 
