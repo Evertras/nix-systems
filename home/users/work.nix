@@ -70,7 +70,8 @@ in {
         autostartCmds = [
           "autorandr -l main"
           "setxkbmap -layout us"
-          "while ! /home/brandon-fulljames/.evertras/funcs/cycle-wallpaper; sleep 1s; done"
+          # Just use last-seen wallpaper, styli.sh doesn't seem to work on startup here
+          "/home/brandon-fulljames/.fehbg"
           "sleep 5s; systemctl --user restart dunst"
         ];
 
