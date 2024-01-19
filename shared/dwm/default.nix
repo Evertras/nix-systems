@@ -9,6 +9,7 @@ let
   autostartCmds = strings.concatStrings converted;
   basePatch = patch.mkBasePatch {
     autostartCmds = autostartCmds;
+    borderpx = opts.borderpx;
     browser = opts.browser;
     colorBackground = theme.colors.background;
     colorPrimary = theme.colors.primary;

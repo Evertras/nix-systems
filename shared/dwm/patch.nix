@@ -2,22 +2,23 @@
 with lib; {
   # Note to future self: be VERY careful about preserving
   # whitespace/tabs inside the actual strings...
-  mkBasePatch = { autostartCmds, browser, colorBackground, colorPrimary
-    , colorText, fontName, fontSize, gappx, lock, modKey, terminal }:
+  mkBasePatch = { autostartCmds, borderpx, browser, colorBackground
+    , colorPrimary, colorText, fontName, fontSize, gappx, lock, modKey, terminal
+    }:
     builtins.toFile "ever-dwm.diff" ''
 
-      From 7b99576e799040dbc24c2219b441745744ee76ec Mon Sep 17 00:00:00 2001
-      From: Brandon Fulljames <brandon.fulljames@woven-planet.global>
-      Date: Mon, 15 Jan 2024 11:31:19 +0900
+      From 12df0e30b8dfb3367e7a0b2a8fbc6b2c3f617f28 Mon Sep 17 00:00:00 2001
+      From: Brandon Fulljames <bfullj@gmail.com>
+      Date: Fri, 19 Jan 2024 12:23:17 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  87 +++++++++++++++++------
+       config.def.h |  89 ++++++++++++++++++------
        dwm.c        | 192 ++++++++++++++++++++++++++++++++++++++++++++++++---
-       2 files changed, 247 insertions(+), 32 deletions(-)
+       2 files changed, 248 insertions(+), 33 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..e7ce338 100644
+      index 9efa774..f4ab094 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -1,21 +1,29 @@
@@ -26,7 +27,10 @@ with lib; {
       +#include <X11/XF86keysym.h>
       +
        /* appearance */
-       static const unsigned int borderpx  = 1;        /* border pixel of windows */
+      -static const unsigned int borderpx  = 1;        /* border pixel of windows */
+      +static const unsigned int borderpx  = ${
+        toString borderpx
+      }; /* border pixel of windows */
        static const unsigned int snap      = 32;       /* snap pixel */
       +static const unsigned int gappx     = ${
         toString gappx

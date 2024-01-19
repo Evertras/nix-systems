@@ -8,6 +8,12 @@ in {
   options.evertras.desktop.dwm = {
     enable = mkEnableOption "dwm";
 
+    borderpx = mkOption {
+      description = "The size of borders around windows";
+      type = types.int;
+      default = 1;
+    };
+
     browser = mkOption {
       type = types.str;
       default = "librewolf";

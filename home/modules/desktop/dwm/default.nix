@@ -7,6 +7,7 @@ let
     inherit lib pkgs theme;
     opts = {
       autostartCmds = cfg.autostartCmds;
+      borderpx = cfg.borderpx;
       browser = cfg.browser;
       fontSize = 16;
       gappx = 20;
@@ -22,6 +23,12 @@ in {
     autostartCmds = mkOption {
       type = with types; listOf str;
       default = [ ];
+    };
+
+    borderpx = mkOption {
+      description = "The size of borders around windows";
+      type = types.int;
+      default = 1;
     };
 
     browser = mkOption { type = types.str; };
