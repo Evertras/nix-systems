@@ -23,6 +23,7 @@ in {
       shellAbbrs = {
         g = "git";
         gc = "git commit -m";
+        gd = "git diff";
         gp = "git push";
         gs = "git status";
         jctluser = "journalctl --user";
