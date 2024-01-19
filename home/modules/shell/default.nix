@@ -41,26 +41,27 @@ in {
     home = {
       packages = with pkgs; [
         # General terminal tools
-        asciigraph # graphing stuff in terminal
-        bat # cat with syntax highlighting / paging
-        btop # fancy top
         dig # DNS lookup
         entr # run commands on file changes
-        eza # nicer ls
         gcc # for compiling things
         git # for git
         gnumake # for everything
-        htop # simpler fancy top
         pinentry # for gpg
         ranger # file explorer
-        ripgrep # for nvim plugin searching
         scc # code stats
-        silver-searcher # for searching, may replace with rg later
         sipcalc # for IP calculations
         wget # for downloading things quickly
+
+        # Base tool upgrades
+        bat # cat with syntax highlighting / paging
+        btop # fancy top
+        eza # nicer ls
+        ripgrep # for nvim plugin searching
+        silver-searcher # for searching, may replace with rg later
         xh # Friendlier curl
 
         # Data processing
+        asciigraph
         fx
         jq
         yq
