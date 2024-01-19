@@ -74,6 +74,8 @@ in {
           "sleep 5s; systemctl --user restart dunst"
         ];
 
+        borderpx = 2;
+
         inherit terminal;
 
         lock = customLockCmd;
