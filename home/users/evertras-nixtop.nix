@@ -40,7 +40,7 @@ in {
       browsers.surf.enable = true;
 
       kitty.enable = true;
-      st = let nerdfont = "Cousine";
+      st = let nerdfont = "AurulentSansM";
       in {
         enable = true;
 
