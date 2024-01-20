@@ -26,4 +26,5 @@ in pkgs.dwm.overrideAttrs (self: super: {
   src = ./src;
   patches =
     if super.patches == null then patchList else super.patches ++ patchList;
+  buildInputs = super.buildInputs ++ [ pkgs.xorg.libXcursor ];
 })

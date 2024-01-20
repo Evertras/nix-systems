@@ -7,15 +7,17 @@ with lib; {
     }:
     builtins.toFile "ever-dwm.diff" ''
 
-      From 12df0e30b8dfb3367e7a0b2a8fbc6b2c3f617f28 Mon Sep 17 00:00:00 2001
+      From 9ea1e1c59c5676e758efa98306752255ebb8e4f6 Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Fri, 19 Jan 2024 12:23:17 +0900
+      Date: Sat, 20 Jan 2024 18:18:35 +0900
       Subject: [PATCH] Changes
 
       ---
        config.def.h |  89 ++++++++++++++++++------
+       config.mk    |   2 +-
+       drw.c        |   3 +-
        dwm.c        | 192 ++++++++++++++++++++++++++++++++++++++++++++++++---
-       2 files changed, 248 insertions(+), 33 deletions(-)
+       4 files changed, 251 insertions(+), 35 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
       index 9efa774..f4ab094 100644
@@ -173,6 +175,40 @@ with lib; {
        	{ ClkWinTitle,          0,              Button2,        zoom,           {0} },
        	{ ClkStatusText,        0,              Button2,        spawn,          {.v = termcmd } },
        	{ ClkClientWin,         MODKEY,         Button1,        movemouse,      {0} },
+      diff --git a/config.mk b/config.mk
+      index ba64d3d..5680345 100644
+      --- a/config.mk
+      +++ b/config.mk
+      @@ -23,7 +23,7 @@ FREETYPEINC = /usr/include/freetype2
+       
+       # includes and libs
+       INCS = -I''${X11INC} -I''${FREETYPEINC}
+      -LIBS = -L''${X11LIB} -lX11 ''${XINERAMALIBS} ''${FREETYPELIBS}
+      +LIBS = -L''${X11LIB} -lX11 ''${XINERAMALIBS} ''${FREETYPELIBS} -lXcursor
+       
+       # flags
+       CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_XOPEN_SOURCE=700L -DVERSION=\"''${VERSION}\" ''${XINERAMAFLAGS}
+      diff --git a/drw.c b/drw.c
+      index a58a2b4..7f083c2 100644
+      --- a/drw.c
+      +++ b/drw.c
+      @@ -4,6 +4,7 @@
+       #include <string.h>
+       #include <X11/Xlib.h>
+       #include <X11/Xft/Xft.h>
+      +#include <X11/Xcursor/Xcursor.h>
+       
+       #include "drw.h"
+       #include "util.h"
+      @@ -434,7 +435,7 @@ drw_cur_create(Drw *drw, int shape)
+       	if (!drw || !(cur = ecalloc(1, sizeof(Cur))))
+       		return NULL;
+       
+      -	cur->cursor = XCreateFontCursor(drw->dpy, shape);
+      +	cur->cursor = XcursorLibraryLoadCursor(drw->dpy, "default");
+       
+       	return cur;
+       }
       diff --git a/dwm.c b/dwm.c
       index f1d86b2..176228f 100644
       --- a/dwm.c
