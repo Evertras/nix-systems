@@ -72,9 +72,11 @@ in {
 
         # Funsies
         fastfetch
+        googler
         steghide
         stegseek
         toipe
+        w3m
       ];
 
       sessionVariables = {
