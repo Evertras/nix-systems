@@ -56,6 +56,7 @@ in {
         # For some reason this needs a kick
         "systemctl restart --user pipewire"
       ];
+      borderpx = 2;
     };
   };
 
