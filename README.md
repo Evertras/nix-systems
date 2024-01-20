@@ -59,3 +59,52 @@ So I stop getting distracted by shiny things...
 - Better null checks
 - More enum checks with asserts for things like desktop as "i3"
 - Better config between window managers on a full NixOS system, currently need to enable twice for i3 config
+
+## Font list
+
+I get bored with fonts so here's a list of the nerd fonts
+that I actually like, as a reminder to myself.
+
+### Clean
+
+For just focusing.
+
+#### Standard
+
+Go-tos
+
+- CaskaydiaCove - Solid baseline when all else fails, bit wider
+- Hasklug - Default go-to for ligatures, clean
+
+#### Alternatives
+
+Feeling different but still "boring".
+
+- AurulentSansM - Soft/clean, not sure if I like 0 without dot
+- BitstromWera - Clean/simple
+- CodeNewRoman - Clean/simple
+- Cousine - Clear, simple
+- JetBrainsMono - Clean, ligatures
+- Literation - Wider
+- OverpassM - Thinner, simple
+- RobotoMono - Clean, simple
+- UbuntuMono - Feels like Ubuntu, yep
+
+### Fun/different
+
+To change it up.
+
+- Agave Nerd - kind of old school sharp feel
+- ComicShannsMono - Casual and surprisingly nice to read
+- Gohu Font 14 - Pixel font, sharp at size 14 - can use 11 as well for tiny readable font
+- Hurmit - Fun change in small doses
+- Iosevka - Feels squished horizontally but still clean
+- Monofur - Thin stroke with round characters
+- Monoid - Bigger, but ligatures
+- Mononoki - Just feels different, hard to describe
+- OpenDyslexicM - Weirdly stroked characters, wider
+- ProFont IIx - Pixel font, nicely sharp
+- ProggyClean - Works for very small font sizes, not great at larger
+- ShureTechMono - Bit squished, hard to describe
+- SpaceMono - Extra space between lines
+- Terminess - Works nicely for windows/titles but not so much terminal

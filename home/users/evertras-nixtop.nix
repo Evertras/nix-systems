@@ -40,11 +40,13 @@ in {
       browsers.surf.enable = true;
 
       kitty.enable = true;
-      st = {
+      st = let nerdfont = "Cousine";
+      in {
         enable = true;
 
         bgImage = "/home/evertras/Pictures/wallpaper.ff";
         fontSize = 20;
+        fontName = "${nerdfont} Nerd Font Mono";
       };
 
       display.sleep.enable = true;
