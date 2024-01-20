@@ -37,6 +37,8 @@ in {
       enable = true;
       kbLayout = "jp";
 
+      browsers.surf.enable = true;
+
       kitty.enable = true;
       st = {
         enable = true;

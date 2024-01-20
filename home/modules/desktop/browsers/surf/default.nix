@@ -8,7 +8,7 @@ let
   colorsFrappe = catppuccinPalette.Frappe;
   mainPatch = patchlib.mkPatch { };
 in {
-  options.evertras.home.desktop.surf = with lib; {
+  options.evertras.home.desktop.browsers.surf = with lib; {
     enable = mkEnableOption "surf";
   };
 
