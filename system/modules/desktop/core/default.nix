@@ -1,6 +1,8 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.desktop.core;
+let
+  cfg = config.evertras.desktop.core;
+  theme = config.evertras.themes.selected;
 in {
   options.evertras.desktop.core = {
     enable = mkEnableOption "Desktop core xserver";
@@ -29,7 +31,14 @@ in {
         # Explicitly enable lightDM in case we log back out,
         # just to remind ourselves which thing we're using...
         # in the future, explore removing this and using xstart
-        lightdm = { enable = true; };
+        lightdm = {
+          enable = true;
+
+          greeters.gtk.cursorTheme = {
+            name = theme.cursorTheme.name;
+            package = theme.cursorTheme.package;
+          };
+        };
       };
 
       # Disable capslock, trying to remap it to ctrl
