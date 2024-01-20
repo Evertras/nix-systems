@@ -46,6 +46,7 @@ in {
         gcc # for compiling things
         git # for git
         gnumake # for everything
+        ncdu # disk space usage
         pinentry # for gpg
         ranger # file explorer
         scc # code stats
