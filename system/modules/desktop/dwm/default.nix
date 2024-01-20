@@ -60,6 +60,7 @@ in {
           inherit lib pkgs theme;
           opts = {
             autostartCmds = cfg.autoStartCmds;
+            borderpx = cfg.borderpx;
             browser = cfg.browser;
             lock = cfg.lock;
             terminal = cfg.terminal;
