@@ -73,6 +73,7 @@ in {
         fastfetch
         steghide
         stegseek
+        toipe
       ];
 
       sessionVariables = {
