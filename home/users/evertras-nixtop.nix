@@ -47,8 +47,8 @@ in {
       st = {
         enable = true;
         fontSize = 20;
-        bgBlurPixels = 5;
-        bgOpacityPercent100 = 95;
+        bgBlurPixels = 0;
+        bgOpacityPercent100 = 90;
       };
 
       display.sleep.enable = true;

@@ -52,7 +52,7 @@ in {
     dwm = {
       enable = true;
       autoStartCmds = [
-        "while ! styli.sh -s '${theme.inspiration}' &> /tmp/dwm-stylishlog; do sleep 1s; done"
+        "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg"
         # For some reason this needs a kick
         "systemctl restart --user pipewire"
       ];

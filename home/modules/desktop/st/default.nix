@@ -123,7 +123,7 @@ in {
 
         echo "Darkening/blurring..."
         convert "$img" \
-          \( -size ${cfg.desktopResolution} "xc:${theme.colors.backgroundDeep}" \) \
+          \( -size ${cfg.desktopResolution} "xc:#111121" \) \
           -resize ${cfg.desktopResolution} \
           -gaussian-blur 0x${toString cfg.bgBlurPixels} \
           -compose blend \
