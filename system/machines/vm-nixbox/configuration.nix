@@ -48,8 +48,6 @@ in {
     file
   ];
 
-  fonts.packages = with pkgs; [ nerdfonts ];
-
   environment.variables = { EDITOR = "nvim"; };
 
   # Enable the OpenSSH daemon.
