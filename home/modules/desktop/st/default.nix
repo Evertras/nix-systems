@@ -45,6 +45,15 @@ in {
       default = "2560x1440";
     };
 
+    bgBlurPixels = mkOption {
+      description = ''
+        How many pixels to blur the background image by when generating.
+        0 = no blur
+      '';
+      type = types.int;
+      default = 0;
+    };
+
     fontSize = mkOption {
       description = ''
         Font size to use.
@@ -90,7 +99,9 @@ in {
         fi
 
         echo "Darkening/blurring..."
-        convert "$img" -fill black -colorize 80% -gaussian-blur 0x6 -resize ${cfg.desktopResolution} "$tmpName"
+        convert "$img" -fill "${theme.colors.backgroundDeep}" -colorize 90% -gaussian-blur 0x${
+          toString cfg.bgBlurPixels
+        } -resize ${cfg.desktopResolution} "$tmpName"
 
         echo "Converting $img to farbfeld..."
         "$tool" < "$tmpName" > "$target"
