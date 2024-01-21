@@ -45,6 +45,10 @@ in {
           bind ! bind_bang
           bind '$' bind_dollar
         '';
+
+        coln = ''
+          awk '{print $'$argv[1]'}'
+        '';
       };
 
       shellAbbrs = {
