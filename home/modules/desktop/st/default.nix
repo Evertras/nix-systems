@@ -99,9 +99,13 @@ in {
         fi
 
         echo "Darkening/blurring..."
-        convert "$img" -fill "${theme.colors.backgroundDeep}" -colorize 90% -gaussian-blur 0x${
-          toString cfg.bgBlurPixels
-        } -resize ${cfg.desktopResolution} "$tmpName"
+        convert "$img" \
+          \( -size ${cfg.desktopResolution} "xc:${theme.colors.backgroundDeep}" \) \
+          -resize ${cfg.desktopResolution} \
+          -gaussian-blur 0x${toString cfg.bgBlurPixels} \
+          -compose blend \
+          -define compose:args=90 \
+          "$tmpName"
 
         echo "Converting $img to farbfeld..."
         "$tool" < "$tmpName" > "$target"
