@@ -21,6 +21,7 @@ in {
       enable = true;
 
       functions = {
+        # Add !! and !$ to fish using the snippet below
         # https://github.com/fish-shell/fish-shell/wiki/Bash-Style-Command-Substitution-and-Chaining-(!!-!$)
         bind_bang = ''
           switch (commandline -t)
@@ -31,7 +32,6 @@ in {
             commandline -i !
           end
         '';
-
         bind_dollar = ''
           switch (commandline -t)
           case "*!"
