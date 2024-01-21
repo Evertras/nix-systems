@@ -22,7 +22,10 @@ let
       cyan = colorsFrappe.Sky;
     };
 
-    bgImage = cfg.bgImage;
+    bgImage = if cfg.bgImage == "" then
+      "${config.home.homeDirectory}/.evertras/backgrounds/wallpaper.ff"
+    else
+      cfg.bgImage;
   };
 in {
   options.evertras.home.desktop.st = with lib; {
@@ -84,7 +87,9 @@ in {
         fi
 
         if [ -z "$target" ]; then
-          target="$img.ff"
+          mkdir -p "$HOME/.evertras/backgrounds"
+          target="$HOME/.evertras/backgrounds/wallpaper.ff"
+          echo "No target given, defaulting to $target"
         fi
 
         if [ "$(file -b --mime-type "$img")" = "image/jpeg" ]; then
@@ -98,6 +103,13 @@ in {
           exit 1
         fi
 
+        if [ -f "$tmpName" ]; then
+          echo "Removing old temp file: $tmpName"
+          rm "$tmpName"
+        fi
+
+        echo "Converting $img -> $target"
+
         echo "Darkening/blurring..."
         convert "$img" \
           \( -size ${cfg.desktopResolution} "xc:${theme.colors.backgroundDeep}" \) \
@@ -105,6 +117,7 @@ in {
           -gaussian-blur 0x${toString cfg.bgBlurPixels} \
           -compose blend \
           -define compose:args=90 \
+          -composite \
           "$tmpName"
 
         echo "Converting $img to farbfeld..."
@@ -117,7 +130,8 @@ in {
       '';
 
       gen-st-bg-stylish.body = ''
-        gen-st-bg "$HOME/.cache/styli.sh/wallpaper.jpg"
+        mkdir -p "$HOME/.evertras/backgrounds"
+        gen-st-bg "$HOME/.cache/styli.sh/wallpaper.jpg" "$HOME/.evertras/backgrounds/wallpaper.ff"
       '';
     };
     home.packages = let patchList = [ mainPatch ];

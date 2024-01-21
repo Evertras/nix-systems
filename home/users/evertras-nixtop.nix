@@ -46,8 +46,6 @@ in {
       kitty.enable = true;
       st = {
         enable = true;
-
-        bgImage = "/home/evertras/.cache/styli.sh/wallpaper.jpg.ff";
         fontSize = 20;
       };
 
