@@ -8,11 +8,6 @@ let
 
   nerdfonts = import ../nerdfonts { inherit pkgs; };
 
-  mkNerdFontPkg = { n, pkg }: {
-    name = "${n} Nerd Font";
-    package = pkgs.nerdfonts.override { fonts = [ pkg ]; };
-  };
-
   catppuccinColors = [
     "Rosewater"
     "Flamingo"

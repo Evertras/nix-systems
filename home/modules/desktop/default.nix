@@ -32,33 +32,35 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [
-      # Clipboard
-      xclip
+    home.packages = with pkgs;
+      let fontPackages = map (f: f.package) (attrsets.attrValues theme.fonts);
+      in [
+        # Clipboard
+        xclip
 
-      # Window management utilities
-      # https://www.semicomplete.com/projects/xdotool/
-      xdotool
+        # Window management utilities
+        # https://www.semicomplete.com/projects/xdotool/
+        xdotool
 
-      # Wallpaper changer
-      stylish
+        # Wallpaper changer
+        stylish
 
-      # Quick image manipulation with 'convert'
-      imagemagick
+        # Quick image manipulation with 'convert'
+        imagemagick
 
-      # Image viewing
-      feh
+        # Image viewing
+        feh
 
-      # Screenshot taker and more
-      # https://github.com/naelstrof/maim#examples
-      maim
+        # Screenshot taker and more
+        # https://github.com/naelstrof/maim#examples
+        maim
 
-      # Notes
-      obsidian
+        # Notes
+        obsidian
 
-      # Theme stuff
-      theme.iconTheme.package
-    ];
+        # Theme stuff
+        theme.iconTheme.package
+      ] ++ fontPackages;
 
     xdg = {
       enable = true;
