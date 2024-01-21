@@ -29,6 +29,12 @@ in {
       type = types.str;
       default = "us";
     };
+
+    resolution = mkOption {
+      description = "Largest resolution of all monitors.";
+      type = types.str;
+      default = "2560x1440";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -114,6 +120,13 @@ in {
       screenshotsDir = "$HOME/.evertras/screenshots";
       screenshotsLog = "/tmp/screenshot-lastlog";
     in {
+
+      cycle-wallpaper.body = let
+        split = splitString "x" cfg.resolution;
+        width = elemAt split 0;
+        height = elemAt split 1;
+      in "styli.sh -s '${theme.inspiration}' -b bg-fill -h ${height} -w ${width}";
+
       screenshot-save.body = ''
         mkdir -p ${screenshotsDir}
         filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr A-Z a-z).png
