@@ -20,6 +20,33 @@ in {
     programs.fish = {
       enable = true;
 
+      functions = {
+        # https://github.com/fish-shell/fish-shell/wiki/Bash-Style-Command-Substitution-and-Chaining-(!!-!$)
+        bind_bang = ''
+          switch (commandline -t)
+          case "!"
+            commandline -t -- $history[1]
+            commandline -f repaint
+          case "*"
+            commandline -i !
+          end
+        '';
+
+        bind_dollar = ''
+          switch (commandline -t)
+          case "*!"
+            commandline -f backward-delete-char history-token-search-backward
+          case "*"
+            commandline -i '$'
+          end
+        '';
+
+        fish_user_key_bindings = ''
+          bind ! bind_bang
+          bind '$' bind_dollar
+        '';
+      };
+
       shellAbbrs = {
         cat = "bat";
         g = "git";
@@ -48,7 +75,7 @@ in {
         colorText = rmp theme.colors.text;
         colorUrgent = rmp theme.colors.urgent;
       in ''
-        set fish_greeting ""
+        set fish_greeting
 
         fish_add_path -g ~/.evertras/funcs
 
