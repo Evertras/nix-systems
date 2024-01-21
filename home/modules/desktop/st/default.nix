@@ -39,6 +39,12 @@ in {
       default = "";
     };
 
+    desktopResolution = mkOption {
+      description = "The main desktop resolution, for background images";
+      type = types.str;
+      default = "2560x1440";
+    };
+
     fontSize = mkOption {
       description = ''
         Font size to use.
@@ -84,7 +90,7 @@ in {
         fi
 
         echo "Darkening/blurring..."
-        convert "$img" -fill black -colorize 80% -gaussian-blur 0x8 -resize 3840x2160 "$tmpName"
+        convert "$img" -fill black -colorize 80% -gaussian-blur 0x6 -resize ${cfg.desktopResolution} "$tmpName"
 
         echo "Converting $img to farbfeld..."
         "$tool" < "$tmpName" > "$target"
@@ -93,6 +99,10 @@ in {
           echo "Failed to convert $img to farbfeld"
           exit 1
         fi
+      '';
+
+      gen-st-bg-stylish.body = ''
+        gen-st-bg "$HOME/.cache/styli.sh/wallpaper.jpg"
       '';
     };
     home.packages = let patchList = [ mainPatch ];

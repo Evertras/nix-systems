@@ -47,7 +47,7 @@ in {
       st = {
         enable = true;
 
-        bgImage = "/home/evertras/Pictures/wallpaper.ff";
+        bgImage = "/home/evertras/.cache/styli.sh/wallpaper.jpg.ff";
         fontSize = 20;
       };
 
