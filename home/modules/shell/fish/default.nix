@@ -49,6 +49,14 @@ in {
         coln = ''
           awk '{print $'$argv[1]'}'
         '';
+
+        skip = ''
+          tail -n +(math 1 + $argv[1])
+        '';
+
+        take = ''
+          head -n $argv[1]
+        '';
       };
 
       shellAbbrs = {
