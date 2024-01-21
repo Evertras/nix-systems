@@ -57,6 +57,17 @@ in {
       default = 0;
     };
 
+    bgOpacityPercent100 = mkOption {
+      description = ''
+        Opacity level of generated backgrounds as a 0-100 value.
+
+        Higher values are more opaque.
+      '';
+
+      type = types.int;
+      default = 90;
+    };
+
     fontSize = mkOption {
       description = ''
         Font size to use.
@@ -116,7 +127,7 @@ in {
           -resize ${cfg.desktopResolution} \
           -gaussian-blur 0x${toString cfg.bgBlurPixels} \
           -compose blend \
-          -define compose:args=90 \
+          -define compose:args=${toString cfg.bgOpacityPercent100} \
           -composite \
           "$tmpName"
 
