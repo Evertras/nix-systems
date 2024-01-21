@@ -23,7 +23,7 @@
           "Don't automatically create comment leads on new lines after a comment";
       }
       {
-        event = "BufEnter";
+        event = "BufWinEnter";
         pattern = "*";
         command = "normal zR";
         desc = "Start unfolded";
