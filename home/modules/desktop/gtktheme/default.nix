@@ -18,7 +18,10 @@ let
     # TODO: Cleaner null check, but 'or' doesn't work...
     name =
       if cfg.font.name == null then theme.fonts.desktop.name else cfg.font.name;
-    package = cfg.font.package;
+    package = if cfg.font.package == null then
+      theme.fonts.desktop.package
+    else
+      cfg.font.package;
     size = cfg.font.size;
   };
 in {
@@ -64,8 +67,8 @@ in {
       };
 
       package = mkOption {
-        type = types.package;
-        default = pkgs.nerdfonts;
+        type = with types; nullOr package;
+        default = null;
       };
 
       size = mkOption {

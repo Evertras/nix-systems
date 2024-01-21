@@ -68,8 +68,7 @@ in {
       font = {
         name = theme.fonts.terminal.name;
         size = 14;
-        # TODO: Move to theme, just using nerdfonts everywhere for now
-        package = pkgs.nerdfonts;
+        package = theme.fonts.terminal.package;
       };
 
       extraConfig = ''

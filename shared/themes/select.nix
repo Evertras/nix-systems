@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }:
 with lib;
+
 let
   themes = import ./themes.nix { inherit pkgs lib; };
   selected = config.evertras.themes.selected;

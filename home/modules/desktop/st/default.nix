@@ -7,8 +7,7 @@ let
   catppuccinPalette = import ../../../../shared/themes/palette-catppuccin.nix;
   colorsFrappe = catppuccinPalette.Frappe;
   mainPatch = patchlib.mkPatch {
-    fontName =
-      if cfg.fontName == null then theme.fonts.terminal.name else cfg.fontName;
+    fontName = theme.fonts.terminal.name;
     fontSize = cfg.fontSize;
 
     colors = {
@@ -46,12 +45,6 @@ in {
       '';
       type = types.int;
       default = 22;
-    };
-
-    fontName = mkOption {
-      description = "Overrides the theme's terminal font.";
-      type = with types; nullOr str;
-      default = null;
     };
   };
 

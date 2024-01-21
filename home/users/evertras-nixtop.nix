@@ -4,10 +4,14 @@ let
   theme = themes.mkCatppuccin { color = "Green"; };
 
   gpgKey = "ABFFF058F479311F";
+
+  nerdfonts = import ../../shared/nerdfonts { inherit pkgs; };
 in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
-  evertras.themes.selected = theme;
+  evertras.themes.selected = (theme // {
+    fonts = (theme.fonts // { terminal = nerdfonts.makeMono "AurulentSansM"; });
+  });
 
   evertras.home = {
     core.username = "evertras";
@@ -40,13 +44,11 @@ in {
       browsers.surf.enable = true;
 
       kitty.enable = true;
-      st = let nerdfont = "AurulentSansM";
-      in {
+      st = {
         enable = true;
 
         bgImage = "/home/evertras/Pictures/wallpaper.ff";
         fontSize = 20;
-        fontName = "${nerdfont} Nerd Font Mono";
       };
 
       display.sleep.enable = true;

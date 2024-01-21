@@ -6,6 +6,13 @@ with lib;
 let
   palette = { catppuccin = import ./palette-catppuccin.nix; };
 
+  nerdfonts = import ../nerdfonts { inherit pkgs; };
+
+  mkNerdFontPkg = { n, pkg }: {
+    name = "${n} Nerd Font";
+    package = pkgs.nerdfonts.override { fonts = [ pkg ]; };
+  };
+
   catppuccinColors = [
     "Rosewater"
     "Flamingo"
@@ -29,15 +36,11 @@ let
   defaults = {
     inspiration = "gradient";
 
-    # Fun ones:
-    # - CaskaydiaCove Nerd Font
-    # - Terminess Nerd Font
-    # - ComicShannsMono Nerd Font
     fonts = {
-      main = { name = "Terminess Nerd Font"; };
-      mono = { name = "Terminess Nerd Font Mono"; };
-      desktop = { name = "CaskaydiaCove Nerd Font"; };
-      terminal = { name = "Hasklug Nerd Font"; };
+      main = nerdfonts.make "Terminess";
+      mono = nerdfonts.makeMono "Terminess";
+      desktop = nerdfonts.makeMono "CaskaydiaCove";
+      terminal = nerdfonts.makeMono "Hasklug";
     };
 
     # For ideas: https://www.gnome-look.org/browse?cat=135&ord=rating
