@@ -117,6 +117,7 @@ in {
         primary = p.${color};
         highlight = p.highlight.${color};
         background = p.Base;
+        backgroundDeep = p.Crust;
         text = p.Text;
         urgent = p.urgent.${color};
         contrast = p.contrast.${color};
