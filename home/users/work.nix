@@ -12,12 +12,16 @@ let
 
   terminal = "st";
 
+  nerdfonts = import ../../shared/nerdfonts { inherit pkgs; };
+
   # Custom lock script outside of home-manager
   customLockCmd = "/home/brandon-fulljames/.evertras/funcs/lock";
 in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
-  evertras.themes.selected = theme;
+  evertras.themes.selected = (theme // {
+    fonts = (theme.fonts // { terminal = nerdfonts.makeMono "Monofur"; });
+  });
 
   evertras.home = {
     core.username = "brandon-fulljames";
@@ -58,9 +62,12 @@ in {
       st = {
         enable = true;
 
-        bgImage = "/home/brandon-fulljames/Pictures/desktops/koi.jpg.ff";
+        fontSize = 20;
 
-        fontSize = 16;
+        bgBlurPixels = 0;
+        bgOpacityPercent100 = 80;
+
+        desktopResolution = "3840x2160";
       };
 
       dwm = {
