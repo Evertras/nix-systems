@@ -55,6 +55,7 @@ in {
 
       # Keeping for reference so I can switch back and forth
       i3 = {
+        enable = false;
         monitorNetworkInterface = "wlo1";
         monitorNetworkWireless = true;
         # Pipewire doesn't seem to want to start until

@@ -2,7 +2,7 @@
 # your system. Help is available in the configuration.nix(5) man page, on
 # https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
 
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
@@ -24,7 +24,7 @@ in {
     timeout = 2;
   };
 
-  ############################################################################## 
+  ##############################################################################
   # General system environment stuff
   time = {
     timeZone = "Asia/Tokyo";
@@ -109,6 +109,42 @@ in {
   services.resolved = {
     enable = true;
     fallbackDns = [ "8.8.8.8" ];
+  };
+
+  ##############################################################################
+  # Nvidia stuff
+  # https://nixos.wiki/wiki/Nvidia
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
+
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+
+    # Experimental stuff, turn off
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+
+    open = false;
+
+    nvidiaSettings = true;
+
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    prime = {
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      #sync.enable = true;
+    };
   };
 
   ##############################################################################

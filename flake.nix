@@ -29,7 +29,11 @@
         # Explicitly allow certain unfree software
         config = {
           allowUnfreePredicate = pkg:
-            builtins.elem (nixpkgs.lib.getName pkg) [ "obsidian" ];
+            builtins.elem (nixpkgs.lib.getName pkg) [
+              "nvidia-settings"
+              "nvidia-x11"
+              "obsidian"
+            ];
 
           permittedInsecurePackages = [ "electron-25.9.0" ];
         };
@@ -43,7 +47,7 @@
         };
 
         nixtop = lib.nixosSystem {
-          inherit system;
+          inherit pkgs system;
           modules = [ ./system/machines/nixtop/configuration.nix ];
         };
       };
