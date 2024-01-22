@@ -12,6 +12,8 @@ let
 
   terminal = "st";
 
+  terminalFont = "ShureTechMono";
+
   nerdfonts = import ../../shared/nerdfonts { inherit pkgs; };
 
   # Custom lock script outside of home-manager
@@ -20,7 +22,7 @@ in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
   evertras.themes.selected = (theme // {
-    fonts = (theme.fonts // { terminal = nerdfonts.makeMono "Monofur"; });
+    fonts = (theme.fonts // { terminal = nerdfonts.makeMono terminalFont; });
   });
 
   evertras.home = {
