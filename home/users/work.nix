@@ -37,6 +37,8 @@ in {
     shell = {
       core = { inherit gpgKey; };
 
+      coding.haskell.enable = true;
+
       funcs = {
         aws-login.body = "aws sso login";
         kitty-gl.body = "nixGL kitty";

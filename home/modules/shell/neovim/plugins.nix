@@ -39,10 +39,13 @@ in {
       };
 
       # https://github.com/nix-community/nixvim/blob/10d114f5a6e0a9591d13a28a92905e71cc100b39/plugins/lsp/language-servers/default.nix
-      servers = {
+      servers = let langs = config.evertras.home.shell.coding;
+      in {
         bashls.enable = true;
         cssls.enable = true;
         gopls.enable = true;
+        # Specific check for now due to being multiple gigabytes
+        hls.enable = langs.haskell.enable;
         html.enable = true;
         lua-ls.enable = true;
         rnix-lsp.enable = true;

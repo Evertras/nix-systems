@@ -2,7 +2,7 @@
 with lib;
 let
   cfg = config.evertras.home.shell.coding;
-  languages = [ "go" "python" "rust" "nodejs" ];
+  languages = [ "go" "haskell" "python" "rust" "nodejs" ];
 in {
   options.evertras.home.shell.coding = let
     langOpt = n: {
@@ -15,6 +15,7 @@ in {
     home.packages = let
       pkgList = with lists;
         flatten [
+          (optional cfg.haskell.enable [ cabal-install ghc ])
           (optional cfg.python.enable python3)
           (optional cfg.rust.enable [ cargo rustc ])
           (optional cfg.nodejs.enable nodejs_21)
