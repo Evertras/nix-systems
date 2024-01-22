@@ -12,7 +12,7 @@ let
 
   terminal = "st";
 
-  terminalFont = "ShureTechMono";
+  terminalFont = "CaskaydiaCove";
 
   nerdfonts = import ../../shared/nerdfonts { inherit pkgs; };
 
