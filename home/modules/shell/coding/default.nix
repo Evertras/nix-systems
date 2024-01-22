@@ -1,13 +1,15 @@
 { config, lib, pkgs, ... }:
 with lib;
-let cfg = config.evertras.home.shell.coding;
+let
+  cfg = config.evertras.home.shell.coding;
+  languages = [ "go" "python" "rust" "nodejs" ];
 in {
-  options.evertras.home.shell.coding = {
-    go = { enable = mkEnableOption "golang"; };
-    python = { enable = mkEnableOption "python"; };
-    rust = { enable = mkEnableOption "rust"; };
-    nodejs = { enable = mkEnableOption "nodejs"; };
-  };
+  options.evertras.home.shell.coding = let
+    langOpt = n: {
+      name = n;
+      value = { enable = mkEnableOption n; };
+    };
+  in (builtins.listToAttrs (map langOpt languages));
 
   config = with pkgs; {
     home.packages = let
