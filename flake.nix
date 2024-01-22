@@ -48,25 +48,18 @@
         };
       };
 
-      homeConfigurations = {
-        evertras-vm = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules =
-            [ nixvim.homeManagerModules.nixvim ./home/users/evertras-vm.nix ];
-        };
+      homeConfigurations = let
+        mkConfig = name:
+          (home-manager.lib.homeManagerConfiguration {
+            inherit pkgs;
+            modules =
+              [ nixvim.homeManagerModules.nixvim ./home/users/${name}.nix ];
+          });
 
-        evertras-nixtop = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [
-            nixvim.homeManagerModules.nixvim
-            ./home/users/evertras-nixtop.nix
-          ];
-        };
-
-        work = home-manager.lib.homeManagerConfiguration {
-          inherit pkgs;
-          modules = [ nixvim.homeManagerModules.nixvim ./home/users/work.nix ];
-        };
-      };
+        names = [ "evertras-vm" "evertras-nixtop" "work" ];
+      in (builtins.listToAttrs (map (n: {
+        name = n;
+        value = mkConfig n;
+      }) names));
     };
 }
