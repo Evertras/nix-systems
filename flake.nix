@@ -49,14 +49,14 @@
       };
 
       homeConfigurations = let
+        names = [ "evertras-vm" "evertras-nixtop" "work" ];
+
         mkConfig = name:
           (home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
             modules =
               [ nixvim.homeManagerModules.nixvim ./home/users/${name}.nix ];
           });
-
-        names = [ "evertras-vm" "evertras-nixtop" "work" ];
       in (builtins.listToAttrs (map (n: {
         name = n;
         value = mkConfig n;
