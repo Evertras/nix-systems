@@ -60,7 +60,6 @@ in {
 
         bgImage = "/home/brandon-fulljames/Pictures/desktops/koi.jpg.ff";
 
-        fontName = "MartianMono Nerd Font Mono";
         fontSize = 16;
       };
 
