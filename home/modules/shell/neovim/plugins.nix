@@ -136,8 +136,6 @@ in {
       };
     };
 
-    rainbow-delimiters.enable = true;
-
     rust-tools.enable = true;
 
     telescope = {
@@ -148,6 +146,11 @@ in {
       };
     };
 
-    treesitter = { enable = true; };
+    # Disabled for now until I figure out how to
+    # make this not run and lag out on large Makefiles...
+    treesitter = { enable = false; };
+
+    # Disabled until treesitter is fixed
+    rainbow-delimiters.enable = false;
   };
 }
