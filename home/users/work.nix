@@ -82,7 +82,7 @@ in {
           "setxkbmap -layout us"
           "sleep 5s; systemctl --user restart dunst"
           # Pre-installed picom
-          "sleep 5s; picom"
+          "sleep 5s; /home/brandon-fulljames/bin/picom"
         ];
 
         borderpx = 2;
