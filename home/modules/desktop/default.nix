@@ -9,11 +9,10 @@ in {
     ./browsers
     ./display
     ./dmenu
-    ./dwm
     ./gtktheme
-    ./i3
     ./notifications
     ./terminals
+    ./wm
   ];
 
   options.evertras.home.desktop = {

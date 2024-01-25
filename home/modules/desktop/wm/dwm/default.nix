@@ -3,7 +3,7 @@ with lib;
 let
   cfg = config.evertras.home.desktop.dwm;
   theme = config.evertras.themes.selected;
-  customDwm = import ../../../../shared/dwm {
+  customDwm = import ../../../../../shared/dwm {
     inherit lib pkgs theme;
     opts = {
       autostartCmds = cfg.autostartCmds;
