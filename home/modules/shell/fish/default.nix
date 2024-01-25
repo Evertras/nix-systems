@@ -90,6 +90,7 @@ in {
         set fish_greeting
 
         fish_add_path -g ~/.evertras/funcs
+        fish_add_path -g ~/bin
 
         # Theme
         # TODO: Move this into theme file

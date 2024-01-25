@@ -81,6 +81,8 @@ in {
           "autorandr -l main && sleep 1 && feh --bg-fill /home/brandon-fulljames/Pictures/desktops/forest-butterflies.jpeg"
           "setxkbmap -layout us"
           "sleep 5s; systemctl --user restart dunst"
+          # Pre-installed picom
+          "sleep 5s; picom"
         ];
 
         borderpx = 2;
