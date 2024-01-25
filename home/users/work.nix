@@ -26,7 +26,10 @@ in {
   });
 
   evertras.home = {
-    core.username = "brandon-fulljames";
+    core = {
+      username = "brandon-fulljames";
+      usingNixOS = false;
+    };
 
     audio = {
       enable = true;
