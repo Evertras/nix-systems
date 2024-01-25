@@ -44,7 +44,7 @@ in {
       '';
     };
 
-    autoStartCmds = mkOption {
+    autostartCmds = mkOption {
       type = types.listOf types.str;
       default = [ ];
       description = "Commands to run on startup";
@@ -59,7 +59,7 @@ in {
         customDwm = import ../../../../shared/dwm {
           inherit lib pkgs theme;
           opts = {
-            autostartCmds = cfg.autoStartCmds;
+            autostartCmds = cfg.autostartCmds;
             borderpx = cfg.borderpx;
             browser = cfg.browser;
             lock = cfg.lock;

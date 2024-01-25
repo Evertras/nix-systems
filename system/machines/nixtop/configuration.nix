@@ -51,7 +51,7 @@ in {
 
     windowmanager.dwm = {
       enable = true;
-      autoStartCmds = [
+      autostartCmds = [
         "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg"
         # For some reason this needs a kick
         "systemctl restart --user pipewire"
