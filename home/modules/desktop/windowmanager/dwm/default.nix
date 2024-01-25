@@ -2,6 +2,7 @@
 with lib;
 let
   cfg = config.evertras.home.desktop.windowmanager.dwm;
+  usingNixOS = config.evertras.home.core.usingNixOS;
   theme = config.evertras.themes.selected;
   customDwm = import ../../../../../shared/dwm {
     inherit lib pkgs theme;
@@ -61,7 +62,7 @@ in {
         text = ''
           [Desktop Entry]
           Name=dwm-nix-hm
-          Comment=dynamic window manager via home-manager
+          Comment=dwm via home-manager
           Exec=${customDwm}/bin/dwm
           Type=XSession
           DesktopNames=dwm
@@ -70,7 +71,9 @@ in {
     };
 
     # This unfortunately seems necessary if we're not using NixOS...
-    evertras.home.shell.funcs = {
+    evertras.home.shell.funcs = if usingNixOS then
+      { }
+    else {
       "install-dwm-without-nixos".body = ''
         linkfile=/usr/share/xsessions/dwm-nix-hm.desktop
         echo "Upserting linkfile $linkfile"
