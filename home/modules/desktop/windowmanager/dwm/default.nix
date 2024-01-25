@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  cfg = config.evertras.home.desktop.dwm;
+  cfg = config.evertras.home.desktop.windowmanager.dwm;
   theme = config.evertras.themes.selected;
   customDwm = import ../../../../../shared/dwm {
     inherit lib pkgs theme;
@@ -17,7 +17,7 @@ let
     };
   };
 in {
-  options.evertras.home.desktop.dwm = {
+  options.evertras.home.desktop.windowmanager.dwm = {
     enable = mkEnableOption "dwm";
 
     autostartCmds = mkOption {

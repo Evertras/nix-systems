@@ -49,7 +49,7 @@ in {
 
     core.kbLayout = "jp";
 
-    dwm = {
+    windowmanager.dwm = {
       enable = true;
       autoStartCmds = [
         "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg"

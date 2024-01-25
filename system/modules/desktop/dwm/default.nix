@@ -1,11 +1,11 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  cfg = config.evertras.desktop.dwm;
+  cfg = config.evertras.desktop.windowmanager.dwm;
   patches = import ./patches.nix { lib = lib; };
   theme = config.evertras.themes.selected;
 in {
-  options.evertras.desktop.dwm = {
+  options.evertras.desktop.windowmanager.dwm = {
     enable = mkEnableOption "dwm";
 
     borderpx = mkOption {

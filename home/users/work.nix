@@ -74,25 +74,25 @@ in {
         desktopResolution = "3840x2160";
       };
 
-      dwm = {
-        enable = true;
-
-        autostartCmds = [
-          "autorandr -l main && sleep 1 && feh --bg-fill /home/brandon-fulljames/Pictures/desktops/forest-butterflies.jpeg"
-          "setxkbmap -layout us"
-          "sleep 5s; systemctl --user restart dunst"
-          # Pre-installed picom
-          "sleep 5s; /home/brandon-fulljames/bin/picom"
-        ];
-
-        borderpx = 2;
-
-        inherit terminal;
-
-        lock = customLockCmd;
-      };
-
       windowmanager = {
+        dwm = {
+          enable = true;
+
+          autostartCmds = [
+            "autorandr -l main && sleep 1 && feh --bg-fill /home/brandon-fulljames/Pictures/desktops/forest-butterflies.jpeg"
+            "setxkbmap -layout us"
+            "sleep 5s; systemctl --user restart dunst"
+            # Pre-installed picom
+            "sleep 5s; /home/brandon-fulljames/bin/picom"
+          ];
+
+          borderpx = 2;
+
+          inherit terminal;
+
+          lock = customLockCmd;
+        };
+
         i3 = {
           # Enable anyway to switch back and forth
           enable = true;
