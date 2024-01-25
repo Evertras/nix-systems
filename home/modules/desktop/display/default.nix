@@ -26,21 +26,24 @@ in {
     };
   };
 
-  config = {
-    evertras.home.desktop.windowmanager.i3.startupPostCommands = let
-      # Monitor sleep settings
-      # Units in seconds
-      # man xset -> "The first value given is for the ‘standby' mode, the second is for the ‘suspend' mode, and the third is for the ‘off' mode."
-      # So basically, standby after 10 minutes, then suspend after an hour, then turn off after 3 hours
-      dpmsParams = map toString [
-        cfg.sleep.standbySeconds
-        cfg.sleep.suspendSeconds
-        cfg.sleep.offSeconds
-      ];
-      dpms = if cfg.sleep.enable then
-        [ "xset dpms ${concatStringsSep " " dpmsParams}" ]
-      else
-        [ ];
-    in dpms;
+  config = let
+    # Monitor sleep settings
+    # Units in seconds
+    # man xset -> "The first value given is for the ‘standby' mode, the second is for the ‘suspend' mode, and the third is for the ‘off' mode."
+    # So basically, standby after 10 minutes, then suspend after an hour, then turn off after 3 hours
+    dpmsParams = map toString [
+      cfg.sleep.standbySeconds
+      cfg.sleep.suspendSeconds
+      cfg.sleep.offSeconds
+    ];
+    dpms = if cfg.sleep.enable then
+      [ "xset dpms ${concatStringsSep " " dpmsParams}" ]
+    else
+      [ ];
+  in {
+    evertras.home.desktop.windowmanager = {
+      i3.startupPostCommands = dpms;
+      dwm.autostartCmds = dpms;
+    };
   };
 }
