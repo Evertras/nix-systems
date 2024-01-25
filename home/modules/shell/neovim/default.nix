@@ -23,9 +23,9 @@
           "Don't automatically create comment leads on new lines after a comment";
       }
       {
-        event = "BufWinEnter";
+        event = [ "BufWinEnter" "BufWinEnter" ];
         pattern = "*";
-        command = "normal zR";
+        command = "set foldlevel=99";
         desc = "Start unfolded";
       }
       {
