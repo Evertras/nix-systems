@@ -4,7 +4,8 @@ let
   cfg = config.evertras.home.desktop.st;
   theme = config.evertras.themes.selected;
   patchlib = import ./patch.nix { };
-  catppuccinPalette = import ../../../../shared/themes/palette-catppuccin.nix;
+  catppuccinPalette =
+    import ../../../../../shared/themes/palette-catppuccin.nix;
   colorsFrappe = catppuccinPalette.Frappe;
   mainPatch = patchlib.mkPatch {
     fontName = theme.fonts.terminal.name;

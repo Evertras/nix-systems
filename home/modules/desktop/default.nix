@@ -12,9 +12,8 @@ in {
     ./dwm
     ./gtktheme
     ./i3
-    ./kitty
     ./notifications
-    ./st
+    ./terminals
   ];
 
   options.evertras.home.desktop = {
