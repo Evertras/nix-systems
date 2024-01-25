@@ -12,7 +12,7 @@ in {
     ./gtktheme
     ./notifications
     ./terminals
-    ./wm
+    ./windowmanager
   ];
 
   options.evertras.home.desktop = {
@@ -94,9 +94,11 @@ in {
     };
 
     evertras.home.desktop = {
-      i3 = {
-        enable = mkDefault true;
-        kbLayout = mkDefault cfg.kbLayout;
+      windowmanager = {
+        i3 = {
+          enable = mkDefault true;
+          kbLayout = mkDefault cfg.kbLayout;
+        };
       };
 
       dwm = {

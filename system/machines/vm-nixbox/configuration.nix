@@ -9,7 +9,7 @@ in {
   ];
 
   evertras = {
-    desktop.i3 = {
+    desktop.windowmanager.i3 = {
       inherit kbLayout;
       enable = true;
     };

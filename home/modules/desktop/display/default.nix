@@ -27,7 +27,7 @@ in {
   };
 
   config = {
-    evertras.home.desktop.i3.startupPostCommands = let
+    evertras.home.desktop.windowmanager.i3.startupPostCommands = let
       # Monitor sleep settings
       # Units in seconds
       # man xset -> "The first value given is for the ‘standby' mode, the second is for the ‘suspend' mode, and the third is for the ‘off' mode."

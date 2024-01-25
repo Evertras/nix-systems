@@ -15,7 +15,7 @@ in {
       enable = true;
       kbLayout = "jp";
 
-      i3 = {
+      windowmanager.i3 = {
         monitorNetworkInterface = "enp0s3";
         startupPostCommands = [ "xrandr --output Virtual1 --mode 2560x1440" ];
       };

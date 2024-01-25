@@ -2,9 +2,11 @@
 # https://nixos.wiki/wiki/I3
 { config, lib, pkgs, ... }:
 with lib;
-let cfg = config.evertras.desktop.i3;
+let cfg = config.evertras.desktop.windowmanager.i3;
 in {
-  options.evertras.desktop.i3 = { enable = mkEnableOption "i3 desktop"; };
+  options.evertras.desktop.windowmanager.i3 = {
+    enable = mkEnableOption "i3 desktop";
+  };
 
   config = mkIf cfg.enable {
     services.xserver = {

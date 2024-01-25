@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  cfg = config.evertras.home.desktop.i3;
+  cfg = config.evertras.home.desktop.windowmanager.i3;
   theme = config.evertras.themes.selected;
 
   fontName =
@@ -12,7 +12,7 @@ let
   else
     cfg.startupWallpaperTerm;
 in {
-  options.evertras.home.desktop.i3 = {
+  options.evertras.home.desktop.windowmanager.i3 = {
     enable = mkEnableOption "i3 desktop";
 
     kbLayout = mkOption {

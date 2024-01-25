@@ -92,36 +92,38 @@ in {
         lock = customLockCmd;
       };
 
-      i3 = {
-        # Enable anyway to switch back and forth
-        enable = true;
+      windowmanager = {
+        i3 = {
+          # Enable anyway to switch back and forth
+          enable = true;
 
-        monitorNetworkInterface = "eno1";
+          monitorNetworkInterface = "eno1";
 
-        # TODO: Fix 'Mod4'
-        keybindOverrides = {
-          # For some reason space is lower case, so need this to override
-          "Mod4+space" = "exec ${terminal}";
-          # Custom local lock
-          "Mod4+Escape" = "exec ${customLockCmd}";
+          # TODO: Fix 'Mod4'
+          keybindOverrides = {
+            # For some reason space is lower case, so need this to override
+            "Mod4+space" = "exec ${terminal}";
+            # Custom local lock
+            "Mod4+Escape" = "exec ${customLockCmd}";
+          };
+
+          startupPreCommands = [ "autorandr -l main" ];
+
+          startupPostCommands = [ "/home/brandon-fulljames/bin/picom &" ];
+
+          # Don't want status in right monitor since it's vertical
+          bars = [
+            {
+              id = "main";
+              outputs = [ displayLeft displayCenter ];
+            }
+            {
+              id = "right";
+              outputs = [ displayRight ];
+              showStatus = false;
+            }
+          ];
         };
-
-        startupPreCommands = [ "autorandr -l main" ];
-
-        startupPostCommands = [ "/home/brandon-fulljames/bin/picom &" ];
-
-        # Don't want status in right monitor since it's vertical
-        bars = [
-          {
-            id = "main";
-            outputs = [ displayLeft displayCenter ];
-          }
-          {
-            id = "right";
-            outputs = [ displayRight ];
-            showStatus = false;
-          }
-        ];
       };
     };
   };
