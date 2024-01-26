@@ -68,6 +68,7 @@ in {
         gs = "git status";
         jctluser = "journalctl --user";
         k = "kubectl";
+        ndf = "nix develop --command fish";
         nr = "npm run";
         ls = "eza";
         sctluser = "systemctl --user";
