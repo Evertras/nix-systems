@@ -10,7 +10,7 @@ in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
   evertras.themes.selected = (theme // {
-    fonts = (theme.fonts // { terminal = nerdfonts.makeMono "AurulentSansM"; });
+    fonts = (theme.fonts // { terminal = nerdfonts.makeMono "Hasklug"; });
   });
 
   evertras.home = {
