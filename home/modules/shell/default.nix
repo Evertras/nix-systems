@@ -65,6 +65,7 @@ in {
         asciigraph
         fx
         jq
+        pandoc
         yq
 
         # Format nix things
