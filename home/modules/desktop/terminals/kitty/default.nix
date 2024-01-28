@@ -104,7 +104,7 @@ in {
         strip_trailing_spaces = "smart";
 
         # Let the cursor stay a pointer
-        default_pointer_shape = "alias";
+        default_pointer_shape = "arrow";
 
         url_style = "dashed";
         underline_hyperlinks = "always";
