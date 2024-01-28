@@ -72,6 +72,8 @@ in {
     };
   };
 
+  services.picom.enable = true;
+
   home = let
   in {
     # Other local things
