@@ -75,7 +75,7 @@ in {
         Font to use, if not using theme's terminal font.
       '';
       type = with types; nullOr attrs;
-      default = "";
+      default = null;
     };
 
     fontSize = mkOption {
