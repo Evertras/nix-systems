@@ -10,9 +10,10 @@ let
   displayCenter = "DP-2";
   displayRight = "HDMI-0";
 
-  terminal = "st";
+  # Use the wrapped version to get around OpenGL issues
+  terminal = "/home/brandon-fulljames/.evertras/funcs/kitty-gl";
 
-  terminalFont = "CaskaydiaCove";
+  terminalFont = "Hasklug";
 
   nerdfonts = import ../../shared/nerdfonts { inherit pkgs; };
 
@@ -71,7 +72,8 @@ in {
       st = {
         enable = true;
 
-        fontSize = 20;
+        font = nerdfonts.makeMono "ProFont IIx";
+        fontSize = 13;
 
         bgBlurPixels = 0;
         bgOpacityPercent100 = 80;
