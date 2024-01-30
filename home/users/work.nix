@@ -42,6 +42,8 @@ in {
 
       coding.haskell.enable = true;
 
+      git.userEmail = "brandon.fulljames@woven-planet.global";
+
       funcs = {
         aws-login.body = "aws sso login";
         kitty-gl.body = "nixGL kitty";
