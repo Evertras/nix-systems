@@ -60,7 +60,7 @@ in {
       };
 
       shellAbbrs = {
-        cat = "bat";
+        cat = "bat -p";
         g = "git";
         gc = "git commit -m";
         gd = "git diff";
