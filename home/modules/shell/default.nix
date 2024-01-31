@@ -74,6 +74,7 @@ in {
         # Funsies
         fastfetch
         googler
+        presenterm
         steghide
         stegseek
         toipe
