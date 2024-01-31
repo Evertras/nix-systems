@@ -24,7 +24,14 @@ in {
       };
     };
 
-    nvim-colorizer = { enable = true; };
+    nvim-colorizer = {
+      enable = true;
+
+      userDefaultOptions = {
+        # Don't highlight things like "Red" or "Blue" or "Microsoft Azure"
+        names = false;
+      };
+    };
 
     lsp = {
       enable = true;
