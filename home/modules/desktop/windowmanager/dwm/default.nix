@@ -34,7 +34,10 @@ in {
 
     browser = mkOption { type = types.str; };
 
-    lock = mkOption { type = types.str; };
+    lock = mkOption {
+      type = types.str;
+      default = "slock";
+    };
 
     modKey = mkOption {
       type = types.str;

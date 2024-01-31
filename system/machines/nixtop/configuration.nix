@@ -49,16 +49,8 @@ in {
 
     core.kbLayout = "jp";
 
-    windowmanager.dwm = {
-      enable = true;
-      autostartCmds = [
-        "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg"
-        # For some reason this needs a kick
-        "systemctl restart --user pipewire"
-      ];
-      terminal = "kitty";
-      borderpx = 2;
-    };
+    # TODO: Specify possible sessions here (i3, dwm)
+    # which are defined in home-manager
   };
 
   services.xserver.displayManager.autoLogin.user = "evertras";

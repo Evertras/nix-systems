@@ -52,21 +52,34 @@ in {
       };
 
       display.sleep.enable = true;
+      windowmanager = {
+        dwm = {
+          enable = true;
+          terminal = "kitty";
+          autostartCmds = [
+            "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg"
 
-      # Keeping for reference so I can switch back and forth
-      windowmanager.i3 = {
-        enable = false;
-        monitorNetworkInterface = "wlo1";
-        monitorNetworkWireless = true;
-        # Pipewire doesn't seem to want to start until
-        # something kicks it, so kick it
-        startupPostCommands = [ "systemctl restart --user pipewire" ];
-        keybindOverrides = let brightnessIncrement = "10";
-        in {
-          XF86MonBrightnessUp =
-            "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%+";
-          XF86MonBrightnessDown =
-            "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%-";
+            # For some reason this needs a kick
+            "systemctl restart --user pipewire"
+          ];
+          borderpx = 2;
+        };
+
+        # Keeping for reference so I can switch back and forth
+        i3 = {
+          enable = false;
+          monitorNetworkInterface = "wlo1";
+          monitorNetworkWireless = true;
+          # Pipewire doesn't seem to want to start until
+          # something kicks it, so kick it
+          startupPostCommands = [ "systemctl restart --user pipewire" ];
+          keybindOverrides = let brightnessIncrement = "10";
+          in {
+            XF86MonBrightnessUp =
+              "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%+";
+            XF86MonBrightnessDown =
+              "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%-";
+          };
         };
       };
     };

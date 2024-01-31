@@ -28,6 +28,15 @@ in {
           ${cfg.extraSessionCommands}
         '';
 
+        session = [{
+          manage = "desktop";
+          name = "dwm";
+          start = ''
+            dwm
+            waitPID=$!
+          '';
+        }];
+
         # Explicitly enable lightDM in case we log back out,
         # just to remind ourselves which thing we're using...
         # in the future, explore removing this and using xstart
