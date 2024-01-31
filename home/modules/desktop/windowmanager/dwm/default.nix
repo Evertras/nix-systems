@@ -1,22 +1,37 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
+  patch = (import ./patch.nix) { inherit lib; };
   cfg = config.evertras.home.desktop.windowmanager.dwm;
   usingNixOS = config.evertras.home.core.usingNixOS;
   theme = config.evertras.themes.selected;
-  customDwm = import ../../../../../shared/dwm {
-    inherit lib pkgs theme;
-    opts = {
-      autostartCmds = cfg.autostartCmds;
-      borderpx = cfg.borderpx;
-      browser = cfg.browser;
-      fontSize = 16;
-      gappx = 20;
-      lock = cfg.lock;
-      modKey = cfg.modKey;
-      terminal = cfg.terminal;
-    };
+
+  # Generate autostart commands
+  makeCmd = cmd: ''"sh", "-c", "${strings.escape [ ''"'' ] cmd}", NULL,'';
+  converted = map makeCmd cfg.autostartCmds;
+  autostartCmds = strings.concatStrings converted;
+
+  basePatch = patch.mkBasePatch {
+    autostartCmds = autostartCmds;
+    borderpx = cfg.borderpx;
+    browser = cfg.browser;
+    colorBackground = theme.colors.background;
+    colorPrimary = theme.colors.primary;
+    colorText = theme.colors.text;
+    fontName = theme.fonts.main.name;
+    fontSize = cfg.fontSize;
+    gappx = cfg.gappx;
+    lock = cfg.lock;
+    modKey = cfg.modKey;
+    terminal = cfg.terminal;
   };
+  patchList = [ basePatch ];
+  customDwm = pkgs.dwm.overrideAttrs (self: super: {
+    src = ./src;
+    patches =
+      if super.patches == null then patchList else super.patches ++ patchList;
+    buildInputs = super.buildInputs ++ [ pkgs.xorg.libXcursor ];
+  });
 in {
   options.evertras.home.desktop.windowmanager.dwm = {
     enable = mkEnableOption "dwm";
@@ -33,6 +48,18 @@ in {
     };
 
     browser = mkOption { type = types.str; };
+
+    fontSize = mkOption {
+      description = "The size of the font";
+      type = types.int;
+      default = 16;
+    };
+
+    gappx = mkOption {
+      description = "The size of gaps between windows";
+      type = types.int;
+      default = 20;
+    };
 
     lock = mkOption {
       type = types.str;
