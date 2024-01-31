@@ -4,6 +4,8 @@ let
   cfg = config.evertras.home.desktop.kitty;
   theme = config.evertras.themes.selected;
   shellBin = config.evertras.home.shell.core.shellBin;
+  fontSize = 14;
+  fontSizeDemo = 20;
 in {
   options.evertras.home.desktop.kitty = {
     enable = mkEnableOption "kitty";
@@ -60,14 +62,16 @@ in {
       */
     };
 
-    programs.kitty = {
+    programs.kitty = let
+      opacity = if cfg.opacity == null then theme.kittyOpacity else cfg.opacity;
+    in {
       enable = true;
 
       theme = theme.kittyTheme;
 
       font = {
         name = theme.fonts.terminal.name;
-        size = 14;
+        size = fontSize;
         package = theme.fonts.terminal.package;
       };
 
@@ -79,16 +83,28 @@ in {
         '' else
           ""}
 
-        # Adjustments to the theme controlled by our commands
-        include mode-adjustments.conf
+        # Font size adjustments
+        map ctrl+shift+o change_font_size all -2.0
+        map ctrl+shift+i change_font_size all +2.0
+        map ctrl+shift+u change_font_size all 0
+
+        # Demo mode
+        map ctrl+shift+b combine : change_font_size all ${
+          toString fontSizeDemo
+        } : set_background_opacity 1.0
+        map ctrl+shift+r combine : change_font_size all ${
+          toString fontSize
+        } : set_background_opacity ${opacity}
 
         # Overriding things in a pinch
         include override.conf
       '';
 
       settings = {
-        background_opacity =
-          if cfg.opacity == null then theme.kittyOpacity else cfg.opacity;
+        # Background opacity
+        background_opacity = opacity;
+        dynamic_background_opacity = true;
+
         # No blinking
         cursor = theme.colors.primary;
         cursor_blink_interval = 0;

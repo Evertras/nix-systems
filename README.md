@@ -47,12 +47,6 @@ Use [nixGL](https://github.com/nix-community/nixGL) to get around this.
 nixGL kitty
 ```
 
-## Short term todos
-
-So I stop getting distracted by shiny things...
-
-- Quick terminal controls (demo mode, opacity)
-
 ## Random todos for later
 
 - Explore better [types](https://github.com/NixOS/nixpkgs/blob/master/lib/types.nix) like nonEmptyString
