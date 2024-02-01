@@ -73,12 +73,12 @@ in {
 
         # Funsies
         fastfetch
-        googler
         presenterm
         steghide
         stegseek
         toipe
         w3m
+        xdg-ninja
       ];
 
       sessionVariables = {
