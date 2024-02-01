@@ -3,24 +3,24 @@ with lib; {
   # Note to future self: be VERY careful about preserving
   # whitespace/tabs inside the actual strings...
   mkBasePatch = { autostartCmds, borderpx, browser, colorBackground
-    , colorPrimary, colorText, fontName, fontSize, gappx, lock, modKey, terminal
-    }:
+    , colorPrimary, colorText, fontName, fontSize, gappx, lock, modKey
+    , swapFocusKey, terminal }:
     builtins.toFile "ever-dwm.diff" ''
 
-      From 9ea1e1c59c5676e758efa98306752255ebb8e4f6 Mon Sep 17 00:00:00 2001
+      From 367332d7573337448e1efbc6ce94327543b3295f Mon Sep 17 00:00:00 2001
       From: Brandon Fulljames <bfullj@gmail.com>
-      Date: Sat, 20 Jan 2024 18:18:35 +0900
+      Date: Thu, 1 Feb 2024 10:15:08 +0900
       Subject: [PATCH] Changes
 
       ---
-       config.def.h |  89 ++++++++++++++++++------
+       config.def.h |  93 ++++++++++++++++++-------
        config.mk    |   2 +-
        drw.c        |   3 +-
        dwm.c        | 192 ++++++++++++++++++++++++++++++++++++++++++++++++---
-       4 files changed, 251 insertions(+), 35 deletions(-)
+       4 files changed, 253 insertions(+), 37 deletions(-)
 
       diff --git a/config.def.h b/config.def.h
-      index 9efa774..f4ab094 100644
+      index 9efa774..12e4119 100644
       --- a/config.def.h
       +++ b/config.def.h
       @@ -1,21 +1,29 @@
@@ -110,11 +110,15 @@ with lib; {
        
        static const Key keys[] = {
        	/* modifier                     key        function        argument */
-      @@ -73,12 +85,16 @@ static const Key keys[] = {
+      @@ -71,14 +83,18 @@ static const Key keys[] = {
+       	{ MODKEY,                       XK_d,      incnmaster,     {.i = -1 } },
+       	{ MODKEY,                       XK_h,      setmfact,       {.f = -0.05} },
        	{ MODKEY,                       XK_l,      setmfact,       {.f = +0.05} },
-       	{ MODKEY,                       XK_Return, zoom,           {0} },
-       	{ MODKEY,                       XK_Tab,    view,           {0} },
+      -	{ MODKEY,                       XK_Return, zoom,           {0} },
+      -	{ MODKEY,                       XK_Tab,    view,           {0} },
       -	{ MODKEY|ShiftMask,             XK_c,      killclient,     {0} },
+      +	{ MODKEY,                       ${swapFocusKey}, zoom,     {0} },
+      +	/*{ MODKEY,                       XK_Tab,    view,           {0} },*/
       +	/* Modified from shift+c */
       +	{ MODKEY,                       XK_q,      killclient,     {0} },
        	{ MODKEY,                       XK_t,      setlayout,      {.v = &layouts[0]} },
@@ -189,7 +193,7 @@ with lib; {
        # flags
        CPPFLAGS = -D_DEFAULT_SOURCE -D_BSD_SOURCE -D_XOPEN_SOURCE=700L -DVERSION=\"''${VERSION}\" ''${XINERAMAFLAGS}
       diff --git a/drw.c b/drw.c
-      index a58a2b4..7f083c2 100644
+      index a58a2b4..e62aff9 100644
       --- a/drw.c
       +++ b/drw.c
       @@ -4,6 +4,7 @@

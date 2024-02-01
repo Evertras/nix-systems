@@ -23,6 +23,7 @@ let
     gappx = cfg.gappx;
     lock = cfg.lock;
     modKey = cfg.modKey;
+    swapFocusKey = cfg.swapFocusKey;
     terminal = cfg.terminal;
   };
   patchList = [ basePatch ];
@@ -74,6 +75,16 @@ in {
 
         Mod4Mask is the windows/cmd super key.
         Mod1Mask is the alt key.
+      '';
+    };
+
+    swapFocusKey = mkOption {
+      type = types.str;
+      default = "XK_Return";
+      description = ''
+        The key to use to make the current window
+        the main window, or swap the main window
+        with the stack.
       '';
     };
 
