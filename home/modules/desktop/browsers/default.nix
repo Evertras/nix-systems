@@ -1,8 +1,8 @@
-{ config, pkgs, lib, ... }:
+{ config, everlib, pkgs, lib, ... }:
 with lib;
 let cfg = config.evertras.home.desktop.browsers;
 in {
-  imports = [ ./firefox ./surf ];
+  imports = everlib.allSubdirs ./.;
 
   options.evertras.home.desktop.browsers = {
     enableLibrewolf = mkOption {

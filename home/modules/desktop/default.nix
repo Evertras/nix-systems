@@ -1,19 +1,11 @@
-{ config, lib, pkgs, ... }:
+{ config, everlib, lib, pkgs, ... }:
 
 with lib;
 let
   cfg = config.evertras.home.desktop;
   theme = config.evertras.themes.selected;
 in {
-  imports = [
-    ./browsers
-    ./display
-    ./dmenu
-    ./gtktheme
-    ./notifications
-    ./terminals
-    ./windowmanager
-  ];
+  imports = everlib.allSubdirs ./.;
 
   options.evertras.home.desktop = {
     enable = mkEnableOption "desktop";

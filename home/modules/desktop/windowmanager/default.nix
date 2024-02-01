@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./dwm ./i3 ]; }
+{ everlib, ... }: { imports = everlib.allSubdirs ./.; }

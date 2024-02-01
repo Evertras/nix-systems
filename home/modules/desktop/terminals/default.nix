@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./kitty ./st ]; }
+{ everlib, ... }: { imports = everlib.allSubdirs ./.; }
