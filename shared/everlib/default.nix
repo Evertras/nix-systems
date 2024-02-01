@@ -1,9 +1,11 @@
 { lib }:
-with lib; {
+with lib;
+let concatPaths = base: subdir: base + ("/" + subdir);
+in {
   allSubdirs = path:
     let
       fileset = builtins.readDir path;
       dirset = filterAttrs (_: s: s == "directory") fileset;
-      dirs = map (p: path + ("/" + p)) (builtins.attrNames dirset);
+      dirs = map (concatPaths path) (builtins.attrNames dirset);
     in dirs;
 }
