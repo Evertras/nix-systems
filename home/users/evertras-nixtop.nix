@@ -55,7 +55,6 @@ in {
       windowmanager = {
         dwm = {
           enable = true;
-          terminal = "kitty";
           autostartCmds = [
             "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg"
 
@@ -63,6 +62,7 @@ in {
             "systemctl restart --user pipewire"
           ];
           borderpx = 2;
+          terminal = "kitty";
         };
 
         # Keeping for reference so I can switch back and forth
