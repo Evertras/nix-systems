@@ -52,7 +52,6 @@ nixGL kitty
 - Explore better [types](https://github.com/NixOS/nixpkgs/blob/master/lib/types.nix) like nonEmptyString
 - Better null checks
 - More enum checks with asserts for things like desktop as "i3"
-- Better config between window managers on a full NixOS system, currently need to enable twice for i3 config
 
 ## Font list
 
