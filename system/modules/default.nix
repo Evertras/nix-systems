@@ -1,5 +1,5 @@
 { everlib, ... }:
 
 {
-  imports = everlib.allSubdirs;
+  imports = everlib.allSubdirs ./.;
 }
