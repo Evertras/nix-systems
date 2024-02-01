@@ -38,6 +38,8 @@
           permittedInsecurePackages = [ "electron-25.9.0" ];
         };
       };
+
+      everlib = import ./shared/everlib { inherit lib; };
     in {
 
       nixosConfigurations = {
@@ -60,6 +62,7 @@
             inherit pkgs;
             modules =
               [ nixvim.homeManagerModules.nixvim ./home/users/${name}.nix ];
+            extraSpecialArgs = { inherit everlib; };
           });
       in (builtins.listToAttrs (map (n: {
         name = n;

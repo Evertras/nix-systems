@@ -1,22 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, everlib, lib, pkgs, ... }:
 with lib;
 let
   cfg = config.evertras.home.shell.core;
   theme = config.evertras.themes.selected;
 in {
-  imports = [
-    ./bash
-    ./coding
-    ./editorconfig
-    ./fish
-    ./funcs
-    ./git
-    ./neovim
-    ./pass
-    ./spotify
-    ./starship
-    ./tmux
-  ];
+  imports = everlib.allSubdirs ./.;
 
   options.evertras.home.shell.core = {
     prompt = mkOption {
