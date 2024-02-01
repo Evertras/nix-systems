@@ -46,11 +46,13 @@
         nixbox = lib.nixosSystem {
           inherit system;
           modules = [ ./system/machines/vm-nixbox/configuration.nix ];
+          specialArgs = { inherit everlib; };
         };
 
         nixtop = lib.nixosSystem {
           inherit pkgs system;
           modules = [ ./system/machines/nixtop/configuration.nix ];
+          specialArgs = { inherit everlib; };
         };
       };
 
