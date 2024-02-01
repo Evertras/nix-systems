@@ -95,9 +95,11 @@ in {
 
           borderpx = 2;
 
-          inherit terminal;
+          swapFocusKey = "XK_Tab";
 
           lock = customLockCmd;
+
+          inherit terminal;
         };
 
         i3 = {
