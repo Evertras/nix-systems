@@ -29,6 +29,8 @@ in {
       "brightness-up".body = brightnessChange { change = "${incr}%+"; };
       "brightness-down".body = brightnessChange { change = "${incr}%-"; };
     };
+
+    home.packages = with pkgs; [ brightnessctl ];
   };
 }
 

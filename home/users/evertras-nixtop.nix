@@ -89,15 +89,7 @@ in {
     vSync = true;
   };
 
-  home = let
-  in {
-    # Other local things
-    packages = with pkgs;
-      [
-        # Laptop things
-        brightnessctl
-      ];
-
+  home = {
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
   };
