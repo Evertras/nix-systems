@@ -1,4 +1,5 @@
-{ config, lib, pkgs, ... }:
+{ config, everlib, lib, pkgs, ... }:
+with everlib;
 with lib;
 let
   cfg = config.evertras.home.desktop.kitty;
@@ -62,8 +63,7 @@ in {
       */
     };
 
-    programs.kitty = let
-      opacity = if cfg.opacity == null then theme.kittyOpacity else cfg.opacity;
+    programs.kitty = let opacity = existsOr cfg.opacity theme.kittyOpacity;
     in {
       enable = true;
 
@@ -130,7 +130,7 @@ in {
         underline_hyperlinks = "always";
 
         # Which shell to run
-        shell = if cfg.shell == null then shellBin else cfg.shell;
+        shell = existsOr cfg.shell shellBin;
 
         # Override selection to look nicer
         selection_foreground = theme.colors.background;

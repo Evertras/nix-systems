@@ -1,16 +1,13 @@
-{ config, lib, pkgs, ... }:
+{ config, everlib, lib, pkgs, ... }:
 with lib;
+with everlib;
 let
   cfg = config.evertras.home.desktop.windowmanager.i3;
   theme = config.evertras.themes.selected;
 
-  fontName =
-    if cfg.fontName == null then theme.fonts.main.name else cfg.fontName;
+  fontName = existsOr cfg.fontName theme.fonts.main.name;
 
-  startupWallpaperTerm = if cfg.startupWallpaperTerm == null then
-    theme.inspiration
-  else
-    cfg.startupWallpaperTerm;
+  startupWallpaperTerm = existsOr cfg.startupWallpaperTerm theme.inspiration;
 in {
   options.evertras.home.desktop.windowmanager.i3 = {
     enable = mkEnableOption "i3 desktop";

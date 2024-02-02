@@ -1,5 +1,6 @@
 # Non-negotiables that every user config must have defined
-{ config, lib, ... }:
+{ config, everlib, lib, ... }:
+with everlib;
 with lib;
 let cfg = config.evertras.home.core;
 in {
@@ -29,7 +30,7 @@ in {
   config = {
     home = {
       username = cfg.username;
-      homeDirectory = (import ./homedir.nix { inherit config; }).homeDir;
+      homeDirectory = existsOr cfg.homeDirectory "/home/${cfg.username}";
     };
 
     programs = {
