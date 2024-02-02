@@ -8,4 +8,6 @@ in {
       dirset = filterAttrs (_: s: s == "directory") fileset;
       dirs = map (concatPaths path) (builtins.attrNames dirset);
     in dirs;
+
+  existsOr = a: b: if a == null then b else a;
 }

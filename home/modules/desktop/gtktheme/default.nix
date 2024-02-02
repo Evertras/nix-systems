@@ -1,27 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, everlib, lib, pkgs, ... }:
 with lib;
+with everlib;
 let
   cfg = config.evertras.home.desktop.gtktheme;
   theme = config.evertras.themes.selected;
   cursorTheme = {
-    name = if cfg.cursor.name == null then
-      theme.cursorTheme.name
-    else
-      cfg.cursor.name;
-    package = if cfg.cursor.package == null then
-      theme.cursorTheme.package
-    else
-      cfg.cursor.package;
+    name = existsOr cfg.cursor.name theme.cursorTheme.name;
+    package = existsOr cfg.cursor.package theme.cursorTheme.package;
     size = cfg.cursor.size;
   };
   font = {
-    # TODO: Cleaner null check, but 'or' doesn't work...
-    name =
-      if cfg.font.name == null then theme.fonts.desktop.name else cfg.font.name;
-    package = if cfg.font.package == null then
-      theme.fonts.desktop.package
-    else
-      cfg.font.package;
+    name = existsOr cfg.font.name theme.fonts.desktop.name;
+    package = existsOr cfg.font.package theme.fonts.desktop.package;
     size = cfg.font.size;
   };
 in {
@@ -102,25 +92,13 @@ in {
       enable = true;
 
       iconTheme = {
-        name = if cfg.iconTheme.name == null then
-          theme.iconTheme.name
-        else
-          cfg.iconTheme.name;
-        package = if cfg.iconTheme.package == null then
-          theme.iconTheme.package
-        else
-          cfg.iconTheme.package;
+        name = existsOr cfg.iconTheme.name theme.iconTheme.name;
+        package = existsOr cfg.iconTheme.package theme.iconTheme.package;
       };
 
       theme = {
-        name = if cfg.overall.name == null then
-          theme.gtkTheme.name
-        else
-          cfg.overall.name;
-        package = if cfg.overall.package == null then
-          theme.gtkTheme.package
-        else
-          cfg.overall.package;
+        name = existsOr cfg.overall.name theme.gtkTheme.name;
+        package = existsOr cfg.overall.package cfg.overall.package;
       };
 
       inherit cursorTheme;
