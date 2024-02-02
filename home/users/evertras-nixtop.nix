@@ -71,13 +71,14 @@ in {
           # Pipewire doesn't seem to want to start until
           # something kicks it, so kick it
           startupPostCommands = [ "systemctl restart --user pipewire" ];
-          keybindOverrides = let brightnessIncrement = "10";
-          in {
-            XF86MonBrightnessUp =
-              "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%+";
-            XF86MonBrightnessDown =
-              "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%-";
-          };
+          keybindOverrides =
+            let brightnessIncrement = toString cfg.brightnessIncrement;
+            in {
+              XF86MonBrightnessUp =
+                "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%+";
+              XF86MonBrightnessDown =
+                "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%-";
+            };
         };
       };
     };
