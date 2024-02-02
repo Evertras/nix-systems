@@ -122,9 +122,14 @@ in {
         # Let the cursor stay a pointer
         default_pointer_shape = "arrow";
 
+        # Hide when typing (any negative value works)
+        mouse_hide_wait = "-1.0";
+
+        # URLs
         url_style = "dashed";
         underline_hyperlinks = "always";
 
+        # Which shell to run
         shell = if cfg.shell == null then shellBin else cfg.shell;
 
         # Override selection to look nicer
