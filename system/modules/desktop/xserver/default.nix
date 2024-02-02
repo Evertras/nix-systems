@@ -1,11 +1,11 @@
 { config, lib, ... }:
 with lib;
 let
-  cfg = config.evertras.desktop.core;
+  cfg = config.evertras.desktop.xserver;
   theme = config.evertras.themes.selected;
 in {
-  options.evertras.desktop.core = {
-    enable = mkEnableOption "Desktop core xserver";
+  options.evertras.desktop.xserver = {
+    enable = mkEnableOption "Desktop xserver";
 
     kbLayout = mkOption {
       type = types.str;

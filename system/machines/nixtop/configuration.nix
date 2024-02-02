@@ -47,7 +47,7 @@ in {
   evertras.desktop = {
     enable = true;
 
-    core.kbLayout = "jp";
+    xserver.kbLayout = "jp";
 
     # TODO: Specify possible sessions here (i3, dwm)
     # which are defined in home-manager
