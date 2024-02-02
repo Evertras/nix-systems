@@ -8,7 +8,7 @@ let
     import ../../../../../shared/themes/palette-catppuccin.nix;
   colorsFrappe = catppuccinPalette.Frappe;
   mainPatch = patchlib.mkPatch {
-    fontName = existsOr cfg.font theme.fonts.terminal.name;
+    fontName = existsOr cfg.font.name theme.fonts.terminal.name;
     fontSize = cfg.fontSize;
 
     colors = {
@@ -74,7 +74,10 @@ in {
         Font to use, if not using theme's terminal font.
       '';
       type = with types; nullOr attrs;
-      default = null;
+      default = {
+        name = null;
+        package = null;
+      };
     };
 
     fontSize = mkOption {
@@ -166,6 +169,6 @@ in {
           super.patches ++ patchList;
         buildInputs = super.buildInputs ++ [ pkgs.xorg.libXcursor ];
       }))
-    ] ++ (if cfg.font == null then [ ] else [ cfg.font.package ]);
+    ] ++ (if cfg.font.package == null then [ ] else [ cfg.font.package ]);
   };
 }
