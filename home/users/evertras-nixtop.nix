@@ -20,10 +20,7 @@ in {
       headphonesMacAddress = "EC:66:D1:B8:95:88";
     };
 
-    laptop = {
-      enable = true;
-      brightnessIncrement = 10;
-    };
+    laptop = { enable = true; };
 
     shell = {
       core = { inherit gpgKey; };
@@ -71,14 +68,10 @@ in {
           # Pipewire doesn't seem to want to start until
           # something kicks it, so kick it
           startupPostCommands = [ "systemctl restart --user pipewire" ];
-          keybindOverrides =
-            let brightnessIncrement = toString cfg.brightnessIncrement;
-            in {
-              XF86MonBrightnessUp =
-                "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%+";
-              XF86MonBrightnessDown =
-                "exec ~/.evertras/funcs/brightness-change ${brightnessIncrement}%-";
-            };
+          keybindOverrides = {
+            XF86MonBrightnessUp = "exec ~/.evertras/funcs/brightness-up";
+            XF86MonBrightnessDown = "exec ~/.evertras/funcs/brightness-down";
+          };
         };
       };
     };
