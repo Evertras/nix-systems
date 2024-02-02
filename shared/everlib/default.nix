@@ -1,21 +1,22 @@
 { lib }:
-with lib;
-let concatPaths = base: subdir: base + ("/" + subdir);
-in {
+with lib; {
   allSubdirs = path:
     let
       # { "fileordirname" = "regular|directory" ... }
       readset = builtins.readDir path;
-      dirset = filterAttrs (_: s: s == "directory") readset;
-      dirs = map (concatPaths path) (builtins.attrNames dirset);
+      dirset = filterAttrs (_: type: type == "directory") readset;
+      dirs = map (path.append path) (builtins.attrNames dirset);
     in dirs;
 
-  allFiles = path:
+  allNixFiles = path:
     let
       # { "fileordirname" = "regular|directory" ... }
       readset = builtins.readDir path;
-      fileset = filterAttrs (_: s: s == "regular") readset;
-      files = map (concatPaths path) (builtins.attrNames fileset);
+      isNixFile = strings.hasSuffix ".nix";
+      fileset =
+        filterAttrs (filename: type: (isNixFile filename) && type == "regular")
+        readset;
+      files = map (path.append path) (builtins.attrNames fileset);
     in files;
 
   existsOr = a: b: if a == null then b else a;
