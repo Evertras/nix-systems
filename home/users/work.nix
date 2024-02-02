@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ lib, nerdfonts, pkgs, ... }:
 
 let
   themes = import ../../shared/themes/themes.nix { inherit pkgs lib; };
@@ -14,8 +14,6 @@ let
   terminal = "/home/brandon-fulljames/.evertras/funcs/kitty-gl";
 
   terminalFont = "Hasklug";
-
-  nerdfonts = import ../../shared/nerdfonts { inherit pkgs; };
 
   # Custom lock script outside of home-manager
   customLockCmd = "/home/brandon-fulljames/.evertras/funcs/lock";

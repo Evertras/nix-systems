@@ -21,6 +21,7 @@
   outputs = { nixpkgs, home-manager, nixvim, ... }:
 
     let
+      # Nix stuff
       lib = nixpkgs.lib;
       system = "x86_64-linux";
       pkgs = import nixpkgs {
@@ -39,20 +40,21 @@
         };
       };
 
+      # My stuff
       everlib = import ./shared/everlib { inherit lib; };
+      nerdfonts = import ./shared/nerdfonts { inherit pkgs; };
     in {
-
       nixosConfigurations = {
         nixbox = lib.nixosSystem {
           inherit system;
           modules = [ ./system/machines/vm-nixbox/configuration.nix ];
-          specialArgs = { inherit everlib; };
+          specialArgs = { inherit everlib nerdfonts; };
         };
 
         nixtop = lib.nixosSystem {
           inherit pkgs system;
           modules = [ ./system/machines/nixtop/configuration.nix ];
-          specialArgs = { inherit everlib; };
+          specialArgs = { inherit everlib nerdfonts; };
         };
       };
 
@@ -64,7 +66,7 @@
             inherit pkgs;
             modules =
               [ nixvim.homeManagerModules.nixvim ./home/users/${name}.nix ];
-            extraSpecialArgs = { inherit everlib; };
+            extraSpecialArgs = { inherit everlib nerdfonts; };
           });
       in (builtins.listToAttrs (map (n: {
         name = n;
