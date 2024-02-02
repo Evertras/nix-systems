@@ -43,6 +43,9 @@
       # My stuff
       everlib = import ./shared/everlib { inherit lib; };
       nerdfonts = import ./shared/nerdfonts { inherit pkgs; };
+
+      # Helper to turn ./thing/someprofile.nix -> someprofile
+      nameFromNixFile = file: lib.strings.removeSuffix ".nix" (baseNameOf file);
     in {
       nixosConfigurations = {
         nixbox = lib.nixosSystem {
@@ -59,18 +62,18 @@
       };
 
       homeConfigurations = let
-        names = [ "evertras-vm" "evertras-nixtop" "work" ];
+        # Make a profile for every file in ./home/users
+        userFiles = everlib.allNixFiles ./home/users;
 
-        mkConfig = name:
+        mkConfig = file:
           (home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            modules =
-              [ nixvim.homeManagerModules.nixvim ./home/users/${name}.nix ];
+            modules = [ nixvim.homeManagerModules.nixvim file ];
             extraSpecialArgs = { inherit everlib nerdfonts; };
           });
-      in (builtins.listToAttrs (map (n: {
-        name = n;
-        value = mkConfig n;
-      }) names));
+      in (builtins.listToAttrs (map (file: {
+        name = nameFromNixFile file;
+        value = mkConfig file;
+      }) userFiles));
     };
 }
