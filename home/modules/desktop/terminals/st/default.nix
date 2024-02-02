@@ -1,5 +1,5 @@
-{ config, lib, pkgs, ... }:
-
+{ config, everlib, lib, pkgs, ... }:
+with everlib;
 let
   cfg = config.evertras.home.desktop.st;
   theme = config.evertras.themes.selected;
@@ -8,8 +8,7 @@ let
     import ../../../../../shared/themes/palette-catppuccin.nix;
   colorsFrappe = catppuccinPalette.Frappe;
   mainPatch = patchlib.mkPatch {
-    fontName =
-      if cfg.font == null then theme.fonts.terminal.name else cfg.font.name;
+    fontName = existsOr cfg.font theme.fonts.terminal.name;
     fontSize = cfg.fontSize;
 
     colors = {
