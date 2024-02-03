@@ -93,6 +93,8 @@ in {
         fish_add_path -g ~/.evertras/funcs
         fish_add_path -g ~/bin
 
+        set GPG_TTY (tty)
+
         # Theme
         # TODO: Move this into theme file
         set fish_color_normal c6d0f5
