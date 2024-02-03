@@ -26,6 +26,7 @@ let
     fullscreen = {
       background-color = mkColor theme.colors.background;
       border-width = 0;
+      fuzzy-match = "true";
       height = "100%";
       num-results = 5;
       outline-width = 0;
