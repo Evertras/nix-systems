@@ -24,19 +24,19 @@ let
     };
 
     fullscreen = {
-      width = "100%";
-      height = "100%";
+      background-color = mkColor theme.colors.background;
       border-width = 0;
+      height = "100%";
+      num-results = 5;
       outline-width = 0;
       padding-left = "35%";
       padding-top = "35%";
-      result-spacing = 25;
-      prompt-text = "run > ";
-      num-results = 5;
-      text-color = mkColor theme.colors.text;
       prompt-color = mkColor theme.colors.primary;
-      background-color = mkColor theme.colors.background;
+      prompt-text = "run > ";
+      result-spacing = 25;
       selection-color = mkColor theme.colors.contrast;
+      text-color = mkColor theme.colors.text;
+      width = "100%";
     };
   };
   tofiFlags =
