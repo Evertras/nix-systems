@@ -55,7 +55,7 @@ in {
           "$mod, P, exec, ${
             import ./toficmd.nix {
               inherit theme lib;
-              type = "dmenu";
+              type = "fullscreen";
             }
           }"
 
