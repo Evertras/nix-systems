@@ -1,3 +1,5 @@
+# Technically a compositor and not a window manager,
+# but close enough.
 { config, everlib, lib, pkgs, ... }:
 with lib;
 with everlib;
