@@ -53,7 +53,8 @@ in {
         exec-once ${pkgs.waybar}/bin/waybar
       '';
 
-      settings = {
+      settings = let mkColor = color: "0xff" + (strings.removePrefix "#" color);
+      in {
         # https://wiki.hyprland.org/Configuring/Variables/
         "$mod" = "SUPER";
 
@@ -96,6 +97,8 @@ in {
         general = {
           gaps_out = 3;
           layout = "master";
+          border_size = 2;
+          "col.active_border" = mkColor theme.colors.primary;
         };
 
         gestures = {
