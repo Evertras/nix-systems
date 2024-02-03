@@ -44,13 +44,20 @@ in {
         # https://wiki.hyprland.org/Configuring/Variables/
         "$mod" = "SUPER";
 
-        bind = [
+        bind = let
+        in [
           "$mod, Q, killactive"
           "$mod SHIFT, Q, exit"
 
           # Application shortcuts
           "$mod, R, exec, ${cfg.browser}"
           "$mod, space, exec, ${cfg.terminal}"
+          "$mod, P, exec, ${
+            import ./toficmd.nix {
+              inherit theme lib;
+              type = "dmenu";
+            }
+          }"
 
           # Resize
           "$mod, H, movefocus, l"
@@ -104,6 +111,6 @@ in {
       };
     };
 
-    home.packages = with pkgs; [ hyprpaper ];
+    home.packages = with pkgs; [ hyprpaper tofi ];
   };
 }
