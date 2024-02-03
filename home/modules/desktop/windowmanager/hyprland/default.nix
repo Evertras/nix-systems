@@ -32,6 +32,17 @@ in {
   config = mkIf cfg.enable {
     evertras.home.desktop.windowmanager.hyprland.waybar.enable = true;
 
+    evertras.home.shell.funcs = {
+      launch-app.body = ''
+        $(${
+          import ./toficmd.nix {
+            inherit theme lib;
+            type = "fullscreen";
+          }
+        })
+      '';
+    };
+
     wayland.windowManager.hyprland = {
       enable = true;
       enableNvidiaPatches = true;
@@ -52,12 +63,7 @@ in {
           # Application shortcuts
           "$mod, R, exec, ${cfg.browser}"
           "$mod, space, exec, ${cfg.terminal}"
-          "$mod, P, exec, ${
-            import ./toficmd.nix {
-              inherit theme lib;
-              type = "fullscreen";
-            }
-          }"
+          "$mod, P, exec, launch-app"
 
           # Resize
           "$mod, H, movefocus, l"
