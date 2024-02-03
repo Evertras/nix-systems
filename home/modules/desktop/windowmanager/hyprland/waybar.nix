@@ -65,7 +65,10 @@ in {
 
           #workspaces button {
             margin: 0 2px;
-            padding: 0 1px;
+            padding-left: 1px;
+            padding-right: 1px;
+            padding-top: 2px;
+            padding-bottom: 0;
             border-bottom: 3px solid ${theme.colors.primary};
             border-radius: 0.5em;
             color: ${theme.colors.primary};
