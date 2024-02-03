@@ -51,6 +51,7 @@ in {
 
       extraConfig = ''
         exec-once ${pkgs.waybar}/bin/waybar
+        exec-once ${pkgs.swww}/bin/swww init
       '';
 
       settings = let mkColor = color: "0xff" + (strings.removePrefix "#" color);
@@ -122,6 +123,6 @@ in {
       };
     };
 
-    home.packages = with pkgs; [ hyprpaper tofi ];
+    home.packages = with pkgs; [ hyprpaper tofi swww ];
   };
 }
