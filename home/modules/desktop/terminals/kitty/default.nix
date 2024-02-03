@@ -84,15 +84,15 @@ in {
           ""}
 
         # Font size adjustments
-        map ctrl+shift+o change_font_size all -2.0
-        map ctrl+shift+i change_font_size all +2.0
-        map ctrl+shift+u change_font_size all 0
+        map ctrl+shift+o change_font_size current -2.0
+        map ctrl+shift+i change_font_size current +2.0
+        map ctrl+shift+u change_font_size current 0
 
         # Demo mode
-        map ctrl+shift+b combine : change_font_size all ${
+        map ctrl+shift+b combine : change_font_size current ${
           toString fontSizeDemo
         } : set_background_opacity 1.0
-        map ctrl+shift+r combine : change_font_size all ${
+        map ctrl+shift+r combine : change_font_size current ${
           toString fontSize
         } : set_background_opacity ${opacity}
 
