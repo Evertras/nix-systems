@@ -32,6 +32,10 @@ in {
       enable = true;
       enableNvidiaPatches = true;
 
+      extraConfig = ''
+        exec-once ${pkgs.waybar}/bin/waybar
+      '';
+
       settings = {
         # https://wiki.hyprland.org/Configuring/Variables/
         "$mod" = "SUPER";
