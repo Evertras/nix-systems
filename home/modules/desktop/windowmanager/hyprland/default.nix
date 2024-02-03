@@ -42,6 +42,7 @@ in {
 
         bind = [
           "$mod, Q, killactive"
+          "$mod SHIFT, Q, exit"
 
           # Application shortcuts
           "$mod, R, exec, ${cfg.browser}"
