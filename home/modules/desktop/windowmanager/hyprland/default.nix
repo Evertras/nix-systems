@@ -77,6 +77,11 @@ in {
           "$mod, J, movefocus, d"
           "$mod, K, movefocus, u"
 
+          # Media keys
+          ", XF86AudioRaiseVolume, exec, volume-up"
+          ", XF86AudioLowerVolume, exec, volume-down"
+          ", XF86AudioLowerMute, exec, volume-mute-toggle"
+
           # Master layout
           "$mod, return, layoutmsg, swapwithmaster"
           "$mod SHIFT, return, layoutmsg, orientationcycle left top"
