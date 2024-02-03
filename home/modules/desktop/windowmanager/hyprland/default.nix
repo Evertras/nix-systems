@@ -61,6 +61,7 @@ in {
 
         bind = let
         in [
+          # Quit and really quit
           "$mod, Q, killactive"
           "$mod SHIFT, Q, exit"
 
@@ -69,13 +70,11 @@ in {
           "$mod, space, exec, ${cfg.terminal}"
           "$mod, P, exec, launch-app"
 
-          # Resize
-          "$mod, H, movefocus, l"
-          "$mod, L, movefocus, r"
-
           # Navigate
           "$mod, J, movefocus, d"
           "$mod, K, movefocus, u"
+          "$mod, H, movefocus, l"
+          "$mod, L, movefocus, r"
 
           # Media keys
           ", XF86AudioRaiseVolume, exec, volume-up"
@@ -87,6 +86,9 @@ in {
           # Master layout
           "$mod, return, layoutmsg, swapwithmaster"
           "$mod SHIFT, return, layoutmsg, orientationcycle left top"
+
+          # Fullscreen
+          "$mod, F, fullscreen, 0"
         ] ++ (
           # workspaces
           # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
