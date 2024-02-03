@@ -99,6 +99,17 @@ in {
               format = "{name}";
               sort-by = "number";
             };
+
+            /* For some fun later
+               "custom/hello-from-waybar" = {
+                 format = "hello {}";
+                 max-length = 40;
+                 interval = "once";
+                 exec = pkgs.writeShellScript "hello-from-waybar" ''
+                   echo "from within waybar"
+                 '';
+               };
+            */
           };
         };
 
