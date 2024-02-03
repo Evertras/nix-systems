@@ -22,7 +22,7 @@ in {
 
     terminal = mkOption {
       type = types.str;
-      default = "kitty";
+      default = "kitty -1";
       description = "The terminal command to use";
     };
   };
