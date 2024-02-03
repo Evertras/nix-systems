@@ -93,7 +93,7 @@ in {
         settings = {
           mainBar = {
             modules-left = [ "hyprland/workspaces" ];
-            modules-right = [ "clock" ];
+            modules-right = [ "bluetooth" "clock" ];
 
             "hyprland/workspaces" = {
               format = "{name}";
@@ -117,7 +117,7 @@ in {
             background: ${theme.colors.background};
             color: ${theme.colors.text};
             font-family: ${theme.fonts.main.name}, Helvetica, Arial, sans-serif;
-            font-size: 18px;
+            font-size: 12px;
             font-weight: bold;
           }
 
@@ -131,7 +131,6 @@ in {
 
           #workspaces button {
             margin: 0 2px;
-            font-size: 16px;
             padding: 1px 1px;
             border: 2px solid ${theme.colors.primary};
             border-radius: 0.5em;

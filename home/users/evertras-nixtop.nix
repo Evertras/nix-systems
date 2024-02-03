@@ -3,13 +3,17 @@ let
   themes = import ../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
 
+  fontOverrides = {
+    terminal = nerdfonts.makeMono "Hasklug";
+    main = nerdfonts.makeMono "AurulentSansM";
+  };
+
   gpgKey = "ABFFF058F479311F";
 in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
-  evertras.themes.selected = (theme // {
-    fonts = (theme.fonts // { terminal = nerdfonts.makeMono "Hasklug"; });
-  });
+  evertras.themes.selected =
+    (theme // { fonts = (theme.fonts // fontOverrides); });
 
   evertras.home = {
     core.username = "evertras";
