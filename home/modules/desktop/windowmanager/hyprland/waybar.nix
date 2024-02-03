@@ -65,8 +65,8 @@ in {
 
           #workspaces button {
             margin: 0 2px;
-            padding: 1px 1px;
-            border: 2px solid ${theme.colors.primary};
+            padding: 0 1px;
+            border-bottom: 3px solid ${theme.colors.primary};
             border-radius: 0.5em;
             color: ${theme.colors.primary};
             background-color: ${theme.colors.background};
