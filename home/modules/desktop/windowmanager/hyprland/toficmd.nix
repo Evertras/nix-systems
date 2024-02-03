@@ -2,15 +2,18 @@
 with lib;
 let
   mkColor = strings.removePrefix "#";
+  sharedSettings = {
+    ascii-input = "false";
+    fuzzy-match = "true";
+  };
+
   tofiThemes = {
     dmenu = {
       anchor = "top";
-      ascii-input = "false";
       background-color = mkColor theme.colors.background;
       border-color = mkColor theme.colors.contrast;
       border-width = 0;
       font-size = 12;
-      fuzzy-match = "true";
       height = 30;
       horizontal = "true";
       outline-width = 0;
@@ -26,7 +29,6 @@ let
     fullscreen = {
       background-color = mkColor theme.colors.background;
       border-width = 0;
-      fuzzy-match = "true";
       height = "100%";
       num-results = 5;
       outline-width = 0;
@@ -42,5 +44,5 @@ let
   };
   tofiFlags =
     (attrsets.mapAttrsToList (key: value: "'--${key}=${toString value}'")
-      tofiThemes.${type});
+      (tofiThemes.${type} // sharedSettings));
 in "tofi-run " + (strings.concatStringsSep " " tofiFlags)
