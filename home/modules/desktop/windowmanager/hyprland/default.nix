@@ -81,6 +81,8 @@ in {
           ", XF86AudioRaiseVolume, exec, volume-up"
           ", XF86AudioLowerVolume, exec, volume-down"
           ", XF86AudioLowerMute, exec, volume-mute-toggle"
+          ", XF86MonBrightnessUp, exec, brightness-up"
+          ", XF86MonBrightnessDown, exec, brightness-down"
 
           # Master layout
           "$mod, return, layoutmsg, swapwithmaster"
