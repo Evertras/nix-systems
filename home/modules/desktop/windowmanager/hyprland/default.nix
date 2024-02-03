@@ -59,7 +59,7 @@ in {
           "$mod, return, layoutmsg, swapwithmaster"
         ] ++ (
           # workspaces
-          # binds $mod + [shift +] {1..10} to [move to] workspace {1..10}
+          # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
           # Stolen/modified from https://wiki.hyprland.org/Nix/Hyprland-on-Home-Manager/
           builtins.concatLists (builtins.genList (x:
             let ws = toString (x + 1);
