@@ -57,6 +57,7 @@ in {
 
           # Master layout
           "$mod, return, layoutmsg, swapwithmaster"
+          "$mod SHIFT, return, layoutmsg, orientationcycle left top"
         ] ++ (
           # workspaces
           # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
