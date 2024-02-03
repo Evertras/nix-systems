@@ -51,15 +51,10 @@ in {
       };
 
       display.sleep.enable = true;
-      windowmanager = let
-        terminal = "kitty -1";
-        browser = "librewolf";
-      in {
+      windowmanager = {
         hyprland = {
           enable = true;
           kbLayout = "jp";
-
-          inherit terminal browser;
         };
 
         dwm = {
