@@ -87,7 +87,10 @@ in {
           repeat_delay = 300;
         };
 
-        master.new_is_master = false;
+        master = {
+          new_is_master = false;
+          no_gaps_when_only = 1;
+        };
 
         misc.force_default_wallpaper = 0;
       };
