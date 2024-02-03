@@ -68,6 +68,8 @@ in {
             in [
               "$mod, ${ws}, workspace, ${ws}"
               "$mod SHIFT, ${ws}, movetoworkspace, ${ws}"
+              # Sneak in layout tweaks
+              "$mod CTRL, ${ws}, layoutmsg, mfact 0.${ws}"
             ]) 9));
 
         decoration = { rounding = 10; };
