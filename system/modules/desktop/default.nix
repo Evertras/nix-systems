@@ -6,5 +6,9 @@ in {
 
   options.evertras.desktop = { enable = mkEnableOption "desktop"; };
 
-  config = mkIf cfg.enable { evertras.desktop.xserver.enable = true; };
+  config = mkIf cfg.enable {
+    # Needed for GTK tweaks
+    # https://github.com/nix-community/home-manager/issues/3113
+    programs.dconf.enable = true;
+  };
 }

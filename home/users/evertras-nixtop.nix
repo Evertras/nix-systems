@@ -47,7 +47,17 @@ in {
       };
 
       display.sleep.enable = true;
-      windowmanager = {
+      windowmanager = let
+        terminal = "kitty -1";
+        browser = "librewolf";
+      in {
+        hyprland = {
+          enable = true;
+          kbLayout = "jp";
+
+          inherit terminal browser;
+        };
+
         dwm = {
           enable = true;
           autostartCmds = [

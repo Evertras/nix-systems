@@ -75,13 +75,29 @@ in {
       };
     };
 
-    services = {
+    services = let
+      usingWayland = cfg.windowmanager.hyprland.enable;
+
+      # Tokyo generic
+      latitude = 35.652832;
+      longitude = 139.839478;
+    in {
       redshift = {
         enable = true;
 
-        # Tokyo generic
-        latitude = 35.652832;
-        longitude = 139.839478;
+        inherit latitude longitude;
+      };
+
+      wlsunset = {
+        enable = usingWayland;
+
+        temperature = {
+          day = 6500;
+          night = 4000;
+        };
+
+        latitude = toString latitude;
+        longitude = toString longitude;
       };
     };
 

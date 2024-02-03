@@ -54,9 +54,5 @@ in {
       # seems to do some weird things
       xkb.options = "caps:none";
     };
-
-    # Needed for GTK tweaks
-    # https://github.com/nix-community/home-manager/issues/3113
-    programs.dconf = { enable = true; };
   };
 }

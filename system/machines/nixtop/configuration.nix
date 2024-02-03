@@ -47,6 +47,7 @@ in {
   evertras.desktop = {
     enable = true;
 
+    xserver.enable = false;
     xserver.kbLayout = "jp";
 
     # TODO: Specify possible sessions here (i3, dwm)
@@ -54,6 +55,10 @@ in {
   };
 
   services.xserver.displayManager.autoLogin.user = "evertras";
+
+  # Needed?
+  # https://wiki.hyprland.org/Nix/Hyprland-on-NixOS/
+  programs.hyprland.enable = true;
 
   ##############################################################################
   # Sound stuff
