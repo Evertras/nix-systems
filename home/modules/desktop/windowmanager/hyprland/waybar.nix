@@ -107,7 +107,7 @@ in {
           }
 
           #network.wifi {
-            background-color: ${palette.Mauve};
+            background-color: ${palette.Lavender};
           }
 
           #workspaces {
