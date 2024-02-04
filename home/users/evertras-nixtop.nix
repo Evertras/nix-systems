@@ -32,33 +32,25 @@ in {
       spotify.enable = true;
 
       neovim.enableCopilot = true;
-
-      coding.go.enable = true;
     };
 
     desktop = {
       enable = true;
       kbLayout = "jp";
 
-      browsers.surf.enable = true;
-
       kitty.enable = true;
-      st = {
-        enable = true;
-        fontSize = 20;
-        bgBlurPixels = 0;
-        bgOpacityPercent100 = 90;
-      };
 
       display.sleep.enable = true;
+
       windowmanager = {
         hyprland = {
           enable = true;
           kbLayout = "jp";
         };
 
+        # Keeping as reference for now
         dwm = {
-          enable = true;
+          enable = false;
           autostartCmds = [
             "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg"
 
@@ -66,29 +58,9 @@ in {
             "systemctl restart --user pipewire"
           ];
           borderpx = 2;
-          terminal = "kitty";
-        };
-
-        # Keeping for reference so I can switch back and forth
-        i3 = {
-          enable = false;
-          monitorNetworkInterface = "wlo1";
-          monitorNetworkWireless = true;
-          # Pipewire doesn't seem to want to start until
-          # something kicks it, so kick it
-          startupPostCommands = [ "systemctl restart --user pipewire" ];
-          keybindOverrides = {
-            XF86MonBrightnessUp = "exec ~/.evertras/funcs/brightness-up";
-            XF86MonBrightnessDown = "exec ~/.evertras/funcs/brightness-down";
-          };
         };
       };
     };
-  };
-
-  services.picom = {
-    enable = true;
-    vSync = true;
   };
 
   home = {
