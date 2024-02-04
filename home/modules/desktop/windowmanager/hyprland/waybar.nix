@@ -82,7 +82,7 @@ in {
           */
           * {
             border: none;
-            border-radius: 4px;
+            border-radius: 0.5em;
             min-height: 0;
           }
 
@@ -90,7 +90,7 @@ in {
             background: ${theme.colors.background};
             color: ${theme.colors.text};
             font-family: ${theme.fonts.main.name}, Helvetica, Arial, sans-serif;
-            font-size: 12px;
+            font-size: 18px;
           }
 
           #battery {
@@ -146,11 +146,12 @@ in {
           }
 
           #workspaces button {
-            margin: 0 2px;
-            padding-left: 1px;
-            padding-right: 1px;
-            padding-top: 2px;
-            padding-bottom: 0;
+            margin: 0 0.2em;
+            font-size: 1.3em;
+            padding-left: 0.3em;
+            padding-right: 0.3em;
+            padding-top: 0.15em;
+            padding-bottom: 0.1em;
             ${mkBorder theme.colors.primary};
             border-radius: 0.5em;
             color: ${theme.colors.primary};
