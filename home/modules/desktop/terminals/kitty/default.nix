@@ -5,8 +5,6 @@ let
   cfg = config.evertras.home.desktop.kitty;
   theme = config.evertras.themes.selected;
   shellBin = config.evertras.home.shell.core.shellBin;
-  fontSize = 14;
-  fontSizeDemo = 20;
 in {
   options.evertras.home.desktop.kitty = {
     enable = mkEnableOption "kitty";
@@ -14,6 +12,11 @@ in {
     allowThemeOverrides = mkOption {
       type = types.bool;
       default = false;
+    };
+
+    fontSize = mkOption {
+      type = types.int;
+      default = 14;
     };
 
     opacity = mkOption {
@@ -71,11 +74,12 @@ in {
 
       font = {
         name = theme.fonts.terminal.name;
-        size = fontSize;
+        size = cfg.fontSize;
         package = theme.fonts.terminal.package;
       };
 
-      extraConfig = ''
+      extraConfig = let fontSizeDemo = cfg.fontSize * 1.5;
+      in ''
         ${if cfg.allowThemeOverrides then ''
           # I like changing the theme a lot on a whim, this
           # file is created/modified by the bash function kitty-theme
@@ -93,7 +97,7 @@ in {
           toString fontSizeDemo
         } : set_background_opacity 1.0
         map ctrl+shift+r combine : change_font_size current ${
-          toString fontSize
+          toString cfg.fontSize
         } : set_background_opacity ${opacity}
 
         # Overriding things in a pinch
