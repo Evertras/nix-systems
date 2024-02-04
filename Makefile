@@ -13,6 +13,12 @@ system: .git/hooks/pre-commit
 	@./scripts/ensure-channel.sh
 	sudo nixos-rebuild switch --flake .
 
+# Starts a local VM with the vm-playground configuration.
+# Log in with evertras/evertras.
+.PHONY: playground
+playground: .git/hooks/pre-commit
+	rm -f nixbox-playground.qcow2 && nix run '.#nixosConfigurations.vm-playground.config.system.build.vm'
+
 .PHONY: clean-home
 clean-home: .git/hooks/pre-commit
 	nix-collect-garbage -d
