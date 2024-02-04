@@ -147,7 +147,6 @@ in {
 
           #workspaces button {
             margin: 0 0.2em;
-            font-size: 1.3em;
             padding-left: 0.3em;
             padding-right: 0.3em;
             padding-top: 0.15em;
