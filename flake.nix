@@ -47,19 +47,19 @@
       # Helper to turn ./thing/someprofile.nix -> someprofile
       nameFromNixFile = file: lib.strings.removeSuffix ".nix" (baseNameOf file);
     in {
-      nixosConfigurations = {
-        nixbox = lib.nixosSystem {
-          inherit system;
-          modules = [ ./system/machines/vm-nixbox/configuration.nix ];
-          specialArgs = { inherit everlib nerdfonts; };
-        };
-
-        nixtop = lib.nixosSystem {
-          inherit pkgs system;
-          modules = [ ./system/machines/nixtop/configuration.nix ];
-          specialArgs = { inherit everlib nerdfonts; };
-        };
-      };
+      nixosConfigurations = let
+        # Make a system for every directory in ./system/machines
+        machineDirs = everlib.allSubdirs ./system/machines;
+        mkConfig = dir:
+          (lib.nixosSystem {
+            inherit pkgs system;
+            modules = [ dir ];
+            specialArgs = { inherit everlib nerdfonts; };
+          });
+      in (builtins.listToAttrs (map (dir: {
+        name = builtins.baseNameOf dir;
+        value = mkConfig dir;
+      }) machineDirs));
 
       homeConfigurations = let
         # Make a profile for every file in ./home/users
