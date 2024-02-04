@@ -38,8 +38,6 @@ in {
       enable = true;
       kbLayout = "jp";
 
-      kitty.enable = true;
-
       display.sleep.enable = true;
 
       windowmanager = {
