@@ -32,6 +32,8 @@ in {
       spotify.enable = true;
 
       neovim.enableCopilot = true;
+
+      coding.rust.enable = true;
     };
 
     desktop = {
