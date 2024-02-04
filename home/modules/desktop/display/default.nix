@@ -45,5 +45,7 @@ in {
       i3.startupPostCommands = dpms;
       dwm.autostartCmds = dpms;
     };
+
+    # TODO: Run this for hyprland somehow
   };
 }
