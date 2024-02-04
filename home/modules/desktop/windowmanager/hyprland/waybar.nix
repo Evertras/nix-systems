@@ -23,11 +23,21 @@ in {
         settings = {
           mainBar = {
             modules-left = [ "hyprland/workspaces" ];
-            modules-right = [ "network" "bluetooth" "clock" ];
+            modules-right = [ "network" "bluetooth" "battery" "clock" ];
 
             "hyprland/workspaces" = {
               format = "{name}";
               sort-by = "number";
+            };
+
+            "battery" = {
+              # /sys/class/power_supply
+              "bat" = "BAT1";
+              "interval" = 60;
+              "states" = { "low" = 30; };
+              "format" = "{capacity}% {icon}";
+              "format-icons" = [ "" "" "" "" "" ];
+              "max-length" = 25;
             };
 
             "network" = {
@@ -78,6 +88,16 @@ in {
             color: ${theme.colors.text};
             font-family: ${theme.fonts.main.name}, Helvetica, Arial, sans-serif;
             font-size: 12px;
+          }
+
+          #battery {
+            ${layout}
+            color: ${theme.colors.background};
+            background-color: ${palette.Sapphire};
+          }
+
+          #battery.low {
+            background-color: ${theme.colors.urgent};
           }
 
           #bluetooth {
