@@ -3,6 +3,7 @@ with lib;
 let
   cfg = config.evertras.home.desktop.windowmanager.hyprland.waybar;
   theme = config.evertras.themes.selected;
+  palette = (import ../../../../../shared/themes/palette-catppuccin.nix).Frappe;
 in {
   options.evertras.home.desktop.windowmanager.hyprland.waybar = {
     enable = mkEnableOption "Enable Waybar";
@@ -36,7 +37,8 @@ in {
           };
         };
 
-        style = ''
+        style = let mkBorder = color: "border-bottom: 3px solid ${color}";
+        in ''
           /* NOTE: this rule overrides things
             at random, use with caution despite
             it being in the doc example...
@@ -55,6 +57,19 @@ in {
             font-weight: bold;
           }
 
+          #bluetooth {
+            padding: 0 0.5em;
+            background-color: ${theme.colors.background};
+            color: ${palette.Blue};
+            ${mkBorder palette.Blue};
+          }
+
+          #bluetooth.connected {
+            background-color: ${palette.Blue};
+            color: ${theme.colors.background};
+            border: none;
+          }
+
           #clock {
             padding: 0 10px;
           }
@@ -69,7 +84,7 @@ in {
             padding-right: 1px;
             padding-top: 2px;
             padding-bottom: 0;
-            border-bottom: 3px solid ${theme.colors.primary};
+            ${mkBorder theme.colors.primary};
             border-radius: 0.5em;
             color: ${theme.colors.primary};
             background-color: ${theme.colors.background};
