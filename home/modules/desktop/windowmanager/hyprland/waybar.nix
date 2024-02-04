@@ -95,11 +95,13 @@ in {
 
           #battery {
             ${layout}
-            color: ${theme.colors.background};
-            background-color: ${palette.Sapphire};
+            color: ${palette.Sapphire};
+            background-color: ${theme.colors.background};
+            ${mkBorder palette.Sapphire};
           }
 
           #battery.low {
+            color: ${theme.colors.background};
             background-color: ${theme.colors.urgent};
           }
 
@@ -130,7 +132,9 @@ in {
           }
 
           #network.wifi {
-            background-color: ${palette.Lavender};
+            color: ${palette.Lavender};
+            background-color: ${theme.colors.background};
+            ${mkBorder palette.Lavender};
           }
 
           #window {
