@@ -1,5 +1,7 @@
-# A VM playground fully managed by NixOS without homemanager,
-# intended to learn how NixOS may work as a remote configuration tool.
+# Edit this configuration file to define what should be installed on
+# your system. Help is available in the configuration.nix(5) man page, on
+# https://search.nixos.org/options and in the NixOS manual (`nixos-help`).
+
 { config, lib, pkgs, ... }:
 
 let
@@ -9,8 +11,13 @@ in {
   imports = [ ../../modules ];
 
   ##############################################################################
+  # VM hackery
+  users.users.evertras.initialPassword = "evertras";
+
+  ##############################################################################
   # Boot stuff
 
+  # TODO: Needed?
   # Use the systemd-boot EFI boot loader.
   boot.loader = {
     systemd-boot.enable = true;
@@ -36,9 +43,51 @@ in {
   evertras.system.virtualization.enable = true;
 
   ##############################################################################
+  # Desktop stuff
+  evertras.themes.selected = theme;
+
+  evertras.desktop = {
+    enable = true;
+
+    xserver.enable = false;
+    xserver.kbLayout = "jp";
+
+    # TODO: Specify possible sessions here (i3, dwm)
+    # which are defined in home-manager
+  };
+
+  services.xserver.displayManager.autoLogin.user = "evertras";
+
+  # Needed?
+  # https://wiki.hyprland.org/Nix/Hyprland-on-NixOS/
+  programs.hyprland.enable = true;
+
+  ##############################################################################
+  # Sound stuff
+
+  # https://nixos.wiki/wiki/PipeWire
+  security.rtkit.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+  };
+
+  # https://nixos.wiki/wiki/Bluetooth
+  hardware.bluetooth = {
+    enable = true;
+    powerOnBoot = true;
+    settings = {
+      # Enable A2DP sink
+      General.Enable = "Source,Sink,Media,Socket";
+    };
+  };
+
+  ##############################################################################
   # Networking stuff
 
-  networking = { hostName = "vm-playground"; };
+  networking = { hostName = "nixbox-playground"; };
 
   # TODO: Doing this because local DNS doesn't work, investigate
   networking.nameservers = [ "8.8.8.8" ];
@@ -48,9 +97,56 @@ in {
   };
 
   ##############################################################################
-  # Other system-wide packages/programs
+  # Nvidia stuff
+  # https://nixos.wiki/wiki/Nvidia
+  hardware.opengl = {
+    enable = true;
+    driSupport = true;
+    driSupport32Bit = true;
+  };
 
-  environment.systemPackages = with pkgs; [ file ];
+  services.xserver.videoDrivers = [ "nvidia" ];
+
+  hardware.nvidia = {
+    modesetting.enable = true;
+
+    # Experimental stuff, turn off
+    powerManagement.enable = false;
+    powerManagement.finegrained = false;
+
+    open = false;
+
+    nvidiaSettings = true;
+
+    package = config.boot.kernelPackages.nvidiaPackages.stable;
+
+    prime = {
+      intelBusId = "PCI:0:2:0";
+      nvidiaBusId = "PCI:1:0:0";
+
+      offload = {
+        enable = true;
+        enableOffloadCmd = true;
+      };
+      #sync.enable = true;
+    };
+  };
+
+  ##############################################################################
+  # Other system-wide packages/programs
+  # Keep this minimal, use home-manager for most things
+
+  environment.systemPackages = with pkgs; [
+    home-manager
+
+    # Some handy things used while root, try to keep this minimal
+    file
+  ];
+
+  programs.gnupg.agent = {
+    enable = true;
+    enableSSHSupport = true;
+  };
 
   # This option defines the first version of NixOS you have installed on this particular machine,
   # and is used to maintain compatibility with application data (e.g. databases) created on older NixOS versions.

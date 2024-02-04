@@ -114,4 +114,7 @@ nix build '.#nixosConfigurations.HOSTNAME.config.system.build.vm'
 
 # Or just run it directly
 nix run '.#nixosConfigurations.HOSTNAME.config.system.build.vm'
+
+# Run it without even cloning this repo
+nix run 'github:Evertras/nix-systems#nixosConfigurations.HOSTNAME.config.system.build.vm'
 ```
