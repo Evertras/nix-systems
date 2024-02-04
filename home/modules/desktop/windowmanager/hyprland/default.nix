@@ -64,6 +64,8 @@ in {
       enable = true;
       enableNvidiaPatches = true;
 
+      # Regarding monitor configuration:
+      # https://wiki.hyprland.org/Configuring/Monitors/
       extraConfig = let
         displayConfigs = builtins.map (display:
           "monitor=${display.name},${display.resolution},${
@@ -73,6 +75,7 @@ in {
         exec-once ${pkgs.waybar}/bin/waybar
         exec-once ${pkgs.swww}/bin/swww init
         ${strings.concatStringsSep "\n" displayConfigs}
+        monitor=,preferred,auto,1
       '';
 
       settings = let mkColor = color: "0xff" + (strings.removePrefix "#" color);
