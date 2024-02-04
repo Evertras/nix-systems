@@ -77,13 +77,14 @@ in {
 
     services = let
       usingWayland = cfg.windowmanager.hyprland.enable;
+      usingXorg = cfg.windowmanager.i3.enable || cfg.windowmanager.dwm.enable;
 
       # Tokyo generic
       latitude = 35.652832;
       longitude = 139.839478;
     in {
       redshift = {
-        enable = true;
+        enable = usingXorg;
 
         inherit latitude longitude;
       };
