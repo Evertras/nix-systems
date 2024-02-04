@@ -1,1 +1,5 @@
 .envrc
+
+# VMs
+*.qcow2
+/result

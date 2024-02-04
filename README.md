@@ -100,3 +100,18 @@ To change it up.
 - ShureTechMono - Bit squished, hard to describe
 - SpaceMono - Extra space between lines
 - Terminess - Works nicely for windows/titles but not so much terminal
+
+## Stupid nix tricks
+
+### Build a VM image to test
+
+```bash
+# Build it as a VM, then run the output link it gives
+nixos-rebuild build-vm --flake .#HOSTNAME
+
+# Alternatively using nix command
+nix build '.#nixosConfigurations.HOSTNAME.config.system.build.vm'
+
+# Or just run it directly
+nix run '.#nixosConfigurations.HOSTNAME.config.system.build.vm'
+```
