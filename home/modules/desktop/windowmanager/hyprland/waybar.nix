@@ -23,12 +23,15 @@ in {
         settings = {
           mainBar = {
             modules-left = [ "hyprland/workspaces" ];
+            modules-center = [ "hyprland/window" ];
             modules-right = [ "network" "bluetooth" "battery" "clock" ];
 
             "hyprland/workspaces" = {
               format = "{name}";
               sort-by = "number";
             };
+
+            "hyprland/window" = { format = "{}"; };
 
             "battery" = {
               # /sys/class/power_supply
@@ -128,6 +131,10 @@ in {
 
           #network.wifi {
             background-color: ${palette.Lavender};
+          }
+
+          #window {
+            color: ${theme.colors.primary};
           }
 
           #workspaces {
