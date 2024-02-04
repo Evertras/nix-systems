@@ -7,6 +7,12 @@ let
 in {
   options.evertras.home.desktop.windowmanager.hyprland.waybar = {
     enable = mkEnableOption "Enable Waybar";
+
+    monitorNetworkInterface = mkOption {
+      type = types.str;
+      default = "wlo1";
+      description = "The network interface to monitor for network status";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -17,11 +23,24 @@ in {
         settings = {
           mainBar = {
             modules-left = [ "hyprland/workspaces" ];
-            modules-right = [ "bluetooth" "clock" ];
+            modules-right = [ "network" "bluetooth" "clock" ];
 
             "hyprland/workspaces" = {
               format = "{name}";
               sort-by = "number";
+            };
+
+            "network" = {
+              "interface" = cfg.monitorNetworkInterface;
+              "format" = "{ifname}";
+              "format-wifi" = " {essid} ({signalStrength}%)";
+              "format-ethernet" = "󰊗 {ipaddr}/{cidr}";
+              "format-disconnected" = " None";
+              "tooltip-format" = "󰊗 {ifname} via {gwaddr}";
+              "tooltip-format-wifi" = " {essid} ({signalStrength}%)";
+              "tooltip-format-ethernet" = " {ifname}";
+              "tooltip-format-disconnected" = "Disconnected";
+              "max-length" = 50;
             };
 
             /* For some fun later
@@ -37,7 +56,12 @@ in {
           };
         };
 
-        style = let mkBorder = color: "border-bottom: 3px solid ${color}";
+        style = let
+          layout = ''
+            padding: 0 0.5em;
+            margin: 0 0.25em;
+          '';
+          mkBorder = color: "border-bottom: 3px solid ${color}";
         in ''
           /* NOTE: this rule overrides things
             at random, use with caution despite
@@ -54,11 +78,10 @@ in {
             color: ${theme.colors.text};
             font-family: ${theme.fonts.main.name}, Helvetica, Arial, sans-serif;
             font-size: 12px;
-            font-weight: bold;
           }
 
           #bluetooth {
-            padding: 0 0.5em;
+            ${layout}
             background-color: ${theme.colors.background};
             color: ${palette.Blue};
             ${mkBorder palette.Blue};
@@ -71,7 +94,20 @@ in {
           }
 
           #clock {
-            padding: 0 10px;
+            ${layout}
+          }
+
+          #network {
+            ${layout}
+            color: ${theme.colors.background};
+          }
+
+          #network.disconnected {
+            background-color: ${theme.colors.urgent};
+          }
+
+          #network.wifi {
+            background-color: ${palette.Mauve};
           }
 
           #workspaces {
