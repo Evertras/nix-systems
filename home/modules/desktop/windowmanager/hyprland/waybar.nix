@@ -134,7 +134,7 @@ in {
           }
 
           #window {
-            color: ${theme.colors.primary};
+            color: ${theme.colors.contrast};
           }
 
           #workspaces {
