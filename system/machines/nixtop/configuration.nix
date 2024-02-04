@@ -39,6 +39,8 @@ in {
 
   console = { keyMap = "jp106"; };
 
+  evertras.system.virtualization.enable = true;
+
   ##############################################################################
   # Desktop stuff
   # (keep minimal, use home-manager for most things)
