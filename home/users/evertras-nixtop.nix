@@ -9,6 +9,12 @@ let
   };
 
   gpgKey = "ABFFF058F479311F";
+
+  displayMain = {
+    name = "eDP-1";
+    resolution = "2560x1440";
+    refreshRate = 240;
+  };
 in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
@@ -46,6 +52,8 @@ in {
         hyprland = {
           enable = true;
           kbLayout = "jp";
+
+          displays = [ displayMain ];
         };
 
         # Keeping as reference for now

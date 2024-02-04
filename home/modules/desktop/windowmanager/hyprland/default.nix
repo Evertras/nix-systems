@@ -18,6 +18,21 @@ in {
       description = "The browser command to use";
     };
 
+    displays = mkOption {
+      type = with types; listOf attrs;
+      default = [ ];
+      description = ''
+        The displays to use.  Each display should be an attribute set with the
+        following keys:
+
+        - name: The name of the display
+        - resolution: The resolution of the display
+        - refreshRate: The refresh rate of the display
+        - position: The position of the display (optional, defaults to 0,0)
+        - scale: The scale of the display (optional, defaults to 1)
+      '';
+    };
+
     kbLayout = mkOption {
       type = types.str;
       default = "us";
@@ -49,9 +64,15 @@ in {
       enable = true;
       enableNvidiaPatches = true;
 
-      extraConfig = ''
+      extraConfig = let
+        displayConfigs = builtins.map (display:
+          "monitor=${display.name},${display.resolution},${
+            display.position or "0x0"
+          },${toString (display.scale or 1)}") cfg.displays;
+      in ''
         exec-once ${pkgs.waybar}/bin/waybar
         exec-once ${pkgs.swww}/bin/swww init
+        ${strings.concatStringsSep "\n" displayConfigs}
       '';
 
       settings = let mkColor = color: "0xff" + (strings.removePrefix "#" color);
