@@ -53,7 +53,7 @@ in {
           enable = true;
           kbLayout = "jp";
 
-          displays = [ displayMain ];
+          displays = [ (displayMain // { scale = 1.2; }) ];
         };
 
         # Keeping as reference for now
