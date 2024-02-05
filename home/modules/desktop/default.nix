@@ -139,24 +139,30 @@ in {
         in "styli.sh -s '${theme.inspiration}' -b bg-fill -h ${height} -w ${width}";
       };
 
-      screenshot-save.body = ''
-        mkdir -p "${screenshotsDir}"
-        filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr "[:upper:]" "[:lower:]").png
+      screenshot-save = {
+        runtimeInputs = [ pkgs.maim ];
+        body = ''
+          mkdir -p "${screenshotsDir}"
+          filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr "[:upper:]" "[:lower:]").png
 
-        if maim -us "$filename" | tee ${screenshotsLog}; then
-          notify-send -i camera 'Screenshot' "$filename"
-        else
-          notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
-        fi
-      '';
+          if maim -us "$filename" | tee ${screenshotsLog}; then
+            notify-send -i camera 'Screenshot' "$filename"
+          else
+            notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
+          fi
+        '';
+      };
 
-      screenshot-copy.body = ''
-        if maim -us | tee ${screenshotsLog} | xclip -selection clipboard -t image/png; then
-          notify-send -i camera 'Screen area copied'
-        else
-          notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
-        fi
-      '';
+      screenshot-copy = {
+        runtimeInputs = [ pkgs.maim pkgs.xclip ];
+        body = ''
+          if maim -us | tee ${screenshotsLog} | xclip -selection clipboard -t image/png; then
+            notify-send -i camera 'Screen area copied'
+          else
+            notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
+          fi
+        '';
+      };
     };
   };
 }
