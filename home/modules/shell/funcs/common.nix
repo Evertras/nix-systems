@@ -14,7 +14,7 @@
           exit 1
         fi
 
-        while sleep 1; do find "$watchdir" -iname '*.go' | entr -c -d go test -race "$watchdir"; done
+        while sleep 1; do find "$watchdir" -iname '*.go' | entr -c -d go test -race "./$watchdir"; done
       '';
     };
 
