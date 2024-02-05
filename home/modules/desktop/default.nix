@@ -130,11 +130,14 @@ in {
       screenshotsLog = "/tmp/screenshot-lastlog";
     in {
 
-      cycle-wallpaper.body = let
-        split = splitString "x" cfg.resolution;
-        width = elemAt split 0;
-        height = elemAt split 1;
-      in "styli.sh -s '${theme.inspiration}' -b bg-fill -h ${height} -w ${width}";
+      cycle-wallpaper = {
+        runtimeInputs = [ pkgs.stylish ];
+        body = let
+          split = splitString "x" cfg.resolution;
+          width = elemAt split 0;
+          height = elemAt split 1;
+        in "styli.sh -s '${theme.inspiration}' -b bg-fill -h ${height} -w ${width}";
+      };
 
       screenshot-save.body = ''
         mkdir -p "${screenshotsDir}"
