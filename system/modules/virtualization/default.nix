@@ -1,6 +1,6 @@
-{ lib, ... }:
+{ config, lib, ... }:
 with lib;
-let cfg = options.evertras.system.virtualization;
+let cfg = config.evertras.system.virtualization;
 in {
   options.evertras.system.virtualization = {
     enable = mkEnableOption "Enable virtualization";
