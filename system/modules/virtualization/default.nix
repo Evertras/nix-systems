@@ -6,7 +6,7 @@ in {
     enable = mkEnableOption "Enable virtualization";
   };
 
-  config = {
+  config = mkIf cfg.enable {
     # https://nixos.wiki/wiki/Virt-manager
     virtualisation.libvirtd.enable = true;
     programs.virt-manager.enable = true;
