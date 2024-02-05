@@ -15,7 +15,7 @@
       while sleep 1; do ls "$watchdir"/*.go | entr -c -d go test -race "$watchdir"; done
     '';
 
-    change-all.body = ''
+    replace-all.body = ''
       if [ $# -ne 4 ]; then
         echo "USAGE: change-all <dir> <file-filter> <old-regex> <replacement>"
         echo ""
