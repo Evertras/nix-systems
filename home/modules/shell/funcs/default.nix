@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 with lib; {
   options.evertras.home.shell.funcs = mkOption {
     description = ''
@@ -15,16 +15,14 @@ with lib; {
 
   imports = [ ./aws.nix ./common.nix ./git.nix ./themes.nix ];
 
-  config = let definedFuncs = config.evertras.home.shell.funcs;
-  in {
-    home.file = mapAttrs' (name: func:
-      nameValuePair (".evertras/funcs/${name}") ({
-        text = ''
-          #!/usr/bin/env bash
-
-          ${func.body}
-        '';
-        executable = true;
-      })) definedFuncs;
-  };
+  config = let
+    definedFuncs = config.evertras.home.shell.funcs;
+    mkShellFunc = name: func:
+      (pkgs.writeShellApplication {
+        inherit name;
+        runtimeInputs = func.runtimeInputs or [ ];
+        text = func.body;
+      });
+    apps = attrsets.mapAttrsToList mkShellFunc definedFuncs;
+  in { home.packages = apps; };
 }

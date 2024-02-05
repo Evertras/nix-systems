@@ -35,15 +35,14 @@
       ls "''${storepath}/share/icons"
     '';
     nix-find-theme-names.body = ''
-        if [ -z "$1" ]; then
-          echo "Usage: nix-find-theme-names <pkgname>"
-          return
-        fi
-        package=$1
-        storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
-        echo "Store path: ''${storepath}"
-        ls "''${storepath}/share/themes"
-      }
+      if [ -z "$1" ]; then
+        echo "Usage: nix-find-theme-names <pkgname>"
+        return
+      fi
+      package=$1
+      storepath=$(nix eval -f '<nixpkgs>' --raw "''${package}")
+      echo "Store path: ''${storepath}"
+      ls "''${storepath}/share/themes"
     '';
     nix-find-icon-names.body = ''
       storepath=${theme.iconTheme.package};

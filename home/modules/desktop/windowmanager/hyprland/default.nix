@@ -51,12 +51,12 @@ in {
 
     evertras.home.shell.funcs = {
       launch-app.body = ''
-        $(${
+        eval ${
           import ./toficmd.nix {
             inherit theme lib;
             type = "fullscreen";
           }
-        })
+        }
       '';
     };
 

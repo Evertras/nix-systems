@@ -37,8 +37,8 @@ in {
     };
 
     evertras.home.shell.funcs = let
-      volumeNotify = ''
-        if [ $? != 0 ]; then
+      volumeNotify = cmd: ''
+        if ! ${cmd}; then
           notify-send "Volume failure" "$(cat $logfile)" \
             -u critical -i volume-knob
           exit 1
@@ -47,7 +47,7 @@ in {
         value=$(pamixer --get-volume)
         msg="Volume $value%"
 
-        if [ $(pamixer --get-mute) == "true" ]; then
+        if [ "$(pamixer --get-mute)" == "true" ]; then
           msg="Volume $value% (MUTE)"
         fi
 
@@ -65,9 +65,7 @@ in {
         headphones-connect.body = ''
           logfile=/tmp/last-headphonesConnect.log
 
-          bluetoothctl connect "${cfg.headphonesMacAddress}" &> $logfile
-
-          if [ $? != 0 ]; then
+          if ! bluetoothctl connect "${cfg.headphonesMacAddress}" &> $logfile; then
             notify-send "Headphones connect failure" "$(cat $logfile)" \
               -u critical -i audio-headset
             exit 1
@@ -79,9 +77,7 @@ in {
         headphones-disconnect.body = ''
           logfile=/tmp/last-headphonesDisconnect.log
 
-          bluetoothctl disconnect "${cfg.headphonesMacAddress}" &> $logfile
-
-          if [ $? != 0 ]; then
+          if ! bluetoothctl disconnect "${cfg.headphonesMacAddress}" &> $logfile; then
             notify-send "Headphones disconnect failure" "$(cat $logfile)" \
               -u critical -i audio-headset
             exit 1
@@ -95,27 +91,25 @@ in {
       volumeFuncs = {
         volume-up.body = ''
           logfile=/tmp/last-volumeUp.log
-          pamixer -i ${incr} --set-limit ${limit} &> $logfile
 
-          ${volumeNotify}
+          ${volumeNotify "pamixer -i ${incr} --set-limit ${limit} &> $logfile"}
         '';
 
         volume-down.body = ''
           logfile=/tmp/last-volumeDown.log
-          pamixer -d ${incr} &> $logfile
 
-          ${volumeNotify}
+          ${volumeNotify "pamixer -d ${incr} &> $logfile"}
         '';
 
         volume-mute-toggle.body = ''
           logfile=/tmp/last-volumeMute.log
-          if [ $(pamixer --get-mute) == "false" ]; then
-            pamixer -m &> $logfile
+          if [ "$(pamixer --get-mute)" == "false" ]; then
+            flag="-m"
           else
-            pamixer -u &> $logfile
+            flag="-u"
           fi
 
-          ${volumeNotify}
+          ${volumeNotify ''pamixer "$flag" &> $logfile''}
         '';
       };
     in (volumeFuncs // headphoneFuncs);

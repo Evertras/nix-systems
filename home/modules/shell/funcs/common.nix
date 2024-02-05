@@ -1,19 +1,22 @@
-{ config, ... }: {
+{ config, pkgs, ... }: {
   evertras.home.shell.funcs = {
     # Outside of code because I want to use this with ASDF on a non-NixOS system
     # without installing Go, but it does feel odd
-    go-watch-test.body = ''
-      #!/usr/bin/env bash
+    go-watch-test = {
+      runtimeInputs = with pkgs; [ entr fzf ripgrep ];
+      body = ''
+        #!/usr/bin/env bash
 
-      watchdir=$(find . \( -name ".git" -or -name "vendor" \) -prune -o -type d -exec sh -c 'ls -1 "{}"/*.go 2>/dev/null | wc -l | grep -q "[1-9]" && echo "{}"' \; | fzf --scheme=path -i --tiebreak=end)
+        watchdir=$(rg --files -g '*.go' | xargs dirname | sort -u | fzf --scheme=path -i --tiebreak=end)
 
-      if [ -z "$watchdir" ]; then
-        echo "No directory selected"
-        exit 0
-      fi
+        if [ -z "$watchdir" ]; then
+          echo "No directory selected"
+          exit 1
+        fi
 
-      while sleep 1; do ls "$watchdir"/*.go | entr -c -d go test -race "$watchdir"; done
-    '';
+        while sleep 1; do find "$watchdir" -iname '*.go' | entr -c -d go test -race "$watchdir"; done
+      '';
+    };
 
     replace-all.body = ''
       if [ $# -ne 4 ]; then
@@ -42,7 +45,7 @@
       find "$dir" -type f -name "$filefilter" -exec grep -cE "$oldregex" {} + | awk -F: '$2 != 0 { print $2 " " $1 }' | col | sort -n
 
       echo "Replacing any regex pattern match of '$oldregex' with '$replacement' in $dir"
-      read -p "Found $(wc -l <<< $matches) matches.  Continue? [y/n] " -n 1 -r
+      read -p "Found $(wc -l <<< "$matches") matches.  Continue? [y/n] " -n 1 -r
       echo ""
 
       if [[ ! $REPLY =~ ^[Yy]$ ]]; then

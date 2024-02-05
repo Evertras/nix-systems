@@ -137,10 +137,10 @@ in {
       in "styli.sh -s '${theme.inspiration}' -b bg-fill -h ${height} -w ${width}";
 
       screenshot-save.body = ''
-        mkdir -p ${screenshotsDir}
-        filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr A-Z a-z).png
-        maim -us "$filename" &> ${screenshotsLog}
-        if [ $? == 0 ]; then
+        mkdir -p "${screenshotsDir}"
+        filename=${screenshotsDir}/$(date +%Y-%m-%d-%H-%M-%S | tr "[:upper:]" "[:lower:]").png
+
+        if maim -us "$filename" | tee ${screenshotsLog}; then
           notify-send -i camera 'Screenshot' "$filename"
         else
           notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
@@ -148,8 +148,7 @@ in {
       '';
 
       screenshot-copy.body = ''
-        maim -us &> ${screenshotsLog} | xclip -selection clipboard -t image/png
-        if [ $? == 0 ]; then
+        if maim -us | tee ${screenshotsLog} | xclip -selection clipboard -t image/png; then
           notify-send -i camera 'Screen area copied'
         else
           notify-send -i error -u critical "Screenshot error" "$(cat ${screenshotsLog})"
