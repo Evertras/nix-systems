@@ -16,10 +16,13 @@
 
     # For a rabbit hole: https://github.com/nix-community/NUR
     # nurpkgs.url = "github:nix-community/NUR";
+
+    # Extra packages here (can't put these in another file, see
+    # https://github.com/NixOS/nix/issues/4945 for info)
+    ever-cyn.url = "github:Evertras/cynomys";
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, ... }:
-
+  outputs = { nixpkgs, home-manager, nixvim, ... }@inputs:
     let
       # Nix stuff
       lib = nixpkgs.lib;
@@ -38,6 +41,9 @@
 
           permittedInsecurePackages = [ "electron-25.9.0" ];
         };
+
+        overlays =
+          [ (_: _: { cynomys = inputs.ever-cyn.packages.${system}.default; }) ];
       };
 
       # My stuff

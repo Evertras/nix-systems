@@ -1,4 +1,4 @@
-{ config, everlib, lib, pkgs, ... }:
+{ config, everlib, everpkgs, lib, pkgs, ... }:
 with lib;
 let
   cfg = config.evertras.home.shell.core;
@@ -63,6 +63,7 @@ in {
         nixops_unstable
 
         # Funsies
+        cynomys
         fastfetch
         presenterm
         steghide
