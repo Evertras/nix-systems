@@ -6,9 +6,20 @@ let
 
   gpgKey = "9C6A5922D90A8465";
 
-  displayLeft = "DP-1-3";
-  displayCenter = "DP-2";
-  displayRight = "HDMI-0";
+  displayLeft = {
+    name = "DP-1-3";
+    resolution = "3840x2160";
+  };
+
+  displayCenter = {
+    name = "DP-2";
+    resolution = "3840x2160";
+  };
+
+  displayRight = {
+    name = "HDMI-0";
+    resolution = "1920x1080";
+  };
 
   # Use the wrapped version to get around OpenGL issues
   terminal = "/home/brandon-fulljames/.evertras/funcs/kitty-gl";
@@ -80,6 +91,17 @@ in {
       };
 
       windowmanager = {
+        # Doesn't work yet, seems to be challenging in old ubuntu
+        # especially with nvidia
+        hyprland = {
+          enable = true;
+          kbLayout = "jp";
+
+          displays =
+            let scaleAdjust = display: scale: (display // { inherit scale; });
+            in [ displayLeft displayCenter displayRight ];
+        };
+
         dwm = {
           enable = true;
 
@@ -122,11 +144,11 @@ in {
           bars = [
             {
               id = "main";
-              outputs = [ displayLeft displayCenter ];
+              outputs = [ displayLeft.name displayCenter.name ];
             }
             {
               id = "right";
-              outputs = [ displayRight ];
+              outputs = [ displayRight.name ];
               showStatus = false;
             }
           ];
@@ -153,28 +175,25 @@ in {
             "00ffffffffffff00410c2909240400000a1d010380351e782aa631a855519d250f5054bfef00d1c0b30095008180814081c001010101023a801871382d40582c45000f282100001e2a4480a070382740302035000f282100001a000000fc0050484c203234314238510a2020000000fd00304c1e5512000a2020202020200165020327f14b101f051404130312021101230907078301000065030c001000681a00000101304c008c0ad08a20e02d10103e96000f2821000018011d007251d01e206e2855000f282100001e8c0ad08a20e02d10103e96000f28210000188c0ad090204031200c4055000f282100001800000000000000000000000000000000c4";
         };
         config = {
-          # Left
-          DP-1-3 = {
+          ${displayLeft.name} = {
             enable = true;
             crtc = 4;
-            mode = "3840x2160";
+            mode = displayLeft.resolution;
             position = "0x0";
             rate = "60.0";
           };
 
-          # Center
-          DP-2 = {
+          ${displayCenter.name} = {
             enable = true;
-            mode = "3840x2160";
+            mode = displayCenter.resolution;
             rate = "60.0";
             position = "3840x0";
           };
 
-          # Right
-          HDMI-0 = {
+          ${displayRight.name} = {
             enable = true;
             crtc = 0;
-            mode = "1920x1080";
+            mode = displayRight.resolution;
             position = "7680x0";
             rate = "60.0";
             rotate = "left";
