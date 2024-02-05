@@ -9,7 +9,7 @@ with lib; {
         body = "echo hi";
       }
     '';
-    type = types.attrsOf types.attrs;
+    type = with types; attrsOf attrs;
     default = { };
   };
 
