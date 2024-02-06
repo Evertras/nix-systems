@@ -38,7 +38,7 @@ in {
               "bat" = "BAT1";
               "interval" = 60;
               "states" = { "low" = 30; };
-              "format" = "{capacity}% {icon}";
+              "format" = "{icon} {capacity}%";
               "format-icons" = [ "" "" "" "" "" ];
               "max-length" = 25;
             };
