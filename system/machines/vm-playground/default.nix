@@ -14,26 +14,6 @@
     };
   };
 
-  services = {
-    # https://mynixos.com/nixpkgs/options/services.nomad
-    nomad = {
-      enable = true;
-
-      # Nomad settings can be generated/templated here
-      settings = {
-        data_dir = "/var/lib/nomad";
-
-        client = {
-          enabled = true;
-          servers = [ "localhost" ];
-        };
-
-        server = {
-          enabled = true;
-          bootstrap_expect = 1;
-        };
-      };
-    };
-  };
+  evertras.system.services.nomad.enable = true;
 }
 
