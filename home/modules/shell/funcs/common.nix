@@ -3,11 +3,11 @@
     # Outside of code because I want to use this with ASDF on a non-NixOS system
     # without installing Go, but it does feel odd
     go-watch-test = {
-      runtimeInputs = with pkgs; [ entr fzf ripgrep ];
+      runtimeInputs = with pkgs; [ entr fzf ];
       body = ''
         #!/usr/bin/env bash
 
-        watchdir=$(rg --files -g '*.go' | xargs dirname | sort -u | fzf --scheme=path -i --tiebreak=end)
+        watchdir=$(find . -name '*.go' | xargs dirname | sort -u | fzf --scheme=path -i --tiebreak=end)
 
         if [ -z "$watchdir" ]; then
           echo "No directory selected"
