@@ -22,7 +22,7 @@ let
   };
 
   # Use the wrapped version to get around OpenGL issues
-  terminal = "/home/brandon-fulljames/.evertras/funcs/kitty-gl";
+  terminal = "kitty-gl";
 
   terminalFont = "Hasklug";
 
