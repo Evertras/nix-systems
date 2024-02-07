@@ -7,7 +7,13 @@
       body = ''
         #!/usr/bin/env bash
 
-        watchdir=$(find . -name '*.go' -exec dirname {} \; | sort -u | fzf --scheme=path -i --tiebreak=end)
+        base=.
+
+        if [ -n "$1" ]; then
+          base=$1
+        fi
+
+        watchdir=$(find "$base" -name '*.go' -exec dirname {} \; | sort -u | fzf --scheme=path -i --tiebreak=end)
 
         if [ -z "$watchdir" ]; then
           echo "No directory selected"
