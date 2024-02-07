@@ -7,7 +7,7 @@
       body = ''
         #!/usr/bin/env bash
 
-        watchdir=$(find . -name '*.go' | xargs dirname | sort -u | fzf --scheme=path -i --tiebreak=end)
+        watchdir=$(find . -name '*.go' -exec dirname {} \; | sort -u | fzf --scheme=path -i --tiebreak=end)
 
         if [ -z "$watchdir" ]; then
           echo "No directory selected"
