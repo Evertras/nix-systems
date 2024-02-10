@@ -34,7 +34,8 @@ in {
         # Clipboard
         xclip
 
-        # xdg-open, etc
+        # xdg-open and friends
+        # https://www.freedesktop.org/wiki/Software/xdg-utils/
         xdg-utils
 
         # Window management utilities
