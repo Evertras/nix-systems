@@ -34,6 +34,9 @@ in {
         # Clipboard
         xclip
 
+        # xdg-open, etc
+        xdg-utils
+
         # Window management utilities
         # https://www.semicomplete.com/projects/xdotool/
         xdotool
