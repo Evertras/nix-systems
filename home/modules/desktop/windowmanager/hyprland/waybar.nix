@@ -171,6 +171,7 @@ in {
           #workspaces button.urgent {
             color: ${theme.colors.background};
             background-color: ${theme.colors.urgent};
+            border-color: ${theme.colors.urgent};
           }
         '';
 
