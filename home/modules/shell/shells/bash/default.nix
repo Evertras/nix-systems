@@ -32,6 +32,9 @@ in {
           # Make GPG signing happen in the correct terminal
           export GPG_TTY="$(tty)"
 
+          # Put bash history into XDG config dir
+          export HISTFILE="''${XDG_CONFIG_HOME:-$HOME/.config}/bash/history"
+
           # Simple Makefile completion
           complete -W "\`grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_-]*$//'\`" make
 
