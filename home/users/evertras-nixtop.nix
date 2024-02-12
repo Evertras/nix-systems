@@ -60,7 +60,7 @@ in {
         dwm = {
           enable = false;
           autostartCmds = [
-            "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg"
+            "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg --no-fehbg"
 
             # For some reason this needs a kick
             "systemctl restart --user pipewire"

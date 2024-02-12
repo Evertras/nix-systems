@@ -111,7 +111,7 @@ in {
           enable = true;
 
           autostartCmds = [
-            "autorandr -l main && sleep 1 && feh --bg-fill /home/brandon-fulljames/Pictures/desktops/forest-butterflies.jpeg"
+            "autorandr -l main && sleep 1 && feh --bg-fill /home/brandon-fulljames/Pictures/desktops/forest-butterflies.jpeg --no-fehbg"
             "setxkbmap -layout us"
             "sleep 5s; systemctl --user restart dunst"
             # Pre-installed picom
