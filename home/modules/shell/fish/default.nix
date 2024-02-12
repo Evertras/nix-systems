@@ -73,6 +73,7 @@ in {
         ndf = "nix develop --command fish";
         nr = "npm run";
         ls = "eza";
+        private = "fish --private";
         sctluser = "systemctl --user";
         tree = "eza -T";
       };
@@ -126,10 +127,6 @@ in {
         set fish_pager_color_completion c6d0f5
         set fish_pager_color_description 737994
       '';
-
-      /* Scratchpad for future reference:
-         fish --private
-      */
     };
   };
 }
