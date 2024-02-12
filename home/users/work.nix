@@ -203,13 +203,6 @@ in {
     };
   };
 
-  programs.fish = {
-    shellAbbrs = {
-      "awsprofile" = ''
-        export AWS_PROFILE=$(echo -e "dev\nstg\nprod" | fzf --height 20% || echo "none")'';
-    };
-  };
-
   home = {
     # Other local things
     packages = with pkgs; [

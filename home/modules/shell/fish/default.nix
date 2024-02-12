@@ -60,6 +60,8 @@ in {
       };
 
       shellAbbrs = {
+        awsprofile = ''
+          export AWS_PROFILE=$(aws-profiles | fzf --height 20% || echo "none")'';
         cat = "bat -p";
         g = "git";
         gc = "git commit -m";

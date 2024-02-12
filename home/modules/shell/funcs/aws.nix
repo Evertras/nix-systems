@@ -11,5 +11,9 @@
         sort |
         column -t
     '';
+
+    aws-profiles.body = ''
+      grep '\[profile' ~/.aws/config | awk '{print $2}' | tr -d ']'
+    '';
   };
 }
