@@ -124,9 +124,11 @@ in {
 
       dmenu.enable = mkDefault true;
 
-      # Terminals
-      kitty.enable = mkDefault (cfg.terminal == "kitty");
-      st.enable = mkDefault (cfg.terminal == "st");
+      terminals = {
+        alacritty.enable = mkDefault (cfg.terminal == "alacritty");
+        kitty.enable = mkDefault (cfg.terminal == "kitty");
+        st.enable = mkDefault (cfg.terminal == "st");
+      };
     };
 
     evertras.home.shell.funcs = let

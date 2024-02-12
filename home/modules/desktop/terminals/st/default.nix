@@ -1,7 +1,7 @@
 { config, everlib, lib, pkgs, ... }:
 with everlib;
 let
-  cfg = config.evertras.home.desktop.st;
+  cfg = config.evertras.home.desktop.terminals.st;
   theme = config.evertras.themes.selected;
   patchlib = import ./patch.nix { };
   catppuccinPalette =
@@ -29,7 +29,7 @@ let
       cfg.bgImage;
   };
 in {
-  options.evertras.home.desktop.st = with lib; {
+  options.evertras.home.desktop.terminals.st = with lib; {
     enable = mkEnableOption "st";
 
     bgImage = mkOption {

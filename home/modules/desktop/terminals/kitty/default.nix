@@ -2,11 +2,11 @@
 with everlib;
 with lib;
 let
-  cfg = config.evertras.home.desktop.kitty;
+  cfg = config.evertras.home.desktop.terminals.kitty;
   theme = config.evertras.themes.selected;
   shellBin = config.evertras.home.shell.core.shellBin;
 in {
-  options.evertras.home.desktop.kitty = {
+  options.evertras.home.desktop.terminals.kitty = {
     enable = mkEnableOption "kitty";
 
     allowThemeOverrides = mkOption {

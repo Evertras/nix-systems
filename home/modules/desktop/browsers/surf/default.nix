@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 let
-  cfg = config.evertras.home.desktop.st;
+  cfg = config.evertras.home.desktop.browsers.surf;
   theme = config.evertras.themes.selected;
   patchlib = import ./patch.nix { };
   catppuccinPalette = import ../../../../shared/themes/palette-catppuccin.nix;

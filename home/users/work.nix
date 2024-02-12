@@ -76,18 +76,22 @@ in {
 
       display.sleep.enable = true;
 
-      kitty.enable = true;
+      terminals = {
+        alacritty.enable = true;
 
-      st = {
-        enable = true;
+        kitty.enable = true;
 
-        font = nerdfonts.makeMono "ProFont IIx";
-        fontSize = 13;
+        st = {
+          enable = true;
 
-        bgBlurPixels = 0;
-        bgOpacityPercent100 = 80;
+          font = nerdfonts.makeMono "ProFont IIx";
+          fontSize = 13;
 
-        desktopResolution = "3840x2160";
+          bgBlurPixels = 0;
+          bgOpacityPercent100 = 80;
+
+          desktopResolution = "3840x2160";
+        };
       };
 
       windowmanager = {
