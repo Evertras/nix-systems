@@ -36,6 +36,7 @@ in {
             commandline -i !
           end
         '';
+
         bind_dollar = ''
           switch (commandline -t)
           case "*!"
