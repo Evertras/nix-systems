@@ -22,7 +22,7 @@ let
   };
 
   # Use the wrapped version to get around OpenGL issues
-  terminal = "kitty-gl";
+  terminal = "alacritty-gl";
 
   terminalFont = "JetBrainsMono";
 
