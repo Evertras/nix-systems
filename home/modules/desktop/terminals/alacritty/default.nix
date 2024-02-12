@@ -19,8 +19,8 @@ in {
     };
 
     opacity = mkOption {
-      type = with types; nullOr str;
-      default = null;
+      type = types.float;
+      default = 0.9;
     };
   };
 
@@ -30,7 +30,7 @@ in {
       settings = {
         window = {
           decorations = "none";
-          opacity = 0.8;
+          opacity = cfg.opacity;
           startup_mode = "Maximized";
         };
 
