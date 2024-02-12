@@ -59,9 +59,6 @@ in {
         # Format nix things
         nixfmt
 
-        # Play with nixops
-        nixops_unstable
-
         # Funsies
         cynomys
         fastfetch
