@@ -11,6 +11,10 @@ in {
   };
 
   config = {
+    evertras.home.shell.env.vars = {
+      PASSWORD_STORE_DIR = "$XDG_DATA_HOME/pass";
+    };
+
     programs.password-store = mkIf cfg.enable {
       enable = true;
 
