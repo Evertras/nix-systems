@@ -57,6 +57,7 @@ in {
       funcs = {
         aws-login.body = "aws sso login";
         kitty-gl.body = "nixGL kitty -1";
+        alacritty-gl.body = "nixGL alacritty";
       };
     };
 
