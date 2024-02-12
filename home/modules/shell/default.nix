@@ -97,7 +97,7 @@ in {
           "bg+" = theme.colors.highlight;
           "fg+" = theme.colors.background;
           "hl" = theme.colors.primary;
-          "hl+" = theme.colors.contrast;
+          "hl+" = theme.colors.background;
         };
       };
 
