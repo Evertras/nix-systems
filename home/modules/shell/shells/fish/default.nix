@@ -95,6 +95,10 @@ in {
         colorPrimary = rmp theme.colors.primary;
         colorText = rmp theme.colors.text;
         colorUrgent = rmp theme.colors.urgent;
+
+        mkEnvVar = name: value: "set ${name} ${value}";
+        envVars =
+          attrsets.mapAttrsToList mkEnvVar config.evertras.home.shell.env.vars;
       in ''
         set fish_greeting
 
@@ -102,6 +106,9 @@ in {
         fish_add_path -g ~/bin
 
         set GPG_TTY (tty)
+
+        # Env vars from config.evertras.home.shell.env.vars
+        ${concatStringsSep "\n" envVars}
 
         # Theme
         # TODO: Move this into theme file
