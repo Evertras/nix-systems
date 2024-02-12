@@ -10,9 +10,7 @@ with lib; {
         # up the home directory
         CARGO_HOME = "$XDG_DATA_HOME/cargo";
         CUDA_HOME = "$XDG_DATA_HOME/nv";
-        GNUPGHOME = "$XDG_DATA_HOME/gnupg";
         GOPATH = "$XDG_DATA_HOME/go";
-        GTK2_RC_FILES = "$XDG_CONFIG_HOME/gtk-2.0/gtkrc";
         XCOMPOSECACHE = "$XDG_CACHE_HOME/X11/xcompose";
       };
     };
