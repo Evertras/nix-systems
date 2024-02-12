@@ -88,6 +88,7 @@ in {
         mux = "tmuxinator";
         vi = "nvim";
         vim = "nvim";
+        wget = "wget --hsts-file=$XDG_DATA_HOME/wget-hsts";
       };
 
       shellInit = let

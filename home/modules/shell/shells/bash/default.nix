@@ -15,13 +15,14 @@ in {
           jctluser = "journalctl --user";
           k = "kubectl";
           ls = "ls --color";
-          tree = "eza -T";
           mux = "tmuxinator";
           nr = "npm run";
           reloadbash = "source ~/.bashrc";
           sctluser = "systemctl --user";
+          tree = "eza -T";
           vi = "nvim";
           vim = "nvim";
+          wget = "wget --hsts-file=$XDG_DATA_HOME/wget-hsts";
         };
 
         bashrcExtra = let
