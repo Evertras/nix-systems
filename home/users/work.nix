@@ -24,7 +24,7 @@ let
   # Use the wrapped version to get around OpenGL issues
   terminal = "kitty-gl";
 
-  terminalFont = "Hasklug";
+  terminalFont = "JetBrainsMono";
 
   # Custom lock script outside of home-manager
   customLockCmd = "/home/brandon-fulljames/.evertras/funcs/lock";
