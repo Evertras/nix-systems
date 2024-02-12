@@ -1,8 +1,8 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.home.shell.bash;
+let cfg = config.evertras.home.shell.shells.bash;
 in {
-  options.evertras.home.shell.bash = { enable = mkEnableOption "bash"; };
+  options.evertras.home.shell.shells.bash = { enable = mkEnableOption "bash"; };
 
   config = mkIf cfg.enable {
     programs = {

@@ -1,0 +1,1 @@
+{ everlib, ... }: { imports = everlib.allSubdirs ./.; }

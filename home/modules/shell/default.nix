@@ -120,9 +120,10 @@ in {
     };
 
     evertras.home.shell = {
-      # Actual shells
-      bash.enable = mkDefault true;
-      fish.enable = mkDefault true;
+      shells = {
+        bash.enable = mkDefault true;
+        fish.enable = mkDefault true;
+      };
 
       editorconfig.enable = mkDefault true;
       starship.enable = cfg.prompt == "starship";

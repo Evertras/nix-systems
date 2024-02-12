@@ -1,10 +1,14 @@
 { config, lib, pkgs, ... }:
 with lib;
-let theme = config.evertras.themes.selected;
+let
+  cfg = config.evertras.home.shell.shells.fish;
+  theme = config.evertras.themes.selected;
 in {
-  options.evertras.home.shell.fish = { enable = mkEnableOption "Fish shell"; };
+  options.evertras.home.shell.shells.fish = {
+    enable = mkEnableOption "Fish shell";
+  };
 
-  config = mkIf config.evertras.home.shell.fish.enable {
+  config = mkIf cfg.enable {
     home.file = {
       ".config/fish/completions/aws.fish" = {
         text = ''
