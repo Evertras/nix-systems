@@ -156,6 +156,6 @@ in {
       };
     };
 
-    home.packages = with pkgs; [ hyprpaper tofi swww ];
+    home.packages = with pkgs; [ hyprpaper tofi swww wl-clipboard ];
   };
 }
