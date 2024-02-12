@@ -1,4 +1,4 @@
-{ config, everlib, lib, ... }:
+{ config, everlib, lib, pkgs, ... }:
 with everlib;
 with lib;
 let
@@ -22,12 +22,21 @@ in {
       type = types.float;
       default = 0.9;
     };
+
+    # Omit the .toml extension
+    # https://github.com/alacritty/alacritty-theme/tree/master/themes
+    themeName = mkOption {
+      type = types.str;
+      default = "catppuccin_mocha";
+    };
   };
 
   config = mkIf cfg.enable {
     programs.alacritty = {
       enable = true;
       settings = {
+        import = [ "${pkgs.alacritty-theme}/${cfg.themeName}.yaml" ];
+
         window = {
           decorations = "none";
           opacity = cfg.opacity;
