@@ -24,6 +24,15 @@ in {
           vim = "nvim";
         };
 
+        bashrcExtra = let
+          mkExport = name: value: "export ${name}=${value}";
+          exports = attrsets.mapAttrsToList mkExport
+            config.evertras.home.shell.env.vars;
+        in ''
+          # Env vars from config.evertras.shell.env.vars
+          ${concatStringsSep "\n" exports}
+        '';
+
         # bashrcExtra for all shells, initExtra for interactive only
         initExtra = ''
           # Don't show control characters

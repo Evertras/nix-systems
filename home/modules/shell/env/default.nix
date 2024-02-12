@@ -1,7 +1,7 @@
-{ config, lib, ... }:
+{ lib, ... }:
 with lib; {
   # To be applied to individual shell rcs in ../shells/
-  options.home.evertras.shell.env = {
+  options.evertras.home.shell.env = {
     vars = mkOption {
       description = "";
       type = with types; attrsOf str;
