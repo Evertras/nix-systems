@@ -38,6 +38,8 @@ in {
         import = [ "${pkgs.alacritty-theme}/${cfg.themeName}.yaml" ];
 
         colors = {
+          primary.foreground = theme.colors.text;
+
           cursor = {
             text = theme.colors.background;
             cursor = theme.colors.primary;
