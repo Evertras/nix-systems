@@ -42,6 +42,11 @@ in {
             text = theme.colors.background;
             cursor = theme.colors.primary;
           };
+
+          selection = {
+            text = theme.colors.background;
+            background = theme.colors.primary;
+          };
         };
 
         font = {
