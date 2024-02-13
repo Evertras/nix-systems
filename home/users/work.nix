@@ -181,9 +181,10 @@ in {
         };
         config = {
           # DPI calc: sqrt(width^2 + height^2) / diagInches
+          # Note that DPI separate per monitor may not actually work with XOrg,
+          # but leaving it here for reference anyway as it doesn't hurt.
           ${displayLeft.name} = {
             crtc = 4;
-            dpi = 184;
             enable = true;
             mode = displayLeft.resolution;
             position = "0x0";
@@ -200,7 +201,6 @@ in {
 
           ${displayRight.name} = {
             crtc = 0;
-            dpi = 83;
             enable = true;
             mode = displayRight.resolution;
             position = "7680x0";
