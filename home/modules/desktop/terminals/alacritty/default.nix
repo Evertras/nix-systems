@@ -37,10 +37,11 @@ in {
       settings = {
         import = [ "${pkgs.alacritty-theme}/${cfg.themeName}.yaml" ];
 
-        window = {
-          decorations = "none";
-          opacity = cfg.opacity;
-          startup_mode = "Maximized";
+        colors = {
+          cursor = {
+            text = theme.colors.background;
+            cursor = theme.colors.primary;
+          };
         };
 
         font = {
@@ -78,6 +79,12 @@ in {
         live_config_reload = true;
 
         mouse = { hide_when_typing = true; };
+
+        window = {
+          decorations = "none";
+          opacity = cfg.opacity;
+          startup_mode = "Maximized";
+        };
       };
     };
   };
