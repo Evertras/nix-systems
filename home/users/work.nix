@@ -180,24 +180,28 @@ in {
             "00ffffffffffff00410c2909240400000a1d010380351e782aa631a855519d250f5054bfef00d1c0b30095008180814081c001010101023a801871382d40582c45000f282100001e2a4480a070382740302035000f282100001a000000fc0050484c203234314238510a2020000000fd00304c1e5512000a2020202020200165020327f14b101f051404130312021101230907078301000065030c001000681a00000101304c008c0ad08a20e02d10103e96000f2821000018011d007251d01e206e2855000f282100001e8c0ad08a20e02d10103e96000f28210000188c0ad090204031200c4055000f282100001800000000000000000000000000000000c4";
         };
         config = {
+          # DPI calc: sqrt(width^2 + height^2) / diagInches
           ${displayLeft.name} = {
-            enable = true;
             crtc = 4;
+            dpi = 184;
+            enable = true;
             mode = displayLeft.resolution;
             position = "0x0";
             rate = "60.0";
           };
 
           ${displayCenter.name} = {
+            dpi = 138;
             enable = true;
             mode = displayCenter.resolution;
-            rate = "60.0";
             position = "3840x0";
+            rate = "60.0";
           };
 
           ${displayRight.name} = {
-            enable = true;
             crtc = 0;
+            dpi = 83;
+            enable = true;
             mode = displayRight.resolution;
             position = "7680x0";
             rate = "60.0";
