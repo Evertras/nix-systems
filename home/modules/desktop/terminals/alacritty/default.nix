@@ -48,6 +48,33 @@ in {
           size = cfg.fontSize;
         };
 
+        key_bindings = [
+          # JP Mac keyboard fix
+          {
+            key = "Yen";
+            mods = "None";
+            chars = "\\\\";
+          }
+
+          {
+            key = "I";
+            mods = "Shift|Control";
+            action = "IncreaseFontSize";
+          }
+
+          {
+            key = "O";
+            mods = "Shift|Control";
+            action = "DecreaseFontSize";
+          }
+
+          {
+            key = "U";
+            mods = "Shift|Control";
+            action = "ResetFontSize";
+          }
+        ];
+
         live_config_reload = true;
 
         mouse = { hide_when_typing = true; };
