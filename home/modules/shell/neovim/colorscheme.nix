@@ -5,6 +5,9 @@
     colorschemes.catppuccin = {
       enable = true;
 
+      # Italic doesn't render nicely on some displays
+      disableItalic = true;
+
       flavour = "frappe";
 
       transparentBackground = true;
