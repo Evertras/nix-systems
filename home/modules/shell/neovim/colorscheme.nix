@@ -16,7 +16,7 @@
       customHighlights = ''
         function(colors)
           return {
-            Comment = { fg = colors.mauve },
+            Comment = { fg = colors.overlay1 },
             LineNr = { fg = colors.sky },
           }
         end
