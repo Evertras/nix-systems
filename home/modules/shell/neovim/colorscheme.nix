@@ -13,7 +13,7 @@
       customHighlights = ''
         function(colors)
           return {
-            Comment = { fg = colors.rosewater },
+            Comment = { fg = colors.mauve },
             LineNr = { fg = colors.sky },
           }
         end
