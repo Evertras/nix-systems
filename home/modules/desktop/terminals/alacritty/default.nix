@@ -87,6 +87,8 @@ in {
 
         mouse = { hide_when_typing = true; };
 
+        scrolling.multiplier = 5;
+
         window = {
           decorations = "none";
           opacity = cfg.opacity;
