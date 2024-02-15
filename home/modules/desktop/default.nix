@@ -58,9 +58,16 @@ in {
         # Notes
         obsidian
 
+        # Japanese fonts
+        ipafont
+        kochi-substitute
+
         # Theme stuff
         theme.iconTheme.package
       ] ++ fontPackages;
+
+    # Allows fontconfig to discover fonts installed by home-manager
+    fonts.fontconfig.enable = true;
 
     xdg = {
       enable = true;
