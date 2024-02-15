@@ -7,6 +7,7 @@
         fcitx5-configtool
         fcitx5-mozc
         fcitx5-material-color
+        fcitx5-nord
       ];
     };
   };
