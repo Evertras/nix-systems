@@ -61,8 +61,7 @@ in {
       };
     };
 
-    desktop = let
-    in {
+    desktop = {
       enable = true;
 
       browsers = {
@@ -76,6 +75,11 @@ in {
       kbLayout = "us";
 
       display.sleep.enable = true;
+
+      notifications = {
+        enable = true;
+        origin = "top-right";
+      };
 
       terminals = {
         alacritty.enable = true;

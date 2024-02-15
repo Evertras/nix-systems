@@ -6,6 +6,12 @@ let
 in {
   options.evertras.home.desktop.notifications = {
     enable = mkEnableOption "notifications";
+
+    origin = mkOption {
+      type = types.str;
+      default = "bottom-center";
+      description = "The location of notifications on the screen";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -27,7 +33,7 @@ in {
           frame_color = theme.colors.background;
           icon_path = "${theme.iconTheme.package}/share/icons";
           icon_theme = theme.iconTheme.name;
-          origin = "bottom-center";
+          origin = cfg.origin;
         };
 
         urgency_normal = {
