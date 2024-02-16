@@ -21,7 +21,7 @@ let
       padding-left = 10;
       padding-right = 0;
       padding-top = 5;
-      prompt-text = "run> ";
+      prompt-text = "run❯";
       result-spacing = 15;
       width = "100%";
     };
@@ -35,7 +35,7 @@ let
       padding-left = "35%";
       padding-top = "35%";
       prompt-color = mkColor theme.colors.primary;
-      prompt-text = "run > ";
+      prompt-text = "run ❯ ";
       result-spacing = 25;
       selection-color = mkColor theme.colors.contrast;
       text-color = mkColor theme.colors.text;
@@ -43,6 +43,6 @@ let
     };
   };
   tofiFlags =
-    (attrsets.mapAttrsToList (key: value: "'--${key}=${toString value}'")
+    (attrsets.mapAttrsToList (key: value: "--${key}='${toString value}'")
       (tofiThemes.${type} // sharedSettings));
 in "tofi-run " + (strings.concatStringsSep " " tofiFlags)

@@ -50,13 +50,13 @@ in {
     evertras.home.desktop.windowmanager.hyprland.waybar.enable = true;
 
     evertras.home.shell.funcs = {
-      launch-app.body = ''
-        eval ${
-          import ./toficmd.nix {
-            inherit theme lib;
-            type = "fullscreen";
-          }
-        }
+      launch-app.body = let
+        command = import ./toficmd.nix {
+          inherit theme lib;
+          type = "fullscreen";
+        };
+      in ''
+        eval "$(${command})"
       '';
     };
 
