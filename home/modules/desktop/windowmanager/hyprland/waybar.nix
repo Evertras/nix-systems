@@ -103,6 +103,7 @@ in {
           #battery.low {
             color: ${theme.colors.background};
             background-color: ${theme.colors.urgent};
+            border-color: ${theme.colors.urgent};
           }
 
           #bluetooth {
