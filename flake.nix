@@ -26,29 +26,29 @@
     let
       # Nix stuff
       lib = nixpkgs.lib;
-      system = "x86_64-linux";
-      pkgs = import nixpkgs {
-        inherit system;
+      mkPkgs = system:
+        (import nixpkgs {
+          inherit system;
 
-        # Explicitly allow certain unfree software
-        config = {
-          allowUnfreePredicate = pkg:
-            builtins.elem (nixpkgs.lib.getName pkg) [
-              "nvidia-settings"
-              "nvidia-x11"
-              "obsidian"
-            ];
+          # Explicitly allow certain unfree software
+          config = {
+            allowUnfreePredicate = pkg:
+              builtins.elem (nixpkgs.lib.getName pkg) [
+                "nvidia-settings"
+                "nvidia-x11"
+                "obsidian"
+              ];
 
-          permittedInsecurePackages = [ "electron-25.9.0" ];
-        };
+            permittedInsecurePackages = [ "electron-25.9.0" ];
+          };
 
-        overlays =
-          [ (_: _: { cynomys = inputs.ever-cyn.packages.${system}.default; }) ];
-      };
+          overlays = [
+            (_: _: { cynomys = inputs.ever-cyn.packages.${system}.default; })
+          ];
+        });
 
       # My stuff
       everlib = import ./shared/everlib { inherit lib; };
-      nerdfonts = import ./shared/nerdfonts { inherit pkgs; };
 
       # Helper to turn ./thing/someprofile.nix -> someprofile
       nameFromNixFile = file: lib.strings.removeSuffix ".nix" (baseNameOf file);
@@ -56,6 +56,9 @@
       nixosConfigurations = let
         # Make a system for every directory in ./system/machines
         machineDirs = everlib.allSubdirs ./system/machines;
+        system = "x86_64-linux";
+        pkgs = mkPkgs system;
+        nerdfonts = import ./shared/nerdfonts { inherit pkgs; };
         mkConfig = dir:
           (lib.nixosSystem {
             inherit pkgs system;
@@ -70,6 +73,9 @@
       homeConfigurations = let
         # Make a profile for every file in ./home/users
         userFiles = everlib.allNixFiles ./home/users;
+
+        pkgs = mkPkgs "x86_64-linux";
+        nerdfonts = import ./shared/nerdfonts { inherit pkgs; };
 
         mkConfig = file:
           (home-manager.lib.homeManagerConfiguration {
