@@ -49,6 +49,7 @@
 
       # My stuff
       everlib = import ./shared/everlib { inherit lib; };
+      mkNerdfonts = pkgs: (import ./shared/nerdfonts { inherit pkgs; });
 
       # Helper to turn ./thing/someprofile.nix -> someprofile
       nameFromNixFile = file: lib.strings.removeSuffix ".nix" (baseNameOf file);
@@ -58,7 +59,7 @@
         machineDirs = everlib.allSubdirs ./system/machines;
         system = "x86_64-linux";
         pkgs = mkPkgs system;
-        nerdfonts = import ./shared/nerdfonts { inherit pkgs; };
+        nerdfonts = mkNerdfonts pkgs;
         mkConfig = dir:
           (lib.nixosSystem {
             inherit pkgs system;
@@ -75,7 +76,7 @@
         userFiles = everlib.allNixFiles ./home/users;
 
         pkgs = mkPkgs "x86_64-linux";
-        nerdfonts = import ./shared/nerdfonts { inherit pkgs; };
+        nerdfonts = mkNerdfonts pkgs;
 
         mkConfig = file:
           (home-manager.lib.homeManagerConfiguration {
