@@ -20,6 +20,16 @@ in {
         # unaware of it, so just disable it everywhere for simplicity.
         container.disabled = true;
 
+        character = let
+          # Funsies:
+          # https://unicode-explorer.com/b/2980
+          #char = "⟫";
+          char = "❱❯";
+        in {
+          success_symbol = "[${char}](bold green)";
+          error_symbol = "[${char}](bold red)";
+        };
+
         directory = { style = "bold ${theme.colors.primary}"; };
 
         shell = {
