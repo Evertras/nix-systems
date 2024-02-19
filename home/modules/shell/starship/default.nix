@@ -36,7 +36,7 @@ in {
           disabled = false;
 
           bash_indicator = "b";
-          fish_indicator = "f";
+          fish_indicator = "∫";
           style = "bold ${theme.colors.primary}";
         };
       };
