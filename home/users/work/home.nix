@@ -1,7 +1,7 @@
 { lib, nerdfonts, pkgs, ... }:
 
 let
-  themes = import ../../shared/themes/themes.nix { inherit pkgs lib; };
+  themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
 
   gpgKey = "9C6A5922D90A8465";

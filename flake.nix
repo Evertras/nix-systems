@@ -72,21 +72,27 @@
       }) machineDirs));
 
       homeConfigurations = let
-        # Make a profile for every file in ./home/users
-        userFiles = everlib.allNixFiles ./home/users;
+        # Make a profile for every subdir in ./home/users
+        #
+        # Each subdirectory must contain a default.nix which
+        # has the "system" and "module" attributes, where "system"
+        # is the system to use and "module" is the home-manager
+        # module file to use (probably a home.nix in the directory)
+        userDirs = everlib.allSubdirs ./home/users;
 
-        pkgs = mkPkgs "x86_64-linux";
-        nerdfonts = mkNerdfonts pkgs;
-
-        mkConfig = file:
-          (home-manager.lib.homeManagerConfiguration {
+        mkConfig = dir:
+          (let
+            userData = import dir;
+            pkgs = mkPkgs userData.system;
+            nerdfonts = mkNerdfonts pkgs;
+          in home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            modules = [ nixvim.homeManagerModules.nixvim file ];
+            modules = [ nixvim.homeManagerModules.nixvim userData.module ];
             extraSpecialArgs = { inherit everlib nerdfonts; };
           });
       in (builtins.listToAttrs (map (file: {
         name = nameFromNixFile file;
         value = mkConfig file;
-      }) userFiles));
+      }) userDirs));
     };
 }

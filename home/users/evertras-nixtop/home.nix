@@ -1,6 +1,6 @@
 { lib, nerdfonts, pkgs, ... }:
 let
-  themes = import ../../shared/themes/themes.nix { inherit pkgs lib; };
+  themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
 
   fontOverrides = {
@@ -16,7 +16,7 @@ let
     refreshRate = 240;
   };
 in {
-  imports = [ ../modules ../../shared/themes/select.nix ];
+  imports = [ ../../modules ../../../shared/themes/select.nix ];
 
   evertras.themes.selected =
     (theme // { fonts = (theme.fonts // fontOverrides); });
