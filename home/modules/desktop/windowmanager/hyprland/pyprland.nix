@@ -14,13 +14,15 @@ in {
         ".config/hypr/pyprland.toml" = {
           text = ''
             [pyprland]
-            plugins = [ "scratchpads" ]
+            plugins = [
+              "scratchpads",
+            ]
 
             [scratchpads.pavucontrol]
             animation = "fromTop"
             command = "pavucontrol"
             class = "pavucontrol"
-            size = "50% 50%"
+            size = "50% 80%"
           '';
         };
       };
