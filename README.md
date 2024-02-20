@@ -88,6 +88,7 @@ To change it up.
 
 - Agave Nerd - kind of old school sharp feel
 - ComicShannsMono - Casual and surprisingly nice to read
+- FantasqueSansM - Bit whimsical
 - Gohu Font 14 - Pixel font, sharp at size 14 - can use 11 as well for tiny readable font
 - Hurmit - Fun change in small doses
 - Iosevka - Feels squished horizontally but still clean

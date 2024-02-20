@@ -24,7 +24,7 @@ let
   # Use the wrapped version to get around OpenGL issues
   terminal = "alacritty-gl";
 
-  terminalFont = "JetBrainsMono";
+  terminalFont = "FantasqueSansM";
 
   # Custom lock script outside of home-manager
   customLockCmd = "/home/brandon-fulljames/.evertras/funcs/lock";
@@ -84,7 +84,11 @@ in {
       };
 
       terminals = {
-        alacritty.enable = true;
+        alacritty = {
+          enable = true;
+
+          fontSize = 14;
+        };
 
         kitty.enable = true;
 
