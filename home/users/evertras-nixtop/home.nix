@@ -4,7 +4,7 @@ let
   theme = themes.mkCatppuccin { color = "Green"; };
 
   fontOverrides = {
-    terminal = nerdfonts.makeMono "Hasklug";
+    terminal = nerdfonts.makeMono "Mononoki";
     main = nerdfonts.makeMono "AurulentSansM";
   };
 
