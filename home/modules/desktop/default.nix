@@ -63,8 +63,9 @@ in {
         kochi-substitute
 
         # Theme stuff
-        theme.iconTheme.package
+        theme.cursorTheme.package
         theme.gtkTheme.package
+        theme.iconTheme.package
       ] ++ fontPackages;
 
     # Allows fontconfig to discover fonts installed by home-manager
