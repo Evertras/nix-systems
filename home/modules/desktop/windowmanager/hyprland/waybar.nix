@@ -87,7 +87,7 @@ in {
           }
 
           window#waybar {
-            background: ${theme.colors.background};
+            background: transparent;
             color: ${theme.colors.text};
             font-family: ${theme.fonts.main.name}, Helvetica, Arial, sans-serif;
             font-size: 18px;
@@ -121,6 +121,7 @@ in {
 
           #clock {
             ${layout}
+            background-color: ${theme.colors.background};
           }
 
           #network {
@@ -139,7 +140,9 @@ in {
           }
 
           #window {
+            background-color: ${theme.colors.background};
             color: ${theme.colors.contrast};
+            padding: 0 1em;
           }
 
           #workspaces {
