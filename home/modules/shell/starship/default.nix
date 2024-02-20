@@ -35,7 +35,7 @@ in {
         shell = {
           disabled = false;
 
-          bash_indicator = "b";
+          bash_indicator = "⍟";
           fish_indicator = "∫";
           style = "bold ${theme.colors.primary}";
         };
