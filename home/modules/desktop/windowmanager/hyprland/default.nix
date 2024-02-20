@@ -78,6 +78,7 @@ in {
       in ''
         exec-once ${pkgs.waybar}/bin/waybar
         exec-once ${pkgs.swww}/bin/swww init
+        exec-once ${pkgs.pyprland}/bin/pypr
         ${strings.concatStringsSep "\n" displayConfigs}
         monitor=,preferred,auto,1
       '';
@@ -97,6 +98,7 @@ in {
           "$mod, R, exec, ${cfg.browser}"
           "$mod, space, exec, ${cfg.terminal}"
           "$mod, P, exec, launch-app"
+          "$mod, V, exec, ${pkgs.pyprland}/bin/pypr toggle pavucontrol"
 
           # Navigate
           "$mod, J, movefocus, d"
