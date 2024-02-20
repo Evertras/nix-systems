@@ -126,7 +126,7 @@ in {
         };
       };
 
-      gtktheme.enable = true;
+      gtktheme.enable = mkDefault true;
       notifications.enable = mkDefault true;
 
       dmenu.enable = mkDefault true;
