@@ -6,7 +6,7 @@ let
 
   gpgKey = "11CB11BBC416774E";
 in {
-  imports = [ ../modules ../../shared/themes/select.nix ];
+  imports = [ ../../modules ../../../shared/themes/select.nix ];
 
   evertras.home = {
     core = {

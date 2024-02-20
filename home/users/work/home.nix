@@ -29,7 +29,7 @@ let
   # Custom lock script outside of home-manager
   customLockCmd = "/home/brandon-fulljames/.evertras/funcs/lock";
 in {
-  imports = [ ../modules ../../shared/themes/select.nix ];
+  imports = [ ../../modules ../../../shared/themes/select.nix ];
 
   evertras.themes.selected = (theme // {
     fonts = (theme.fonts // { terminal = nerdfonts.makeMono terminalFont; });
