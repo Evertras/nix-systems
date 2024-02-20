@@ -91,6 +91,8 @@ in {
     gtk = {
       enable = true;
 
+      inherit cursorTheme font;
+
       iconTheme = {
         name = existsOr cfg.iconTheme.name theme.iconTheme.name;
         package = existsOr cfg.iconTheme.package theme.iconTheme.package;
@@ -100,10 +102,6 @@ in {
         name = existsOr cfg.overall.name theme.gtkTheme.name;
         package = existsOr cfg.overall.package cfg.overall.package;
       };
-
-      inherit cursorTheme;
-
-      inherit font;
 
       gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
       gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
