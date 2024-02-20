@@ -139,6 +139,9 @@ in {
         # Override selection to look nicer
         selection_foreground = theme.colors.background;
         selection_background = theme.colors.primary;
+
+        # Slight padding for readability
+        window_padding_width = 5;
       };
     };
   };
