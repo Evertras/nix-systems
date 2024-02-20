@@ -64,6 +64,7 @@ in {
 
         # Theme stuff
         theme.iconTheme.package
+        theme.gtkTheme.package
       ] ++ fontPackages;
 
     # Allows fontconfig to discover fonts installed by home-manager
