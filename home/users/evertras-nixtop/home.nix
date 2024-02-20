@@ -48,6 +48,8 @@ in {
 
       display.sleep.enable = true;
 
+      ime.enable = true;
+
       windowmanager = {
         hyprland = {
           enable = true;

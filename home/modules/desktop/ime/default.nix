@@ -1,5 +1,12 @@
-{ config, pkgs, ... }: {
-  config = {
+{ config, lib, pkgs, ... }:
+with lib;
+let cfg = config.evertras.home.desktop.ime;
+in {
+  options.evertras.home.desktop.ime = {
+    enable = mkEnableOption "extra input methods (IME)";
+  };
+
+  config = mkIf cfg.enable {
     i18n.inputMethod = {
       enabled = "fcitx5";
 

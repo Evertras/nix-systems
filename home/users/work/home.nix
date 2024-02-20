@@ -74,6 +74,8 @@ in {
 
       kbLayout = "us";
 
+      ime.enable = true;
+
       display.sleep.enable = true;
 
       notifications = {
