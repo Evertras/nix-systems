@@ -3,6 +3,8 @@
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
+
+  gpgKey = "11CB11BBC416774E";
 in {
   imports = [ ../modules ../../shared/themes/select.nix ];
 
