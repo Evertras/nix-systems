@@ -76,9 +76,8 @@ in {
             display.position or "0x0"
           },${toString (display.scale or 1)}") cfg.displays;
       in ''
-        exec-once ${pkgs.waybar}/bin/waybar
-        exec-once ${pkgs.swww}/bin/swww init
-        exec-once ${pkgs.pyprland}/bin/pypr
+        exec-once=${pkgs.swww}/bin/swww init
+        exec-once=${pkgs.pyprland}/bin/pypr
         ${strings.concatStringsSep "\n" displayConfigs}
         monitor=,preferred,auto,1
       '';
