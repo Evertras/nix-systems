@@ -92,6 +92,10 @@ in {
         window = {
           decorations = "none";
           opacity = cfg.opacity;
+          padding = {
+            x = 8;
+            y = 5;
+          };
           startup_mode = "Maximized";
         };
       };
