@@ -161,6 +161,6 @@ in {
       };
     };
 
-    home.packages = with pkgs; [ hyprpaper tofi swww wl-clipboard ];
+    home.packages = with pkgs; [ tofi swww wl-clipboard ];
   };
 }
