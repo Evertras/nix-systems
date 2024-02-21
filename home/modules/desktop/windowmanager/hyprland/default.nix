@@ -155,7 +155,7 @@ in {
 
         master = {
           new_is_master = false;
-          no_gaps_when_only = 1;
+          no_gaps_when_only = 0;
         };
 
         misc.force_default_wallpaper = 0;
