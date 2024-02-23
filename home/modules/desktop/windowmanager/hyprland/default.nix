@@ -149,7 +149,8 @@ in {
         input = {
           kb_layout = cfg.kbLayout;
 
-          repeat_delay = 300;
+          repeat_delay = 250;
+          repeat_rate = 40;
         };
 
         master = {
