@@ -63,6 +63,7 @@ in {
         cynomys
         fastfetch
         presenterm
+        quickview
         steghide
         stegseek
         toipe

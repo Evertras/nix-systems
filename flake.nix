@@ -20,6 +20,7 @@
     # Extra packages here (can't put these in another file, see
     # https://github.com/NixOS/nix/issues/4945 for info)
     ever-cyn.url = "github:Evertras/cynomys";
+    ever-quickview.url = "github:Evertras/quickview";
   };
 
   outputs = { nixpkgs, home-manager, nixvim, ... }@inputs:
@@ -43,7 +44,10 @@
           };
 
           overlays = [
-            (_: _: { cynomys = inputs.ever-cyn.packages.${system}.default; })
+            (_: _: {
+              cynomys = inputs.ever-cyn.packages.${system}.default;
+              quickview = inputs.ever-quickview.packages.${system}.default;
+            })
           ];
         });
 
