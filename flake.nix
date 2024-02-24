@@ -60,14 +60,21 @@
     in {
       nixosConfigurations = let
         # Make a system for every directory in ./system/machines
+        #
+        # Each subdirectory must contain a default.nix which
+        # has the "system" and "module" attributes, where "system"
+        # is the system to use and "module" is the home-manager
+        # module file to use (probably a home.nix in the directory)
         machineDirs = everlib.allSubdirs ./system/machines;
-        system = "x86_64-linux";
-        pkgs = mkPkgs system;
-        nerdfonts = mkNerdfonts pkgs;
         mkConfig = dir:
-          (lib.nixosSystem {
+          (let
+            userData = import dir;
+            system = userData.system;
+            pkgs = mkPkgs system;
+            nerdfonts = mkNerdfonts pkgs;
+          in lib.nixosSystem {
             inherit pkgs system;
-            modules = [ dir ];
+            modules = [ userData.module ];
             specialArgs = { inherit everlib nerdfonts; };
           });
       in (builtins.listToAttrs (map (dir: {
