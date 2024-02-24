@@ -172,6 +172,7 @@ in {
 
     # Some handy things used while root, try to keep this minimal
     file
+    traceroute
   ];
 
   programs.gnupg.agent = {
