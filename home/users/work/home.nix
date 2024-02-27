@@ -202,7 +202,6 @@ in {
           };
 
           ${displayCenter.name} = {
-            dpi = 138;
             enable = true;
             mode = displayCenter.resolution;
             position = "3840x0";
