@@ -26,8 +26,8 @@ in {
           #char = "⟫";
           char = "❱❯";
         in {
-          success_symbol = "[${char}](bold green)";
-          error_symbol = "[${char}](bold red)";
+          success_symbol = "[${char}](bold ${theme.colors.primary})";
+          error_symbol = "[${char}](bold ${theme.colors.urgent})";
         };
 
         directory = { style = "bold ${theme.colors.primary}"; };
