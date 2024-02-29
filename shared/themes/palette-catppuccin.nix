@@ -36,7 +36,7 @@
     # Helpful tools: https://coolors.co/contrast-checker/531e75-a6d189
     # https://mdigi.tools/lighten-color/#a6d189
     contrast = {
-      Green = "#9480fa";
+      Green = "#ef9f76";
       Mauve = "#a6d189";
     };
 
