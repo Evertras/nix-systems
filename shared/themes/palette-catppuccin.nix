@@ -42,7 +42,7 @@
 
     highlight = {
       Green = "#d7eaca";
-      Mauve = "#dabee6";
+      Mauve = "#babbf1";
     };
 
     urgent = {
