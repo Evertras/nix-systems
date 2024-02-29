@@ -35,11 +35,20 @@
     #
     # Helpful tools: https://coolors.co/contrast-checker/531e75-a6d189
     # https://mdigi.tools/lighten-color/#a6d189
-    contrast = { Green = "#9480fa"; };
+    contrast = {
+      Green = "#9480fa";
+      Mauve = "#a6d189";
+    };
 
-    highlight = { Green = "#d7eaca"; };
+    highlight = {
+      Green = "#d7eaca";
+      Mauve = "#dabee6";
+    };
 
-    urgent = { Green = "#e78284"; };
+    urgent = {
+      Green = "#e78284";
+      Mauve = "#e78284";
+    };
   };
 
   inspiration = {
