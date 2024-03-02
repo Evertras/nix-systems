@@ -40,6 +40,7 @@
       Mauve = "#a6d189";
       Peach = "#a6d189";
       Sapphire = "#ef9f76";
+      Lavender = "#e5c890";
     };
 
     highlight = {
@@ -47,6 +48,7 @@
       Mauve = "#babbf1";
       Peach = "#ffaf96";
       Sapphire = "#a9d1db";
+      Lavender = "#cac3f1";
     };
 
     urgent = {
@@ -54,6 +56,7 @@
       Mauve = "#e78284";
       Peach = "#ca9ee6";
       Sapphire = "#e78284";
+      Lavender = "#e78284";
     };
   };
 
