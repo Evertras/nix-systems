@@ -39,18 +39,21 @@
       Green = "#ef9f76";
       Mauve = "#a6d189";
       Peach = "#a6d189";
+      Sapphire = "#ef9f76";
     };
 
     highlight = {
       Green = "#d7eaca";
       Mauve = "#babbf1";
       Peach = "#ffaf96";
+      Sapphire = "#a9d1db";
     };
 
     urgent = {
       Green = "#e78284";
       Mauve = "#e78284";
       Peach = "#ca9ee6";
+      Sapphire = "#e78284";
     };
   };
 
