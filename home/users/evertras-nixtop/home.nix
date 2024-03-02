@@ -1,7 +1,7 @@
 { lib, nerdfonts, pkgs, ... }:
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
-  theme = themes.mkCatppuccin { color = "Green"; };
+  theme = themes.mkCatppuccin { color = "Peach"; };
 
   fontOverrides = {
     terminal = nerdfonts.makeMono "Mononoki";

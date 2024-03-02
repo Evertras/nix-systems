@@ -38,16 +38,19 @@
     contrast = {
       Green = "#ef9f76";
       Mauve = "#a6d189";
+      Peach = "#a6d189";
     };
 
     highlight = {
       Green = "#d7eaca";
       Mauve = "#babbf1";
+      Peach = "#ffaf96";
     };
 
     urgent = {
       Green = "#e78284";
       Mauve = "#e78284";
+      Peach = "#ca9ee6";
     };
   };
 
