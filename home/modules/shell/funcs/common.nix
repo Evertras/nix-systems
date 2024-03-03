@@ -24,6 +24,25 @@
       '';
     };
 
+    nix-explore = {
+      runtimeInputs = with pkgs; [ eza ];
+      body = ''
+        if [ "$1" == "" ]; then
+          echo "USAGE: nix-explore <nixpkgs-package-name>"
+          echo ""
+          echo "       Explores the contents of a Nix package's output path"
+          echo "       using eza's tree view.  Useful for exploring what's"
+          echo "       in a package's output path."
+          echo ""
+          echo "   ex: nix-explore 'ripgrep'"
+          exit 1
+        fi
+
+        path=$(nix build "nixpkgs#''${1}" --print-out-paths --no-link)
+        eza --tree "$path"
+      '';
+    };
+
     replace-all.body = ''
       if [ $# -ne 4 ]; then
         echo "USAGE: change-all <dir> <file-filter> <old-regex> <replacement>"
