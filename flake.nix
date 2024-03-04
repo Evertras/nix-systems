@@ -38,6 +38,9 @@
                 "nvidia-settings"
                 "nvidia-x11"
                 "obsidian"
+                "steam"
+                "steam-original"
+                "steam-run"
               ];
 
             permittedInsecurePackages = [ "electron-25.9.0" ];

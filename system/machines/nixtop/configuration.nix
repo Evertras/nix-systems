@@ -63,6 +63,10 @@ in {
   programs.hyprland.enable = true;
 
   ##############################################################################
+  # Steam stuff
+  programs.steam.enable = true;
+
+  ##############################################################################
   # Sound stuff
 
   # https://nixos.wiki/wiki/PipeWire
