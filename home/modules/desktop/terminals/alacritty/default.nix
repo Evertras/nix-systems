@@ -29,6 +29,11 @@ in {
       type = types.str;
       default = "catppuccin_mocha";
     };
+
+    shellBin = mkOption {
+      type = types.str;
+      default = "${pkgs.fish}/bin/fish";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -88,6 +93,8 @@ in {
         mouse = { hide_when_typing = true; };
 
         scrolling.multiplier = 5;
+
+        shell = cfg.shellBin;
 
         window = {
           decorations = "none";
