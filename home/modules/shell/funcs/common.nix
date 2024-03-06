@@ -38,8 +38,11 @@
           exit 1
         fi
 
-        path=$(nix build "nixpkgs#''${1}" --print-out-paths --no-link)
-        eza --tree "$path"
+        paths=$(nix build "nixpkgs#''${1}" --print-out-paths --no-link)
+
+        while IFS= read -r path || [[ -n "$path" ]]; do
+          eza --tree "$path"
+        done <<< "$paths"
       '';
     };
 
