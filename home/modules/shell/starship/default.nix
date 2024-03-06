@@ -6,6 +6,16 @@ let
 in {
   options.evertras.home.shell.starship = {
     enable = mkEnableOption "starship";
+
+    indicatorBash = mkOption {
+      type = types.str;
+      default = "⍟";
+    };
+
+    indicatorFish = mkOption {
+      type = types.str;
+      default = "∫";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -35,8 +45,9 @@ in {
         shell = {
           disabled = false;
 
-          bash_indicator = "⍟";
-          fish_indicator = "∫";
+          bash_indicator = cfg.indicatorBash;
+          fish_indicator = cfg.indicatorFish;
+
           style = "bold ${theme.colors.primary}";
         };
       };
