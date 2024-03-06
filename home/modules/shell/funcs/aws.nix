@@ -27,7 +27,7 @@
         fi
 
         if [[ "$filtered" == *$'\n'* ]]; then
-          filtered=$(${pkgs.fzf}/bin/fzf <<< "$filtered")
+          filtered=$(fzf <<< "$filtered")
         fi
 
         target_name=$(awk '{print $1}' <<< "$filtered")
