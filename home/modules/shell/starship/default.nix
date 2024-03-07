@@ -9,7 +9,7 @@ in {
 
     indicatorBash = mkOption {
       type = types.str;
-      default = "⍟";
+      default = "β";
     };
 
     indicatorFish = mkOption {
