@@ -50,6 +50,17 @@ in {
 
           style = "bold ${theme.colors.primary}";
         };
+
+        shlvl = {
+          disabled = false;
+
+          format = "[$symbol ]($style)";
+          symbol = "❯";
+          repeat = true;
+          repeat_offset = 2;
+
+          style = "bold cyan";
+        };
       };
     };
   };
