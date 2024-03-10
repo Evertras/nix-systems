@@ -41,6 +41,7 @@
       Peach = "#a6d189";
       Teal = "#ef9f76";
       Sapphire = "#ef9f76";
+      Sky = "#ef9f76";
       Lavender = "#e5c890";
     };
 
@@ -50,6 +51,7 @@
       Peach = "#ffaf96";
       Teal = "#a9d1db";
       Sapphire = "#a9d1db";
+      Sky = "#b9e1fb";
       Lavender = "#cac3f1";
     };
 
@@ -58,6 +60,7 @@
       Mauve = "#e78284";
       Peach = "#ca9ee6";
       Teal = "#e78284";
+      Sky = "#e78284";
       Sapphire = "#e78284";
       Lavender = "#e78284";
     };
