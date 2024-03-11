@@ -174,6 +174,9 @@ in {
   environment.systemPackages = with pkgs; [
     home-manager
 
+    # Shows power usage, can only be run as root
+    powertop
+
     # Some handy things used while root, try to keep this minimal
     file
     traceroute
