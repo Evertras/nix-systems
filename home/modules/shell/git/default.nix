@@ -33,6 +33,8 @@ in {
       userEmail = cfg.userEmail;
       userName = cfg.userName;
 
+      lfs.enable = true;
+
       signing = if cfg.gpgKey != null then {
         signByDefault = true;
         key = cfg.gpgKey;
