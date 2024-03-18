@@ -44,13 +44,14 @@
       echo "Store path: ''${storepath}"
       ls "''${storepath}/share/themes"
     '';
-    nix-find-icon-names.body = ''
-      storepath=${theme.iconTheme.package};
-      themename=${theme.iconTheme.name};
-      iconspath="''${storepath}/share/icons/''${themename}"
-      echo "Store path: ''${storepath}"
-      find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf -i
-    '';
+    # Disabled for now since it doesn't work cross-platform
+    #nix-find-icon-names.body = ''
+    #storepath=${theme.iconTheme.package};
+    #themename=${theme.iconTheme.name};
+    #iconspath="''${storepath}/share/icons/''${themename}"
+    #echo "Store path: ''${storepath}"
+    #find "''${iconspath}" -name '*.svg' | awk -F/ '{print $NF}' | awk -F. '{print $1}' | sort -u | fzf -i
+    #'';
     nix-find-icon-names-in.body = ''
       if [ -z "$2" ]; then
         echo "Usage: nix-find-icon-name-in <pkgname> <theme-name>"
