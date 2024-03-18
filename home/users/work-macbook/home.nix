@@ -10,6 +10,7 @@ let
 in {
   #imports = [ ../../modules ../../../shared/themes/select.nix ];
   imports = [
+    ../../modules/desktop/terminals/alacritty
     ../../modules/core
     ../../modules/shell
 
@@ -26,6 +27,8 @@ in {
       homeDirectory = "/Users/brandon.fulljames";
       usingNixOS = false;
     };
+
+    desktop.terminals.alacritty.enable = true;
   };
 
   home = {
