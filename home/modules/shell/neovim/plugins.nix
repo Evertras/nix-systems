@@ -5,6 +5,10 @@ in {
   options.evertras.home.shell.neovim = {
     # Must explicitly enable to avoid running in sensitive environments
     enableCopilot = mkEnableOption "copilot";
+
+    # These seem to cause errors in macs, should figure out more later...
+    # but for now, make them optional
+    enableSnippets = mkEnableOption "snippets";
   };
 
   config.programs.nixvim.plugins = {
@@ -74,7 +78,7 @@ in {
     };
 
     luasnip = {
-      enable = true;
+      enable = cfg.enableSnippets;
 
       fromLua = [{ paths = ./snippets; }];
     };

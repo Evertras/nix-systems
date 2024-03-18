@@ -54,6 +54,8 @@ in {
 
       git.userEmail = "brandon.fulljames@woven-planet.global";
 
+      neovim.enableSnippets = true;
+
       funcs = {
         aws-login.body = "aws sso login";
         kitty-gl.body = "nixGL kitty -1";

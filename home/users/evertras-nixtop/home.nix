@@ -37,7 +37,10 @@ in {
 
       spotify.enable = true;
 
-      neovim.enableCopilot = true;
+      neovim = {
+        enableCopilot = true;
+        enableSnippets = true;
+      };
 
       coding.rust.enable = true;
     };
