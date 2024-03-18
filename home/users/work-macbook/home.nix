@@ -4,31 +4,27 @@ let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
 
+  terminalFont = "FantasqueSansM";
+
   gpgKey = "11CB11BBC416774E";
 in {
-  imports = [ ../../modules ../../../shared/themes/select.nix ];
+  #imports = [ ../../modules ../../../shared/themes/select.nix ];
+  imports = [
+    ../../modules/core
+    ../../modules/shell
+
+    ../../../shared/themes/select.nix
+  ];
+
+  evertras.themes.selected = (theme // {
+    fonts = (theme.fonts // { terminal = nerdfonts.makeMono terminalFont; });
+  });
 
   evertras.home = {
     core = {
       username = "brandon.fulljames";
       homeDirectory = "/Users/brandon.fulljames";
       usingNixOS = false;
-    };
-
-    shell = {
-      core = { inherit gpgKey; };
-
-      git.userEmail = "brandon.fulljames@woven-planet.global";
-    };
-
-    desktop = {
-      enable = false;
-
-      terminals = {
-        alacritty.enable = true;
-
-        kitty.enable = true;
-      };
     };
   };
 
