@@ -64,11 +64,8 @@ in {
         fastfetch
         presenterm
         quickview
-        steghide
-        stegseek
         toipe
         w3m
-        xdg-ninja
       ];
 
       sessionVariables = {
