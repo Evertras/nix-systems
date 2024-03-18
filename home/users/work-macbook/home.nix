@@ -1,4 +1,4 @@
-{ lib, nerdfonts, pkgs, ... }:
+{ config, lib, nerdfonts, pkgs, ... }:
 
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
@@ -41,25 +41,17 @@ in {
     stateVersion = "23.05"; # Please read the comment before changing.
   };
 
-  # https://github.com/nix-community/home-manager/issues/1341#issuecomment-778820334
-  home.activation = {
-    copyApplications = let
-      apps = pkgs.buildEnv {
-        name = "home-manager-applications";
-        paths = config.home.packages;
-        pathsToLink = "/Applications";
-      };
-    in lib.hm.dag.entryAfter [ "writeBoundary" ] ''
-      baseDir="$HOME/Applications/Home Manager Apps"
-      if [ -d "$baseDir" ]; then
-        rm -rf "$baseDir"
-      fi
-      mkdir -p "$baseDir"
-      for appFile in ${apps}/Applications/*; do
-        target="$baseDir/$(basename "$appFile")"
-        $DRY_RUN_CMD cp ''${VERBOSE_ARG:+-v} -fHRL "$appFile" "$baseDir"
-        $DRY_RUN_CMD chmod ''${VERBOSE_ARG:+-v} -R +w "$target"
-      done
-    '';
-  };
+  # Reference for later
+  #config = mkIf pkgs.stdenv.hostPlatform.isDarwin { ...
+
+  # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1870352014
+  # Install MacOS applications to the user Applications folder. Also update Docked applications
+  home.extraActivationPath = with pkgs; [ rsync dockutil gawk ];
+
+  home.activation.trampolineApps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
+    ${builtins.readFile ./sync-apps.sh}
+    fromDir="$HOME/Applications/Home Manager Apps"
+    toDir="$HOME/Applications/Home Manager Trampolines"
+    sync_trampolines "$fromDir" "$toDir"
+  '';
 }
