@@ -12,7 +12,7 @@ let
 in {
   #imports = [ ../../modules ../../../shared/themes/select.nix ];
   imports = [
-    ../../modules/desktop/terminals/alacritty
+    ../../modules/desktop/terminals
     ../../modules/core
     ../../modules/shell
 
@@ -30,6 +30,7 @@ in {
     };
 
     desktop.terminals.alacritty.enable = true;
+    desktop.terminals.kitty.enable = true;
   };
 
   home = {
