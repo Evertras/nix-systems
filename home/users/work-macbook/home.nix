@@ -4,7 +4,9 @@ let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
 
-  terminalFont = "FantasqueSansM";
+  terminalFontName = "FantasqueSansM";
+
+  terminalFont = nerdfonts.makeMono terminalFontName;
 
   gpgKey = "11CB11BBC416774E";
 in {
@@ -17,9 +19,8 @@ in {
     ../../../shared/themes/select.nix
   ];
 
-  evertras.themes.selected = (theme // {
-    fonts = (theme.fonts // { terminal = nerdfonts.makeMono terminalFont; });
-  });
+  evertras.themes.selected =
+    (theme // { fonts = (theme.fonts // { terminal = terminalFont; }); });
 
   evertras.home = {
     core = {
@@ -33,7 +34,7 @@ in {
 
   home = {
     # Other local things
-    packages = with pkgs; [ ];
+    packages = with pkgs; [ terminalFont.package ];
 
     file = { ".asdfrc".text = "legacy_version_file = yes"; };
 
