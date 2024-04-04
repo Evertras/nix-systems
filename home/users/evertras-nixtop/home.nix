@@ -28,6 +28,7 @@ in {
       enable = true;
       enableDesktop = true;
       headphonesMacAddress = "EC:66:D1:B8:95:88";
+      volumeLimit = 60;
     };
 
     laptop = { enable = true; };
