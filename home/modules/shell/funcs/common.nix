@@ -1,12 +1,17 @@
 { config, pkgs, ... }: {
   evertras.home.shell.funcs = {
+    funcs = {
+      runtimeInputs = with pkgs; [ eza ];
+      body = ''
+        eza -1 ~/.evertras/funcs
+      '';
+    };
+
     # Outside of code because I want to use this with ASDF on a non-NixOS system
     # without installing Go, but it does feel odd
     go-watch-test = {
       runtimeInputs = with pkgs; [ entr fzf ];
       body = ''
-        #!/usr/bin/env bash
-
         base=.
 
         if [ -n "$1" ]; then
