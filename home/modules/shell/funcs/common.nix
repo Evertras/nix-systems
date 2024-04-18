@@ -12,11 +12,7 @@
     go-watch-test = {
       runtimeInputs = with pkgs; [ entr fzf ];
       body = ''
-        base=.
-
-        if [ -n "$1" ]; then
-          base=$1
-        fi
+        base="''${1:-.}"
 
         watchdir=$(find "$base" -name '*.go' -exec dirname {} \; | sort -u | fzf --scheme=path -i --tiebreak=end)
 
