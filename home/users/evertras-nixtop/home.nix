@@ -40,7 +40,11 @@ in {
 
       neovim = { enableCopilot = true; };
 
-      coding.rust.enable = true;
+      coding = {
+        go.enable = true;
+        nodejs.enable = true;
+        rust.enable = true;
+      };
     };
 
     desktop = {
