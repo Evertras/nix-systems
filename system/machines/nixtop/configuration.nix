@@ -41,6 +41,11 @@ in {
 
   evertras.system.virtualization.enable = true;
 
+  virtualisation.docker.rootless = {
+    enable = true;
+    setSocketVariable = true;
+  };
+
   ##############################################################################
   # Desktop stuff
   # (keep minimal, use home-manager for most things)
