@@ -46,7 +46,7 @@
         column -t
     '';
 
-    aws-profiles.body = ''
+    aws-profile-list.body = ''
       grep '\[profile' ~/.aws/config | awk '{print $2}' | tr -d ']'
     '';
   };
