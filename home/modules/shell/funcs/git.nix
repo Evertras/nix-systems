@@ -2,6 +2,12 @@
   evertras.home.shell.funcs = {
     git-merged.body = ''
       branch=$(git rev-parse --abbrev-ref HEAD)
+
+      if [ "''${branch}" == "main" ]; then
+        echo "Cannot run this on main branch!"
+        exit 1
+      fi
+
       git checkout main
       git pull
       git branch -d "''${branch}"
