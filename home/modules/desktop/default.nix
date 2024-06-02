@@ -48,8 +48,9 @@ in {
         # Quick image manipulation with 'convert'
         imagemagick
 
-        # Image viewing
+        # Quick image viewing/editing
         feh
+        gthumb
 
         # Screenshot taker and more
         # https://github.com/naelstrof/maim#examples
