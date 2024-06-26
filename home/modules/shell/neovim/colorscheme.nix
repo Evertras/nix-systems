@@ -7,7 +7,7 @@
 
       settings = {
         # Italic doesn't render nicely on some displays
-        disable_italic = true;
+        no_italic = true;
 
         flavour = "frappe";
 
