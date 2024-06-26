@@ -2,25 +2,27 @@
 
 {
   config.programs.nixvim = {
-    colorschemes.catppuccin.settings = {
+    colorschemes.catppuccin = {
       enable = true;
 
-      # Italic doesn't render nicely on some displays
-      disableItalic = true;
+      settings = {
+        # Italic doesn't render nicely on some displays
+        disableItalic = true;
 
-      flavour = "frappe";
+        flavour = "frappe";
 
-      transparentBackground = true;
+        transparentBackground = true;
 
-      # Show up better on transparent/dark backgrounds
-      customHighlights = ''
-        function(colors)
-          return {
-            Comment = { fg = colors.overlay1 },
-            LineNr = { fg = colors.sky },
-          }
-        end
-      '';
+        # Show up better on transparent/dark backgrounds
+        customHighlights = ''
+          function(colors)
+            return {
+              Comment = { fg = colors.overlay1 },
+              LineNr = { fg = colors.sky },
+            }
+          end
+        '';
+      };
     };
   };
 }
