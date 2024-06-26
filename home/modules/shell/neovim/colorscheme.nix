@@ -7,14 +7,14 @@
 
       settings = {
         # Italic doesn't render nicely on some displays
-        disableItalic = true;
+        disable_italic = true;
 
         flavour = "frappe";
 
-        transparentBackground = true;
+        transparent_background = true;
 
         # Show up better on transparent/dark backgrounds
-        customHighlights = ''
+        custom_highlights = ''
           function(colors)
             return {
               Comment = { fg = colors.overlay1 },
