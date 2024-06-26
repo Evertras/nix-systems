@@ -37,7 +37,7 @@ in {
     fallbackDns = [ "8.8.8.8" ];
   };
 
-  services.xserver.displayManager.autoLogin.user = "evertras";
+  services.displayManager.autoLogin.user = "evertras";
 
   # System-wide packages
   environment.systemPackages = with pkgs; [

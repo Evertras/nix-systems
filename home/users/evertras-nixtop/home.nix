@@ -36,8 +36,6 @@ in {
     shell = {
       core = { inherit gpgKey; };
 
-      spotify.enable = true;
-
       neovim = { enableCopilot = true; };
 
       coding = {

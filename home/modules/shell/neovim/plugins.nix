@@ -85,7 +85,7 @@ in {
       lsp.autoAttach = true;
     };
 
-    nvim-cmp = {
+    cmp.settings = {
       enable = true;
 
       sources = [

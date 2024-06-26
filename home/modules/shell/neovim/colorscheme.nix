@@ -2,7 +2,7 @@
 
 {
   config.programs.nixvim = {
-    colorschemes.catppuccin = {
+    colorschemes.catppuccin.settings = {
       enable = true;
 
       # Italic doesn't render nicely on some displays

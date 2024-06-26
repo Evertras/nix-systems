@@ -223,12 +223,7 @@ in {
 
   home = {
     # Other local things
-    packages = with pkgs; [
-      # Even without sound, allows remote control
-      spotify-tui
-
-      vagrant
-    ];
+    packages = with pkgs; [ vagrant ];
 
     file = { ".asdfrc".text = "legacy_version_file = yes"; };
 

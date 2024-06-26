@@ -18,7 +18,7 @@ in {
           (optional cfg.haskell.enable [ cabal-install ghc ])
           (optional cfg.python.enable python3)
           (optional cfg.rust.enable [ cargo rustc rustfmt rust-analyzer ])
-          (optional cfg.nodejs.enable nodejs_21)
+          (optional cfg.nodejs.enable nodejs_22)
         ];
     in pkgList;
 

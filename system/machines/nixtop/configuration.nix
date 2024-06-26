@@ -61,7 +61,7 @@ in {
     # which are defined in home-manager
   };
 
-  services.xserver.displayManager.autoLogin.user = "evertras";
+  services.displayManager.autoLogin.user = "evertras";
 
   # Needed?
   # https://wiki.hyprland.org/Nix/Hyprland-on-NixOS/

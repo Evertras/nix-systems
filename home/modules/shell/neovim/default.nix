@@ -65,32 +65,28 @@
       {
         mode = "n";
         key = "<leader><space>";
-        action = "vim.cmd.nohlsearch";
-        lua = true;
+        action.__raw = "vim.cmd.nohlsearch";
       }
 
       # Format
       {
         mode = "n";
         key = "<leader>F";
-        action = "vim.lsp.buf.format";
-        lua = true;
+        action.__raw = "vim.lsp.buf.format";
       }
 
       # Rename
       {
         mode = "n";
         key = "<leader>R";
-        action = "vim.lsp.buf.rename";
-        lua = true;
+        action.__raw = "vim.lsp.buf.rename";
       }
 
       # Filetree
       {
         mode = "n";
         key = "<C-N>";
-        action = "vim.cmd.NvimTreeToggle";
-        lua = true;
+        action.__raw = "vim.cmd.NvimTreeToggle";
       }
 
       # Folding
@@ -106,7 +102,7 @@
       }
     ];
 
-    options = {
+    opts = {
       # Line numbers are relative
       number = true;
       relativenumber = true;
