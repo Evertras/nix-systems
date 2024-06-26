@@ -14,6 +14,7 @@ let
     name = "eDP-1";
     resolution = "2560x1440";
     refreshRate = 240;
+    scale = 1.25;
   };
 in {
   imports = [ ../../modules ../../../shared/themes/select.nix ];
@@ -58,7 +59,7 @@ in {
           enable = true;
           kbLayout = "jp";
 
-          displays = [ (displayMain // { scale = 1.2; }) ];
+          displays = [ displayMain ];
         };
 
         # Keeping as reference for now
