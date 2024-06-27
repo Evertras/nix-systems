@@ -85,28 +85,31 @@ in {
       lsp.autoAttach = true;
     };
 
-    cmp.settings = {
+    cmp = {
       enable = true;
 
-      sources = [
-        { name = "path"; }
-        { name = "luasnip"; }
-        { name = "nvim_lsp"; }
-        {
-          name = "nvim_lsp_signature_help";
-        }
-        #{ name = "buffer"; }
-      ];
+      settings = {
+        sources = [
+          { name = "path"; }
+          { name = "luasnip"; }
+          { name = "nvim_lsp"; }
+          { name = "nvim_lsp_signature_help"; }
+        ];
 
-      # Need this for completion to work, revisit later
-      snippet.expand = "luasnip";
+        # Need this for completion to work, revisit later
+        snippet.expand = ''
+          function(args)
+            require('luasnip').lsp_expand(args.body)
+          end
+        '';
 
-      mapping = {
-        "<C-y>" = "cmp.mapping.confirm({ select = true })";
-        "<up>" = "cmp.mapping.select_prev_item()";
-        "<down>" = "cmp.mapping.select_next_item()";
-        "<C-d>" = "cmp.mapping.scroll_docs(4)";
-        "<C-u>" = "cmp.mapping.scroll_docs(-4)";
+        mapping = {
+          "<C-y>" = "cmp.mapping.confirm({ select = true })";
+          "<up>" = "cmp.mapping.select_prev_item()";
+          "<down>" = "cmp.mapping.select_next_item()";
+          "<C-d>" = "cmp.mapping.scroll_docs(4)";
+          "<C-u>" = "cmp.mapping.scroll_docs(-4)";
+        };
       };
     };
 
