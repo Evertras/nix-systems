@@ -117,6 +117,8 @@ in {
 
       filters.dotfiles = true;
 
+      openOnSetup = true;
+
       onAttach = {
         __raw = ''
           function(bufnr)
