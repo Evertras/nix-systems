@@ -55,7 +55,7 @@ in {
         hls.enable = langs.haskell.enable;
         html.enable = true;
         lua-ls.enable = true;
-        rnix-lsp.enable = true;
+        nil-ls.enable = true;
         terraformls.enable = true;
         tsserver.enable = true;
         yamlls.enable = true;
