@@ -61,14 +61,14 @@ in {
           size = cfg.fontSize;
         };
 
-        key_bindings = [
+        keyboard.bindings = [
           # JP Mac keyboard fix
-          {
-            key = "Yen";
-            mods = "None";
-            chars = "\\\\";
-          }
-
+          /* {
+               key = "Yen";
+               mods = "None";
+               chars = "\\\\";
+             }
+          */
           {
             key = "I";
             mods = "Shift|Control";
