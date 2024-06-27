@@ -57,7 +57,7 @@ in {
         yq
 
         # Format nix things
-        nixfmt
+        nixfmt-classic
 
         # Funsies
         cynomys
