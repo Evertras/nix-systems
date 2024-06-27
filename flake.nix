@@ -41,6 +41,7 @@
                 "steam"
                 "steam-original"
                 "steam-run"
+                "vagrant"
               ];
 
             permittedInsecurePackages = [ "electron-25.9.0" ];
