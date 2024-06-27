@@ -40,7 +40,7 @@ in {
     programs.alacritty = {
       enable = true;
       settings = {
-        import = [ "${pkgs.alacritty-theme}/${cfg.themeName}.yaml" ];
+        import = [ "${pkgs.alacritty-theme}/${cfg.themeName}.toml" ];
 
         colors = {
           primary.foreground = theme.colors.text;
