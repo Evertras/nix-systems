@@ -65,7 +65,6 @@ in {
         presenterm
         quickview
         toipe
-        w3m
       ];
 
       sessionVariables = {
