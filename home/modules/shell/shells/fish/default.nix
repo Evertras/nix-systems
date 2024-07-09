@@ -104,6 +104,9 @@ in {
       in ''
         set fish_greeting
 
+        # Stop underlining
+        set fish_color_valid_path
+
         fish_add_path -g ~/.evertras/funcs
         fish_add_path -g ~/bin
 
