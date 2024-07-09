@@ -14,6 +14,8 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    nixgl.url = "github:nix-community/nixGL";
+
     # For a rabbit hole: https://github.com/nix-community/NUR
     # nurpkgs.url = "github:nix-community/NUR";
 
@@ -23,7 +25,7 @@
     ever-quickview.url = "github:Evertras/quickview";
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, ... }@inputs:
+  outputs = { nixpkgs, home-manager, nixvim, nixgl, ... }@inputs:
     let
       # Nix stuff
       lib = nixpkgs.lib;
@@ -52,6 +54,8 @@
               cynomys = inputs.ever-cyn.packages.${system}.default;
               quickview = inputs.ever-quickview.packages.${system}.default;
             })
+
+            nixgl.overlay
           ];
         });
 

@@ -1,7 +1,7 @@
 .PHONY: home
 home: .git/hooks/pre-commit
 	@./scripts/ensure-channel.sh
-	home-manager switch --flake .#${EVERTRAS_USER_PROFILE} --show-trace
+	nix run home-manager/release-24.05 -- switch --flake .#${EVERTRAS_USER_PROFILE} --show-trace
 
 .PHONY: home-news
 home-news: .git/hooks/pre-commit
