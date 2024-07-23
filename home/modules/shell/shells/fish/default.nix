@@ -69,6 +69,7 @@ in {
           export AWS_PROFILE=$(aws-profile-list | fzf --height 20% || echo "none")'';
         cat = "bat -p";
         g = "git";
+        gb = "git branch";
         gc = "git commit -m";
         gd = "git diff";
         gp = "git push";
