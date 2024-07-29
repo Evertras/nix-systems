@@ -71,9 +71,10 @@ in {
       # https://wiki.hyprland.org/Configuring/Monitors/
       extraConfig = let
         displayConfigs = builtins.map (display:
-          "monitor=${display.name},${display.resolution},${
-            display.position or "0x0"
-          },${toString (display.scale or 1)}") cfg.displays;
+          "monitor=${display.name},${display.resolution}@${
+            toString (display.refreshRate or 60)
+          },${display.position or "0x0"},${toString (display.scale or 1)}")
+          cfg.displays;
       in ''
         exec-once=${pkgs.swww}/bin/swww init
         exec-once=${pkgs.pyprland}/bin/pypr
@@ -86,8 +87,7 @@ in {
         # https://wiki.hyprland.org/Configuring/Variables/
         "$mod" = "SUPER";
 
-        bind = let
-        in [
+        bind = [
           # Quit and really quit
           "$mod, Q, killactive"
           "$mod SHIFT, Q, exit"
