@@ -1,6 +1,6 @@
 { pkgs, ... }: {
   evertras.home.shell.funcs = {
-    mullvad-connect = {
+    mullvad-connect-select = {
       runtimeInputs = with pkgs; [ fzf ];
       body = ''
         cities=$(mullvad relay list | awk '/\sus/{print $1}' | awk -F- '{print $2}' | sort -u)
