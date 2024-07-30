@@ -103,6 +103,8 @@ in {
   ##############################################################################
   # Networking stuff
 
+  evertras.system.vpn.mullvad.enable = true;
+
   networking = {
     hostName = "nixtop";
     wireless = {
