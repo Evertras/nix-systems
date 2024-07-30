@@ -43,6 +43,13 @@ in {
               "max-length" = 25;
             };
 
+            # Show date and time
+            "clock" = {
+              "format" = "{:%a %b %d %H:%M}";
+              "interval" = 60;
+              "max-length" = 50;
+            };
+
             "network" = {
               "interface" = cfg.monitorNetworkInterface;
               "format" = "{ifname}";
