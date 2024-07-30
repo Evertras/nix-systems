@@ -22,9 +22,9 @@ in {
 
         settings = {
           mainBar = {
-            modules-left = [ "hyprland/workspaces" ];
+            modules-left = [ "battery" "network" "hyprland/workspaces" ];
             modules-center = [ "hyprland/window" ];
-            modules-right = [ "network" "bluetooth" "battery" "clock" ];
+            modules-right = [ "bluetooth" "clock" ];
 
             "hyprland/workspaces" = {
               format = "{name}";
