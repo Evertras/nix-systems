@@ -16,7 +16,10 @@ in {
 
   ##############################################################################
   # Hardware stuff
-  services.logind.lidSwitch = "ignore";
+  services.logind = {
+    lidSwitch = "suspend";
+    lidSwitchExternalPower = "ignore";
+  };
 
   ##############################################################################
   # Boot stuff
