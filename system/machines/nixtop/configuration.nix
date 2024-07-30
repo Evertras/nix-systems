@@ -15,6 +15,10 @@ in {
   ];
 
   ##############################################################################
+  # Hardware stuff
+  services.logind.lidSwitch = "ignore";
+
+  ##############################################################################
   # Boot stuff
 
   # Use the systemd-boot EFI boot loader.
