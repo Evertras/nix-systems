@@ -40,9 +40,11 @@ in {
           error_symbol = "[${char}](bold ${theme.colors.urgent})";
         };
 
-        directory = { style = "bold ${theme.colors.primary}"; };
+        directory.style = "bold ${theme.colors.primary}";
 
-        nix_shell = { format = "[❄️ ]($style)"; };
+        golang.format = "[$symbol($version )]($style)";
+
+        nix_shell.format = "[❄️ ]($style)";
 
         shell = {
           disabled = false;
@@ -64,7 +66,7 @@ in {
           style = "bold cyan";
         };
 
-        vagrant = { disabled = true; };
+        vagrant.disabled = true;
       };
     };
   };
