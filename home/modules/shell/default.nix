@@ -49,6 +49,9 @@ in {
         silver-searcher # for searching, may replace with rg later
         xh # Friendlier curl
 
+        # Extras
+        ssm-session-manager-plugin
+
         # Data processing
         asciigraph
         fx
