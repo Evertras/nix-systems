@@ -110,6 +110,8 @@ in {
         };
       };
 
+      mise = { enable = true; };
+
       tealdeer = {
         enable = true;
 
