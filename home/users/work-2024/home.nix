@@ -57,6 +57,8 @@ in {
         kitty-gl.body = "nixGLIntel kitty -1";
         alacritty-gl.body = "nixGLIntel alacritty";
       };
+
+      asdf.enable = true;
     };
 
     desktop = {
@@ -181,8 +183,6 @@ in {
   home = {
     # Other local things
     packages = with pkgs; [ vagrant nixgl.nixGLIntel ];
-
-    file = { ".asdfrc".text = "legacy_version_file = yes"; };
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
