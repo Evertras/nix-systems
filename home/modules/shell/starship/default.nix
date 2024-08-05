@@ -42,6 +42,8 @@ in {
 
         directory = { style = "bold ${theme.colors.primary}"; };
 
+        nix_shell = { format = "[❄️ ]($style)"; };
+
         shell = {
           disabled = false;
 
@@ -61,6 +63,8 @@ in {
 
           style = "bold cyan";
         };
+
+        vagrant = { disabled = true; };
       };
     };
   };
