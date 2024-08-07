@@ -52,6 +52,9 @@ in {
         feh
         gthumb
 
+        # Lots of video stuff, including capturing
+        ffmpeg-full
+
         # Screenshot taker and more
         # https://github.com/naelstrof/maim#examples
         maim
