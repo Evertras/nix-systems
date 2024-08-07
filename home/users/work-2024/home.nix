@@ -75,13 +75,17 @@ in {
               -i :1.0+3840,0 \
               "$rawfile"
 
-            # Convert and add timer
+            # How fast to speed it up (10x, 20x, etc)
+            speedfactor=10
+
+            # Add a timer, speed it up, and convert to AVI
             ffmpeg \
               -i "$rawfile" \
-              -vf "drawtext=\
+              -r "$speedfactor" \
+              -vf "setpts=PTS/$speedfactor,drawtext=\
                 fontfile=${pkgs.fira-code}/share/fonts/truetype/FiraCode-VF.ttf: \
                 fontsize=32: fontcolor=red: \
-                text='%{frame_num} %{eif\:n/60\:d}\:%{eif\:mod(n,60)\:d\:2}': \
+                text='%{eif\:n/60\:d}\:%{eif\:mod(n,60)\:d\:2}': \
                 x=1970: y=10: \
                 box=1: boxborderw=10: boxcolor=0xcccccc" \
               "$outfile"
