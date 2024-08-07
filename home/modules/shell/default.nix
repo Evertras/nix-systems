@@ -111,7 +111,7 @@ in {
       };
 
       # mise is like asdf but faster
-      mise = { enable = true; };
+      mise.enable = true;
 
       tealdeer = {
         enable = true;
