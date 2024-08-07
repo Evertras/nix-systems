@@ -55,6 +55,10 @@ in {
         # Lots of video stuff, including capturing
         ffmpeg-full
 
+        # Video players
+        vlc
+        mpv
+
         # Screenshot taker and more
         # https://github.com/naelstrof/maim#examples
         maim
