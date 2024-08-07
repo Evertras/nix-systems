@@ -56,6 +56,39 @@ in {
         aws-login.body = "aws sso login";
         kitty-gl.body = "nixGLIntel kitty -1";
         alacritty-gl.body = "nixGLIntel alacritty";
+
+        timelapse-center = {
+          runtimeInputs = with pkgs; [ ffmpeg-full fira-code ];
+          body = ''
+            mkdir -p ~/.evertras/timelapses/
+
+            rawfile=~/.evertras/timelapses/timelapse.mp4
+            outfile=~/.evertras/timelapses/$(date +"%Y-%m-%d-%H-%M-%S").avi
+
+            rm -f "$rawfile"
+
+            # Record
+            ffmpeg \
+              -video_size ${displayCenter.resolution} \
+              -framerate 1 \
+              -f x11grab \
+              -i :1.0+3840,0 \
+              "$rawfile"
+
+            # Convert and add timer
+            ffmpeg \
+              -i "$rawfile" \
+              -vf "drawtext=\
+                fontfile=${pkgs.fira-code}/share/fonts/truetype/FiraCode-VF.ttf: \
+                fontsize=32: fontcolor=red: \
+                text='%{frame_num} %{eif\:n/60\:d}\:%{eif\:mod(n,60)\:d\:2}': \
+                x=1970: y=10: \
+                box=1: boxborderw=10: boxcolor=0xcccccc" \
+              "$outfile"
+
+            mpv "$outfile"
+          '';
+        };
       };
 
       asdf.enable = true;
