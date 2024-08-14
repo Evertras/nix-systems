@@ -93,6 +93,44 @@ in {
             mpv "$outfile"
           '';
         };
+
+        timelapse-compare = {
+          runtimeInputs = with pkgs; [ ffmpeg-full ];
+          body = ''
+            #!/bin/bash
+
+            # Check if two arguments are provided
+            if [ "$#" -ne 2 ]; then
+                echo "Usage: $0 <video1> <video2>"
+                exit 1
+            fi
+
+            # Assign input filenames to variables
+            video1="$1"
+            video2="$2"
+
+            # Get the durations of the input videos
+            duration1=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$video1")
+            duration2=$(ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 "$video2")
+
+            # Determine the maximum duration
+            max_duration=$(echo "$duration1 $duration2" | awk '{if ($1 > $2) print $1; else print $2}')
+
+            echo "Max duration: $max_duration"
+
+            outputFile=output.avi
+
+            # Combine the videos side-by-side with padding if necessary
+            ffmpeg -i "$video1" -i "$video2" -filter_complex "\
+            [0:v]tpad=stop_mode=clone:stop_duration=$(echo "$max_duration - $duration1" | bc)[v1]; \
+            [1:v]tpad=stop_mode=clone:stop_duration=$(echo "$max_duration - $duration2" | bc)[v2]; \
+            [v1][v2]hstack=inputs=2[outv]" \
+            -map "[outv]" -c:v libx264 "$outputFile"
+
+            # Inform the user of the output
+            echo "The combined video has been saved as $outputFile"
+          '';
+        };
       };
 
       asdf.enable = true;
