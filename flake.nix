@@ -37,6 +37,7 @@
           config = {
             allowUnfreePredicate = pkg:
               builtins.elem (nixpkgs.lib.getName pkg) [
+                "discord"
                 "nvidia-settings"
                 "nvidia-x11"
                 "obsidian"

@@ -157,6 +157,8 @@ in {
           no_gaps_when_only = 0;
         };
 
+        xwayland = { force_zero_scaling = true; };
+
         misc.force_default_wallpaper = 0;
       };
     };

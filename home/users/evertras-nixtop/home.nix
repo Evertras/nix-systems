@@ -54,6 +54,8 @@ in {
 
       ime.enable = true;
 
+      discord.enable = true;
+
       windowmanager = {
         hyprland = {
           enable = true;
