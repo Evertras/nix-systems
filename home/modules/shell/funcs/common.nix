@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   evertras.home.shell.funcs = {
     funcs = {
       runtimeInputs = with pkgs; [ eza ];

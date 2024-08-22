@@ -1,4 +1,4 @@
-{ config, everlib, lib, pkgs, ... }:
+{ config, everlib, lib, ... }:
 with everlib;
 with lib;
 let

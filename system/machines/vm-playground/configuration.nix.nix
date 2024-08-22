@@ -1,7 +1,7 @@
 # This is a VM playground to try using NixOS as a server
 # configuration tool.
 
-{ config, lib, pkgs, ... }:
+{ pkgs, ... }:
 let
   bootstrap = pkgs.writeShellApplication {
     name = "bootstrap";

@@ -1,4 +1,4 @@
-{ config, pkgs, ... }: {
+{ pkgs, ... }: {
   evertras.home.shell.funcs = {
     # Some AWS helpers
     aws-connect.body = ''

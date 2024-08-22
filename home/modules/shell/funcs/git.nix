@@ -1,4 +1,4 @@
-{ config, ... }: {
+{ ... }: {
   evertras.home.shell.funcs = {
     git-merged.body = ''
       branch=$(git rev-parse --abbrev-ref HEAD)

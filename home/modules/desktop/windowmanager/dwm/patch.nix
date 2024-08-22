@@ -1,5 +1,4 @@
-{ lib }:
-with lib; {
+{ }: {
   # Note to future self: be VERY careful about preserving
   # whitespace/tabs inside the actual strings...
   mkBasePatch = { autostartCmds, borderpx, browser, colorBackground

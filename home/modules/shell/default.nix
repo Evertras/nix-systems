@@ -1,4 +1,4 @@
-{ config, everlib, everpkgs, lib, pkgs, ... }:
+{ config, everlib, lib, pkgs, ... }:
 with lib;
 let
   cfg = config.evertras.home.shell.core;

@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 with lib;
 let
-  patch = (import ./patch.nix) { inherit lib; };
+  patch = (import ./patch.nix) { };
   cfg = config.evertras.home.desktop.windowmanager.dwm;
   usingNixOS = config.evertras.home.core.usingNixOS;
   theme = config.evertras.themes.selected;

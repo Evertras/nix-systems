@@ -2,7 +2,7 @@
 # so not all of it may be strictly necessary.  Basically just
 # keeping this out of the way so all the interesting things
 # can happen in another file.
-{ config, lib, pkgs, ... }: {
+{ config, pkgs, ... }: {
   ##############################################################################
   # VM hackery for easy access, this is NOT secure!
   users.users.evertras = {

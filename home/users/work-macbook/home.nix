@@ -35,7 +35,7 @@ in {
 
   home = {
     # Other local things
-    packages = with pkgs; [ terminalFont.package ];
+    packages = [ terminalFont.package ];
 
     file = { ".asdfrc".text = "legacy_version_file = yes"; };
 
