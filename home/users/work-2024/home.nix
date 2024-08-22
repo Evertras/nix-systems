@@ -67,10 +67,12 @@ in {
 
             rm -f "$rawfile"
 
+            fps=1
+
             # Record
             ffmpeg \
               -video_size ${displayCenter.resolution} \
-              -framerate 1 \
+              -framerate "$fps" \
               -f x11grab \
               -i :1.0+3840,0 \
               "$rawfile"
