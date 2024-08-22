@@ -22,8 +22,7 @@ in {
     };
   };
 
-  home = let
-  in {
+  home = {
     # Other local things
     packages = [ ];
 
