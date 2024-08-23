@@ -44,6 +44,13 @@ in {
         nodejs.enable = true;
         rust.enable = true;
       };
+
+      funcs = {
+        copy.body = ''
+          wl-copy < "$1"
+          cat "$1"
+        '';
+      };
     };
 
     desktop = {
