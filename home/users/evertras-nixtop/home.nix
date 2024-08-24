@@ -48,6 +48,8 @@ in {
       funcs = {
         copy.body = ''
           wl-copy < "$1"
+          echo -n "Char count: "
+          wc --chars "$1" | awk '{print $1}'
           cat "$1"
         '';
       };
