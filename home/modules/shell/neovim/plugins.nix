@@ -80,12 +80,6 @@ in {
       fromLua = [{ paths = ./snippets; }];
     };
 
-    navic = {
-      enable = true;
-
-      lsp.autoAttach = true;
-    };
-
     cmp = {
       enable = true;
 
