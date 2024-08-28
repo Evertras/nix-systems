@@ -66,11 +66,12 @@ in {
       enable = true;
 
       sections = {
-        lualine_b = [ "branch" "diff" "diagnostics" ];
-        lualine_c = [ "vim.fn.expand('%:.')" "navic" ];
+        lualine_b = [ "filename" ];
+        lualine_c = [ "diagnostics" ];
+        lualine_x = [ "filesize" ];
       };
 
-      inactiveSections = { lualine_c = [ "vim.fn.expand('%:.')" "navic" ]; };
+      inactiveSections = { lualine_c = [ "filename" ]; };
     };
 
     luasnip = {
