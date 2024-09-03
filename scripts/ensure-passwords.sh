@@ -3,9 +3,9 @@
 if [ ! -f /etc/nixos/passwords/evertras ]; then
   sudo mkdir -p /etc/nixos/passwords/
   while [ "${password}" != "${password_confirm}" ] || [ -z "${password}" ]; do
-    read -s -p "Set evertras password: " password
+    read -r -s -p "Set evertras password: " password
     echo ""
-    read -s -p "Confirm evertras password: " password_confirm
+    read -r -s -p "Confirm evertras password: " password_confirm
     echo ""
   done
   echo "Writing password hash to /etc/nixos/passwords/evertras"
