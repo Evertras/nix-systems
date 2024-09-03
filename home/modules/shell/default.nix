@@ -45,8 +45,8 @@ in {
         bat # cat with syntax highlighting / paging
         btop # fancy top
         eza # nicer ls
-        ripgrep # for nvim plugin searching
-        silver-searcher # for searching, may replace with rg later
+        ripgrep # for nvim plugin searching in particular
+        silver-searcher # for searching, does some things that rg doesn't (like -F for fixed strings)
         xh # Friendlier curl
 
         # Extras
