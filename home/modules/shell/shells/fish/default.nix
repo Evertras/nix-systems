@@ -95,8 +95,8 @@ in {
 
       shellInit = let
         rmp = strings.removePrefix "#";
-        colorPrimary = rmp theme.colors.primary;
-        colorText = rmp theme.colors.text;
+        #colorPrimary = rmp theme.colors.primary;
+        #colorText = rmp theme.colors.text;
         colorUrgent = rmp theme.colors.urgent;
 
         mkEnvVar = name: value: "set ${name} ${value}";
