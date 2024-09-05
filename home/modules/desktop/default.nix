@@ -52,6 +52,9 @@ in {
         feh
         gthumb
 
+        # More extensive image editing
+        gimp
+
         # Lots of video stuff, including capturing
         ffmpeg-full
 
