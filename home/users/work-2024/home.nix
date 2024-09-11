@@ -24,7 +24,9 @@ let
   # Use the wrapped version to get around OpenGL issues
   terminal = "alacritty-gl";
 
-  terminalFont = "FantasqueSansM";
+  terminalFont = "ProFont IIx";
+  # 14 is default baseline for most fonts, others may be better adjusted
+  terminalFontSize = 12;
 
   # Custom lock script outside of home-manager
   customLockCmd = "/home/brandon-fulljames/.evertras/funcs/lock";
@@ -164,7 +166,7 @@ in {
         alacritty = {
           enable = true;
 
-          fontSize = 14;
+          fontSize = terminalFontSize;
         };
 
         kitty.enable = true;
