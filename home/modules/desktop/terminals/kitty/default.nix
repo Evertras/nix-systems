@@ -14,6 +14,11 @@ in {
       default = false;
     };
 
+    fontName = mkOption {
+      type = with types; nullOr str;
+      default = null;
+    };
+
     fontSize = mkOption {
       type = types.int;
       default = 14;
@@ -73,7 +78,7 @@ in {
       theme = theme.kittyTheme;
 
       font = {
-        name = theme.fonts.terminal.name;
+        name = existsOr cfg.fontName theme.fonts.terminal.name;
         size = cfg.fontSize;
         package = theme.fonts.terminal.package;
       };
