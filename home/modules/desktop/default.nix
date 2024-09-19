@@ -129,14 +129,10 @@ in {
     evertras.home.desktop = {
       windowmanager = {
         dwm = {
-          enable = mkDefault false;
           browser = mkDefault config.evertras.home.desktop.browsers.default;
         };
 
-        i3 = {
-          enable = mkDefault true;
-          kbLayout = mkDefault cfg.kbLayout;
-        };
+        i3 = { kbLayout = mkDefault cfg.kbLayout; };
       };
 
       gtktheme.enable = mkDefault true;
