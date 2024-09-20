@@ -3,9 +3,14 @@ let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Sky"; };
 
+  berkeleyFont = {
+    name = "Berkeley Mono";
+    package = pkgs.everfont-berkeley;
+  };
+
   fontOverrides = {
-    terminal = nerdfonts.makeMono "Mononoki";
     main = nerdfonts.makeMono "AurulentSansM";
+    terminal = berkeleyFont;
   };
 
   gpgKey = "ABFFF058F479311F";
@@ -64,6 +69,8 @@ in {
       ime.enable = true;
 
       discord.enable = true;
+
+      terminals.kitty.fontName = "Berkeley Mono";
 
       windowmanager = {
         hyprland = {

@@ -32,6 +32,10 @@ clean-system: .git/hooks/pre-commit
 fmt: .git/hooks/pre-commit
 	@nixfmt .
 
+.PHONY: update-fonts
+update-fonts: .git/hooks/pre-commit
+	nix flake lock --update-input ever-fonts
+
 .git/hooks/pre-commit: .evertras/pre-commit.sh
 	cp .evertras/pre-commit.sh .git/hooks/pre-commit
 	chmod +x .git/hooks/pre-commit

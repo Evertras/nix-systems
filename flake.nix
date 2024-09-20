@@ -23,6 +23,7 @@
     # https://github.com/NixOS/nix/issues/4945 for info)
     ever-cyn.url = "github:Evertras/cynomys";
     ever-quickview.url = "github:Evertras/quickview";
+    ever-fonts.url = "git+ssh://git@github.com/Evertras/nix-fonts";
   };
 
   outputs = { nixpkgs, home-manager, nixvim, nixgl, ... }@inputs:
@@ -54,6 +55,9 @@
             (_: _: {
               cynomys = inputs.ever-cyn.packages.${system}.default;
               quickview = inputs.ever-quickview.packages.${system}.default;
+              everfont-berkeley = inputs.ever-fonts.packages.${system}.berkeley;
+              everfont-berkeley-dashed =
+                inputs.ever-fonts.packages.${system}.berkeley-dashed;
             })
 
             nixgl.overlay
