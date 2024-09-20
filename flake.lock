@@ -48,11 +48,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1726802242,
-        "narHash": "sha256-Tl/BOe0t8/QgL4QvSSBPn0lBLybLpntcl85wgnGZEKM=",
+        "lastModified": 1726802838,
+        "narHash": "sha256-9A2OdFD1rUgbYPn4pn3QHhFY1duGkgdw3denVF5No3M=",
         "ref": "refs/heads/main",
-        "rev": "4ce73d97477adf72bc8a1443aa2887d6f72052de",
-        "revCount": 4,
+        "rev": "f7eb0ed714157477bdbab20150d94a0159ae4747",
+        "revCount": 5,
         "type": "git",
         "url": "ssh://git@github.com/Evertras/nix-fonts"
       },
