@@ -24,18 +24,24 @@ let
   # Use the wrapped version to get around OpenGL issues
   terminal = "alacritty-gl";
 
-  terminalFont = "ProFont IIx";
+  fontBerkeley = {
+    name = "Berkeley Mono";
+    package = pkgs.everfont-berkeley;
+  };
+
+  #terminalFont = nerdfonts.makeMono "ProFont IIx";
+  fontOverrides = { terminal = fontBerkeley; };
+
   # 14 is default baseline for most fonts, others may be better adjusted
-  terminalFontSize = 12;
+  terminalFontSize = 14;
 
   # Custom lock script outside of home-manager
   customLockCmd = "/home/brandon-fulljames/.evertras/funcs/lock";
 in {
   imports = [ ../../modules ../../../shared/themes/select.nix ];
 
-  evertras.themes.selected = (theme // {
-    fonts = (theme.fonts // { terminal = nerdfonts.makeMono terminalFont; });
-  });
+  evertras.themes.selected =
+    (theme // { fonts = (theme.fonts // fontOverrides); });
 
   evertras.home = {
     core = {
@@ -185,6 +191,7 @@ in {
       };
 
       windowmanager = {
+        i3.enable = true;
         dwm = {
           enable = true;
 
