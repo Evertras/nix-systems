@@ -16,6 +16,10 @@
 
     nixgl.url = "github:nix-community/nixGL";
 
+    # For specific python packages, because sometimes installing
+    # via mise/asdf fails and it's just easier...
+    nixpkgs-python.url = "github:cachix/nixpkgs-python";
+
     # For a rabbit hole: https://github.com/nix-community/NUR
     # nurpkgs.url = "github:nix-community/NUR";
 
@@ -26,7 +30,8 @@
     ever-fonts.url = "git+ssh://git@github.com/Evertras/nix-fonts";
   };
 
-  outputs = { nixpkgs, home-manager, nixvim, nixgl, ... }@inputs:
+  outputs =
+    { nixpkgs, home-manager, nixvim, nixgl, nixpkgs-python, ... }@inputs:
     let
       # Nix stuff
       lib = nixpkgs.lib;
@@ -58,6 +63,9 @@
               everfont-berkeley = inputs.ever-fonts.packages.${system}.berkeley;
               everfont-berkeley-dashed =
                 inputs.ever-fonts.packages.${system}.berkeley-dashed;
+
+              # Version select with pythonversion."1.2.3"
+              pythonversion = nixpkgs-python.packages.${system};
             })
 
             nixgl.overlay

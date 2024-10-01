@@ -268,7 +268,12 @@ in {
 
   home = {
     # Other local things
-    packages = with pkgs; [ vagrant nixgl.nixGLIntel nodejs ];
+    packages = with pkgs; [
+      nixgl.nixGLIntel
+      nodejs
+      pythonversion."3.9.5"
+      vagrant
+    ];
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
