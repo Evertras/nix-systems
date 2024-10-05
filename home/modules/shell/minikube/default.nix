@@ -13,14 +13,23 @@ in {
       default = "kvm2";
       description = "The driver to use for Minikube";
     };
+
+    memoryMb = mkOption {
+      type = types.int;
+      default = 4096;
+      description = "The amount of memory (in MB) to allocate to Minikube";
+    };
   };
 
   config = mkIf cfg.enable {
     home.packages = with pkgs; [ kubectl minikube ];
 
-    evertras.home.shell.env.vars = { MINIKUBE_DRIVER = cfg.driver; };
+    evertras.home.shell.env.vars = {
+      MINIKUBE_DRIVER = cfg.driver;
+      MINIKUBE_MEMORY = toString cfg.memoryMb;
+    };
 
     # Quick abbreviations
-    programs.fish.shellAbbrs = { k = "kubectl"; };
+    programs.fish.shellAbbrs.k = "kubectl";
   };
 }
