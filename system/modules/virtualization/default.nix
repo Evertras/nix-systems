@@ -15,6 +15,7 @@ in {
       # https://wiki.nixos.org/wiki/QEMU
       qemu
 
+      # https://github.com/kubernetes/minikube/issues/6023#issuecomment-2103782263
       docker-machine-kvm2
     ];
 
