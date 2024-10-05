@@ -31,5 +31,6 @@ in {
 
     # Quick abbreviations
     programs.fish.shellAbbrs.k = "kubectl";
+    programs.fish.shellAbbrs.mk = "minikube";
   };
 }
