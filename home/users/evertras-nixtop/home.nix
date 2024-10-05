@@ -50,6 +50,8 @@ in {
         rust.enable = true;
       };
 
+      minikube.enable = true;
+
       funcs = {
         copy.body = ''
           wl-copy < "$1"
@@ -97,7 +99,7 @@ in {
 
   home = {
     # Other fun things
-    packages = with pkgs; [ minikube ];
+    packages = with pkgs; [ cockatrice ];
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
