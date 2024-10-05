@@ -19,5 +19,8 @@ in {
     home.packages = with pkgs; [ kubectl minikube ];
 
     evertras.home.shell.env.vars = { MINIKUBE_DRIVER = cfg.driver; };
+
+    # Quick abbreviations
+    programs.fish.shellAbbrs = { k = "kubectl"; };
   };
 }
