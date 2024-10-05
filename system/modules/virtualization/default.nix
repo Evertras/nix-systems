@@ -11,11 +11,12 @@ in {
     virtualisation.libvirtd.enable = true;
     programs.virt-manager.enable = true;
 
-    environment.systemPackages = with pkgs;
-      [
-        # https://wiki.nixos.org/wiki/QEMU
-        qemu
-      ];
+    environment.systemPackages = with pkgs; [
+      # https://wiki.nixos.org/wiki/QEMU
+      qemu
+
+      docker-machine-kvm2
+    ];
 
     # Enable other architectures for qemu
     boot.binfmt.emulatedSystems = [ "aarch64-linux" "riscv64-linux" ];

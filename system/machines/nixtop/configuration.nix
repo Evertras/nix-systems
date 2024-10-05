@@ -25,10 +25,14 @@ in {
   # Boot stuff
 
   # Use the systemd-boot EFI boot loader.
-  boot.loader = {
-    systemd-boot.enable = true;
-    efi.canTouchEfiVariables = true;
-    timeout = 10;
+  boot = {
+    loader = {
+      systemd-boot.enable = true;
+      efi.canTouchEfiVariables = true;
+      timeout = 10;
+    };
+
+    kernelParams = [ "cgroup_enable=cpuset" ];
   };
 
   ##############################################################################
