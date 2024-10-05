@@ -99,7 +99,7 @@ in {
         #colorText = rmp theme.colors.text;
         colorUrgent = rmp theme.colors.urgent;
 
-        mkEnvVar = name: value: "set ${name} ${value}";
+        mkEnvVar = name: value: "set -x ${name} ${value}";
         envVars =
           attrsets.mapAttrsToList mkEnvVar config.evertras.home.shell.env.vars;
       in ''
