@@ -95,6 +95,22 @@ in {
           done
         '';
 
+        nomad-ineligible-by-name.body = ''
+          if [[ -z "$1" ]]; then
+            echo "Requires node name"
+            exit 1
+          fi
+
+          name="$1"
+          id=$(nomad node status | awk '$4 == "'"$name"'" { print $1 }')
+          if [[ -z "$id" ]]; then
+            echo "Failed to find node with name '$name'" >&2
+            exit 1
+          fi
+
+          nomad node eligibility -disable "$id"
+        '';
+
         timelapse-center = {
           runtimeInputs = with pkgs; [ ffmpeg-full fira-code ];
           body = ''
