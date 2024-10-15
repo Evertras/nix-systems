@@ -46,6 +46,27 @@
         column -t
     '';
 
+    aws-ec2-ami.body = ''
+      if [ "$#" -ne 1 ]; then
+        echo "Usage: aws-ec2-ami <name>" >&2
+        exit 1
+      fi
+
+      instance_name="$1"
+
+      if [[ $instance_name == i-* ]]; then
+        instance_id="$instance_name"
+      else
+        instance_id=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=$instance_name" --query "Reservations[*].Instances[*].InstanceId" --output text)
+        if [ -z "$instance_id" ]; then
+          echo "Instance with name $instance_name not found." >&2
+          exit 1
+        fi
+      fi
+
+      aws ec2 describe-instances --instance-ids "$instance_id" --query "Reservations[*].Instances[*].ImageId" --output text
+    '';
+
     aws-profile-list.body = ''
       grep '\[profile' ~/.aws/config | awk '{print $2}' | tr -d ']'
     '';
