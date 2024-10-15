@@ -65,6 +65,36 @@ in {
         kitty-gl.body = "nixGLIntel kitty -1";
         alacritty-gl.body = "nixGLIntel alacritty";
 
+        # Using a local Nomad for now on purpose
+        nomad-jobs-on-node.body = ''
+          if [[ -z "$1" ]]; then
+            echo "Requires search term"
+            exit 1
+          fi
+
+          search="$1"
+
+          echo "Searching for $search"
+
+          id=$(nomad node status -verbose | awk "/$search/ {print "'$1'"; exit }")
+
+          echo "Node ID: $id"
+          echo ""
+
+          echo "Jobs running:"
+
+          nomad node status "$id" | grep 'running'
+        '';
+
+        nomad-nodes-by-ami.body = ''
+          nodes=$(nomad node status | awk '$4 ~ /^i-/ && $NF == "ready" { print $4 }')
+
+          for node in $nodes; do
+            ami=$(aws-ec2-ami "$node")
+            echo "$ami - $node"
+          done
+        '';
+
         timelapse-center = {
           runtimeInputs = with pkgs; [ ffmpeg-full fira-code ];
           body = ''
