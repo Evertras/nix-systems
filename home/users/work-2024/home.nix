@@ -83,7 +83,7 @@ in {
 
           echo "Jobs running:"
 
-          nomad node status "$id" | grep 'running'
+          nomad node status "$id" | awk '$6 == "running" && $3 != "monitor"'
         '';
 
         nomad-nodes-by-ami.body = ''
@@ -91,7 +91,7 @@ in {
 
           for node in $nodes; do
             ami=$(aws-ec2-ami "$node")
-            echo "$ami - $node"
+            echo "$ami $node"
           done
         '';
 
