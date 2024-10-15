@@ -84,5 +84,9 @@
 
       find "$dir" -type f -name "$filefilter" -exec sed -i "s/$oldregex/$replacement/g" {} \;
     '';
+
+    trim-ending-newline.body = ''
+      sed ':a;N;$!ba;s/\n$//'
+    '';
   };
 }
