@@ -5,6 +5,7 @@ let
   sharedSettings = {
     ascii-input = "false";
     fuzzy-match = "true";
+    hide-cursor = "true";
   };
 
   tofiThemes = {
