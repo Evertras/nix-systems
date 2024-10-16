@@ -74,16 +74,20 @@ in {
 
           search="$1"
 
-          echo "Searching for $search"
+          # stderr so we can use this output in pipes
+          echo "Searching for $search" >&2
 
           id=$(nomad node status -verbose | awk "/$search/ {print "'$1'"; exit }")
 
-          echo "Node ID: $id"
-          echo ""
+          echo "Node ID: $id" >&2
 
-          echo "Jobs running:"
+          jobs=$(nomad node status "$id" | awk '$6 == "running" && $3 != "monitor"')
 
-          nomad node status "$id" | awk '$6 == "running" && $3 != "monitor"'
+          if [[ -z "$jobs" ]]; then
+            echo "NONE"
+          else
+            echo "$jobs"
+          fi
         '';
 
         nomad-nodes-by-ami.body = ''
@@ -109,6 +113,29 @@ in {
           fi
 
           nomad node eligibility -disable "$id"
+        '';
+
+        nomad-cycle-node.body = ''
+          if [ "$#" -ne 1 ]; then
+            echo "Usage: nomad-cycle-node <instance-id>"
+            exit 1
+          fi
+
+          instance_id="$1"
+
+          nomad-ineligible-by-name "$instance_id"
+
+          while true; do
+            jobs=$(nomad-jobs-on-node "$instance_id")
+
+            if [[ "$jobs" == "NONE" ]]; then
+              break
+            fi
+
+            sleep 5
+          done
+
+          aws ec2 terminate-instances --instance-ids "$instance_id"
         '';
 
         timelapse-center = {
