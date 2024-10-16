@@ -136,6 +136,8 @@ in {
           done
 
           aws ec2 terminate-instances --instance-ids "$instance_id"
+
+          echo "Destroyed!"
         '';
 
         timelapse-center = {
