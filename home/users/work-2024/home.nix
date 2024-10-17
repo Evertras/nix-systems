@@ -158,6 +158,7 @@ in {
 
           while [[ "$starting_nodes" != num_nodes ]]; do
             echo "Waiting for new node to come up..."
+            sleep 5
           done
 
           echo "Cycle for $instance_id completed!"
