@@ -127,7 +127,7 @@ in {
 
           function node_is_running() {
             nomad node status |
-              awk -v c = 1 '$4 == "'"$instance_id"'" && $NF == "ready" { c = 0 } END { exit c }'
+              awk -v "c=1" '$4 == "'"$instance_id"'" && $NF == "ready" { c = 0 } END { exit c }'
           }
 
           instance_id="$1"
