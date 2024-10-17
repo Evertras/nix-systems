@@ -134,6 +134,8 @@ in {
 
           starting_nodes=$(num_nodes)
 
+          echo "Starting with $starting_nodes nodes"
+
           nomad-ineligible-by-name "$instance_id"
 
           while true; do
@@ -156,7 +158,7 @@ in {
             sleep 5
           done
 
-          while [[ "$starting_nodes" != num_nodes ]]; do
+          while [[ "$starting_nodes" != "$(num_nodes)" ]]; do
             echo "Waiting for new node to come up..."
             sleep 5
           done
