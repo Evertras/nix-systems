@@ -121,7 +121,18 @@ in {
             exit 1
           fi
 
+          function num_nodes() {
+            nomad node status | awk '$4 ~ /^i-/ && $NF == "ready" { print $4 }' | wc -l
+          }
+
+          function node_is_running() {
+            nomad node status |
+              awk -v c = 1 '$4 == "'"$instance_id"'" && $NF == "ready" { c = 0 } END { exit c }'
+          }
+
           instance_id="$1"
+
+          starting_nodes=$(num_nodes)
 
           nomad-ineligible-by-name "$instance_id"
 
@@ -130,6 +141,9 @@ in {
 
             if [[ "$jobs" == "NONE" ]]; then
               break
+            else
+              echo "Waiting due to jobs:"
+              echo "$jobs"
             fi
 
             sleep 5
@@ -137,7 +151,16 @@ in {
 
           aws ec2 terminate-instances --instance-ids "$instance_id"
 
-          echo "Destroyed!"
+          while node_is_running; do
+            echo "Node $instance_id still running, waiting..."
+            sleep 5
+          done
+
+          while [[ "$starting_nodes" != num_nodes ]]; do
+            echo "Waiting for new node to come up..."
+          done
+
+          echo "Cycle for $instance_id completed!"
         '';
 
         timelapse-center = {
