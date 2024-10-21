@@ -25,6 +25,34 @@
       '';
     };
 
+    log-info = {
+      runtimeInputs = with pkgs; [ gum ];
+      body = ''
+        gum log -t rfc822 -l info "$*"
+      '';
+    };
+
+    log-error = {
+      runtimeInputs = with pkgs; [ gum ];
+      body = ''
+        gum log -t rfc822 -l error "$*"
+      '';
+    };
+
+    log-warn = {
+      runtimeInputs = with pkgs; [ gum ];
+      body = ''
+        gum log -t rfc822 -l warn "$*"
+      '';
+    };
+
+    log-fatal = {
+      runtimeInputs = with pkgs; [ gum ];
+      body = ''
+        gum log -t rfc822 -l fatal "$*"
+      '';
+    };
+
     nix-explore = {
       runtimeInputs = with pkgs; [ eza ];
       body = ''
