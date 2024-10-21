@@ -34,6 +34,7 @@ in {
         gcc # for compiling things
         git # for git
         gnumake # for everything
+        gum # for terminal scripts https://github.com/charmbracelet/gum
         ncdu # disk space usage
         pinentry # for gpg
         ranger # file explorer
