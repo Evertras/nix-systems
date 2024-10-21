@@ -15,7 +15,7 @@
         fi
 
         all_instances=$(aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" |
-          jq -r '.Reservations | .[] | .Instances | .[] | { Id: .InstanceId, Name: (.Tags[] | select(.Key == "Name") | .Value) } | [.Name, .Id] | @tsv' |
+          jq -r '.Reservations | .[] | .Instances | .[] | { Id: .InstanceId, LaunchTime: .LaunchTime, Name: (.Tags[] | select(.Key == "Name") | .Value) } | [.Name, .Id, .LaunchTime] | @tsv' |
           sort |
           column -t)
 
@@ -45,6 +45,16 @@
         sort |
         column -t
     '';
+
+    aws-ec2-terminate = {
+      runtimeInputs = with pkgs; [ gum ];
+      body = ''
+        todelete_raw=$(aws-ec2-list | gum choose)
+        gum confirm "Deleting $todelete_raw" --affirmative="Delete" --negative="Cancel"
+        instance_id=$(awk '{print $2}' <<< "$todelete_raw")
+        aws ec2 terminate-instances --instance-ids "$instance_id"
+      '';
+    };
 
     aws-ec2-ami.body = ''
       if [ "$#" -ne 1 ]; then
