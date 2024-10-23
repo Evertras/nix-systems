@@ -1,8 +1,8 @@
-{ lib, nerdfonts, pkgs, ... }:
+{ ... }:
 
 {
+  # Using a local Nomad for now on purpose
   evertras.home.shell.funcs = {
-    # Using a local Nomad for now on purpose
     nomad-jobs-on-node.body = ''
       if [[ -z "$1" ]]; then
         echo "Requires search term"
