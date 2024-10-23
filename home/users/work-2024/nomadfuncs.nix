@@ -3,9 +3,9 @@
 {
   # Using a local Nomad for now on purpose
   evertras.home.shell.funcs = {
-    nomad-jobs-on-node.body = ''
-      if [[ -z "$1" ]]; then
-        echo "Requires search term"
+    nomad-allocs-on-node.body = ''
+      if [ "$#" -ne 1 ]; then
+        echo "Usage: nomad-allocs-on-node <instance-id>"
         exit 1
       fi
 
@@ -18,12 +18,12 @@
 
       echo "Node ID: $id" >&2
 
-      jobs=$(nomad node status "$id" | awk '$6 == "running" && $3 != "monitor"')
+      allocs=$(nomad node status "$id" | awk '$6 == "running" && $3 != "monitor"')
 
-      if [[ -z "$jobs" ]]; then
+      if [[ -z "$allocs" ]]; then
         echo "NONE"
       else
-        echo "$jobs"
+        echo "$allocs"
       fi
     '';
 
@@ -52,6 +52,21 @@
       nomad node eligibility -disable "$id"
     '';
 
+    nomad-cycle-ineligible-nodes.body = ''
+      nomad node status |
+        awk '$NF == "ready" && $7 == "ineligible" { print $4 }' |
+        while read -r id; do
+        log-info "Checking $id"
+
+        alloc_count=$(nomad-allocs-on-node "$id" 2>/dev/null | wc -l)
+
+        log-info "Found $alloc_count alloc(s) on node $id"
+        if [ "$alloc_count" == 0 ]; then
+          log-warn "Can cycle $id!"
+        fi
+      done
+    '';
+
     nomad-cycle-node.body = ''
       if [ "$#" -ne 1 ]; then
         echo "Usage: nomad-cycle-node <instance-id>"
@@ -76,13 +91,13 @@
       nomad-ineligible-by-name "$instance_id"
 
       while true; do
-        jobs=$(nomad-jobs-on-node "$instance_id")
+        allocs=$(nomad-allocs-on-node "$instance_id")
 
-        if [[ "$jobs" == "NONE" ]]; then
+        if [[ "$allocs" == "NONE" ]]; then
           break
         else
-          echo "Waiting due to jobs:"
-          echo "$jobs"
+          echo "Waiting due to allocs:"
+          echo "$allocs"
         fi
 
         sleep 5
