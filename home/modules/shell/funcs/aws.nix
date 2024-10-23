@@ -39,6 +39,21 @@
       '';
     };
 
+    aws-connect-latest.body = ''
+      instance_id=$(aws ec2 describe-instances \
+        --query 'Reservations[*].Instances[*].[InstanceId,LaunchTime]' \
+        --output text | sort -k2 -r | head -n 1 | awk '{print $1}')
+
+      if [ -z "$instance_id" ]; then
+        echo "No instances found."
+        exit 1
+      fi
+
+      echo "Connecting to $instance_id"
+
+      aws ssm start-session --target "$instance_id"
+    '';
+
     aws-ec2-list.body = ''
       aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" |
         jq -r '.Reservations | .[] | .Instances | .[] | { Id: .InstanceId, Name: (.Tags[] | select(.Key == "Name") | .Value) } | [.Name, .Id] | @tsv' |
