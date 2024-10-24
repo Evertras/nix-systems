@@ -12,11 +12,11 @@
       search="$1"
 
       # stderr so we can use this output in pipes
-      echo "Searching for $search" >&2
+      log-info "Searching for $search" >&2
 
       id=$(nomad node status -verbose | awk "/$search/ {print "'$1'"; exit }")
 
-      echo "Node ID: $id" >&2
+      log-info "Node ID: $id" >&2
 
       allocs=$(nomad node status "$id" | awk '$6 == "running" && $3 != "monitor"')
 
@@ -37,16 +37,15 @@
     '';
 
     nomad-ineligible-by-name.body = ''
-      if [[ -z "$1" ]]; then
-        echo "Requires node name"
+      if [ "$#" -ne 1 ]; then
+        echo "Usage: nomad-cycle-node <instance-id>"
         exit 1
       fi
 
       name="$1"
       id=$(nomad node status | awk '$4 == "'"$name"'" { print $1 }')
       if [[ -z "$id" ]]; then
-        echo "Failed to find node with name '$name'" >&2
-        exit 1
+        log-fatal "Failed to find node with name '$name'" >&2
       fi
 
       nomad node eligibility -disable "$id"
@@ -88,7 +87,7 @@
 
       starting_nodes=$(num_nodes)
 
-      echo "Starting with $starting_nodes nodes"
+      log-info "Starting with $starting_nodes nodes"
 
       nomad-ineligible-by-name "$instance_id"
 
@@ -98,7 +97,7 @@
         if [[ "$allocs" == "NONE" ]]; then
           break
         else
-          echo "Waiting due to allocs:"
+          log-info "Waiting due to allocs:"
           echo "$allocs"
         fi
 
@@ -108,16 +107,16 @@
       aws ec2 terminate-instances --instance-ids "$instance_id"
 
       while node_is_running; do
-        echo "Node $instance_id still running, waiting..."
+        log-info "Node $instance_id still running, waiting..."
         sleep 5
       done
 
       while [[ "$starting_nodes" != "$(num_nodes)" ]]; do
-        echo "Waiting for new node to come up..."
+        log-info "Waiting for new node to come up..."
         sleep 5
       done
 
-      echo "Cycle for $instance_id completed!"
+      log-info "Cycle for $instance_id completed!"
     '';
   };
 }
