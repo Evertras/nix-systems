@@ -58,11 +58,13 @@
         while read -r id; do
         log-info "Checking $id"
 
-        alloc_count=$(nomad-allocs-on-node "$id" 2>/dev/null | wc -l)
+        allocs=$(nomad-allocs-on-node "$id" 2>/dev/null)
 
-        log-info "Found $alloc_count alloc(s) on node $id"
-        if [ "$alloc_count" == 0 ]; then
-          log-warn "Can cycle $id!"
+        if [ "$allocs" == "NONE" ]; then
+          log-warn ">>>> Can cycle $id"
+        else
+          alloc_count=$(wc -l <<< "$allocs")
+          log-info "Found $alloc_count alloc(s) on node $id"
         fi
       done
     '';
