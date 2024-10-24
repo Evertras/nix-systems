@@ -52,7 +52,7 @@
       nomad node eligibility -disable "$id"
     '';
 
-    nomad-cycle-ineligible-nodes.body = ''
+    nomad-check-ineligible-nodes.body = ''
       nomad node status |
         awk '$NF == "ready" && $7 == "ineligible" { print $4 }' |
         while read -r id; do
