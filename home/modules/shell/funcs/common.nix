@@ -1,4 +1,8 @@
-{ pkgs, ... }: {
+{ pkgs, ... }:
+let
+  # https://pkg.go.dev/time#pkg-constants
+  logTimeFormat = "2006-01-02 15:04:05 MST";
+in {
   evertras.home.shell.funcs = {
     funcs = {
       runtimeInputs = with pkgs; [ eza ];
@@ -28,28 +32,28 @@
     log-info = {
       runtimeInputs = with pkgs; [ gum ];
       body = ''
-        gum log -t rfc822 -l info "$*"
+        gum log -t "${logTimeFormat}" -l info "$*"
       '';
     };
 
     log-error = {
       runtimeInputs = with pkgs; [ gum ];
       body = ''
-        gum log -t rfc822 -l error "$*"
+        gum log -t "${logTimeFormat}" -l error "$*"
       '';
     };
 
     log-warn = {
       runtimeInputs = with pkgs; [ gum ];
       body = ''
-        gum log -t rfc822 -l warn "$*"
+        gum log -t "${logTimeFormat}" -l warn "$*"
       '';
     };
 
     log-fatal = {
       runtimeInputs = with pkgs; [ gum ];
       body = ''
-        gum log -t rfc822 -l fatal "$*"
+        gum log -t "${logTimeFormat}" -l fatal "$*"
       '';
     };
 
