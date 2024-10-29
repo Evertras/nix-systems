@@ -51,6 +51,15 @@
       nomad node eligibility -disable "$id"
     '';
 
+    nomad-list-broken-nodes.body = ''
+      log-info 'Finding EC2 instances that are running but not in Nomad...' >&2
+
+      cluster_nodes=$(nomad node status | awk '$NF == "ready" { print $4 }' | sort)
+      ec2_clients=$(aws-ec2-list | awk '$1 ~ /nomad-.*-client$/ { print $2 }' | sort)
+
+      diff <(echo "$cluster_nodes") <(echo "$ec2_clients")
+    '';
+
     nomad-check-ineligible-nodes.body = ''
       nomad node status |
         awk '$NF == "ready" && $7 == "ineligible" { print $4 }' |
