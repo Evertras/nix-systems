@@ -1,4 +1,4 @@
-{ ... }:
+{ pkgs, ... }:
 
 {
   # Using a local Nomad for now on purpose
@@ -126,6 +126,35 @@
       done
 
       log-info "Cycle for $instance_id completed!"
+    '';
+
+    nomad-running.body = ''
+      nomad status | awk '$4 == "running"'
+    '';
+
+    nomad-fx = {
+      runtimeInputs = with pkgs; [ fx ];
+      body = ''
+        if [ "$#" -ne 1 ]; then
+          echo "Usage: nomad-fx <job-id>"
+          exit 1
+        fi
+
+        job="$1"
+
+        nomad job inspect "$job" | fx
+      '';
+    };
+
+    nomad-meta.body = ''
+      if [ "$#" -ne 1 ]; then
+        echo "Usage: nomad-meta <job-id>"
+        exit 1
+      fi
+
+      job="$1"
+
+      nomad job inspect "$job" | jq .Job.Meta
     '';
   };
 }
