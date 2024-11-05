@@ -276,6 +276,9 @@ in {
       nodejs
       pythonversion."3.9.5"
       vagrant
+
+      wireshark
+      termshark
     ];
 
     # Don't change this, this is the initial install version
