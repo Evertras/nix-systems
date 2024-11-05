@@ -61,6 +61,13 @@
         column -t
     '';
 
+    aws-ec2-list-verbose.body = ''
+      aws ec2 describe-instances --filters "Name=instance-state-name,Values=running" |
+        jq -r '.Reservations | .[] | .Instances | .[] | { Id: .InstanceId, Type: .InstanceType, Name: (.Tags[] | select(.Key == "Name") | .Value) } | [.Name, .Id, .Type] | @tsv' |
+        sort |
+        column -t
+    '';
+
     aws-ec2-terminate = {
       runtimeInputs = with pkgs; [ gum ];
       body = ''
