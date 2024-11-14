@@ -53,6 +53,7 @@ in {
 
         # Extras
         ssm-session-manager-plugin
+        google-cloud-sdk
 
         # Data processing
         asciigraph
