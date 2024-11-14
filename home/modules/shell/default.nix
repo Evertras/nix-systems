@@ -36,6 +36,7 @@ in {
         gnumake # for everything
         gum # for terminal scripts https://github.com/charmbracelet/gum
         ncdu # disk space usage
+        nethogs # network usage monitoring
         pinentry # for gpg
         ranger # file explorer
         scc # code stats
