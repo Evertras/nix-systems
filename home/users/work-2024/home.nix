@@ -4,8 +4,6 @@ let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Mauve"; };
 
-  gpgKey = "92B4C34033DEB5A6";
-
   # To find:
   # xrandr --query --listactivemonitors
   displayLeft = {
@@ -59,8 +57,6 @@ in {
     };
 
     shell = {
-      core = { inherit gpgKey; };
-
       git.userEmail = "brandon.fulljames@woven-planet.global";
 
       funcs = {
