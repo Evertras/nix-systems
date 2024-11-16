@@ -62,19 +62,28 @@ in {
       };
     };
 
-    lualine = {
+    lualine = let
+      filename = [{
+        name = "filename";
+        extraConfig = {
+          # Show relative path
+          path = 1;
+        };
+      }];
+    in {
       enable = true;
 
       sections = {
-        lualine_b = [{
-          name = "filename";
-          extraConfig = { path = 1; };
-        }];
+        lualine_b = filename;
         lualine_c = [ "diagnostics" ];
         lualine_x = [ "filesize" ];
       };
 
-      inactiveSections = { lualine_c = [ "filename" ]; };
+      inactiveSections = {
+        lualine_b = filename;
+        lualine_c = [ "diagnostics" ];
+        lualine_x = [ "filesize" ];
+      };
     };
 
     luasnip = {
