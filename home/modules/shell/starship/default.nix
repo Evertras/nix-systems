@@ -44,6 +44,8 @@ in {
 
         directory.style = "bold ${theme.colors.primary}";
 
+        gcloud.disabled = true;
+
         golang.format = "[$symbol($version )]($style)";
 
         nix_shell.format = "[❄️ ]($style)";
