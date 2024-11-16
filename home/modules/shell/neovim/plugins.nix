@@ -66,7 +66,10 @@ in {
       enable = true;
 
       sections = {
-        lualine_b = [ "filename" ];
+        lualine_b = [{
+          name = "filename";
+          extraConfig = { path = 1; };
+        }];
         lualine_c = [ "diagnostics" ];
         lualine_x = [ "filesize" ];
       };
