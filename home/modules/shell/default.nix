@@ -43,6 +43,7 @@ in {
         sipcalc # for IP calculations
         unzip # for unzipping things
         wget # for downloading things quickly
+        whois # DNS info
 
         # Base tool upgrades
         bat # cat with syntax highlighting / paging
