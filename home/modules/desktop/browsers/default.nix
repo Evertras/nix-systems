@@ -24,7 +24,8 @@ in {
   };
 
   config = let
-    pkgsLibrewolf = if cfg.enableLibrewolf then [ pkgs.librewolf ] else [ ];
+    pkgsLibrewolf =
+      if cfg.enableLibrewolf then [ pkgs.unstable.librewolf ] else [ ];
     pkgsChromium = if cfg.enableChromium then [ pkgs.chromium ] else [ ];
   in { home.packages = pkgsLibrewolf ++ pkgsChromium; };
 }

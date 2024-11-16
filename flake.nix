@@ -4,6 +4,8 @@
   inputs = {
     nixpkgs.url = "nixpkgs/nixos-24.05";
 
+    nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-24.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -30,8 +32,8 @@
     ever-fonts.url = "git+ssh://git@github.com/Evertras/nix-fonts";
   };
 
-  outputs =
-    { nixpkgs, home-manager, nixvim, nixgl, nixpkgs-python, ... }@inputs:
+  outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, nixgl
+    , nixpkgs-python, ... }@inputs:
     let
       # Nix stuff
       lib = nixpkgs.lib;
@@ -66,6 +68,9 @@
 
               # Version select with pythonversion."1.2.3"
               pythonversion = nixpkgs-python.packages.${system};
+
+              # Allow access to some unstable packages for updates
+              unstable = import nixpkgs-unstable { inherit system; };
             })
 
             nixgl.overlay
