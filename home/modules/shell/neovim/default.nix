@@ -17,6 +17,12 @@
       }
       {
         event = "BufEnter";
+        pattern = "*.tf";
+        command = "set filetype=hcl";
+        desc = "Terraform files are HCL";
+      }
+      {
+        event = "BufEnter";
         pattern = "*.tfvars";
         command = "set filetype=hcl";
         desc = "Terraform variable files are HCL";
