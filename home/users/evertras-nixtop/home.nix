@@ -1,7 +1,7 @@
 { lib, nerdfonts, pkgs, ... }:
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
-  theme = themes.mkCatppuccin { color = "Sky"; };
+  theme = themes.mkCatppuccin { color = "Green"; };
 
   berkeleyFont = {
     name = "Berkeley Mono";
