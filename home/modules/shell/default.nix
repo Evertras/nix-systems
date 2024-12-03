@@ -55,6 +55,7 @@ in {
 
         # Extras
         ssm-session-manager-plugin
+        glow
         google-cloud-sdk
 
         # Data processing
