@@ -2,7 +2,7 @@
 
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
-  theme = themes.mkCatppuccin { color = "Mauve"; };
+  theme = themes.mkCatppuccin { color = "Green"; };
 
   # To find:
   # xrandr --query --listactivemonitors
