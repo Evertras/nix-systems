@@ -55,6 +55,12 @@ in {
         bind k select-pane -U
         bind l select-pane -R
 
+        # Quicker resizes
+        bind C-h resize-pane -L 5
+        bind C-j resize-pane -D 5
+        bind C-k resize-pane -U 5
+        bind C-l resize-pane -R 5
+
         # Synchronize input to all panes, toggled
         bind s setw synchronize-panes
 
