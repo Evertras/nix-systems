@@ -73,16 +73,18 @@ in {
     in {
       enable = true;
 
-      sections = {
-        lualine_b = filename;
-        lualine_c = [ "diagnostics" ];
-        lualine_x = [ "filesize" ];
-      };
+      settings = {
+        sections = {
+          lualine_b = filename;
+          lualine_c = [ "diagnostics" ];
+          lualine_x = [ "filesize" ];
+        };
 
-      inactiveSections = {
-        lualine_b = filename;
-        lualine_c = [ "diagnostics" ];
-        lualine_x = [ "filesize" ];
+        inactive_sections = {
+          lualine_b = filename;
+          lualine_c = [ "diagnostics" ];
+          lualine_x = [ "filesize" ];
+        };
       };
     };
 
@@ -157,7 +159,7 @@ in {
 
     rainbow-delimiters.enable = true;
 
-    rust-tools.enable = true;
+    rustaceanvim.enable = true;
 
     telescope = {
       enable = true;
