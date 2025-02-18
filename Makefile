@@ -30,6 +30,10 @@ clean-system: .git/hooks/pre-commit
 fmt: .git/hooks/pre-commit
 	@nixfmt .
 
+.PHONY: lint
+lint: .git/hooks/pre-commit
+	@shellcheck ./scripts/*
+
 .PHONY: update-fonts
 update-fonts: .git/hooks/pre-commit
 	nix flake lock --update-input ever-fonts
