@@ -32,7 +32,7 @@ fmt: .git/hooks/pre-commit
 
 .PHONY: lint
 lint: .git/hooks/pre-commit
-	@shellcheck ./scripts/*
+	@nix-shell -p shellcheck --run "shellcheck ./scripts/*"
 
 .PHONY: update-fonts
 update-fonts: .git/hooks/pre-commit

@@ -68,9 +68,6 @@ in {
         # Format nix things
         nixfmt-classic
 
-        # Linting
-        shellcheck
-
         # Funsies
         cynomys
         fastfetch
