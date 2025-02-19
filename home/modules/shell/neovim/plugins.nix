@@ -64,11 +64,10 @@ in {
 
     lualine = let
       filename = [{
-        name = "filename";
-        extraConfig = {
-          # Show relative path
-          path = 1;
-        };
+        __unkeyed-1 = "filename";
+
+        # Show relative path
+        path = 1;
       }];
     in {
       enable = true;
