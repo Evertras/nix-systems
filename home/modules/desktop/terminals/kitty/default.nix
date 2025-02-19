@@ -75,7 +75,7 @@ in {
     in {
       enable = true;
 
-      theme = theme.kittyTheme;
+      themeFile = theme.kittyTheme;
 
       font = {
         name = existsOr cfg.fontName theme.fonts.terminal.name;
