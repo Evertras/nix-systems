@@ -40,7 +40,10 @@ in {
     programs.alacritty = {
       enable = true;
       settings = {
-        import = [ "${pkgs.alacritty-theme}/${cfg.themeName}.toml" ];
+        general = {
+          import = [ "${pkgs.alacritty-theme}/${cfg.themeName}.toml" ];
+          live_config_reload = true;
+        };
 
         colors = {
           primary.foreground = theme.colors.text;
@@ -88,13 +91,11 @@ in {
           }
         ];
 
-        live_config_reload = true;
-
         mouse = { hide_when_typing = true; };
 
         scrolling.multiplier = 5;
 
-        shell = cfg.shellBin;
+        terminal = { shell = cfg.shellBin; };
 
         window = {
           decorations = "none";
