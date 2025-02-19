@@ -54,10 +54,10 @@ in {
         # Specific check for now due to being multiple gigabytes
         hls.enable = langs.haskell.enable;
         html.enable = true;
-        lua-ls.enable = true;
-        nil-ls.enable = true;
+        lua_ls.enable = true;
+        nil_ls.enable = true;
         terraformls.enable = true;
-        tsserver.enable = true;
+        ts_ls.enable = true;
         yamlls.enable = true;
       };
     };
@@ -156,6 +156,8 @@ in {
         '';
       };
     };
+
+    web-devicons.enable = true;
 
     rainbow-delimiters.enable = true;
 
