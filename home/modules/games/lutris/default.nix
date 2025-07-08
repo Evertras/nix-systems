@@ -22,6 +22,6 @@ in {
       };
     };
 
-    home.packages = [ lutrisPkg pkgs.wine ];
+    home.packages = with pkgs; [ lutrisPkg wineWowPackages.waylandFull ];
   };
 }
