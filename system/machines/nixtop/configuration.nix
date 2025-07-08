@@ -137,7 +137,7 @@ in {
   ##############################################################################
   # Nvidia stuff
   # https://nixos.wiki/wiki/Nvidia
-  hardware.opengl = { enable = true; };
+  hardware.graphics.enable = true;
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
@@ -148,7 +148,7 @@ in {
     powerManagement.enable = false;
     powerManagement.finegrained = false;
 
-    open = false;
+    open = true;
 
     nvidiaSettings = true;
 
@@ -179,6 +179,10 @@ in {
     # Some handy things used while root, try to keep this minimal
     file
     traceroute
+
+    # Useful for finding graphics card info
+    # sudo lshw -c display
+    lshw
   ];
 
   programs.gnupg.agent = {
