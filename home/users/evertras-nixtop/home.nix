@@ -42,7 +42,8 @@ in {
     shell = {
       core = { inherit gpgKey; };
 
-      neovim = { enableCopilot = true; };
+      # Disable until resubscribe
+      #neovim = { enableCopilot = true; };
 
       coding = {
         go.enable = true;
