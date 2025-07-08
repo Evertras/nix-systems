@@ -38,7 +38,7 @@ in {
   ##############################################################################
   # General system environment stuff
   time = {
-    timeZone = "Asia/Tokyo";
+    timeZone = "America/Los_Angeles";
 
     # Need this for dual-booting with Windows
     # https://nixos.wiki/wiki/Dual_Booting_NixOS_and_Windows
