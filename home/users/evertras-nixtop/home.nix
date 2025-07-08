@@ -9,7 +9,7 @@ let
   };
 
   fontOverrides = {
-    main = nerdfonts.makeMono "AurulentSansM";
+    main = nerdfonts.make "CaskaydiaCove";
     terminal = berkeleyFont;
   };
 

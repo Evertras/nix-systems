@@ -8,7 +8,8 @@ in {
 
   config = mkIf cfg.enable {
     i18n.inputMethod = {
-      enabled = "fcitx5";
+      enable = true;
+      type = "fcitx5";
 
       # At some point try to figure out settings here.
       # https://mynixos.com/nixpkgs/options/i18n.inputMethod.fcitx5.settings

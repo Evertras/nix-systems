@@ -2,17 +2,17 @@
   description = "My systems";
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-24.11";
+    nixpkgs.url = "nixpkgs/nixos-25.05";
 
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
     home-manager = {
-      url = "github:nix-community/home-manager/release-24.11";
+      url = "github:nix-community/home-manager/release-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
     nixvim = {
-      url = "github:nix-community/nixvim/nixos-24.11";
+      url = "github:nix-community/nixvim/nixos-25.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
@@ -125,7 +125,7 @@
             nerdfonts = mkNerdfonts pkgs;
           in home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            modules = [ nixvim.homeManagerModules.nixvim userData.module ];
+            modules = [ nixvim.homeModules.nixvim userData.module ];
             extraSpecialArgs = { inherit everlib nerdfonts; };
           });
       in (builtins.listToAttrs (map (file: {
