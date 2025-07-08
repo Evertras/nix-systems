@@ -133,7 +133,8 @@ in {
         decoration = { rounding = 10; };
 
         general = {
-          gaps_out = 3;
+          gaps_out = 2;
+          gaps_in = 2;
           layout = "master";
           border_size = 2;
           "col.active_border" = mkColor theme.colors.primary;
