@@ -115,28 +115,13 @@ in {
       # Enables wireless support via wpa_supplicant.
       enable = true;
       networks = {
-        GenjiNet = {
-          # https://nixos.wiki/wiki/Wpa_supplicant
-          # Encrypted, and if you crack it then I guess you can
-          # drive by my house somewhere and watch Netflix?
+        # https://nixos.wiki/wiki/Wpa_supplicant
+        # Encrypted, and if you crack it then I guess you can
+        # drive by my house somewhere and watch Netflix?
+        Lowriders = {
           pskRaw =
-            "b8dd5632220c928a1bb44fc846fe1cf3b4b27dd32db104640c3ec30e8020a9b4";
-
+            "e68178a8d25b7e61d309900870f543b71941288aa187c6245fb10ca31922bc9c";
           priority = 20;
-        };
-
-        ScoutNet = {
-          pskRaw =
-            "f46348b5ffa0b696e6598102e1c1c92d117eb5b2d504843c9899528ea011b0f5";
-
-          priority = 15;
-        };
-
-        rs500k-f7c8fb-1 = {
-          pskRaw =
-            "7a30b428cdc12096133bc81486013d483ffac38fb4f8ec999d2bc97847fdae6f";
-
-          priority = 10;
         };
       };
     };
@@ -152,11 +137,7 @@ in {
   ##############################################################################
   # Nvidia stuff
   # https://nixos.wiki/wiki/Nvidia
-  hardware.opengl = {
-    enable = true;
-    driSupport = true;
-    driSupport32Bit = true;
-  };
+  hardware.opengl = { enable = true; };
 
   services.xserver.videoDrivers = [ "nvidia" ];
 
