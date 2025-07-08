@@ -152,14 +152,16 @@ in {
           repeat_rate = 40;
         };
 
-        master = {
-          new_is_master = false;
-          no_gaps_when_only = 0;
-        };
-
         xwayland = { force_zero_scaling = true; };
 
-        misc.force_default_wallpaper = 0;
+        ecosystem = { no_donation_nag = true; };
+
+        misc = {
+          force_default_wallpaper = 0;
+
+          # Disable fullscreen if a new window pops up
+          new_window_takes_over_fullscreen = 2;
+        };
       };
     };
 
