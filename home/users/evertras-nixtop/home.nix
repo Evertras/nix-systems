@@ -37,8 +37,6 @@ in {
       volumeLimit = 60;
     };
 
-    games = { lutris.enable = true; };
-
     laptop = { enable = true; };
 
     shell = {
