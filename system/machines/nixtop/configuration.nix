@@ -173,6 +173,8 @@ in {
   # Other system-wide packages/programs
   # Keep this minimal, use home-manager for most things
 
+  services.flatpak.enable = true;
+
   environment.systemPackages = with pkgs; [
     home-manager
 
