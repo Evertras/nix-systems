@@ -123,6 +123,12 @@ in {
             "e68178a8d25b7e61d309900870f543b71941288aa187c6245fb10ca31922bc9c";
           priority = 20;
         };
+
+        SpectrumSetup-D3 = {
+          pskRaw =
+            "e23b2a89c3883c9b78fb3c3689deebf11739b590c8e8b56eb624a89b58188701";
+          priority = 20;
+        };
       };
     };
   };
