@@ -39,6 +39,8 @@ in {
       enable = true;
 
       keymaps = {
+        diagnostic = { "<leader>e" = "open_float"; };
+
         lspBuf = {
           "<leader>d" = "definition";
           "K" = "hover";
