@@ -39,7 +39,11 @@ in {
       enable = true;
 
       keymaps = {
-        diagnostic = { "<leader>e" = "open_float"; };
+        diagnostic = {
+          "<leader>e" = "open_float";
+          "<leader>j" = "goto_next";
+          "<leader>k" = "goto_prev";
+        };
 
         lspBuf = {
           "<leader>d" = "definition";
