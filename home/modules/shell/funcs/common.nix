@@ -106,13 +106,13 @@ in {
 
     replace-all.body = ''
       if [ $# -ne 4 ]; then
-        echo "USAGE: change-all <dir> <file-filter> <old-regex> <replacement>"
+        echo "USAGE: replace-all <dir> <file-filter> <old-regex> <replacement>"
         echo ""
         echo "       Changes all matches of <old-regex> to <new> in the"
         echo "       <dir> directory and all subdirectories for all files"
         echo "       that match the file-type filter.  Uses sed."
         echo ""
-        echo "   ex: change-all '*.go' 'mypkg\.Thing' 'mypkg.BetterName'"
+        echo "   ex: replace-all '*.go' 'mypkg\.Thing' 'mypkg.BetterName'"
         exit 1
       fi
 
