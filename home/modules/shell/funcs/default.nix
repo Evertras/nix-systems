@@ -17,12 +17,15 @@ with lib; {
 
   config = let
     definedFuncs = config.evertras.home.shell.funcs;
-    mkShellFunc = name: func:
+    mkShellFunc = prefix: name: func:
       (pkgs.writeShellApplication {
-        inherit name;
+        name = prefix + name;
         runtimeInputs = func.runtimeInputs or [ ];
         text = func.body;
       });
-    apps = attrsets.mapAttrsToList mkShellFunc definedFuncs;
-  in { home.packages = apps; };
+    mkShellBase = mkShellFunc "";
+    mkShellPrefixed = mkShellFunc "evertras-";
+    apps = attrsets.mapAttrsToList mkShellBase definedFuncs;
+    appsPrefixed = attrsets.mapAttrsToList mkShellPrefixed definedFuncs;
+  in { home.packages = apps ++ appsPrefixed; };
 }
