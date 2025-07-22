@@ -4,13 +4,6 @@ let
   logTimeFormat = "2006-01-02 15:04:05 MST";
 in {
   evertras.home.shell.funcs = {
-    funcs = {
-      runtimeInputs = with pkgs; [ eza ];
-      body = ''
-        eza -1 ~/.evertras/funcs
-      '';
-    };
-
     # Outside of code because I want to use this with ASDF on a non-NixOS system
     # without installing Go, but it does feel odd
     go-watch-test = {
