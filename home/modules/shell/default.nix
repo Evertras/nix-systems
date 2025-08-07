@@ -29,6 +29,7 @@ in {
     home = {
       packages = with pkgs; [
         # General terminal tools
+        cloc # Count lines of code
         dig # DNS lookup
         entr # run commands on file changes
         gcc # for compiling things
