@@ -175,6 +175,7 @@ in {
         '';
       };
 
+      # TODO: Fix this for Wayland/Hyprland; hyprshot?
       screenshot-copy = {
         runtimeInputs = [ pkgs.maim pkgs.xclip ];
         body = ''
