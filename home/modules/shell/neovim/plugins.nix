@@ -64,6 +64,7 @@ in {
         html.enable = true;
         lua_ls.enable = true;
         nil_ls.enable = true;
+        svelte.enable = true;
         terraformls.enable = true;
         ts_ls.enable = true;
         yamlls.enable = true;
