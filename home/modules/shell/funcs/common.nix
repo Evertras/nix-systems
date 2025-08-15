@@ -145,5 +145,42 @@ in {
     trim-ending-newline.body = ''
       sed ':a;N;$!ba;s/\n$//'
     '';
+
+    zipdir = {
+      runtimeInputs = with pkgs; [ zip ];
+
+      body = ''
+        if [ "$1" == "" ]; then
+          echo "USAGE: zipdir <directory>"
+          echo ""
+          echo "  Zips the entire directory and creates a"
+          echo "  zip file named <directory>.zip"
+          echo ""
+          echo "  NOTE: Cannot use . as the directory!"
+          exit 1
+        fi
+
+        if [ "$1" == "." ]; then
+          echo "ERROR: Cannot use . as directory, no zip bombs!"
+          exit 1
+        fi
+
+        dir="''${1%/}"
+        zipfilename="''${dir}.zip"
+
+        echo "Creating $zipfilename with contents of $dir"
+
+        # Initially did this for a tech interview, but not sure why you'd ever want to zip node_modules anyway...
+        excludes=$(find "''${dir}" -maxdepth 5 -type d -iname node_modules)
+
+        if [ -n "$excludes" ]; then
+          echo "Excluding $excludes"
+          # TODO: Make this work with multiple excludes
+          zip -r "''${zipfilename}" "''${dir}" -x "''${excludes}/*"
+        else
+          zip -r "''${zipfilename}" "''${dir}"
+        fi
+      '';
+    };
   };
 }
