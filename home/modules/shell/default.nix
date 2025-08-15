@@ -45,6 +45,7 @@ in {
         unzip # for unzipping things
         wget # for downloading things quickly
         whois # DNS info
+        zip # for zipping things
 
         # Base tool upgrades
         bat # cat with syntax highlighting / paging
