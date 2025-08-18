@@ -27,7 +27,18 @@ in {
   # Use the systemd-boot EFI boot loader.
   boot = {
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot = {
+        enable = true;
+        # Write our own config file because there's no way
+        # to write default @saved ourselves and I don't
+        # want to risk switching bootloaders...
+        # https://github.com/NixOS/nixpkgs/pull/286672
+        extraInstallCommands = ''
+          echo 'timeout 10' > /boot/loader/loader.conf
+          echo 'default @saved' >> /boot/loader/loader.conf
+          echo 'console-mode keep' >> /boot/loader/loader.conf
+        '';
+      };
       efi.canTouchEfiVariables = true;
       timeout = 10;
     };
