@@ -140,6 +140,12 @@ in {
             "e23b2a89c3883c9b78fb3c3689deebf11739b590c8e8b56eb624a89b58188701";
           priority = 20;
         };
+
+        PopArtPad = {
+          pskRaw =
+            "c8a1684c9da589f0b146450d50ee91deaf4a84717d159b009c7c14ef0c521ceb";
+          priority = 20;
+        };
       };
     };
   };
