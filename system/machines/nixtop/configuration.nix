@@ -149,6 +149,8 @@ in {
           pskRaw =
             "c8a1684c9da589f0b146450d50ee91deaf4a84717d159b009c7c14ef0c521ceb";
           priority = 20;
+          # Need to do this explicitly for reasons...
+          authProtocols = [ "WPA-PSK" ];
         };
       };
     };
