@@ -10,5 +10,7 @@ in {
     # Needed for GTK tweaks
     # https://github.com/nix-community/home-manager/issues/3113
     programs.dconf.enable = true;
+
+    environment.sessionVariables.NIXOS_OZONE_WL = "1";
   };
 }

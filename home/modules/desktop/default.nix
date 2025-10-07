@@ -145,6 +145,8 @@ in {
         kitty.enable = mkDefault (cfg.terminal == "kitty");
         st.enable = mkDefault (cfg.terminal == "st");
       };
+
+      vscode.enable = true;
     };
 
     evertras.home.shell.funcs = let

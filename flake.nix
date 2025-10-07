@@ -54,6 +54,7 @@
                 "steam-run"
                 "steam-unwrapped"
                 "vagrant"
+                "vscode"
               ];
 
             permittedInsecurePackages = [ "electron-25.9.0" ];
