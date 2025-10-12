@@ -22,7 +22,12 @@ in {
     evertras.home.desktop.bars.waybar.style = "solid";
 
     # TODO: Switch to regular after 25.11, we need updated for xwayland-satellite integration for now
-    home.packages = with pkgs; [ unstable.niri unstable.xwayland-satellite ];
+    home.packages = with pkgs; [
+      unstable.niri
+      unstable.xwayland-satellite
+      unstable.xdg-desktop-portal-gnome
+      unstable.xdg-desktop-portal-gtk
+    ];
 
     home.file = {
       ".config/niri/config.kdl" = let
