@@ -97,7 +97,7 @@ in {
               }
 
               struts {
-                top -${borderWidthPixels}
+                top 0
                 bottom -${borderWidthPixels}
                 // Sides get more aggressive struts
                 left -${doubleBorderWidthPixels}
@@ -110,7 +110,6 @@ in {
           spawn-at-startup "swww-daemon"
 
           environment {
-            DISPLAY ":0"
           }
 
           cursor {
@@ -160,6 +159,12 @@ in {
 
               // Use this instead if you want them visible on third-party screenshot tools.
               // block-out-from "screencast"
+          }
+
+          window-rule {
+              match app-id=r#"^discord$"#
+
+              block-out-from "screencast"
           }
 
           window-rule {
