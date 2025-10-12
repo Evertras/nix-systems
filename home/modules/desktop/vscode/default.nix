@@ -29,15 +29,16 @@ in {
             before = [ "j" "k" ];
             after = [ "<Esc>" ];
           }];
-          "editor.autoClosingBrackets" = "never";
-          "workbench.colorTheme" = "Catppuccin Macchiato";
+          "explorer.confirmDelete" = false;
           "explorer.confirmDragAndDrop" = false;
           "makefile.configureOnOpen" = true;
-          "explorer.confirmDelete" = false;
           "github.copilot.nextEditSuggestions.enabled" = true;
+          "editor.autoClosingBrackets" = "never";
           "editor.fontFamily" = "${
               existsOr cfg.fontName theme.fonts.terminal.name
             }, 'Courier New', monospace";
+          "editor.fontSize" = 12;
+          "workbench.colorTheme" = "Catppuccin Macchiato";
         };
 
         keybindings = [
