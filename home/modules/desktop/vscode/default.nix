@@ -1,9 +1,18 @@
 { config, everlib, lib, ... }:
 with everlib;
 with lib;
-let cfg = config.evertras.home.desktop.vscode;
+let
+  cfg = config.evertras.home.desktop.vscode;
+  theme = config.evertras.themes.selected;
 in {
-  options.evertras.home.desktop.vscode = { enable = mkEnableOption "vscode"; };
+  options.evertras.home.desktop.vscode = {
+    enable = mkEnableOption "vscode";
+
+    fontName = mkOption {
+      type = with types; nullOr str;
+      default = null;
+    };
+  };
 
   config = mkIf cfg.enable {
     programs.vscode = {
@@ -26,8 +35,9 @@ in {
           "makefile.configureOnOpen" = true;
           "explorer.confirmDelete" = false;
           "github.copilot.nextEditSuggestions.enabled" = true;
-          "editor.fontFamily" =
-            "Hasklug Nerd Font Mono, 'Courier New', monospace";
+          "editor.fontFamily" = "${
+              existsOr cfg.fontName theme.fonts.terminal.name
+            }, 'Courier New', monospace";
         };
 
         keybindings = [
