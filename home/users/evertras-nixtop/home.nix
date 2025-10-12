@@ -85,6 +85,8 @@ in {
           displays = [ displayMain ];
         };
 
+        niri = { enable = true; };
+
         # Keeping as reference for now
         dwm = {
           enable = false;
