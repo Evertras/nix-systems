@@ -106,6 +106,10 @@ in {
       };
     };
 
+    dconf.settings = {
+      "org/gnome/desktop/interface" = { color-scheme = "prefer-dark"; };
+    };
+
     services = let
       # Savannah
       latitude = 32.0809;
