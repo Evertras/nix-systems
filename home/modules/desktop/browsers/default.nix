@@ -14,7 +14,7 @@ in {
     enableFirefox = mkOption {
       type = types.bool;
       default = false;
-      descrpition = "enable firefox";
+      description = "enable firefox";
     };
 
     enableChromium = mkOption {
