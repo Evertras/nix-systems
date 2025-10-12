@@ -107,9 +107,9 @@ in {
     };
 
     services = let
-      # Tokyo generic
-      latitude = 35.652832;
-      longitude = 139.839478;
+      # Savannah
+      latitude = 32.0809;
+      longitude = -81.0912;
     in {
       redshift = {
         enable = usingXorg;
@@ -121,7 +121,7 @@ in {
         enable = usingWayland;
 
         temperature = {
-          day = 6500;
+          day = 7000;
           night = 4000;
         };
 
