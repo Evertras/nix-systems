@@ -97,7 +97,7 @@ in {
                 }
             }
 
-            spawn-at-startup "waybar"
+            spawn-at-startup "systemctl" "--user" "start" "waybar.service"
             spawn-at-startup "swww-daemon"
 
             environment {
