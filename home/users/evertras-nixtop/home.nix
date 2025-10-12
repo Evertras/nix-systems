@@ -45,7 +45,8 @@ in {
     shell = {
       core = { inherit gpgKey; };
 
-      # Disable until resubscribe
+      # Using vscode when I want copilot for now,
+      # but keeping as reference.
       #neovim = { enableCopilot = true; };
 
       coding = {
@@ -73,8 +74,6 @@ in {
       browsers = { enableFirefox = true; };
 
       display.sleep.enable = true;
-
-      ime.enable = true;
 
       discord.enable = true;
 
