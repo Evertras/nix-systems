@@ -26,7 +26,7 @@ in {
         border-color=${theme.colors.primary}
 
         [actionable=true]
-        anchor=top-left
+        anchor=${cfg.origin}
       '';
     };
   };
