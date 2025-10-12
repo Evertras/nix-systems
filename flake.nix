@@ -49,6 +49,7 @@
                 "nvidia-settings"
                 "nvidia-x11"
                 "obsidian"
+                "slack"
                 "steam"
                 "steam-original"
                 "steam-run"

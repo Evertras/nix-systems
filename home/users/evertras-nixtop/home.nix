@@ -112,7 +112,7 @@ in {
 
   home = {
     # Other fun things
-    packages = with pkgs; [ cockatrice ];
+    packages = with pkgs; [ cockatrice slack ];
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
