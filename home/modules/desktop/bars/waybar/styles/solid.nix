@@ -4,7 +4,7 @@ let
     padding: 0 0.5em;
     margin: 0;
   '';
-  mkBorder = color: "border-top: 5px solid ${color}";
+  mkBorder = color: "border-top: 3px solid ${color}";
 in ''
   /* NOTE: this rule overrides things
     at random, use with caution despite
