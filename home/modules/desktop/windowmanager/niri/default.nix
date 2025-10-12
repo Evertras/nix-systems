@@ -81,7 +81,11 @@ in {
               }
 
               // You can also customize the heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
-              // preset-window-heights { }
+              preset-window-heights {
+                proportion 0.2
+                proportion 0.5
+                proportion 0.8
+              }
 
               default-column-width { proportion 0.5; }
 
@@ -163,8 +167,14 @@ in {
 
           window-rule {
               match app-id=r#"^discord$"#
+              match app-id=r#"^librewolf$"#
 
               block-out-from "screencast"
+              open-maximized true
+          }
+
+          window-rule {
+              match app-id=r#"^firefox$"#
           }
 
           window-rule {
