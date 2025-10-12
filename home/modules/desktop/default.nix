@@ -27,7 +27,11 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
+  config = mkIf cfg.enable (let
+    usingWayland = cfg.windowmanager.hyprland.enable
+      || cfg.windowmanager.niri.enable;
+    usingXorg = cfg.windowmanager.i3.enable || cfg.windowmanager.dwm.enable;
+  in {
     home.packages = with pkgs;
       let fontPackages = map (f: f.package) (attrsets.attrValues theme.fonts);
       in [
@@ -103,10 +107,6 @@ in {
     };
 
     services = let
-      usingWayland = cfg.windowmanager.hyprland.enable
-        || cfg.windowmanager.niri.enable;
-      usingXorg = cfg.windowmanager.i3.enable || cfg.windowmanager.dwm.enable;
-
       # Tokyo generic
       latitude = 35.652832;
       longitude = 139.839478;
@@ -138,6 +138,8 @@ in {
 
         i3 = { kbLayout = mkDefault cfg.kbLayout; };
       };
+
+      bars.waybar.enable = mkDefault usingWayland;
 
       gtktheme.enable = mkDefault true;
       notifications.enable = mkDefault true;
@@ -195,5 +197,5 @@ in {
         '';
       };
     };
-  };
+  });
 }

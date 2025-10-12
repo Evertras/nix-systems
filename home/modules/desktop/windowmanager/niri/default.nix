@@ -19,7 +19,8 @@ in {
   };
 
   config = mkIf cfg.enable {
-    # TODO: Extract tofi from hyprland for launching things
+    evertras.home.desktop.bars.waybar.style = "solid";
+
     # TODO: Switch to regular after 25.11, we need updated for xwayland-satellite integration for now
     home.packages = with pkgs; [ unstable.niri unstable.xwayland-satellite ];
 
@@ -97,7 +98,7 @@ in {
                 }
             }
 
-            spawn-at-startup "systemctl" "--user" "start" "waybar.service"
+            spawn-at-startup "waybar"
             spawn-at-startup "swww-daemon"
 
             environment {

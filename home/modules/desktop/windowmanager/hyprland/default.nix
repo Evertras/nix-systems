@@ -7,7 +7,7 @@ let
   cfg = config.evertras.home.desktop.windowmanager.hyprland;
   theme = config.evertras.themes.selected;
 in {
-  imports = [ ./pyprland.nix ./waybar.nix ];
+  imports = [ ./pyprland.nix ];
 
   options.evertras.home.desktop.windowmanager.hyprland = {
     enable = mkEnableOption "Enable Hyprland";
@@ -48,10 +48,7 @@ in {
 
   config = mkIf cfg.enable {
     # Extra helpers in other files
-    evertras.home.desktop.windowmanager.hyprland = {
-      waybar.enable = true;
-      pyprland.enable = true;
-    };
+    evertras.home.desktop.windowmanager.hyprland = { pyprland.enable = true; };
 
     wayland.windowManager.hyprland = {
       enable = true;
