@@ -5,6 +5,7 @@ let
   pkgMapping = {
     "CaskaydiaCove" = "caskaydia-cove";
     "Terminess" = "terminess-ttf";
+    "Hasklug" = "hasklug";
   };
 in {
   make = name: {

@@ -10,7 +10,8 @@ let
 
   fontOverrides = {
     main = nerdfonts.make "CaskaydiaCove";
-    terminal = berkeleyFont;
+    terminal = nerdfonts.make "Hasklug";
+    #terminal = berkeleyFont;
   };
 
   gpgKey = "ABFFF058F479311F";
@@ -69,13 +70,18 @@ in {
       enable = true;
       kbLayout = "jp";
 
+      browsers = { enableFirefox = true; };
+
       display.sleep.enable = true;
 
       ime.enable = true;
 
       discord.enable = true;
 
-      terminals.kitty.fontName = "Berkeley Mono";
+      terminals.kitty = {
+        fontName = fontOverrides.terminal.name;
+        opacity = "1.0";
+      };
 
       windowmanager = {
         hyprland = {
@@ -85,7 +91,10 @@ in {
           displays = [ displayMain ];
         };
 
-        niri = { enable = true; };
+        niri = {
+          enable = true;
+          borderWidthPixels = 2;
+        };
 
         # Keeping as reference for now
         dwm = {

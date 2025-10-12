@@ -11,6 +11,12 @@ in {
       description = "enable librewolf";
     };
 
+    enableFirefox = mkOption {
+      type = types.bool;
+      default = false;
+      descrpition = "enable firefox";
+    };
+
     enableChromium = mkOption {
       type = types.bool;
       default = false;
@@ -27,5 +33,6 @@ in {
     pkgsLibrewolf =
       if cfg.enableLibrewolf then [ pkgs.unstable.librewolf ] else [ ];
     pkgsChromium = if cfg.enableChromium then [ pkgs.chromium ] else [ ];
-  in { home.packages = pkgsLibrewolf ++ pkgsChromium; };
+    pkgsFirefox = if cfg.enableFirefox then [ pkgs.firefox ] else [ ];
+  in { home.packages = pkgsLibrewolf ++ pkgsChromium ++ pkgsFirefox; };
 }
