@@ -73,6 +73,9 @@ in {
         ipafont
         kochi-substitute
 
+        # Use this to find xkb keys and inputs, etc.
+        wev
+
         # Theme stuff
         theme.cursorTheme.package
         theme.gtkTheme.package
