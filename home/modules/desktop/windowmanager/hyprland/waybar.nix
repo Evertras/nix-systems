@@ -22,7 +22,8 @@ in {
 
         settings = {
           mainBar = {
-            modules-left = [ "battery" "network" "hyprland/workspaces" ];
+            modules-left =
+              [ "battery" "network" "hyprland/workspaces" "niri/workspaces" ];
             modules-center = [ "hyprland/window" ];
             modules-right = [ "bluetooth" "clock" ];
 
@@ -32,6 +33,8 @@ in {
             };
 
             "hyprland/window" = { format = "{}"; };
+
+            "niri/workspaces" = { format = "{value}"; };
 
             "battery" = {
               # /sys/class/power_supply
