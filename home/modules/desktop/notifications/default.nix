@@ -4,8 +4,13 @@ let
   cfg = config.evertras.home.desktop.notifications;
   theme = config.evertras.themes.selected;
 in {
+  imports = [ ./mako ];
+
   options.evertras.home.desktop.notifications = {
-    enable = mkEnableOption "notifications";
+    enable = mkEnableOption "Notifications";
+
+    # For now use mako for wayland, dunst for x11
+    wayland = mkEnableOption "Using Wayland";
 
     origin = mkOption {
       type = types.str;
@@ -21,7 +26,13 @@ in {
         libnotify
       ];
 
-    services.dunst = {
+    evertras.home.desktop.notifications.mako = {
+      enable = cfg.wayland;
+      origin = cfg.origin;
+    };
+
+    # TODO: Move this out later
+    services.dunst = mkIf (!cfg.wayland) {
       enable = true;
 
       settings = {

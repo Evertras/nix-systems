@@ -31,7 +31,7 @@ in {
             modules-left =
               [ "battery" "network" "hyprland/workspaces" "niri/workspaces" ];
             modules-center = [ "hyprland/window" ];
-            modules-right = [ "bluetooth" "clock" ];
+            modules-right = [ "systemd-failed-units" "bluetooth" "clock" ];
 
             "hyprland/workspaces" = {
               format = "{name}";

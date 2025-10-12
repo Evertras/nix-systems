@@ -101,6 +101,7 @@ in {
           }
 
           spawn-at-startup "waybar"
+          spawn-at-startup "mako"
           spawn-at-startup "swww-daemon"
 
           environment {

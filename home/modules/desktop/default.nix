@@ -142,7 +142,10 @@ in {
       bars.waybar.enable = mkDefault usingWayland;
 
       gtktheme.enable = mkDefault true;
-      notifications.enable = mkDefault true;
+      notifications = {
+        enable = mkDefault true;
+        wayland = mkDefault usingWayland;
+      };
 
       dmenu.enable = mkDefault true;
 
