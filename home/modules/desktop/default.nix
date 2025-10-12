@@ -103,7 +103,8 @@ in {
     };
 
     services = let
-      usingWayland = cfg.windowmanager.hyprland.enable;
+      usingWayland = cfg.windowmanager.hyprland.enable
+        || cfg.windowmanager.niri.enable;
       usingXorg = cfg.windowmanager.i3.enable || cfg.windowmanager.dwm.enable;
 
       # Tokyo generic
@@ -142,6 +143,8 @@ in {
       notifications.enable = mkDefault true;
 
       dmenu.enable = mkDefault true;
+
+      launchers.enable = mkDefault true;
 
       terminals = {
         alacritty.enable = mkDefault (cfg.terminal == "alacritty");

@@ -53,17 +53,6 @@ in {
       pyprland.enable = true;
     };
 
-    evertras.home.shell.funcs = {
-      launch-app.body = let
-        command = import ./toficmd.nix {
-          inherit theme lib;
-          type = "fullscreen";
-        };
-      in ''
-        eval "$(${command})"
-      '';
-    };
-
     wayland.windowManager.hyprland = {
       enable = true;
 
