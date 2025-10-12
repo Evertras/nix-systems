@@ -1,10 +1,10 @@
-{ config, everlib, lib, pkgs, ... }:
+{ config, everlib, lib, ... }:
 with lib;
 with everlib;
 let cfg = config.evertras.home.desktop.launchers;
 in {
-
   imports = everlib.allSubdirs ./.;
+
   options.evertras.home.desktop.launchers = {
     enable = mkEnableOption "Enable default launcher func";
 
