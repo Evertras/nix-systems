@@ -175,6 +175,8 @@ in {
 
           window-rule {
               match app-id=r#"^firefox$"#
+
+              open-maximized true
           }
 
           window-rule {
