@@ -43,11 +43,11 @@ in {
 
               warp-mouse-to-focus
 
-              focus-follows-mouse max-scroll-amount="0%"
+              focus-follows-mouse max-scroll-amount="25%"
           }
 
           layout {
-              gaps 16
+              gaps 0
 
               // When to center a column when changing focus, options are:
               // - "never", default behavior, focusing an off-screen column will keep at the left
@@ -69,50 +69,15 @@ in {
 
               default-column-width { proportion 0.5; }
 
-              // By default focus ring and border are rendered as a solid background rectangle
-              // behind windows. That is, they will show up through semitransparent windows.
-              // This is because windows using client-side decorations can have an arbitrary shape.
-              //
-              // If you don't like that, you should uncomment `prefer-no-csd` below.
-              // Niri will draw focus ring and border *around* windows that agree to omit their
-              // client-side decorations.
-              //
-              // Alternatively, you can override it with a window rule called
-              // `draw-border-with-background`.
-
-              // You can change how the focus ring looks.
               focus-ring {
-                  // Uncomment this line to disable the focus ring.
-                  // off
+                off
+              }
 
-                  // How many logical pixels the ring extends out from the windows.
-                  width 4
-
-                  // Colors can be set in a variety of ways:
-                  // - CSS named colors: "red"
-                  // - RGB hex: "#rgb", "#rgba", "#rrggbb", "#rrggbbaa"
-                  // - CSS-like notation: "rgb(255, 127, 0)", rgba(), hsl() and a few others.
-
-                  // Color of the ring on the active monitor.
-                  active-color "#7fc8ff"
-
-                  // Color of the ring on inactive monitors.
-                  inactive-color "#505050"
-
-                  // You can also use gradients. They take precedence over solid colors.
-                  // Gradients are rendered the same as CSS linear-gradient(angle, from, to).
-                  // The angle is the same as in linear-gradient, and is optional,
-                  // defaulting to 180 (top-to-bottom gradient).
-                  // You can use any CSS linear-gradient tool on the web to set these up.
-                  // Changing the color space is also supported, check the wiki for more info.
-                  //
-                  // active-gradient from="#80c8ff" to="red" angle=180
-
-                  // You can also color the gradient relative to the entire view
-                  // of the workspace, rather than relative to just the window itself.
-                  // To do that, set relative-to="workspace-view".
-                  //
-                  // inactive-gradient from="#505050" to="#808080" angle=45 relative-to="workspace-view"
+              border {
+                width 1
+                active-color "${theme.colors.primary}"
+                inactive-color "${theme.colors.background}"
+                urgent-color "${theme.colors.urgent}"
               }
           }
 
@@ -173,7 +138,7 @@ in {
           }
 
           window-rule {
-              geometry-corner-radius 5
+              geometry-corner-radius 0
               clip-to-geometry true
           }
 
@@ -195,7 +160,7 @@ in {
               // Suggested binds for running programs: terminal, app launcher, screen locker.
               Mod+Space hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty" "-1"; }
               Mod+P hotkey-overlay-title="Run an Application: launch-app" { spawn "launch-app"; }
-              Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+              // Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
               XF86AudioRaiseVolume allow-when-locked=true { spawn "volume-up"; }
               XF86AudioLowerVolume allow-when-locked=true { spawn "volume-down"; }
@@ -213,8 +178,9 @@ in {
               Mod+Up    { focus-window-up; }
               Mod+Right { focus-column-right; }
               Mod+H     { focus-column-left; }
-              Mod+J     { focus-window-down; }
-              Mod+K     { focus-window-up; }
+              // Only jump between workspaces on up/down
+              Mod+J     { focus-window-or-workspace-down; }
+              Mod+K     { focus-window-or-workspace-up; }
               Mod+L     { focus-column-right; }
 
               Mod+Ctrl+Left  { move-column-left; }
@@ -225,13 +191,6 @@ in {
               Mod+Ctrl+J     { move-window-down; }
               Mod+Ctrl+K     { move-window-up; }
               Mod+Ctrl+L     { move-column-right; }
-
-              // Alternative commands that move across workspaces when reaching
-              // the first or last window in a column.
-              // Mod+J     { focus-window-or-workspace-down; }
-              // Mod+K     { focus-window-or-workspace-up; }
-              // Mod+Ctrl+J     { move-window-down-or-to-workspace-down; }
-              // Mod+Ctrl+K     { move-window-up-or-to-workspace-up; }
 
               Mod+Home { focus-column-first; }
               Mod+End  { focus-column-last; }
@@ -318,15 +277,15 @@ in {
               Mod+7 { focus-workspace 7; }
               Mod+8 { focus-workspace 8; }
               Mod+9 { focus-workspace 9; }
-              Mod+Ctrl+1 { move-column-to-workspace 1; }
-              Mod+Ctrl+2 { move-column-to-workspace 2; }
-              Mod+Ctrl+3 { move-column-to-workspace 3; }
-              Mod+Ctrl+4 { move-column-to-workspace 4; }
-              Mod+Ctrl+5 { move-column-to-workspace 5; }
-              Mod+Ctrl+6 { move-column-to-workspace 6; }
-              Mod+Ctrl+7 { move-column-to-workspace 7; }
-              Mod+Ctrl+8 { move-column-to-workspace 8; }
-              Mod+Ctrl+9 { move-column-to-workspace 9; }
+              Mod+Shift+1 { move-column-to-workspace 1; }
+              Mod+Shift+2 { move-column-to-workspace 2; }
+              Mod+Shift+3 { move-column-to-workspace 3; }
+              Mod+Shift+4 { move-column-to-workspace 4; }
+              Mod+Shift+5 { move-column-to-workspace 5; }
+              Mod+Shift+6 { move-column-to-workspace 6; }
+              Mod+Shift+7 { move-column-to-workspace 7; }
+              Mod+Shift+8 { move-column-to-workspace 8; }
+              Mod+Shift+9 { move-column-to-workspace 9; }
 
               // Alternatively, there are commands to move just a single window:
               // Mod+Ctrl+1 { move-window-to-workspace 1; }
