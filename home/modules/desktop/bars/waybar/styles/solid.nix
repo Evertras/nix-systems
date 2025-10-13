@@ -45,14 +45,13 @@ in ''
   #bluetooth.connected {
     background-color: ${palette.Blue};
     color: ${theme.colors.background};
-    border: none;
   }
 
   #clock {
     ${layout}
     background-color: ${theme.colors.background};
-    color: ${palette.Teal};
-    ${mkBorder palette.Teal};
+    color: ${palette.Sapphire};
+    ${mkBorder palette.Sapphire};
   }
 
   #network {
@@ -68,6 +67,23 @@ in ''
     color: ${palette.Lavender};
     background-color: ${theme.colors.background};
     ${mkBorder palette.Lavender};
+  }
+
+  #pulseaudio {
+    ${layout}
+    color: ${palette.Rosewater};
+    ${mkBorder palette.Rosewater};
+    min-width: 3em;
+  }
+
+  #pulseaudio.bluetooth {
+    color: ${palette.Blue};
+    ${mkBorder palette.Blue};
+  }
+
+  #pulseaudio.muted {
+    color: ${theme.colors.urgent};
+    ${mkBorder theme.colors.urgent};
   }
 
   #window {

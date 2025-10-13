@@ -31,7 +31,7 @@ in {
             modules-left =
               [ "battery" "network" "hyprland/workspaces" "niri/workspaces" ];
             modules-center = [ "hyprland/window" ];
-            modules-right = [ "systemd-failed-units" "bluetooth" "clock" ];
+            modules-right = [ "pulseaudio" "bluetooth" "clock" ];
 
             "hyprland/workspaces" = {
               format = "{name}";
@@ -70,6 +70,14 @@ in {
               "tooltip-format-ethernet" = " {ifname}";
               "tooltip-format-disconnected" = "Disconnected";
               "max-length" = 50;
+            };
+
+            "pulseaudio" = {
+              format = "{volume} 󰓃 ";
+              format-bluetooth = "{volume} 󰋋 ";
+              format-muted = "{volume}  ";
+              max-volume = 40;
+              on-click = "volume-mute-toggle";
             };
 
             /* For some fun later
