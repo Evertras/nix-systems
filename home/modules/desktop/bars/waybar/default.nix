@@ -31,7 +31,7 @@ in {
             modules-left =
               [ "battery" "network" "hyprland/workspaces" "niri/workspaces" ];
             modules-center = [ "hyprland/window" ];
-            modules-right = [ "pulseaudio" "bluetooth" "clock" ];
+            modules-right = [ "pulseaudio" "bluetooth" "backlight" "clock" ];
 
             "hyprland/workspaces" = {
               format = "{name}";
@@ -50,6 +50,12 @@ in {
               format = "{icon} {capacity}%";
               format-icons = [ "" "" "" "" "" ];
               max-length = 25;
+            };
+
+            "backlight" = {
+              format = "{percent} {icon}";
+              format-icons =
+                [ "󱩎 " "󱩏 " "󱩐 " "󱩑 " "󱩒 " "󱩓 " "󱩔 " "󱩕 " "󱩖 " "󰛨 " ];
             };
 
             # Show date and time

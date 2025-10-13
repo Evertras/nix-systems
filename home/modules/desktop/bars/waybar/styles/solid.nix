@@ -86,6 +86,12 @@ in ''
     ${mkBorder theme.colors.urgent};
   }
 
+  #backlight {
+    ${layout}
+    color: ${palette.Rosewater};
+    ${mkBorder palette.Rosewater};
+  }
+
   #window {
     background-color: ${theme.colors.background};
     color: ${theme.colors.contrast};
