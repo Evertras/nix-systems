@@ -130,7 +130,7 @@ in {
           // Additionally, clients will be informed that they are tiled, removing some client-side rounded corners.
           // This option will also fix border/focus ring drawing behind some semitransparent windows.
           // After enabling or disabling this, you need to restart the apps for this to take effect.
-          // prefer-no-csd
+          prefer-no-csd
 
           screenshot-path "~/.evertras/screenshots/%Y-%m-%d %H-%M-%S.png"
 
@@ -382,7 +382,7 @@ in {
 
               Mod+W { toggle-column-tabbed-display; }
 
-              Ctrl+Alt+P { screenshot; }
+              Mod+Shift+S { screenshot; }
               Print { screenshot-screen; }
               Alt+Print { screenshot-window; }
 
