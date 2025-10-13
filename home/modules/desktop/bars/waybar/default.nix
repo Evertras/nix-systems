@@ -72,6 +72,8 @@ in {
               "max-length" = 50;
             };
 
+            "bluetooth" = { on-click = "headphones-toggle"; };
+
             "pulseaudio" = {
               format = "{volume} 󰓃 ";
               format-bluetooth = "{volume} 󰋋 ";
