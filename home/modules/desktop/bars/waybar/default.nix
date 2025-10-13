@@ -44,32 +44,32 @@ in {
 
             "battery" = {
               # /sys/class/power_supply
-              "bat" = "BAT1";
-              "interval" = 60;
-              "states" = { "low" = 30; };
-              "format" = "{icon} {capacity}%";
-              "format-icons" = [ "" "" "" "" "" ];
-              "max-length" = 25;
+              bat = "BAT1";
+              interval = 60;
+              states = { "low" = 30; };
+              format = "{icon} {capacity}%";
+              format-icons = [ "" "" "" "" "" ];
+              max-length = 25;
             };
 
             # Show date and time
             "clock" = {
-              "format" = "{:%a %b %d %H:%M}";
-              "interval" = 60;
-              "max-length" = 50;
+              format = "{:%a %b %d %H:%M}";
+              interval = 60;
+              max-length = 50;
             };
 
             "network" = {
-              "interface" = cfg.monitorNetworkInterface;
-              "format" = "{ifname}";
-              "format-wifi" = "  {essid} ({signalStrength}%)";
-              "format-ethernet" = "󰊗 {ipaddr}/{cidr}";
-              "format-disconnected" = "  None";
-              "tooltip-format" = "󰊗 {ifname} via {gwaddr}";
-              "tooltip-format-wifi" = "  {essid} ({signalStrength}%)";
-              "tooltip-format-ethernet" = " {ifname}";
-              "tooltip-format-disconnected" = "Disconnected";
-              "max-length" = 50;
+              interface = cfg.monitorNetworkInterface;
+              format = "{ifname}";
+              format-wifi = "  {essid} ({signalStrength}%)";
+              format-ethernet = "󰊗 {ipaddr}/{cidr}";
+              format-disconnected = "  None";
+              tooltip-format = "󰊗 {ifname} via {gwaddr}";
+              tooltip-format-wifi = "  {essid} ({signalStrength}%)";
+              tooltip-format-ethernet = " {ifname}";
+              tooltip-format-disconnected = "Disconnected";
+              max-length = 50;
             };
 
             "bluetooth" = { on-click = "headphones-toggle"; };
