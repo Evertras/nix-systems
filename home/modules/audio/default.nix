@@ -85,6 +85,16 @@ in {
 
           notify-send "Headphones disconnected" -t 2000 -i audio-headset
         '';
+
+        headphones-toggle.body = ''
+          connected=$(bluetoothctl info ${cfg.headphonesMacAddress} | grep Connected | awk '{print $2}')
+
+          if [ "$connected" == 'yes' ]; then
+            headphones-disconnect
+          else
+            headphones-connect
+          fi
+        '';
       } else
         { };
 
