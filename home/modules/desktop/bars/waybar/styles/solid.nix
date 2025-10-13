@@ -51,7 +51,8 @@ in ''
   #clock {
     ${layout}
     background-color: ${theme.colors.background};
-    ${mkBorder theme.colors.text};
+    color: ${palette.Teal};
+    ${mkBorder palette.Teal};
   }
 
   #network {
