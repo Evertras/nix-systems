@@ -126,7 +126,7 @@ in {
 
         temperature = {
           day = 7000;
-          night = 4000;
+          night = 3500;
         };
 
         latitude = toString latitude;
