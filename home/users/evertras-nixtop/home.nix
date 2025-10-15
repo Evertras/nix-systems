@@ -68,6 +68,10 @@ in {
         ff-tiledb.body = ''
           firefox -P TileDB
         '';
+
+        ff-me.body = ''
+          firefox -P default
+        '';
       };
     };
 
