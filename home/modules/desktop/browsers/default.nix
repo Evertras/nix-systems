@@ -33,6 +33,6 @@ in {
     pkgsLibrewolf =
       if cfg.enableLibrewolf then [ pkgs.unstable.librewolf ] else [ ];
     pkgsChromium = if cfg.enableChromium then [ pkgs.chromium ] else [ ];
-    pkgsFirefox = if cfg.enableFirefox then [ pkgs.firefox ] else [ ];
+    pkgsFirefox = if cfg.enableFirefox then [ pkgs.unstable.firefox ] else [ ];
   in { home.packages = pkgsLibrewolf ++ pkgsChromium ++ pkgsFirefox; };
 }
