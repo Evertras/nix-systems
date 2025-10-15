@@ -64,6 +64,10 @@ in {
           wc --chars "$1" | awk '{print $1}'
           cat "$1"
         '';
+
+        ff-tiledb.body = ''
+          firefox -P TileDB
+        '';
       };
     };
 
