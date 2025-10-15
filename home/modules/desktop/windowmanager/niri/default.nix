@@ -134,6 +134,11 @@ in {
 
           screenshot-path "~/.evertras/screenshots/%Y-%m-%d %H-%M-%S.png"
 
+          // Apply to all windows
+          window-rule {
+              open-maximized true
+          }
+
           // Work around WezTerm's initial configure bug
           // by setting an empty default-column-width.
           window-rule {
@@ -165,18 +170,18 @@ in {
               // block-out-from "screencast"
           }
 
+          // Terminals get partial screens
+          window-rule {
+            match app-id=r#"^kitty$"#
+
+            open-maximized false
+          }
+
           window-rule {
               match app-id=r#"^discord$"#
               match app-id=r#"^librewolf$"#
 
               block-out-from "screencast"
-              open-maximized true
-          }
-
-          window-rule {
-              match app-id=r#"^firefox$"#
-
-              open-maximized true
           }
 
           window-rule {
