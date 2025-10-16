@@ -54,6 +54,12 @@ in ''
     ${mkBorder palette.Sapphire};
   }
 
+  #keyboard-state {
+    ${layout}
+    color: ${palette.Teal};
+    ${mkBorder palette.Teal};
+  }
+
   #network {
     ${layout}
     color: ${theme.colors.background};

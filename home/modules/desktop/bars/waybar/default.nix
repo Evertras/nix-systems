@@ -28,8 +28,13 @@ in {
 
         settings = {
           mainBar = {
-            modules-left =
-              [ "battery" "network" "hyprland/workspaces" "niri/workspaces" ];
+            modules-left = [
+              "battery"
+              "keyboard-state"
+              "network"
+              "hyprland/workspaces"
+              "niri/workspaces"
+            ];
             modules-center = [ "hyprland/window" ];
             modules-right = [ "pulseaudio" "bluetooth" "backlight" "clock" ];
 
@@ -63,6 +68,17 @@ in {
               format = "{:%a %b %d %H:%M}";
               interval = 60;
               max-length = 50;
+            };
+
+            "keyboard-state" = {
+              numlock = true;
+
+              format.numlock = "{icon}";
+
+              format-icons = {
+                locked = " ";
+                unlocked = " ";
+              };
             };
 
             "network" = {
