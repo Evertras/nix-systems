@@ -82,9 +82,9 @@ in {
 
               // You can also customize the heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
               preset-window-heights {
-                proportion 0.2
+                proportion 0.3
                 proportion 0.5
-                proportion 0.8
+                proportion 0.7
               }
 
               default-column-width { proportion 0.5; }
