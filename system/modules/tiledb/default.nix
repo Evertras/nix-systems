@@ -17,10 +17,6 @@ in {
       vcpkg
     ];
 
-    programs.nix-ld = {
-      enable = true;
-
-      libraries = [ stdenv.cc.cc openssl ];
-    };
+    programs.nix-ld = { enable = true; };
   };
 }
