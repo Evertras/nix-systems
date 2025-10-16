@@ -68,6 +68,8 @@ in {
     setSocketVariable = true;
   };
 
+  evertras.dev.tiledb.enable = true;
+
   ##############################################################################
   # Desktop stuff
   # (keep minimal, use home-manager for most things)
