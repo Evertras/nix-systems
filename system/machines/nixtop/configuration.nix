@@ -145,9 +145,9 @@ in {
           priority = 20;
         };
 
-        Beaufy = {
+        OhBeaufy = {
           pskRaw =
-            "fa4a507f4447a1fa018cb73f73127cff7a14334cf0fb9f12e90bcf4646c10435";
+            "d406744fa2fef95124c172c7222689b0a9c018b0dffa6fe2ab48a4961fa0be95";
           priority = 20;
           # Need to do this explicitly for reasons...
           authProtocols = [ "WPA-PSK" ];
