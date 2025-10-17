@@ -16,6 +16,13 @@ in {
         cmake
         pkg-config
         vcpkg
+
+        # Recent python, exact version unimportant
+        python312
+        python312Packages.numpy
+        python312Packages.pip
+        python312Packages.pybind11
+        python312Packages.setuptools
       ];
 
       # Development vars
@@ -24,6 +31,7 @@ in {
         tiledb-home-dir = "$HOME/.local/share/tiledb";
       in {
         TILEDB_HOME = tiledb-home-dir;
+        TILEDB_PATH = tiledb-home-dir;
         TILEDB_DEV_DATA = "${tiledb-home-dir}/devdata";
         LD_LIBRARY_PATH = "${tiledb-home-dir}/lib:\${LD_LIBRARY_PATH}";
         CGO_CFLAGS = "-I${tiledb-home-dir}/include";
