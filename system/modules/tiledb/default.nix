@@ -9,6 +9,7 @@ in {
       "Environment settings for developing TileDB and surrounding infrastructure";
   };
 
+  # Prefer putting things in home manager for ease of use, but some things seem to only want to work here...
   config = mkIf cfg.enable {
     environment = {
       systemPackages = with pkgs; [
@@ -27,8 +28,8 @@ in {
         tiledb-home-dir = "$HOME/.local/share/tiledb";
       in {
         CGO_CFLAGS = "-I${tiledb-home-dir}/include";
-        CGO_LDFLAGS = "-L${tiledb-home-dir}/lib";
-        LD_LIBRARY_PATH = "${tiledb-home-dir}/lib:\${LD_LIBRARY_PATH}";
+        CGO_LDFLAGS = "-L${tiledb-home-dir}/lib64";
+        LD_LIBRARY_PATH = "${tiledb-home-dir}/lib64:\${LD_LIBRARY_PATH}";
         TILEDB_HOME = tiledb-home-dir;
         TILEDB_PATH = tiledb-home-dir;
         TILEDB_DEV_DATA = "${tiledb-home-dir}/devdata";

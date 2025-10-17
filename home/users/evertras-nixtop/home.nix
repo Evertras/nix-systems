@@ -31,6 +31,8 @@ in {
   evertras.home = {
     core.username = "evertras";
 
+    tiledb.enable = true;
+
     audio = {
       enable = true;
       enableDesktop = true;
