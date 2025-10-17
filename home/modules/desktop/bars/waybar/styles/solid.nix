@@ -56,8 +56,8 @@ in ''
 
   #keyboard-state {
     ${layout}
-    color: ${palette.Teal};
-    ${mkBorder palette.Teal};
+    color: ${palette.Rosewater};
+    ${mkBorder palette.Rosewater};
   }
 
   #network {
