@@ -59,8 +59,7 @@ in {
 
             "backlight" = {
               format = "{percent} {icon}";
-              format-icons =
-                [ "󱩎 " "󱩏 " "󱩐 " "󱩑 " "󱩒 " "󱩓 " "󱩔 " "󱩕 " "󱩖 " "󰛨 " ];
+              format-icons = [ "󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨" ];
             };
 
             # Show date and time
@@ -76,8 +75,8 @@ in {
               format.numlock = "{icon}";
 
               format-icons = {
-                locked = " ";
-                unlocked = " ";
+                locked = "";
+                unlocked = "";
               };
             };
 
