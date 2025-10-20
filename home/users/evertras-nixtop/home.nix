@@ -81,7 +81,10 @@ in {
       enable = true;
       kbLayout = "jp";
 
-      browsers = { enableFirefox = true; };
+      browsers = {
+        enableFirefox = true;
+        default = "firefox";
+      };
 
       display.sleep.enable = true;
 
