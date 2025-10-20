@@ -122,8 +122,6 @@ in {
   ##############################################################################
   # Networking stuff
 
-  evertras.system.vpn.mullvad.enable = true;
-
   networking = {
     hostName = "nixtop";
     wireless = {
@@ -160,12 +158,7 @@ in {
     };
   };
 
-  # TODO: Doing this because local DNS doesn't work, investigate
-  networking.nameservers = [ "8.8.8.8" ];
-  services.resolved = {
-    enable = true;
-    fallbackDns = [ "8.8.8.8" ];
-  };
+  networking.nameservers = [ "8.8.8.8" "10.20.0.2" ];
 
   ##############################################################################
   # Nvidia stuff
