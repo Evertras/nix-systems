@@ -21,6 +21,8 @@ in {
 
         # Needed by Server
         zstd
+
+        _1password-cli
       ];
 
       file = {

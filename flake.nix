@@ -45,6 +45,7 @@
           config = {
             allowUnfreePredicate = pkg:
               builtins.elem (nixpkgs.lib.getName pkg) [
+                "1password-cli"
                 "discord"
                 "nvidia-settings"
                 "nvidia-x11"
