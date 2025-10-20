@@ -47,6 +47,10 @@ in {
         nix-shell "$HOME/${shellPath}" --command fish
       '';
 
+      "tdb-aws-sandbox".body = ''
+        aws-vault exec sandbox --backend=pass
+      '';
+
       "tdb-vpn-connect".body = ''
         sudo systemctl start wg-quick-tiledb
         notify-send "VPN Connected" -t 2000
