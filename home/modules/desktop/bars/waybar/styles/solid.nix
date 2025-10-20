@@ -75,6 +75,12 @@ in ''
     ${mkBorder palette.Lavender};
   }
 
+  #custom-vpn {
+    ${layout}
+    color: ${palette.Lavender};
+    ${mkBorder palette.Lavender};
+  }
+
   #pulseaudio {
     ${layout}
     color: ${palette.Rosewater};

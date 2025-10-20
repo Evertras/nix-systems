@@ -31,6 +31,7 @@ in {
             "battery"
             "keyboard-state"
             "network"
+            "custom/vpn"
             "hyprland/workspaces"
             "niri/workspaces"
           ];
