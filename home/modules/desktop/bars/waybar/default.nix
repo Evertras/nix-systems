@@ -22,104 +22,102 @@ in {
   };
 
   config = mkIf cfg.enable {
-    programs = {
-      waybar = {
-        enable = true;
+    programs.waybar = {
+      enable = true;
 
-        settings = {
-          mainBar = {
-            modules-left = [
-              "battery"
-              "keyboard-state"
-              "network"
-              "hyprland/workspaces"
-              "niri/workspaces"
-            ];
-            modules-center = [ "hyprland/window" ];
-            modules-right = [ "pulseaudio" "bluetooth" "backlight" "clock" ];
+      settings = {
+        mainBar = {
+          modules-left = [
+            "battery"
+            "keyboard-state"
+            "network"
+            "hyprland/workspaces"
+            "niri/workspaces"
+          ];
+          modules-center = [ "hyprland/window" ];
+          modules-right = [ "pulseaudio" "bluetooth" "backlight" "clock" ];
 
-            "hyprland/workspaces" = {
-              format = "{name}";
-              sort-by = "number";
-            };
-
-            "hyprland/window" = { format = "{}"; };
-
-            "niri/workspaces" = { format = "{value}"; };
-
-            "battery" = {
-              # /sys/class/power_supply
-              bat = "BAT1";
-              interval = 60;
-              states = { "low" = 30; };
-              format = "{icon} {capacity}%";
-              format-icons = [ "" "" "" "" "" ];
-              max-length = 25;
-            };
-
-            "backlight" = {
-              format = "{percent} {icon}";
-              format-icons = [ "󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨" ];
-            };
-
-            # Show date and time
-            "clock" = {
-              format = "{:%a %b %d %H:%M}";
-              interval = 60;
-              max-length = 50;
-            };
-
-            "keyboard-state" = {
-              numlock = true;
-
-              format.numlock = "{icon}";
-
-              format-icons = {
-                locked = "";
-                unlocked = "";
-              };
-            };
-
-            "network" = {
-              interface = cfg.monitorNetworkInterface;
-              format = "{ifname}";
-              format-wifi = "  {essid} ({signalStrength}%)";
-              format-ethernet = "󰊗 {ipaddr}/{cidr}";
-              format-disconnected = "  None";
-              tooltip-format = "󰊗 {ifname} via {gwaddr}";
-              tooltip-format-wifi = "  {essid} ({signalStrength}%)";
-              tooltip-format-ethernet = " {ifname}";
-              tooltip-format-disconnected = "Disconnected";
-              max-length = 50;
-            };
-
-            "bluetooth" = { on-click = "headphones-toggle"; };
-
-            "pulseaudio" = {
-              format = "{volume} 󰓃 ";
-              format-bluetooth = "{volume} 󰋋 ";
-              format-muted = "{volume}  ";
-              max-volume = 40;
-              on-click = "volume-mute-toggle";
-            };
-
-            /* For some fun later
-               "custom/hello-from-waybar" = {
-                 format = "hello {}";
-                 max-length = 40;
-                 interval = "once";
-                 exec = pkgs.writeShellScript "hello-from-waybar" ''
-                   echo "from within waybar"
-                 '';
-               };
-            */
+          "hyprland/workspaces" = {
+            format = "{name}";
+            sort-by = "number";
           };
+
+          "hyprland/window" = { format = "{}"; };
+
+          "niri/workspaces" = { format = "{value}"; };
+
+          "battery" = {
+            # /sys/class/power_supply
+            bat = "BAT1";
+            interval = 60;
+            states = { "low" = 30; };
+            format = "{icon} {capacity}%";
+            format-icons = [ "" "" "" "" "" ];
+            max-length = 25;
+          };
+
+          "backlight" = {
+            format = "{percent} {icon}";
+            format-icons = [ "󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨" ];
+          };
+
+          # Show date and time
+          "clock" = {
+            format = "{:%a %b %d %H:%M}";
+            interval = 60;
+            max-length = 50;
+          };
+
+          "keyboard-state" = {
+            numlock = true;
+
+            format.numlock = "{icon}";
+
+            format-icons = {
+              locked = "";
+              unlocked = "";
+            };
+          };
+
+          "network" = {
+            interface = cfg.monitorNetworkInterface;
+            format = "{ifname}";
+            format-wifi = "  {essid} ({signalStrength}%)";
+            format-ethernet = "󰊗 {ipaddr}/{cidr}";
+            format-disconnected = "  None";
+            tooltip-format = "󰊗 {ifname} via {gwaddr}";
+            tooltip-format-wifi = "  {essid} ({signalStrength}%)";
+            tooltip-format-ethernet = " {ifname}";
+            tooltip-format-disconnected = "Disconnected";
+            max-length = 50;
+          };
+
+          "bluetooth" = { on-click = "headphones-toggle"; };
+
+          "pulseaudio" = {
+            format = "{volume} 󰓃 ";
+            format-bluetooth = "{volume} 󰋋 ";
+            format-muted = "{volume}  ";
+            max-volume = 40;
+            on-click = "volume-mute-toggle";
+          };
+
+          /* For some fun later
+             "custom/hello-from-waybar" = {
+               format = "hello {}";
+               max-length = 40;
+               interval = "once";
+               exec = pkgs.writeShellScript "hello-from-waybar" ''
+                 echo "from within waybar"
+               '';
+             };
+          */
         };
-
-        style = import ./styles/${cfg.style}.nix { inherit theme palette; };
-
-        systemd.enable = false;
       };
+
+      style = import ./styles/${cfg.style}.nix { inherit theme palette; };
+
+      systemd.enable = false;
     };
   };
 }
