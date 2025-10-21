@@ -34,6 +34,26 @@ in {
       wl-clipboard
     ];
 
+    services.swayidle = let
+      niriBin = "${pkgs.unstable.niri}/bin/niri";
+      monitorsOn = "${niriBin} msg action power-on-monitors";
+      monitorsOff = "${niriBin} msg action power-off-monitors";
+    in {
+      enable = true;
+      events = [
+        # The big monitor doesn't like to turn on on its own, but it will respect this command
+        {
+          event = "after-resume";
+          command = monitorsOn;
+        }
+      ];
+      timeouts = [{
+        timeout = 300;
+        command = monitorsOff;
+        resumeCommand = monitorsOn;
+      }];
+    };
+
     home.file = {
       ".config/niri/config.kdl" = let
         borderWidthPixels = toString cfg.borderWidthPixels;
