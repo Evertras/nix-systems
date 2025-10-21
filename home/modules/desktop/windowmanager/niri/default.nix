@@ -191,8 +191,8 @@ in {
 
           // Unhardcode this later
           output "HDMI-A-1" {
-            // Doesn't seem to like full resolution yet... fix later :/
-            mode "3840x2160"
+            // Laggy on laptop external, look into more later...
+            mode "5120x2160@100.035"
           }
 
           binds {
