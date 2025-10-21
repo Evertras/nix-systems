@@ -3,7 +3,7 @@ with lib;
 with everlib;
 let cfg = config.evertras.home.desktop.launchers;
 in {
-  imports = everlib.allSubdirs ./.;
+  imports = allSubdirs ./.;
 
   options.evertras.home.desktop.launchers = {
     enable = mkEnableOption "Enable default launcher func";
@@ -14,12 +14,12 @@ in {
     };
   };
 
-  config = {
+  config = mkIf cfg.enable {
     evertras.home.desktop.launchers = {
       tofi.enable = mkDefault (cfg.defaultLauncher == "tofi");
     };
 
-    evertras.home.shell.funcs = mkIf cfg.enable {
+    evertras.home.shell.funcs = {
       # Default app launcher
       launch-app = let launchFuncs = { tofi = "launch-app-tofi-fullscreen"; };
       in { body = launchFuncs.${cfg.defaultLauncher}; };

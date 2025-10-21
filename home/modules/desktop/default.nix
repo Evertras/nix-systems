@@ -161,6 +161,8 @@ in {
         st.enable = mkDefault (cfg.terminal == "st");
       };
 
+      wallpaper.enable = true;
+
       vscode.enable = true;
     };
 

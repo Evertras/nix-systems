@@ -31,8 +31,6 @@ in {
       unstable.xdg-desktop-portal-gtk
 
       # Other things we want
-      swww
-      tofi
       wl-clipboard
     ];
 
