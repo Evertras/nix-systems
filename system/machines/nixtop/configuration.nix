@@ -195,6 +195,12 @@ in {
     };
   };
 
+  environment.variables = {
+    WLR_NO_HARDWARE_CURSORS = "1";
+    GBM_BACKEND = "nvidia-drm";
+    __GLX_VENDOR_LIBRARY_NAME = "nvidia";
+  };
+
   ##############################################################################
   # Other system-wide packages/programs
   # Keep this minimal, use home-manager for most things
