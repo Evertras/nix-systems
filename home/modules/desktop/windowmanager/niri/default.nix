@@ -7,6 +7,8 @@ let
   cfg = config.evertras.home.desktop.windowmanager.niri;
   cfgDesktop = config.evertras.home.desktop;
   theme = config.evertras.themes.selected;
+
+  scale = 1;
 in {
   options.evertras.home.desktop.windowmanager.niri = {
     enable = mkEnableOption "Enable Niri";
@@ -27,18 +29,76 @@ in {
       unstable.xwayland-satellite
       unstable.xdg-desktop-portal-gnome
       unstable.xdg-desktop-portal-gtk
+
+      # Other things we want
+      swww
+      tofi
+      wl-clipboard
     ];
 
     home.file = {
       ".config/niri/config.kdl" = let
         borderWidthPixels = toString cfg.borderWidthPixels;
         doubleBorderWidthPixels = toString (cfg.borderWidthPixels * 2);
+
+        # Hardcoded for the beast for easy hardcode switching depending on performance wants, make this more configurable later
+        externalResolutionOptions = {
+          low = {
+            x = 3440;
+            y = 1440;
+            refresh = "84.964";
+          };
+
+          # Laggy on laptop external, look into more later but still usable for the glorious size...
+          high = {
+            x = 5120;
+            y = 2160;
+            refresh = "100.035";
+          };
+        };
+
+        resolutions = {
+          laptop = {
+            x = 2560;
+            y = 1440;
+          };
+
+          # Hardcoded so hard
+          external = externalResolutionOptions.high;
+        };
+
+        positions = {
+          laptop = {
+            x = (resolutions.external.x - resolutions.laptop.x) / 2;
+            y = resolutions.external.y;
+          };
+        };
+
+        externalMode = with resolutions.external;
+          "${toString x}x${toString y}@${refresh}";
       in {
         text = ''
           // This config is in the KDL format: https://kdl.dev
           // "/-" comments out the following node.
           // Check the wiki for a full description of the configuration:
           // https://github.com/YaLTeR/niri/wiki/Configuration:-Introduction
+
+          // Unhardcode outputs more later
+          output "eDP-1" {
+            scale ${toString scale}
+
+            position x=${toString positions.laptop.x} y=${
+              toString positions.laptop.y
+            }
+          }
+          output "LG Electronics LG ULTRAGEAR+ 508RMQK8A148" {
+            scale ${toString scale}
+
+            mode "${externalMode}"
+
+            position x=0 y=0
+          }
+
 
           input {
               keyboard {
@@ -75,9 +135,9 @@ in {
 
               // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
               preset-column-widths {
-                  proportion 0.3
+                  proportion 0.3333
                   proportion 0.5
-                  proportion 0.7
+                  proportion 0.6666
               }
 
               // You can also customize the heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
@@ -187,12 +247,6 @@ in {
           window-rule {
               geometry-corner-radius 0
               clip-to-geometry true
-          }
-
-          // Unhardcode this later
-          output "HDMI-A-1" {
-            // Laggy on laptop external, look into more later...
-            mode "5120x2160@100.035"
           }
 
           binds {
