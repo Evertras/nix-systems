@@ -34,5 +34,8 @@ in {
       if cfg.enableLibrewolf then [ pkgs.unstable.librewolf ] else [ ];
     pkgsChromium = if cfg.enableChromium then [ pkgs.chromium ] else [ ];
     pkgsFirefox = if cfg.enableFirefox then [ pkgs.unstable.firefox ] else [ ];
-  in { home.packages = pkgsLibrewolf ++ pkgsChromium ++ pkgsFirefox; };
+  in {
+    home.packages = pkgsLibrewolf ++ pkgsChromium ++ pkgsFirefox;
+    evertras.home.shell.env.vars = { MOZ_ENABLE_WAYLAND = "1"; };
+  };
 }
