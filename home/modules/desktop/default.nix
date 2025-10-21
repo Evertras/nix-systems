@@ -170,17 +170,7 @@ in {
       screenshotsDir = "$HOME/.evertras/screenshots";
       screenshotsLog = "/tmp/screenshot-lastlog";
     in {
-
-      cycle-wallpaper = {
-        runtimeInputs = [ pkgs.stylish ];
-        body = let
-          split = splitString "x" cfg.resolution;
-          width = elemAt split 0;
-          height = elemAt split 1;
-        in "styli.sh -s '${theme.inspiration}' -b bg-fill -h ${height} -w ${width}";
-      };
-
-      screenshot-save = {
+      screenshot-save = mkIf usingXorg {
         runtimeInputs = [ pkgs.maim ];
         body = ''
           mkdir -p "${screenshotsDir}"
@@ -194,8 +184,7 @@ in {
         '';
       };
 
-      # TODO: Fix this for Wayland/Hyprland; hyprshot?
-      screenshot-copy = {
+      screenshot-copy = mkIf usingXorg {
         runtimeInputs = [ pkgs.maim pkgs.xclip ];
         body = ''
           if maim -us | tee ${screenshotsLog} | xclip -selection clipboard -t image/png; then
