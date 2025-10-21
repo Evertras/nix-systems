@@ -189,6 +189,12 @@ in {
               clip-to-geometry true
           }
 
+          // Unhardcode this later
+          output "HDMI-A-1" {
+            // Doesn't seem to like full resolution yet... fix later :/
+            mode "3840x2160"
+          }
+
           binds {
               // Keys consist of modifiers separated by + signs, followed by an XKB key name
               // in the end. To find an XKB name for a particular key, you may use a program

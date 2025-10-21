@@ -27,6 +27,8 @@ in {
 
       settings = {
         mainBar = {
+          # Unhardcode this later
+          output = [ "eDP-1" ];
           modules-left = [
             "battery"
             "keyboard-state"
