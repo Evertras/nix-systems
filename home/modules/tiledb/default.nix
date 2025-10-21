@@ -41,14 +41,15 @@ in {
       };
     };
 
-    evertras.home.shell.funcs = {
-      "ndft".body = ''
+    evertras.home.shell.funcs = let awsSessionDuration = "12h";
+    in {
+      "tdb-shell".body = ''
         set -x
         nix-shell "$HOME/${shellPath}" --command fish
       '';
 
       "tdb-aws-sandbox".body = ''
-        aws-vault exec sandbox --backend=pass
+        aws-vault exec sandbox --backend=pass --duration ${awsSessionDuration}
       '';
 
       "tdb-vpn-connect".body = ''
