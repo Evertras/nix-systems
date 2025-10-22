@@ -42,13 +42,6 @@ in {
         # https://www.freedesktop.org/wiki/Software/xdg-utils/
         xdg-utils
 
-        # Window management utilities
-        # https://www.semicomplete.com/projects/xdotool/
-        xdotool
-
-        # Wallpaper changer
-        stylish
-
         # Quick image manipulation with 'convert'
         imagemagick
 
@@ -65,10 +58,6 @@ in {
         # Video players
         vlc
         mpv
-
-        # Screenshot taker and more
-        # https://github.com/naelstrof/maim#examples
-        maim
 
         # Notes
         obsidian
