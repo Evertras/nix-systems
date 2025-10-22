@@ -73,7 +73,7 @@ let
   # https://github.com/catppuccin/cursors
   mkCatppuccinCursor = { color, flavor ? "Frappe" }: {
     _checkColor = assertCatppuccinColor color;
-    name = "Catppuccin-${flavor}-${color}-Cursors";
+    name = "catppuccin-${toLower flavor}-${toLower color}-cursors";
     package = pkgs.catppuccin-cursors."${toLower flavor}${color}";
   };
 
