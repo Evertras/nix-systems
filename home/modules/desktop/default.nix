@@ -29,7 +29,7 @@ in {
     cursorSize = mkOption {
       description = "Cursor size";
       type = types.int;
-      default = 16;
+      default = 32;
     };
   };
 

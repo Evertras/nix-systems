@@ -203,7 +203,7 @@ in {
 
           cursor {
             xcursor-theme "${theme.cursorTheme.name}"
-            xcursor-size "${toString cfg.cursorSize}"
+            xcursor-size ${toString cfg.cursorSize}
           }
 
           hotkey-overlay {
