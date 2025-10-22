@@ -51,10 +51,14 @@ in {
           msg="Volume $value% (MUTE)"
         fi
 
+        # Apparently you have to know mako's flavor from
+        # https://github.com/emersion/mako/pull/270/files
+        # so we send multiple hints to remove duplicates
         notify-send "$msg" \
           -t 1000 \
           -i volume-knob \
           -h string:synchronous:volume \
+          -h string:x-dunst-stack-tag:volume \
           -h "int:value:$value"
       '';
 
