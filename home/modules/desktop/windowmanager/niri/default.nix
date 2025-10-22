@@ -8,7 +8,7 @@ let
   cfgDesktop = config.evertras.home.desktop;
   theme = config.evertras.themes.selected;
 
-  scale = 1;
+  scale = 1.2;
 in {
   options.evertras.home.desktop.windowmanager.niri = {
     enable = mkEnableOption "Enable Niri";
@@ -98,8 +98,9 @@ in {
 
         positions = {
           laptop = {
-            x = (resolutions.external.x - resolutions.laptop.x) / 2;
-            y = resolutions.external.y;
+            x = builtins.floor
+              ((resolutions.external.x - resolutions.laptop.x) / (2 * scale));
+            y = builtins.floor (resolutions.external.y / scale);
           };
         };
 
