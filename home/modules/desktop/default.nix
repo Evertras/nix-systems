@@ -25,6 +25,12 @@ in {
       type = types.str;
       default = "2560x1440";
     };
+
+    cursorSize = mkOption {
+      description = "Cursor size";
+      type = types.int;
+      default = 16;
+    };
   };
 
   config = mkIf cfg.enable (let
@@ -99,6 +105,7 @@ in {
       "org/gnome/desktop/interface" = {
         color-scheme = "prefer-dark";
         cursor-theme = theme.cursorTheme.name;
+        cursor-size = cfg.cursorSize;
       };
     };
 
@@ -133,6 +140,8 @@ in {
         };
 
         i3 = { kbLayout = mkDefault cfg.kbLayout; };
+
+        niri.cursorSize = mkDefault cfg.cursorSize;
       };
 
       bars.waybar.enable = mkDefault usingWayland;

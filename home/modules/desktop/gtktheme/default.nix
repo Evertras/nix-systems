@@ -7,7 +7,6 @@ let
   cursorTheme = {
     name = existsOr cfg.cursor.name theme.cursorTheme.name;
     package = existsOr cfg.cursor.package theme.cursorTheme.package;
-    size = cfg.cursor.size;
   };
   font = {
     name = existsOr cfg.font.name theme.fonts.desktop.name;
@@ -27,11 +26,6 @@ in {
       package = mkOption {
         type = with types; nullOr package;
         default = null;
-      };
-
-      size = mkOption {
-        type = types.int;
-        default = 32;
       };
     };
 

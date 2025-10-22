@@ -18,6 +18,11 @@ in {
       default = 4;
       description = "Border width in pixels";
     };
+
+    cursorSize = mkOption {
+      type = types.int;
+      description = "Cursor size";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -198,7 +203,7 @@ in {
 
           cursor {
             xcursor-theme "${theme.cursorTheme.name}"
-            xcursor-size 48
+            xcursor-size "${toString cfg.cursorSize}"
           }
 
           hotkey-overlay {
