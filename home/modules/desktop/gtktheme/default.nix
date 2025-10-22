@@ -88,6 +88,12 @@ in {
       };
     };
 
+    evertras.home.shell.env.vars = {
+      # Catppuccin hates GTK development... just use SOME dark theme for now.
+      # https://github.com/catppuccin/gtk/issues/262
+      GTK_THEME = "Adwaita:dark";
+    };
+
     gtk = {
       enable = true;
 
