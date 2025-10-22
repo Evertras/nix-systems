@@ -117,7 +117,6 @@ in {
             position x=0 y=0
           }
 
-
           input {
               keyboard {
                   xkb {
@@ -295,18 +294,20 @@ in {
               // You can also move the mouse into the top-left hot corner,
               // or do a four-finger swipe up on a touchpad.
               Mod+O repeat=false { toggle-overview; }
+              Mod+MouseMiddle repeat=false { toggle-overview; }
 
               Mod+Q { close-window; }
 
               Mod+Left  { focus-column-left; }
-              Mod+Down  { focus-window-down; }
-              Mod+Up    { focus-window-up; }
+              Mod+Down  { focus-window-or-workspace-down; }
+              Mod+Up    { focus-window-or-workspace-up; }
               Mod+Right { focus-column-right; }
               Mod+H     { focus-column-left; }
-              // Only jump between workspaces on up/down
               Mod+J     { focus-window-or-workspace-down; }
               Mod+K     { focus-window-or-workspace-up; }
               Mod+L     { focus-column-right; }
+              Mod+MouseBack    { focus-column-left; }
+              Mod+MouseForward { focus-column-right; }
 
               Mod+Ctrl+Left  { move-column-left; }
               Mod+Ctrl+Down  { move-window-down; }
