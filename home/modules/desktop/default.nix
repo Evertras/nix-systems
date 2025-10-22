@@ -96,7 +96,10 @@ in {
     };
 
     dconf.settings = {
-      "org/gnome/desktop/interface" = { color-scheme = "prefer-dark"; };
+      "org/gnome/desktop/interface" = {
+        color-scheme = "prefer-dark";
+        cursor-theme = theme.cursorTheme.name;
+      };
     };
 
     services = let
