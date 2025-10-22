@@ -76,16 +76,6 @@ let
     name = "catppuccin-${toLower flavor}-${toLower color}-cursors";
     package = pkgs.catppuccin-cursors."${toLower flavor}${color}";
   };
-
-  mkCatppuccinTheme = { color, flavor ? "Frappe" }: {
-    _checkColor = assertCatppuccinColor color;
-    # https://github.com/NixOS/nixpkgs/blob/nixos-23.11/pkgs/data/themes/catppuccin-gtk/default.nix
-    name = "Catppuccin-${flavor}-Standard-${color}-Dark";
-    package = pkgs.catppuccin-gtk.override {
-      variant = toLower flavor;
-      accents = [ (toLower color) ];
-    };
-  };
 in {
   mint = let color = "Green";
   in defaults // {
@@ -102,8 +92,6 @@ in {
     };
 
     cursorTheme = mkCatppuccinCursor { inherit color; };
-
-    gtkTheme = mkCatppuccinTheme { inherit color; };
   };
 
   mkCatppuccin = { color, flavor ? "Frappe" }:
@@ -124,8 +112,6 @@ in {
       };
 
       cursorTheme = mkCatppuccinCursor { inherit color flavor; };
-
-      gtkTheme = mkCatppuccinTheme { inherit color flavor; };
     };
 
   mountain = defaults // {
