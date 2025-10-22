@@ -142,6 +142,8 @@ in {
           layout {
               gaps 0
 
+              empty-workspace-above-first
+
               // When to center a column when changing focus, options are:
               // - "never", default behavior, focusing an off-screen column will keep at the left
               //   or right edge of the screen.
