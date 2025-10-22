@@ -141,7 +141,10 @@ in {
 
         i3 = { kbLayout = mkDefault cfg.kbLayout; };
 
-        niri.cursorSize = mkDefault cfg.cursorSize;
+        niri = {
+          cursorSize = mkDefault cfg.cursorSize;
+          terminal = mkDefault cfg.terminal;
+        };
       };
 
       bars.waybar.enable = mkDefault usingWayland;

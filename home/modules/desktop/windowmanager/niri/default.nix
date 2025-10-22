@@ -23,6 +23,11 @@ in {
       type = types.int;
       description = "Cursor size";
     };
+
+    terminal = mkOption {
+      type = types.str;
+      description = "Terminal to use";
+    };
   };
 
   config = mkIf cfg.enable {
@@ -100,6 +105,11 @@ in {
 
         externalMode = with resolutions.external;
           "${toString x}x${toString y}@${refresh}";
+
+        terminalCommand = if cfg.terminal == "kitty" then
+          ''"kitty" "-1"''
+        else
+          ''"${cfg.terminal}"'';
       in {
         text = ''
           // This config is in the KDL format: https://kdl.dev
@@ -257,7 +267,7 @@ in {
 
           // Terminals get partial screens
           window-rule {
-            match app-id=r#"^kitty$"#
+            match app-id=r#"^${cfg.terminal}$"#
 
             open-maximized false
           }
@@ -290,7 +300,7 @@ in {
               Mod+Shift+Slash { show-hotkey-overlay; }
 
               // Suggested binds for running programs: terminal, app launcher, screen locker.
-              Mod+Space hotkey-overlay-title="Open a Terminal: kitty" { spawn "kitty" "-1"; }
+              Mod+Space hotkey-overlay-title="Open a Terminal: ${cfg.terminal}" { spawn ${terminalCommand}; }
               Mod+P hotkey-overlay-title="Run an Application: launch-app" { spawn "launch-app"; }
               // Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
