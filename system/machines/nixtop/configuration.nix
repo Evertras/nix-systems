@@ -196,7 +196,9 @@ in {
   };
 
   environment.variables = {
-    WLR_NO_HARDWARE_CURSORS = "1";
+    # If weird things start happening with the mouse cursor, like flickering etc.,
+    # then re-enable this
+    #WLR_NO_HARDWARE_CURSORS = "1";
     GBM_BACKEND = "nvidia-drm";
     __GLX_VENDOR_LIBRARY_NAME = "nvidia";
   };
