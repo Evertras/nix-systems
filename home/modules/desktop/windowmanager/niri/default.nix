@@ -294,9 +294,12 @@ in {
               Mod+P hotkey-overlay-title="Run an Application: launch-app" { spawn "launch-app"; }
               // Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
-              XF86AudioRaiseVolume allow-when-locked=true { spawn "volume-up"; }
-              XF86AudioLowerVolume allow-when-locked=true { spawn "volume-down"; }
-              XF86AudioMute        allow-when-locked=true { spawn "volume-mute-toggle"; }
+              XF86AudioRaiseVolume allow-when-locked=true { spawn "evertras-volume-up"; }
+              XF86AudioLowerVolume allow-when-locked=true { spawn "evertras-volume-down"; }
+              XF86AudioMute        allow-when-locked=true { spawn "evertras-volume-mute-toggle"; }
+
+              XF86MonBrightnessUp   { spawn "evertras-brightness-up"; }
+              XF86MonBrightnessDown { spawn "evertras-brightness-down"; }
 
               // Open/close the Overview: a zoomed-out view of workspaces and windows.
               // You can also move the mouse into the top-left hot corner,
