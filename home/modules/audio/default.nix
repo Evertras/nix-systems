@@ -57,8 +57,8 @@ in {
         notify-send "$msg" \
           -t 1000 \
           -i volume-knob \
-          -h string:synchronous:volume \
-          -h string:x-dunst-stack-tag:volume \
+          -h string:synchronous:evertras-volume \
+          -h string:x-dunst-stack-tag:evertras-volume \
           -h "int:value:$value"
       '';
 
