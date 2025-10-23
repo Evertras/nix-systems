@@ -1,4 +1,4 @@
-{ config, everlib, lib, pkgs, ... }:
+{ config, everlib, lib, ... }:
 with lib;
 let cfg = config.evertras.dev.tiledb;
 in {
@@ -6,38 +6,10 @@ in {
 
   options.evertras.dev.tiledb = {
     enable = mkEnableOption
-      "Environment settings for developing TileDB and surrounding infrastructure";
+      "System settings for developing TileDB and surrounding infrastructure";
   };
 
-  # Prefer putting things in home manager for ease of use, but some things seem to only want to work here...
   config = mkIf cfg.enable {
-    environment = {
-      systemPackages = with pkgs; [
-        # Build tools
-        cmake
-        pkg-config
-        vcpkg
-
-        # Recent python, exact version unimportant
-        python312
-
-        # VPN tooling
-        wireguard-tools
-      ];
-
-      # Development vars
-      variables = let
-        # Skipping $XDG_DATA_HOME because it doesn't seem to be set in time... cheating for now
-        tiledb-home-dir = "$HOME/.local/share/tiledb";
-      in {
-        CGO_CFLAGS = "-I${tiledb-home-dir}/include";
-        CGO_LDFLAGS = "-L${tiledb-home-dir}/lib64";
-        TILEDB_HOME = tiledb-home-dir;
-        TILEDB_PATH = tiledb-home-dir;
-        TILEDB_DEV_DATA = "${tiledb-home-dir}/devdata";
-      };
-    };
-
     networking.wg-quick.interfaces = {
       tiledb = {
         autostart = false;

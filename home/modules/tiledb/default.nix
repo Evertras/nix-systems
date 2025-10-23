@@ -24,6 +24,7 @@ in {
 
         aws-vault
         _1password-cli
+        wireguard-tools
       ];
 
       file = {
