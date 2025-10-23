@@ -97,7 +97,7 @@ in {
 
       windowmanager = {
         hyprland = {
-          enable = true;
+          enable = false;
           kbLayout = "jp";
 
           displays = [ displayMain ];

@@ -152,6 +152,6 @@ in {
       };
     };
 
-    home.packages = with pkgs; [ tofi swww wl-clipboard ];
+    home.packages = with pkgs; [ wl-clipboard ];
   };
 }

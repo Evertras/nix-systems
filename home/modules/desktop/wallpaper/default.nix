@@ -20,7 +20,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ swww ];
+    home.packages = with pkgs; [ unstable.swww ];
 
     evertras.home.shell.funcs = mkIf cfg.enable {
       wallpaper-laptop.body = ''
@@ -29,6 +29,10 @@ in {
 
       wallpaper-external.body = ''
         swww img -o ${cfg.outputs.external} "$1"
+      '';
+
+      wallpaper-external-black.body = ''
+        swww clear -o ${cfg.outputs.external} 000000
       '';
     };
   };
