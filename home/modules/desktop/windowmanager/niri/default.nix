@@ -197,7 +197,7 @@ in {
               }
 
               struts {
-                top 0
+                top -${borderWidthPixels}
                 bottom -${borderWidthPixels}
                 // Sides get more aggressive struts
                 left -${doubleBorderWidthPixels}
