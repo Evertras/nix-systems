@@ -11,12 +11,6 @@
     autoCmd = [
       {
         event = "BufEnter";
-        pattern = "*.md";
-        command = "set textwidth=80";
-        desc = "Aggressively wrap markdown files";
-      }
-      {
-        event = "BufEnter";
         pattern = "*.nomad";
         command = "set filetype=hcl";
         desc = "Nomad files are HCL";
