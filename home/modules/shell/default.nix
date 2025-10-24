@@ -142,6 +142,8 @@ in {
       starship.enable = cfg.prompt == "starship";
       tmux.enable = mkDefault true;
 
+      dashlane.enable = mkDefault true;
+
       git = {
         enable = mkDefault true;
         gpgKey = cfg.gpgKey;

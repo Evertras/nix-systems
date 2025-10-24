@@ -108,8 +108,7 @@ in {
         # Stop underlining
         set fish_color_valid_path
 
-        fish_add_path -g ~/.evertras/funcs
-        fish_add_path -g ~/bin
+        fish_add_path -g ~/.evertras/bin
 
         set GPG_TTY (tty)
 
