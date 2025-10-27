@@ -43,6 +43,11 @@ in {
       };
     };
 
+    programs.fish.shellAbbrs = {
+      # Need to do this as a shell abbreviation since this sets env vars
+      "tdb-op-signin" = ''eval "$(op signin)"'';
+    };
+
     evertras.home.shell.funcs = let awsSessionDuration = "12h";
     in {
       "tdb-shell".body = ''
@@ -51,11 +56,13 @@ in {
       '';
 
       "tdb-aws-otp-shared".body = ''
+        # Hide error if it goes wrong, 99% chance it's signin which we cover below
         if op read "op://Employee/s5svutsbewufwa53dznrjsbkuu/add more/one-time password?attribute=otp" 2>/dev/null; then
           exit 0
         fi
 
         # Goes to stderr, this is fine
+        echo "Use tdb-op-signin for longer sessions" >&2
         eval "$(op signin)"
         op read "op://Employee/s5svutsbewufwa53dznrjsbkuu/add more/one-time password?attribute=otp"
       '';
