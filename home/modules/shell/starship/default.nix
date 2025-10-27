@@ -81,6 +81,7 @@ in {
 
         palette = "catppuccin_frappe";
 
+        # Make this fancier later, just copy/pasted from the starship catppuccin theme for now
         palettes.catppuccin_frappe = {
           rosewater = "#f2d5cf";
           flamingo = "#eebebe";
