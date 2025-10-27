@@ -46,6 +46,18 @@
         callback.__raw = "function() vim.lsp.buf.format() end";
         desc = "Format go files on write";
       }
+      {
+        event = "VimResized";
+        pattern = "*";
+        callback.__raw = ''
+          function()
+            local view = require("nvim-tree.view")
+            if view.is_visible() then
+              view.resize(math.floor(vim.o.columns * 0.25))
+            end
+          end
+        '';
+      }
     ];
 
     keymaps = let
