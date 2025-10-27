@@ -50,20 +50,33 @@ in {
         nix-shell "$HOME/${shellPath}" --command fish
       '';
 
+      "tdb-aws-otp-shared".body = ''
+        if op read "op://Employee/s5svutsbewufwa53dznrjsbkuu/add more/one-time password?attribute=otp" 2>/dev/null; then
+          exit 0
+        fi
+
+        # Goes to stderr, this is fine
+        eval "$(op signin)"
+        op read "op://Employee/s5svutsbewufwa53dznrjsbkuu/add more/one-time password?attribute=otp"
+      '';
+
       "tdb-aws-sandbox".body = ''
         aws-vault exec sandbox --backend=pass --duration ${awsSessionDuration}
       '';
 
       "tdb-aws-shared".body = ''
-        aws-vault exec shared-infra-admin --backend=pass --duration ${awsSessionDuration}
+        mfa=$(tdb-aws-otp-shared)
+        aws-vault exec shared-infra-admin --backend=pass --duration ${awsSessionDuration} --mfa-token "$mfa"
       '';
 
       "tdb-aws-dev".body = ''
-        aws-vault exec dev-admin --backend=pass --duration ${awsSessionDuration}
+        mfa=$(tdb-aws-otp-shared)
+        aws-vault exec dev-admin --backend=pass --duration ${awsSessionDuration} --mfa-token "$mfa"
       '';
 
       "tdb-aws-prod".body = ''
-        aws-vault exec prod-admin --backend=pass --duration ${awsSessionDuration}
+        mfa=$(tdb-aws-otp-shared)
+        aws-vault exec prod-admin --backend=pass --duration ${awsSessionDuration} --mfa-token "$mfa"
       '';
 
       "tdb-vpn-connect".body = ''
