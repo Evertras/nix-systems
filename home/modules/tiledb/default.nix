@@ -24,6 +24,7 @@ in {
 
         aws-vault
         _1password-cli
+        _1password-gui
         wireguard-tools
       ];
 
@@ -51,6 +52,18 @@ in {
 
       "tdb-aws-sandbox".body = ''
         aws-vault exec sandbox --backend=pass --duration ${awsSessionDuration}
+      '';
+
+      "tdb-aws-shared".body = ''
+        aws-vault exec shared-infra-admin --backend=pass --duration ${awsSessionDuration}
+      '';
+
+      "tdb-aws-dev".body = ''
+        aws-vault exec dev-admin --backend=pass --duration ${awsSessionDuration}
+      '';
+
+      "tdb-aws-prod".body = ''
+        aws-vault exec prod-admin --backend=pass --duration ${awsSessionDuration}
       '';
 
       "tdb-vpn-connect".body = ''
