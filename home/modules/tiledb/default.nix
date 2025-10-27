@@ -22,9 +22,9 @@ in {
         # Needed by Server
         zstd
 
-        aws-vault
         _1password-cli
         _1password-gui
+        aws-vault
         wireguard-tools
       ];
 
@@ -47,6 +47,8 @@ in {
       # Need to do this as a shell abbreviation since this sets env vars
       "tdb-op-signin" = ''eval "$(op signin)"'';
     };
+
+    programs.k9s = { enable = true; };
 
     evertras.home.shell.funcs = let awsSessionDuration = "12h";
     in {
