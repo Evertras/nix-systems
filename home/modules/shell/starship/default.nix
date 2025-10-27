@@ -79,7 +79,7 @@ in {
 
         vagrant.disabled = true;
 
-        prompt.palette = "cappuccin_frappe";
+        palette = "catppuccin_frappe";
 
         palettes.catppuccin_frappe = {
           rosewater = "#f2d5cf";
