@@ -48,6 +48,13 @@ in {
 
         golang.format = "[$symbol($version )]($style)";
 
+        kubernetes = {
+          disabled = false;
+
+          # Only care about tracking EKS for now for safety... add minikube things later?
+          detect_env_vars = [ "AWS_SESSION_TOKEN" ];
+        };
+
         nix_shell.format = "[❄️ ]($style)";
 
         shell = {
