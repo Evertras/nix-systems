@@ -48,7 +48,7 @@ in {
       "tdb-op-signin" = ''eval "$(op signin)"'';
     };
 
-    programs.k9s = { enable = true; };
+    evertras.home.shell.k9s.enable = true;
 
     evertras.home.shell.funcs = let awsSessionDuration = "12h";
     in {
