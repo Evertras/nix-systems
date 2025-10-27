@@ -120,7 +120,7 @@ in {
 
       style = import ./styles/${cfg.style}.nix { inherit theme palette; };
 
-      systemd.enable = false;
+      systemd.enable = true;
     };
   };
 }
