@@ -1,14 +1,20 @@
 { ... }: {
   evertras.home.shell.funcs = {
     git-merged.body = ''
+      main_branch="main"
+
+      if git branch | grep ' master$' &>/dev/null; then
+        main_branch="master"
+      fi
+
       branch=$(git rev-parse --abbrev-ref HEAD)
 
-      if [ "''${branch}" == "main" ]; then
-        echo "Cannot run this on main branch!"
+      if [ "''${branch}" == "''${main_branch}" ]; then
+        echo "Cannot run this on $main_branch branch!"
         exit 1
       fi
 
-      git checkout main
+      git checkout "''${main_branch}"
       git pull
       git branch -d "''${branch}"
     '';
