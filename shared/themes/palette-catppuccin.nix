@@ -45,6 +45,8 @@
       Lavender = "#e5c890";
     };
 
+    darker = { Green = "#365521"; };
+
     highlight = {
       Green = "#d7eaca";
       Mauve = "#babbf1";
@@ -64,22 +66,5 @@
       Sapphire = "#e78284";
       Lavender = "#e78284";
     };
-  };
-
-  inspiration = {
-    Rosewater = "sakura";
-    Flamingo = "flamingo";
-    Pink = "sakura";
-    Mauve = "sakura";
-    Red = "red";
-    Maroon = "red";
-    Peach = "peach";
-    Yellow = "yellow";
-    Green = "green";
-    Teal = "teal";
-    Sky = "sky";
-    Sapphire = "sky";
-    Blue = "ocean";
-    Lavender = "lavender";
   };
 }

@@ -29,8 +29,6 @@ let
     lib.asserts.assertOneOf "catppuccin color" color catppuccinColors;
 
   defaults = {
-    inspiration = "gradient";
-
     fonts = {
       main = nerdfonts.make "Terminess";
       mono = nerdfonts.makeMono "Terminess";
@@ -77,28 +75,9 @@ let
     package = pkgs.catppuccin-cursors."${toLower flavor}${color}";
   };
 in {
-  mint = let color = "Green";
-  in defaults // {
-    inspiration = "rainforest";
-
-    # https://coolors.co/ef6f6c-2e394d-dcf9eb-59c9a5-7a907c
-    colors = {
-      primary = "#59C9A5";
-      highlight = "#A7F1CD";
-      background = "#2E394D";
-      text = "#DCF9EB";
-      urgent = "#EF6F6C";
-      contrast = "#3F6FCC";
-    };
-
-    cursorTheme = mkCatppuccinCursor { inherit color; };
-  };
-
   mkCatppuccin = { color, flavor ? "Frappe" }:
     defaults // {
       _checkColor = assertCatppuccinColor color;
-
-      inspiration = "hd ${palette.catppuccin.inspiration.${color}} wallpapers";
 
       colors = let p = palette.catppuccin.${flavor};
       in {
@@ -109,21 +88,9 @@ in {
         text = p.Text;
         urgent = p.urgent.${color};
         contrast = p.contrast.${color};
+        darker = p.darker.${color};
       };
 
       cursorTheme = mkCatppuccinCursor { inherit color flavor; };
     };
-
-  mountain = defaults // {
-    inspiration = "mountain";
-
-    colors = {
-      primary = "#9A8493";
-      highlight = "#E7D2C5";
-      background = "#223843";
-      text = "#EFF1F3";
-      urgent = "#D2694B";
-      contrast = "#3F6FCC";
-    };
-  };
 }
