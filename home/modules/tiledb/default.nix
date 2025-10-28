@@ -25,6 +25,8 @@ in {
         _1password-cli
         _1password-gui
         aws-vault
+        kubectl
+        sops
         wireguard-tools
       ];
 
