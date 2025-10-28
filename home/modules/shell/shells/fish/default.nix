@@ -72,6 +72,7 @@ in {
         gb = "git branch";
         gc = "git commit -m";
         gd = "git diff";
+        gds = "git diff --staged";
         gp = "git push";
         gs = "git status";
         jctluser = "journalctl --user";
