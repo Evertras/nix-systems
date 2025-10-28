@@ -24,8 +24,10 @@ with lib; {
         text = func.body;
       });
     mkShellBase = mkShellFunc "";
-    mkShellPrefixed = mkShellFunc "evertras-";
+    # This makes tab completes annoying, but nice to keep as reference
+    #mkShellPrefixed = mkShellFunc "evertras-";
     apps = attrsets.mapAttrsToList mkShellBase definedFuncs;
-    appsPrefixed = attrsets.mapAttrsToList mkShellPrefixed definedFuncs;
-  in { home.packages = apps ++ appsPrefixed; };
+    #appsPrefixed = attrsets.mapAttrsToList mkShellPrefixed definedFuncs;
+    #in { home.packages = apps ++ appsPrefixed; };
+  in { home.packages = apps; };
 }
