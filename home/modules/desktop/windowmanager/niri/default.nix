@@ -205,7 +205,6 @@ in {
               }
           }
 
-          spawn-at-startup "mako"
           spawn-at-startup "swww-daemon"
 
           environment {

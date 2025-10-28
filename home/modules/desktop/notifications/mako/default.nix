@@ -15,19 +15,28 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ mako ];
+    services.mako = {
+      enable = true;
 
-    home.file = {
       # https://github.com/emersion/mako/blob/master/doc/mako.5.scd
-      ".config/mako/config".text = ''
-        actions=true
-        anchor=${cfg.origin}
-        background-color=${theme.colors.background}
-        border-color=${theme.colors.primary}
+      settings = {
+        actions = true;
+        anchor = cfg.origin;
+        background-color = theme.colors.background;
+        border-color = theme.colors.primary;
+        icons = true;
+        font = "${theme.fonts.desktop.name} 12";
+        progress-color = theme.colors.darker;
+        text-color = theme.colors.text;
 
-        [actionable=true]
-        anchor=${cfg.origin}
-      '';
+        "mode=do-not-disturb" = { invisible = true; };
+
+        "urgency=critical" = {
+          background-color = theme.colors.urgent;
+          border-color = theme.colors.urgent;
+          text-color = theme.colors.background;
+        };
+      };
     };
   };
 }
