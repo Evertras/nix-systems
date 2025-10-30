@@ -52,7 +52,12 @@ in {
 
     evertras.home.shell.k9s.enable = true;
 
-    evertras.home.shell.funcs = let awsSessionDuration = "12h";
+    evertras.home.shell.funcs = let
+      awsSessionDuration = "12h";
+      mkAwsEnv = vaultName: ''
+        mfa=$(tdb-aws-otp-shared)
+        aws-vault exec ${vaultName} --backend=pass --duration ${awsSessionDuration} --mfa-token "$mfa"
+      '';
     in {
       "tdb-shell".body = ''
         set -x
@@ -75,20 +80,9 @@ in {
         aws-vault exec sandbox --backend=pass --duration ${awsSessionDuration}
       '';
 
-      "tdb-aws-shared".body = ''
-        mfa=$(tdb-aws-otp-shared)
-        aws-vault exec shared-infra-admin --backend=pass --duration ${awsSessionDuration} --mfa-token "$mfa"
-      '';
-
-      "tdb-aws-dev".body = ''
-        mfa=$(tdb-aws-otp-shared)
-        aws-vault exec dev-admin --backend=pass --duration ${awsSessionDuration} --mfa-token "$mfa"
-      '';
-
-      "tdb-aws-prod".body = ''
-        mfa=$(tdb-aws-otp-shared)
-        aws-vault exec prod-admin --backend=pass --duration ${awsSessionDuration} --mfa-token "$mfa"
-      '';
+      "tdb-aws-shared".body = mkAwsEnv "shared-infra-admin";
+      "tdb-aws-dev".body = mkAwsEnv "dev-admin";
+      "tdb-aws-prod".body = mkAwsEnv "prod-admin";
 
       "tdb-vpn-connect".body = ''
         sudo systemctl start wg-quick-tiledb
