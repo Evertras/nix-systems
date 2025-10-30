@@ -72,6 +72,9 @@
   # (keep minimal, use home-manager for most things)
   evertras.desktop.enable = true;
 
+  # We need this for nerdfont and prompts to work for some reason?
+  programs.hyprland.enable = true;
+
   ##############################################################################
   # Sound stuff
 
