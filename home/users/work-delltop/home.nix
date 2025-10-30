@@ -53,6 +53,8 @@ in {
     desktop = {
       enable = true;
 
+      bars.waybar.monitorNetworkInterface = "wlp0s20f3";
+
       browsers = {
         enableFirefox = true;
         default = "firefox";
