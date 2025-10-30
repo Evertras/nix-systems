@@ -14,7 +14,7 @@ in {
 
       external = mkOption {
         type = types.str;
-        default = "HDMI-A-1";
+        default = "DP-3";
       };
     };
   };
