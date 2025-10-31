@@ -54,7 +54,10 @@ in {
     desktop = {
       enable = true;
 
-      bars.waybar.monitorNetworkInterface = wirelessInterface;
+      bars.waybar = {
+        battery.name = "BAT0";
+        monitorNetworkInterface = wirelessInterface;
+      };
 
       browsers = {
         enableFirefox = true;

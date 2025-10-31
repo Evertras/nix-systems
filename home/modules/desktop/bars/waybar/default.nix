@@ -19,6 +19,14 @@ in {
       default = "bubbles";
       description = "The style to use in the styles subdir";
     };
+
+    battery = {
+      name = mkOption {
+        type = types.str;
+        default = "BAT1";
+        description = "Name of the battery, found in /sys/class/power_supply";
+      };
+    };
   };
 
   config = mkIf cfg.enable {
@@ -50,8 +58,7 @@ in {
           "niri/workspaces" = { format = "{value}"; };
 
           "battery" = {
-            # /sys/class/power_supply
-            bat = "BAT1";
+            bat = cfg.battery.name;
             interval = 60;
             states = { "low" = 30; };
             format = "{icon} {capacity}%";
