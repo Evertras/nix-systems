@@ -7,8 +7,6 @@ let
   cfg = config.evertras.home.desktop.windowmanager.niri;
   cfgDesktop = config.evertras.home.desktop;
   theme = config.evertras.themes.selected;
-
-  scale = 1.2;
 in {
   options.evertras.home.desktop.windowmanager.niri = {
     enable = mkEnableOption "Enable Niri";
@@ -27,6 +25,16 @@ in {
     terminal = mkOption {
       type = types.str;
       description = "Terminal to use";
+    };
+
+    scaleMain = mkOption {
+      type = with types; either int float;
+      default = 1.2;
+    };
+
+    scaleExternal = mkOption {
+      type = with types; either int float;
+      default = 1.2;
     };
   };
 
@@ -98,9 +106,9 @@ in {
 
         positions = {
           laptop = {
-            x = builtins.floor
-              ((resolutions.external.x - resolutions.laptop.x) / (2 * scale));
-            y = builtins.floor (resolutions.external.y / scale);
+            x = builtins.floor ((resolutions.external.x - resolutions.laptop.x)
+              / (2 * cfg.scaleMain));
+            y = builtins.floor (resolutions.external.y / cfg.scaleExternal);
           };
         };
 
@@ -120,14 +128,14 @@ in {
 
           // Unhardcode outputs more later
           output "eDP-1" {
-            scale ${toString scale}
+            scale ${toString cfg.scaleMain}
 
             position x=${toString positions.laptop.x} y=${
               toString positions.laptop.y
             }
           }
           output "LG Electronics LG ULTRAGEAR+ 508RMQK8A148" {
-            scale ${toString scale}
+            scale ${toString cfg.scaleExternal}
 
             mode "${externalMode}"
 

@@ -9,6 +9,7 @@ let
   };
 
   gpgKey = "57F346A9FC11B688";
+  wirelessInterface = "wlp0s20f3";
 in {
   imports = [ ../../modules ../../../shared/themes/select.nix ];
 
@@ -53,7 +54,7 @@ in {
     desktop = {
       enable = true;
 
-      bars.waybar.monitorNetworkInterface = "wlp0s20f3";
+      bars.waybar.monitorNetworkInterface = wirelessInterface;
 
       browsers = {
         enableFirefox = true;
@@ -66,6 +67,7 @@ in {
 
       terminals.kitty = {
         fontName = fontOverrides.terminal.name;
+        fontSize = 12;
         opacity = "1.0";
       };
 
@@ -73,6 +75,7 @@ in {
         niri = {
           enable = true;
           borderWidthPixels = 2;
+          scaleMain = 1;
         };
       };
     };
