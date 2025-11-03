@@ -110,10 +110,16 @@ in {
           toString cfg.fontSize
         } : set_background_opacity ${toString cfg.opacity}
 
+        # Simple opacity toggle
+        map ctrl+shift+n set_background_opacity 1.0
+        map ctrl+shift+m set_background_opacity ${toString cfg.opacity}
+
         ${if cfg.backgroundOverride != null then
           "background ${cfg.backgroundOverride}"
         else
           ""}
+
+        map ctrl+v paste_from_clipboard
 
         # Overriding things in a pinch
         include override.conf
