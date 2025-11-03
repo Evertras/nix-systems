@@ -88,7 +88,12 @@ in {
         package = theme.fonts.terminal.package;
       };
 
-      extraConfig = let fontSizeDemo = cfg.fontSize * 1.5;
+      extraConfig = let
+        fontSizeDemo = cfg.fontSize * 1.5;
+        opacityKeybinds = map (a:
+          "map ctrl+shift+${toString a} set_background_opacity 0.${
+            toString a
+          }") [ 0 1 2 3 4 5 6 7 8 9 ];
       in ''
         ${if cfg.allowThemeOverrides then ''
           # I like changing the theme a lot on a whim, this
@@ -113,6 +118,9 @@ in {
         # Simple opacity toggle
         map ctrl+shift+n set_background_opacity 1.0
         map ctrl+shift+m set_background_opacity ${toString cfg.opacity}
+
+        # Complicated opacity toggle
+        ${concatStringsSep "\n" opacityKeybinds}
 
         ${if cfg.backgroundOverride != null then
           "background ${cfg.backgroundOverride}"
