@@ -82,7 +82,7 @@ in {
         nr = "npm run";
         ls = "eza";
         private = "fish --private";
-        sctluser = "systemctl --user";
+        sctlu = "systemctl --user";
         tree = "eza -T";
         unset = "set -e";
       };
