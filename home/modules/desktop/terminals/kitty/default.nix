@@ -25,8 +25,8 @@ in {
     };
 
     opacity = mkOption {
-      type = with types; nullOr str;
-      default = null;
+      type = with types; either int float;
+      default = 0.8;
     };
 
     backgroundOverride = mkOption {
@@ -77,8 +77,7 @@ in {
       */
     };
 
-    programs.kitty = let opacity = existsOr cfg.opacity theme.kittyOpacity;
-    in {
+    programs.kitty = {
       enable = true;
 
       themeFile = theme.kittyTheme;
@@ -109,7 +108,7 @@ in {
         } : set_background_opacity 1.0
         map ctrl+shift+r combine : change_font_size current ${
           toString cfg.fontSize
-        } : set_background_opacity ${opacity}
+        } : set_background_opacity ${toString cfg.opacity}
 
         ${if cfg.backgroundOverride != null then
           "background ${cfg.backgroundOverride}"
@@ -122,7 +121,7 @@ in {
 
       settings = {
         # Background opacity
-        background_opacity = opacity;
+        background_opacity = cfg.opacity;
         dynamic_background_opacity = true;
 
         # No blinking

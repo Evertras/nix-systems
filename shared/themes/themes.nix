@@ -65,7 +65,6 @@ let
     };
 
     kittyTheme = "Catppuccin-Mocha";
-    kittyOpacity = "0.8";
   };
 
   # https://github.com/catppuccin/cursors
