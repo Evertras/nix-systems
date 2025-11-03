@@ -146,6 +146,13 @@ in {
       sed ':a;N;$!ba;s/\n$//'
     '';
 
+    random-file.body = ''
+      requestedDir=''${1:-.}
+      requestedDir=''${requestedDir%/}
+      files=("$requestedDir"/*)
+      echo "''${files[RANDOM % ''${#files[@]}]}"
+    '';
+
     zipdir = {
       runtimeInputs = with pkgs; [ zip ];
 
