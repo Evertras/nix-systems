@@ -59,6 +59,21 @@
         "type": "github"
       }
     },
+    "ever-tdb": {
+      "locked": {
+        "lastModified": 1762180431,
+        "narHash": "sha256-WebHkGF4k453Uo1OcxHHlBk4dvg+PJ0TdxJCbl0BT90=",
+        "ref": "refs/heads/main",
+        "rev": "adf73b92090645e4c5208115e6a07f0bf39831a8",
+        "revCount": 4,
+        "type": "git",
+        "url": "ssh://git@github.com/Evertras/nix-tdb"
+      },
+      "original": {
+        "type": "git",
+        "url": "ssh://git@github.com/Evertras/nix-tdb"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -482,6 +497,7 @@
         "ever-cyn": "ever-cyn",
         "ever-fonts": "ever-fonts",
         "ever-quickview": "ever-quickview",
+        "ever-tdb": "ever-tdb",
         "home-manager": "home-manager",
         "nixgl": "nixgl",
         "nixpkgs": "nixpkgs_5",

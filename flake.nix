@@ -29,11 +29,14 @@
     # https://github.com/NixOS/nix/issues/4945 for info)
     ever-cyn.url = "github:Evertras/cynomys";
     ever-quickview.url = "github:Evertras/quickview";
+
+    # Private stuff - run `nix flake update ever-tdb` etc to update
     ever-fonts.url = "git+ssh://git@github.com/Evertras/nix-fonts";
+    ever-tdb.url = "git+ssh://git@github.com/Evertras/nix-tdb";
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, nixgl
-    , nixpkgs-python, ... }@inputs:
+    , nixpkgs-python, ever-tdb, ... }@inputs:
     let
       # Nix stuff
       lib = nixpkgs.lib;
@@ -129,7 +132,11 @@
             nerdfonts = mkNerdfonts pkgs;
           in home-manager.lib.homeManagerConfiguration {
             inherit pkgs;
-            modules = [ nixvim.homeModules.nixvim userData.module ];
+            modules = [
+              nixvim.homeModules.nixvim
+              userData.module
+              ever-tdb.mkHomeModule
+            ];
             extraSpecialArgs = { inherit everlib nerdfonts; };
           });
       in (builtins.listToAttrs (map (file: {
