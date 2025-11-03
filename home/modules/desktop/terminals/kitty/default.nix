@@ -29,6 +29,12 @@ in {
       default = null;
     };
 
+    backgroundOverride = mkOption {
+      description = "Background color to override with, such as #000000";
+      type = with types; nullOr str;
+      default = null;
+    };
+
     shell = mkOption {
       description = "Which shell to use, defaults to user's configured default";
       type = with types; nullOr str;
@@ -104,6 +110,11 @@ in {
         map ctrl+shift+r combine : change_font_size current ${
           toString cfg.fontSize
         } : set_background_opacity ${opacity}
+
+        ${if cfg.backgroundOverride != null then
+          "background ${cfg.backgroundOverride}"
+        else
+          ""}
 
         # Overriding things in a pinch
         include override.conf

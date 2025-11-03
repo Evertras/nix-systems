@@ -92,7 +92,8 @@ in {
 
       terminals.kitty = {
         fontName = fontOverrides.terminal.name;
-        opacity = "1.0";
+        opacity = "0.5";
+        backgroundOverride = "#000000";
       };
 
       windowmanager = {
