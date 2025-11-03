@@ -75,7 +75,7 @@ in {
         gds = "git diff --staged";
         gp = "git push";
         gs = "git status";
-        jctluser = "journalctl --user";
+        jctlu = "journalctl --user";
         k = "kubectl";
         kns = "kubectl config set-context --current --namespace";
         ndf = "nix develop --command fish";
