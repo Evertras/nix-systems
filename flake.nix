@@ -108,7 +108,7 @@
             nerdfonts = mkNerdfonts pkgs;
           in lib.nixosSystem {
             inherit pkgs system;
-            modules = [ userData.module ];
+            modules = [ userData.module ever-tdb.mkSystemModule ];
             specialArgs = { inherit everlib nerdfonts; };
           });
       in (builtins.listToAttrs (map (dir: {

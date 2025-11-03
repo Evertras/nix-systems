@@ -43,6 +43,12 @@ update-fonts: .git/hooks/pre-commit
 update-flake: .git/hooks/pre-commit
 	nix flake update
 
+# This is more commonly done
+.PHONY: update-private
+update-private:
+	nix flake update ever-fonts
+	nix flake update ever-tdb
+
 .git/hooks/pre-commit: .evertras/pre-commit.sh
 	cp .evertras/pre-commit.sh .git/hooks/pre-commit
 	chmod +x .git/hooks/pre-commit
