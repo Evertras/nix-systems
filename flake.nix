@@ -59,6 +59,7 @@
                 "steam-original"
                 "steam-run"
                 "steam-unwrapped"
+                "terraform"
                 "vagrant"
                 "vscode"
               ];
