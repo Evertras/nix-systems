@@ -78,6 +78,19 @@ in {
         toipe
       ];
 
+      # This is janky because docker CLI wants to overwrite config.json for credentials...
+      file.".docker/config-base.json" = {
+        text = ''
+          { "credsStore": "pass" }
+        '';
+        onChange = ''
+          # Don't overwrite if it's already there, this is just a sneaky bootstrap...
+          if [ ! -f ~/.docker/config.json ]; then
+            cat ~/.docker/config-base.json > ~/.docker/config.json
+          fi
+        '';
+      };
+
       sessionVariables = {
         EDITOR = "nvim";
         SHELL = cfg.shellBin;
