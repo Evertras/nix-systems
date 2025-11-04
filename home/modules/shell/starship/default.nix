@@ -57,6 +57,8 @@ in {
 
         nix_shell.format = "[❄️ ]($style)";
 
+        python.format = "[\${symbol}$virtualenv ]($style)";
+
         shell = {
           disabled = false;
 
@@ -76,6 +78,8 @@ in {
 
           style = "bold cyan";
         };
+
+        terraform.disabled = true;
 
         vagrant.disabled = true;
 
