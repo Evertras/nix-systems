@@ -71,8 +71,11 @@ in {
       terminals.kitty = {
         fontName = fontOverrides.terminal.name;
         fontSize = 12;
-        opacity = "1.0";
+        opacity = 0.5;
       };
+
+      wallpaper.randomWallpapersDir =
+        "~/dev/github/evertras/wallpapers/external-rotation";
 
       windowmanager = {
         niri = {
