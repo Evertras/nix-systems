@@ -53,26 +53,34 @@ in {
       };
     };
 
-    evertras.home.shell.funcs = mkIf cfg.enable {
-      wallpaper-laptop.body = ''
-        swww img -o ${cfg.outputs.laptop} "$1"
+    evertras.home.shell.funcs = let
+      checkOutput = output: ''
+        if ! swww query | grep '${output}}'; then
+          echo "Output ${output} not connected."
+          exit 0;
+        fi
       '';
 
-      wallpaper-laptop-random.body = ''
-        swww img -o ${cfg.outputs.laptop} "$(random-file ${cfg.randomWallpapersDir})"
+      mkSwitch = output: ''
+        ${checkOutput output}
+        swww img -o ${output} "$1"
       '';
 
-      wallpaper-external.body = ''
-        swww img -o ${cfg.outputs.external} "$1"
+      mkRandom = output: ''
+        ${checkOutput output}
+        swww img -o ${output} "$(random-file ${cfg.randomWallpapersDir})"
       '';
 
-      wallpaper-external-random.body = ''
-        swww img -o ${cfg.outputs.external} "$(random-file ${cfg.randomWallpapersDir})"
+      mkClear = output: ''
+        ${checkOutput output}
+        swww clear -o ${output} 000000
       '';
-
-      wallpaper-external-black.body = ''
-        swww clear -o ${cfg.outputs.external} 000000
-      '';
+    in mkIf cfg.enable {
+      wallpaper-laptop.body = mkSwitch cfg.outputs.laptop;
+      wallpaper-laptop-random.body = mkRandom cfg.outputs.laptop;
+      wallpaper-external.body = mkSwitch cfg.outputs.external;
+      wallpaper-external-random.body = mkRandom cfg.outputs.external;
+      wallpaper-external-black.body = mkClear cfg.outputs.external;
     };
   };
 }
