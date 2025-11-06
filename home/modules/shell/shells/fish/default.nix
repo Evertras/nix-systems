@@ -77,6 +77,7 @@ in {
         gs = "git status";
         jctlu = "journalctl --user";
         k = "kubectl";
+        kctx = "kubectl config use-context";
         kns = "kubectl config set-context --current --namespace";
         ndf = "nix develop --command fish";
         nr = "npm run";
