@@ -29,6 +29,7 @@ in {
     home = {
       packages = with pkgs; [
         # General terminal tools
+        awscli2 # Explicitly want v2, not the programs.awscli setting
         cloc # Count lines of code
         dig # DNS lookup
         entr # run commands on file changes
@@ -98,8 +99,6 @@ in {
     };
 
     programs = {
-      awscli = { enable = true; };
-
       direnv = {
         enable = true;
         nix-direnv.enable = true;
