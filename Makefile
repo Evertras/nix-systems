@@ -9,7 +9,7 @@ home-news: .git/hooks/pre-commit
 .PHONY: system
 system: .git/hooks/pre-commit
 	@./scripts/ensure-passwords.sh
-	sudo nixos-rebuild switch --flake .
+	nixos-rebuild switch --flake . --use-remote-sudo
 
 # Starts a local VM with the vm-playground configuration.
 # Log in with evertras/evertras.
@@ -24,7 +24,7 @@ clean-home: .git/hooks/pre-commit
 .PHONY: clean-system
 clean-system: .git/hooks/pre-commit
 	sudo nix-collect-garbage -d
-	sudo nixos-rebuild boot --flake .
+	nixos-rebuild boot --flake . --use-remote-sudo
 
 .PHONY: fmt
 fmt: .git/hooks/pre-commit
