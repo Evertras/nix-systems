@@ -79,11 +79,13 @@ in {
         k = "kubectl";
         kctx = "kubectl config use-context";
         kns = "kubectl config set-context --current --namespace";
+        ls = "eza";
         ndf = "nix develop --command fish";
         nr = "npm run";
-        ls = "eza";
         private = "fish --private";
         sctlu = "systemctl --user";
+        # Even if we don't have it installed generally, it's annoying to type out all the time...
+        t = "terraform";
         tree = "eza -T";
         unset = "set -e";
       };
