@@ -74,8 +74,12 @@ in {
         opacity = 0.5;
       };
 
-      wallpaper.randomWallpapersDir =
-        "~/dev/github/evertras/wallpapers/external-rotation";
+      wallpaper = {
+        randomWallpapersDir =
+          "~/dev/github/evertras/wallpapers/external-rotation";
+
+        outputs.external = "DP-4";
+      };
 
       windowmanager = {
         niri = {
