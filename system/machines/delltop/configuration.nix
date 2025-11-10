@@ -196,6 +196,12 @@
     # Useful for finding graphics card info
     # sudo lshw -c display
     lshw
+
+    # PCI bus info (lspci, etc)
+    pciutils
+
+    # lsusb
+    usbutils
   ];
 
   programs.gnupg.agent = {
