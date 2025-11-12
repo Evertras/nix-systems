@@ -55,7 +55,7 @@ in {
 
     evertras.home.shell.funcs = let
       checkOutput = output: ''
-        if ! swww query | grep '${output}}'; then
+        if ! swww query | grep '${output}'; then
           echo "Output ${output} not connected."
           exit 0;
         fi
