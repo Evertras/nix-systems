@@ -15,13 +15,6 @@ let
   };
 
   gpgKey = "ABFFF058F479311F";
-
-  displayMain = {
-    name = "eDP-1";
-    resolution = "2560x1440";
-    refreshRate = 240;
-    scale = 1.25;
-  };
 in {
   imports = [ ../../modules ../../../shared/themes/select.nix ];
 
@@ -96,30 +89,9 @@ in {
         backgroundOverride = "#000000";
       };
 
-      windowmanager = {
-        hyprland = {
-          enable = false;
-          kbLayout = "jp";
-
-          displays = [ displayMain ];
-        };
-
-        niri = {
-          enable = true;
-          borderWidthPixels = 2;
-        };
-
-        # Keeping as reference for now
-        dwm = {
-          enable = false;
-          autostartCmds = [
-            "feh --bg-fill /home/evertras/Pictures/desktops/waterfall-1.jpg --no-fehbg"
-
-            # For some reason this needs a kick
-            "systemctl restart --user pipewire"
-          ];
-          borderpx = 2;
-        };
+      windowmanager.niri = {
+        enable = true;
+        borderWidthPixels = 2;
       };
     };
   };

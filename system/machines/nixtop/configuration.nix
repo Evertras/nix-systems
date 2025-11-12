@@ -71,15 +71,7 @@ in {
   # (keep minimal, use home-manager for most things)
   evertras.themes.selected = theme;
 
-  evertras.desktop = {
-    enable = true;
-
-    xserver.enable = false;
-    xserver.kbLayout = "jp";
-
-    # TODO: Specify possible sessions here (i3, dwm)
-    # which are defined in home-manager
-  };
+  evertras.desktop.enable = true;
 
   services.displayManager.autoLogin.user = "evertras";
 
