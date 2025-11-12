@@ -119,6 +119,21 @@ in {
           ''"kitty" "-1"''
         else
           ''"${cfg.terminal}"'';
+
+        # Slightly hacky but allow swapping between kb layouts
+        # if we have JP as main, because I attach a US keyboard
+        # via USB to these sometimes
+        # https://man.archlinux.org/man/xkeyboard-config-2.7.en#LAYOUTS
+        xkb = if cfgDesktop.kbLayout == "us" then ''
+          xkb {
+              layout "${cfgDesktop.kbLayout}"
+          }
+        '' else ''
+          xkb {
+              layout "${cfgDesktop.kbLayout},us"
+              options "grp:shifts_toggle"
+          }
+        '';
       in {
         text = ''
           // This config is in the KDL format: https://kdl.dev
@@ -144,9 +159,7 @@ in {
 
           input {
               keyboard {
-                  xkb {
-                      layout "${cfgDesktop.kbLayout}"
-                  }
+                  ${xkb}
 
                   repeat-delay 250
                   repeat-rate 40
