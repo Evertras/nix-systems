@@ -60,6 +60,12 @@ in ''
     ${mkBorder palette.Rosewater};
   }
 
+  #language {
+    ${layout}
+    color: ${palette.Rosewater};
+    ${mkBorder palette.Rosewater};
+  }
+
   #network {
     ${layout}
     color: ${theme.colors.background};

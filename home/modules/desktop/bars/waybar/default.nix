@@ -40,22 +40,20 @@ in {
           modules-left = [
             "battery"
             "keyboard-state"
+            "niri/language"
             "network"
             "custom/vpn"
-            "hyprland/workspaces"
             "niri/workspaces"
           ];
-          modules-center = [ "hyprland/window" ];
+          modules-center = [ ];
           modules-right = [ "pulseaudio" "bluetooth" "backlight" "clock" ];
 
-          "hyprland/workspaces" = {
-            format = "{name}";
-            sort-by = "number";
-          };
-
-          "hyprland/window" = { format = "{}"; };
-
           "niri/workspaces" = { format = "{value}"; };
+
+          "niri/language" = {
+            format-ja = "JP";
+            format-en = "EN";
+          };
 
           "battery" = {
             bat = cfg.battery.name;
