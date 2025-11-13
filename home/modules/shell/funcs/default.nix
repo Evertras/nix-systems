@@ -13,7 +13,14 @@ with lib; {
     default = { };
   };
 
-  imports = [ ./aws.nix ./common.nix ./git.nix ./mullvad.nix ./themes.nix ];
+  imports = [
+    ./aws.nix
+    ./common.nix
+    ./kubectl.nix
+    ./git.nix
+    ./mullvad.nix
+    ./themes.nix
+  ];
 
   config = let
     definedFuncs = config.evertras.home.shell.funcs;
