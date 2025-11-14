@@ -13,7 +13,7 @@
   # Hardware stuff
   services.logind = {
     lidSwitch = "suspend";
-    lidSwitchExternalPower = "suspend";
+    lidSwitchExternalPower = "ignore";
   };
 
   ##############################################################################
