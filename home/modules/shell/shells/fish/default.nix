@@ -83,7 +83,7 @@ in {
         ndf = "nix develop --command fish";
         # https://github.com/nix-community/nix-index
         nix-index = "nix run github:nix-community/nix-index#nix-index";
-        nix-explore = "nix run github:nix-community/nix-index#nix-locate -- ";
+        nix-locate = "nix run github:nix-community/nix-index#nix-locate -- ";
         nr = "npm run";
         private = "fish --private";
         sctlu = "systemctl --user";
