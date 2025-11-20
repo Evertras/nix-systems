@@ -102,5 +102,15 @@
     aws-profile-list.body = ''
       grep '\[profile' ~/.aws/config | awk '{print $2}' | tr -d ']'
     '';
+
+    aws-ami-finder-prefix.body = ''
+      if [ "$#" -ne 1 ]; then
+        echo "Usage: aws-ami-finder-prefix <prefix>" >&2
+        echo " (note: do not include a *, it will be added automatically)" >&2
+        exit 1
+      fi
+      prefix=$1
+      aws ec2 describe-images --owners self amazon --filters "Name=name,Values=''${prefix}*" --query 'Images[].{Name:Name, ImageId:ImageId}' --output table
+    '';
   };
 }
