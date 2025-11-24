@@ -93,7 +93,7 @@ in {
   };
 
   home = {
-    packages = with pkgs; [ slack ];
+    packages = with pkgs; [ packer slack ];
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.

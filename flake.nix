@@ -54,6 +54,7 @@
                 "nvidia-settings"
                 "nvidia-x11"
                 "obsidian"
+                "packer"
                 "slack"
                 "steam"
                 "steam-original"
