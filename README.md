@@ -52,6 +52,19 @@ nixGL kitty
 - Explore better [types](https://github.com/NixOS/nixpkgs/blob/master/lib/types.nix) like nonEmptyString
 - More enum checks with asserts for things like desktop as "i3"
 
+## Things to explore jotted down
+
+- bluetuith
+- local-ai
+- asciinema
+- animdl
+- abaddon
+- claude-code
+- niriswitcher
+- programs.obsidian
+- programs.discord
+- wayprompt
+
 ## Font list
 
 I get bored with fonts so here's a list of the nerd fonts

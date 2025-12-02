@@ -30,8 +30,13 @@ in {
     programs.git = {
       enable = true;
 
-      userEmail = cfg.userEmail;
-      userName = cfg.userName;
+      settings = {
+        init.defaultBranch = "main";
+        user = {
+          email = cfg.userEmail;
+          name = cfg.userName;
+        };
+      };
 
       lfs.enable = true;
 
@@ -41,7 +46,6 @@ in {
       } else
         null;
 
-      extraConfig.init.defaultBranch = "main";
     };
   };
 }

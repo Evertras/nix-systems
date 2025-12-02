@@ -24,8 +24,10 @@ in {
 
     programs.go = mkIf cfg.go.enable {
       enable = true;
-      goPath = ".evertras/go";
-      goBin = ".evertras/go/bin";
+      env = {
+        GOPATH = ".evertras/go";
+        GOBIN = ".evertras/go/bin";
+      };
     };
   };
 }

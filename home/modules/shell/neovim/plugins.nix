@@ -133,35 +133,37 @@ in {
     nvim-tree = {
       enable = true;
 
-      sortBy = "case_sensitive";
-
-      filters.dotfiles = true;
-
       openOnSetup = true;
 
-      onAttach = {
-        __raw = ''
-          function(bufnr)
-            local api = require("nvim-tree.api")
-            local function opts(desc)
-              return {
-                desc = "nvim-tree: " .. desc,
-                buffer = bufnr,
-                noremap = true,
-                silent = true,
-                nowait = true,
-              }
+      settings = {
+        filters.dotfiles = true;
+
+        sortBy = "case_sensitive";
+
+        onAttach = {
+          __raw = ''
+            function(bufnr)
+              local api = require("nvim-tree.api")
+              local function opts(desc)
+                return {
+                  desc = "nvim-tree: " .. desc,
+                  buffer = bufnr,
+                  noremap = true,
+                  silent = true,
+                  nowait = true,
+                }
+              end
+
+              -- Apply defaults first
+              api.config.mappings.default_on_attach(bufnr)
+
+              -- Now our stuff
+              vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
+              vim.keymap.set('n', 's', api.node.open.vertical, opts('Open: Vertical split'))
+              vim.keymap.set('n', 'i', api.node.open.horizontal, opts('Open: Horizontal split'))
             end
-
-            -- Apply defaults first
-            api.config.mappings.default_on_attach(bufnr)
-
-            -- Now our stuff
-            vim.keymap.set('n', '?', api.tree.toggle_help, opts('Help'))
-            vim.keymap.set('n', 's', api.node.open.vertical, opts('Open: Vertical split'))
-            vim.keymap.set('n', 'i', api.node.open.horizontal, opts('Open: Horizontal split'))
-          end
-        '';
+          '';
+        };
       };
     };
 

@@ -41,12 +41,11 @@ in {
   config = mkIf cfg.enable {
     evertras.home.desktop.bars.waybar.style = "solid";
 
-    # TODO: Switch to regular after 25.11, we need updated for xwayland-satellite integration for now
     home.packages = with pkgs; [
-      unstable.niri
-      unstable.xwayland-satellite
-      unstable.xdg-desktop-portal-gnome
-      unstable.xdg-desktop-portal-gtk
+      niri
+      xwayland-satellite
+      xdg-desktop-portal-gnome
+      xdg-desktop-portal-gtk
 
       # Other things we want
       nautilus
@@ -54,7 +53,7 @@ in {
     ];
 
     services.swayidle = let
-      niriBin = "${pkgs.unstable.niri}/bin/niri";
+      niriBin = "${pkgs.niri}/bin/niri";
       monitorsOn = "${niriBin} msg action power-on-monitors";
       monitorsOff = "${niriBin} msg action power-off-monitors";
     in {

@@ -39,7 +39,7 @@ in {
         gum # for terminal scripts https://github.com/charmbracelet/gum
         ncdu # disk space usage
         nethogs # network usage monitoring
-        pinentry # for gpg
+        pinentry-curses # for gpg
         ranger # file explorer
         scc # code stats
         sipcalc # for IP calculations
