@@ -88,9 +88,7 @@ in {
       enable = true;
       mimeApps = {
         enable = true;
-        defaultApplications = let
-          defaultBrowser =
-            "${config.evertras.home.desktop.browsers.default}.desktop";
+        defaultApplications = let defaultBrowser = "firefox.desktop";
         in {
           "text/html" = defaultBrowser;
           "x-scheme-handler/http" = defaultBrowser;

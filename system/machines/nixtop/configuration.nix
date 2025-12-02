@@ -16,9 +16,9 @@ in {
 
   ##############################################################################
   # Hardware stuff
-  services.logind = {
-    lidSwitch = "suspend";
-    lidSwitchExternalPower = "suspend";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "suspend";
   };
 
   ##############################################################################
@@ -208,6 +208,8 @@ in {
     # Useful for finding graphics card info
     # sudo lshw -c display
     lshw
+
+    firefox
   ];
 
   programs.gnupg.agent = {

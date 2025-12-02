@@ -60,11 +60,6 @@ in {
         monitorNetworkInterface = wirelessInterface;
       };
 
-      browsers = {
-        enableFirefox = true;
-        default = "firefox";
-      };
-
       display.sleep.enable = true;
 
       discord.enable = true;
