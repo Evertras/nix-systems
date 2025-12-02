@@ -11,9 +11,9 @@
 
   ##############################################################################
   # Hardware stuff
-  services.logind = {
-    lidSwitch = "suspend";
-    lidSwitchExternalPower = "ignore";
+  services.logind.settings.Login = {
+    HandleLidSwitch = "suspend";
+    HandleLidSwitchExternalPower = "ignore";
   };
 
   ##############################################################################
