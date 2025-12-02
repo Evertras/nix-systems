@@ -138,9 +138,9 @@ in {
       settings = {
         filters.dotfiles = true;
 
-        sortBy = "case_sensitive";
+        sort_by = "case_sensitive";
 
-        onAttach = {
+        on_attach = {
           __raw = ''
             function(bufnr)
               local api = require("nvim-tree.api")
