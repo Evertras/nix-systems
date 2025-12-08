@@ -15,6 +15,7 @@ in {
     home.packages = let
       pkgList = with lists;
         flatten [
+          [ gh ]
           (optional cfg.haskell.enable [ cabal-install ghc ])
           (optional cfg.python.enable python3)
           (optional cfg.rust.enable [ cargo rustc rustfmt rust-analyzer ])
