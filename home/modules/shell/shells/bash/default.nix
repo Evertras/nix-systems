@@ -49,7 +49,7 @@ in {
           complete -W "\`grep -oE '^[a-zA-Z0-9_-]+:([^=]|$)' Makefile | sed 's/[^a-zA-Z0-9_-]*$//'\`" make
 
           # Include our funcs for easy access
-          export PATH=~/.evertras/funcs:$PATH
+          export PATH=~/.evertras/funcs:~/.evertras/bin/:$PATH
 
           # Usage: up [n]
           #
