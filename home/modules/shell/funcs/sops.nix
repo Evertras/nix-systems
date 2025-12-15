@@ -26,7 +26,7 @@
           exit 1
         fi
 
-        sops -e "$input_file" > "$output_file"
+        sops -d "$input_file" > "$output_file"
 
         echo "Wrote to $output_file"
       '';
