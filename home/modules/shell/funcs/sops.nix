@@ -22,7 +22,7 @@
         output_file="''${input_file/.enc/}"
 
         if [[ "$input_file" == "$output_file" ]]; then
-          echo "$input_file" does not have .enc"
+          echo "$input_file does not have .enc"
           exit 1
         fi
 

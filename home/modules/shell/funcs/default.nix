@@ -19,6 +19,7 @@ with lib; {
     ./kubectl.nix
     ./git.nix
     ./mullvad.nix
+    ./sops.nix
     ./themes.nix
   ];
 
