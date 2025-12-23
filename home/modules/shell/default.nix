@@ -61,6 +61,8 @@ in {
         ssm-session-manager-plugin
         glow
         google-cloud-sdk
+        kubectl
+        kubelogin
 
         # Data processing
         asciigraph
