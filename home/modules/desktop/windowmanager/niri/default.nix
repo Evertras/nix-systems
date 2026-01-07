@@ -339,12 +339,12 @@ in {
               Mod+Q { close-window; }
 
               Mod+Left  { focus-column-left; }
-              Mod+Down  { focus-window-or-workspace-down; }
-              Mod+Up    { focus-window-or-workspace-up; }
+              Mod+Down  { focus-window-down; }
+              Mod+Up    { focus-window-up; }
               Mod+Right { focus-column-right; }
               Mod+H     { focus-column-left; }
-              Mod+J     { focus-window-or-workspace-down; }
-              Mod+K     { focus-window-or-workspace-up; }
+              Mod+J     { focus-window-down; }
+              Mod+K     { focus-window-up; }
               Mod+L     { focus-column-right; }
               Mod+MouseBack    { focus-column-left; }
               Mod+MouseForward { focus-column-right; }
