@@ -67,6 +67,7 @@ in {
         # Data processing
         asciigraph
         fx
+        jless
         jq
         pandoc
         yq
