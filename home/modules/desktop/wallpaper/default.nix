@@ -25,7 +25,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs; [ unstable.swww ];
+    home.packages = with pkgs; [ swww ];
 
     systemd.user = let rotateServiceName = "evertras-wallpaper-rotate";
     in {

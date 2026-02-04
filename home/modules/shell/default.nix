@@ -29,7 +29,7 @@ in {
     home = {
       packages = with pkgs; [
         # General terminal tools
-        awscli2 # Explicitly want v2, not the programs.awscli setting
+        unstable.awscli2 # Explicitly want v2, not the programs.awscli setting
         azure-cli # Azure CLI
         cloc # Count lines of code
         dig # DNS lookup
