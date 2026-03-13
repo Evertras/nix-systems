@@ -74,6 +74,7 @@ in {
         gd = "git diff";
         gds = "git diff --staged";
         gp = "git push";
+        gpu = "git push -u origin";
         grpo = "git remote prune origin";
         gs = "git status";
         jctlu = "journalctl --user";
