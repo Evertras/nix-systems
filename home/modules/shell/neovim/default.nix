@@ -147,6 +147,9 @@
       # Keep some buffer at the bottom so we can see more context
       scrolloff = 8;
 
+      # Determines ms of waiting for CursorHold to fire
+      updatetime = 300;
+
       # Folding
       foldmethod = "expr";
       foldexpr = "nvim_treesitter#foldexpr()";
