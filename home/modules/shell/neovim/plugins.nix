@@ -93,8 +93,61 @@ in {
           lualine_b = filename;
           lualine_c = [ "diagnostics" ];
           lualine_x = [{
-            __unkeyed-1.__raw =
-              "function () return require('nvim-navic').get_location() end";
+            # Custom logic for navigating larger files like helm chart values,
+            # where we want to see what root key we're in.
+            __unkeyed-1.__raw = ''
+              function()
+                local navic = require("nvim-navic")
+                local data = navic.get_data() or {}
+
+                if #data == 0 then return "" end
+
+                -- How many keys to show at the start when limit is reached
+                local limitPrefix = 4
+                -- How many keys to show at the end when limit is reached
+                local limitSuffix = 2
+                local limit = limitPrefix + limitSuffix
+                local hlSep = "%#LineNr#"
+                local hlRoot = "%#Directory#"
+                local hlLeaf = "%#Type#"
+                local hlComment = "%#Comment#"
+                local hlTerm = "%*"
+                local sep = hlSep .. "." .. hlTerm
+
+                local root = hlRoot .. data[1].name .. hlTerm
+                local leaf = hlLeaf .. data[#data].name .. hlTerm
+
+                local parts = {
+                  root
+                }
+
+                if #data <= limit then
+                  for i = 2, #data-1 do
+                    table.insert(parts, data[i].name)
+                  end
+                  table.insert(parts, leaf)
+                else
+                  parts = {
+                    root,
+                  }
+
+                  for i = 2, limitPrefix do
+                    table.insert(parts, data[i].name)
+                  end
+
+                  table.insert(parts, hlComment .. "..." .. hlTerm)
+
+                  local start = #data - limitSuffix + 1
+                  for i = start, #data-1 do
+                    table.insert(parts, data[i].name)
+                  end
+                  table.insert(parts, leaf)
+                end
+
+                return table.concat(parts, sep)
+              end
+            '';
+
             cond.__raw =
               "function () return require('nvim-navic').is_available() end";
           }];
