@@ -186,7 +186,7 @@ in {
       enable = true;
       settings = {
         highlight.enable = true;
-        ensure_installed = [ "helm" "gotmpl" "lua" ];
+        ensure_installed = [ "gotmpl" "helm" "lua" "yaml" ];
       };
     };
   };
