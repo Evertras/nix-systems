@@ -53,6 +53,12 @@ in {
         };
       };
 
+      onAttach = ''
+        if client.server_capabilities.documentSymbolProvider then
+          require("nvim-navic").attach(client, bufnr)
+        end
+      '';
+
       # https://github.com/nix-community/nixvim/blob/10d114f5a6e0a9591d13a28a92905e71cc100b39/plugins/lsp/language-servers/default.nix
       servers = let langs = config.evertras.home.shell.coding;
       in {
@@ -86,7 +92,13 @@ in {
         sections = {
           lualine_b = filename;
           lualine_c = [ "diagnostics" ];
-          lualine_x = [ "filesize" ];
+          lualine_x = [{
+            __unkeyed-1.__raw =
+              "function () return require('nvim-navic').get_location() end";
+            cond.__raw =
+              "function () return require('nvim-navic').is_available() end";
+          }];
+          lualine_y = [ "filesize" ];
         };
 
         inactive_sections = {
@@ -128,6 +140,18 @@ in {
           "<C-d>" = "cmp.mapping.scroll_docs(4)";
           "<C-u>" = "cmp.mapping.scroll_docs(-4)";
         };
+      };
+    };
+
+    navic = {
+      enable = true;
+      settings = {
+        depth_limit = 5;
+        highlight = true;
+        # Use CursorHold instead of CursorMoved, enable if it starts feeling laggy
+        # lazy_update_context = true;
+        lsp.autoAttach = true;
+        separator = ">";
       };
     };
 
