@@ -11,6 +11,12 @@
     autoCmd = [
       {
         event = "BufEnter";
+        pattern = "*/templates/*.yaml,*/templates/*.tpl,helmfile*.yaml";
+        command = "set filetype=helm";
+        desc = "Helm templates";
+      }
+      {
+        event = "BufEnter";
         pattern = "*.nomad";
         command = "set filetype=hcl";
         desc = "Nomad files are HCL";

@@ -59,6 +59,7 @@ in {
         bashls.enable = true;
         cssls.enable = true;
         gopls.enable = true;
+        helm_ls.enable = true;
         # Specific check for now due to being multiple gigabytes
         hls.enable = langs.haskell.enable;
         html.enable = true;
@@ -181,6 +182,12 @@ in {
       };
     };
 
-    treesitter = { enable = true; };
+    treesitter = {
+      enable = true;
+      settings = {
+        highlight.enable = true;
+        ensure_installed = [ "helm" "gotmpl" "lua" ];
+      };
+    };
   };
 }
