@@ -31,6 +31,7 @@ in {
         # General terminal tools
         unstable.awscli2 # Explicitly want v2, not the programs.awscli setting
         azure-cli # Azure CLI
+        claude-code # Claude AI
         cloc # Count lines of code
         dig # DNS lookup
         entr # run commands on file changes

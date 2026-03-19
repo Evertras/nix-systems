@@ -54,6 +54,7 @@
               builtins.elem (nixpkgs.lib.getName pkg) [
                 "1password"
                 "1password-cli"
+                "claude-code"
                 "discord"
                 "nvidia-settings"
                 "nvidia-x11"
