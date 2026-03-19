@@ -25,6 +25,10 @@
     # For a rabbit hole: https://github.com/nix-community/NUR
     # nurpkgs.url = "github:nix-community/NUR";
 
+    # Hourly updates
+    # https://github.com/sadjow/claude-code-nix
+    claude-code.url = "github:sadjow/claude-code-nix";
+
     # Extra packages here (can't put these in another file, see
     # https://github.com/NixOS/nix/issues/4945 for info)
     ever-cyn.url = "github:Evertras/cynomys";
@@ -36,7 +40,7 @@
   };
 
   outputs = { nixpkgs, nixpkgs-unstable, home-manager, nixvim, nixgl
-    , nixpkgs-python, ever-tdb, ... }@inputs:
+    , nixpkgs-python, ever-tdb, claude-code, ... }@inputs:
     let
       # Nix stuff
       lib = nixpkgs.lib;
@@ -83,6 +87,7 @@
               unstable = import nixpkgs-unstable { inherit system; };
             })
 
+            claude-code.overlays.default
             nixgl.overlay
           ];
         });

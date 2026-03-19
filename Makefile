@@ -36,7 +36,11 @@ lint: .git/hooks/pre-commit
 
 .PHONY: update-fonts
 update-fonts: .git/hooks/pre-commit
-	nix flake lock --update-input ever-fonts
+	nix flake update ever-fonts
+
+.PHONY: update-claude
+update-claude: .git/hooks/pre-commit
+	nix flake update claude-code
 
 # Should not need to do this often, but sometimes need to unstick...
 .PHONY: update-flake
