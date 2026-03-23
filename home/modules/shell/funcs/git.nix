@@ -19,10 +19,9 @@
       git branch -d "''${branch}"
     '';
 
-    # TODO: Handle spaces in file names, for notes repositories in particular
     gadd.body = ''
       cd "$(git rev-parse --show-toplevel)"
-      to_add=$(git status --porcelain | awk '/^.M/ || /^\?\?/ {print $2}' | fzf --scheme=path -i --tiebreak=end --preview 'git diff --color {+1}')
+      to_add=$(git status --porcelain | awk '/^.M/ || /^\?\?/ {printf "%s\0", $2}' | fzf --scheme=path -i --tiebreak=end --preview 'git diff --color {+1}' --read0 --print0)
       if [ -n "$to_add" ]; then
         git add "$to_add"
         echo "Added $to_add"
