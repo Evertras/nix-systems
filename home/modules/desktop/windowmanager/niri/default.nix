@@ -250,7 +250,8 @@ in {
 
           // Apply to all windows
           window-rule {
-              open-maximized true
+              // NOTE: This used to be true, but it's annoying on ultrawide... configurable in the future?
+              open-maximized false
           }
 
           // Work around WezTerm's initial configure bug
