@@ -15,6 +15,17 @@ in {
   };
 
   config = mkIf cfg.enable {
+    evertras.home.shell.funcs.notifications-dismiss-slack = {
+      runtimeInputs = with pkgs; [ mako jq ];
+      body = ''
+        makoctl list \
+          | jq -r '.data[][] | select(.["app-name"].data == "Slack") | .id.data | tostring' \
+          | while IFS= read -r id; do
+              makoctl dismiss --id "$id"
+            done
+      '';
+    };
+
     services.mako = {
       enable = true;
 
@@ -30,6 +41,8 @@ in {
         text-color = theme.colors.text;
 
         "mode=do-not-disturb" = { invisible = true; };
+
+        "app-name=kitty" = { default-timeout = 5000; };
 
         "urgency=critical" = {
           background-color = theme.colors.urgent;

@@ -507,6 +507,8 @@ in {
 
               Mod+W { toggle-column-tabbed-display; }
 
+              Mod+Shift+N hotkey-overlay-title="Dismiss Slack Notifications" { spawn "notifications-dismiss-slack"; }
+
               Mod+Shift+S { screenshot; }
               Print { screenshot-screen; }
               Alt+Print { screenshot-window; }
