@@ -1,10 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
-let
-  cfg = config.evertras.home.desktop.notifications;
-  theme = config.evertras.themes.selected;
+let cfg = config.evertras.home.desktop.notifications;
 in {
-  imports = [ ./mako ];
+  imports = [ ./dunst ./mako ];
 
   options.evertras.home.desktop.notifications = {
     enable = mkEnableOption "Notifications";
@@ -31,43 +29,9 @@ in {
       origin = cfg.origin;
     };
 
-    # TODO: Move this out later
-    services.dunst = mkIf (!cfg.wayland) {
-      enable = true;
-
-      settings = {
-        global = {
-          corner_radius = 10;
-          enable_recursive_icon_lookup = true;
-          follow = "mouse";
-          font = theme.fonts.desktop.name;
-          frame_color = theme.colors.background;
-          icon_path = "${theme.iconTheme.package}/share/icons";
-          icon_theme = theme.iconTheme.name;
-          origin = cfg.origin;
-        };
-
-        urgency_normal = {
-          background = theme.colors.primary;
-          foreground = theme.colors.background;
-          highlight = theme.colors.background;
-          timeout = 10;
-        };
-
-        urgency_low = {
-          background = theme.colors.primary;
-          foreground = theme.colors.background;
-          highlight = theme.colors.background;
-          timeout = 10;
-        };
-
-        urgency_critical = {
-          background = theme.colors.urgent;
-          foreground = theme.colors.background;
-          highlight = theme.colors.background;
-          timeout = 10;
-        };
-      };
+    evertras.home.desktop.notifications.dunst = {
+      enable = !cfg.wayland;
+      origin = cfg.origin;
     };
   };
 }

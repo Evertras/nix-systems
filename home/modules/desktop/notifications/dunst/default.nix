@@ -1,0 +1,56 @@
+{ config, lib, ... }:
+with lib;
+let
+  cfg = config.evertras.home.desktop.notifications.dunst;
+  theme = config.evertras.themes.selected;
+in {
+  options.evertras.home.desktop.notifications.dunst = {
+    enable = mkEnableOption "Dunst";
+
+    origin = mkOption {
+      type = types.str;
+      default = "bottom-center";
+      description = "The location of notifications on the screen";
+    };
+  };
+
+  config = mkIf cfg.enable {
+    services.dunst = {
+      enable = true;
+
+      settings = {
+        global = {
+          corner_radius = 10;
+          enable_recursive_icon_lookup = true;
+          follow = "mouse";
+          font = theme.fonts.desktop.name;
+          frame_color = theme.colors.background;
+          icon_path = "${theme.iconTheme.package}/share/icons";
+          icon_theme = theme.iconTheme.name;
+          origin = cfg.origin;
+        };
+
+        urgency_normal = {
+          background = theme.colors.primary;
+          foreground = theme.colors.background;
+          highlight = theme.colors.background;
+          timeout = 10;
+        };
+
+        urgency_low = {
+          background = theme.colors.primary;
+          foreground = theme.colors.background;
+          highlight = theme.colors.background;
+          timeout = 10;
+        };
+
+        urgency_critical = {
+          background = theme.colors.urgent;
+          foreground = theme.colors.background;
+          highlight = theme.colors.background;
+          timeout = 10;
+        };
+      };
+    };
+  };
+}
