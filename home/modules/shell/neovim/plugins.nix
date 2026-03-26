@@ -111,6 +111,8 @@ in {
               local hlTerm = "%*"
               local sep = hlSep .. "." .. hlTerm
 
+              if #data == 1 then return hlLeaf .. data[1].name .. hlTerm end
+
               local root = hlRoot .. data[1].name .. hlTerm
               local leaf = hlLeaf .. data[#data].name .. hlTerm
 
