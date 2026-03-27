@@ -13,7 +13,7 @@ let
 
     RUN curl -fsSL https://claude.ai/install.sh | bash
 
-    WORKDIR /workspace
+    WORKDIR /sandbox
 
     ENTRYPOINT ["claude"]
   '';
@@ -39,9 +39,12 @@ in {
           claude_json_mount=(-v "''${claude_json}:/root/.claude.json")
         fi
 
+        sandbox_dir="/sandbox/$(basename "$(pwd)")"
+
         docker run --rm -it \
           -e TERM="''${TERM}" \
-          -v "$(pwd):/workspace" \
+          --workdir "''${sandbox_dir}" \
+          -v "$(pwd):''${sandbox_dir}" \
           -v "''${HOME}/.claude:/root/.claude" \
           "''${claude_json_mount[@]}" \
           "''${image_name}" "''${@}"
