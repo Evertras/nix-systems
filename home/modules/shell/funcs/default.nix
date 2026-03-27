@@ -15,6 +15,7 @@ with lib; {
 
   imports = [
     ./aws.nix
+    ./claude.nix
     ./common.nix
     ./kubectl.nix
     ./git.nix
