@@ -39,7 +39,7 @@ in {
           claude_json_mount=(-v "''${claude_json}:/root/.claude.json")
         fi
 
-        sandbox_dir="/sandbox/$(basename "$(pwd)")"
+        sandbox_dir="/sandbox$(pwd)"
 
         docker run --rm -it \
           -e TERM="''${TERM}" \
