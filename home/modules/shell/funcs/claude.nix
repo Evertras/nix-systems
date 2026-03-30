@@ -68,6 +68,8 @@ in {
         dir_hash=$(pwd | sha256sum | cut -c1-12)
         nix_volume="''${image_name}-nix-''${dir_hash}"
 
+        # Use the host user ID so that files created/modified inside the
+        # container are owned by the correct user on the host filesystem.
         docker run --rm -it \
           -e TERM="''${TERM}" \
           -e HOME=/root \
