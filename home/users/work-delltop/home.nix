@@ -44,10 +44,17 @@ in {
 
       funcs = {
         copy.body = ''
-          wl-copy < "$1"
+          if [ -n "''${1:-}" ]; then
+            src="$1"
+          else
+            src=$(mktemp)
+            trap 'rm -f "$src"' EXIT
+            cat > "$src"
+          fi
+          wl-copy < "$src"
           echo -n "Char count: "
-          wc --chars "$1" | awk '{print $1}'
-          cat "$1"
+          wc --chars "$src" | awk '{print $1}'
+          cat "$src"
         '';
       };
     };

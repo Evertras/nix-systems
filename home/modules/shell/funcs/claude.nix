@@ -21,7 +21,9 @@ let
       "$"
     }{PATH}"
 
-    RUN curl -fsSL https://claude.ai/install.sh | bash
+    RUN curl -fsSL https://claude.ai/install.sh | bash \
+        && cp /root/.local/bin/claude /usr/local/bin/claude \
+        && chmod 755 /root
 
     RUN tee /entrypoint.sh <<SCRIPT && chmod +x /entrypoint.sh
     #!/bin/sh
@@ -68,6 +70,8 @@ in {
 
         docker run --rm -it \
           -e TERM="''${TERM}" \
+          -e HOME=/root \
+          --user "$(id -u):$(id -g)" \
           --workdir "''${sandbox_dir}" \
           -v "$(pwd):''${sandbox_dir}" \
           -v "''${HOME}/.claude:/root/.claude" \

@@ -7,9 +7,8 @@ in {
   config = mkIf cfg.enable {
     environment.systemPackages = with pkgs; [ docker-credential-helpers ];
 
-    virtualisation.docker.rootless = {
+    virtualisation.docker = {
       enable = true;
-      setSocketVariable = true;
 
       daemon.settings = { dns = [ "1.1.1.1" "8.8.8.8" ]; };
     };
