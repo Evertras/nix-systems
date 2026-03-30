@@ -21,7 +21,13 @@
 
     gadd.body = ''
       cd "$(git rev-parse --show-toplevel)"
-      git status --porcelain | awk '/^.M/ || /^\?\?/ {printf "%s\0", $2}' | fzf --scheme=path -i --tiebreak=end --preview 'git diff --color {+1}' --read0 --print0 | xargs -0 -r git add
+      tmpfile=$(mktemp)
+      git status --porcelain | awk '/^.M/ || /^\?\?/ {printf "%s\0", $2}' | fzf --scheme=path -i --tiebreak=end --preview 'git diff --color {+1}' --read0 --print0 > "$tmpfile"
+      if [ -s "$tmpfile" ]; then
+        xargs -0 -r git add < "$tmpfile"
+        xargs -0 -r -I{} echo "Added: {}" < "$tmpfile"
+      fi
+      rm -f "$tmpfile"
     '';
   };
 }
