@@ -15,6 +15,8 @@ let
 
     RUN git config --global --add safe.directory '*'
 
+    RUN mkdir -p /home/user && chmod 777 /home/user
+
     WORKDIR /sandbox
 
     ENTRYPOINT ["claude"]
@@ -42,16 +44,22 @@ in {
         claude_json="''${HOME}/.claude.json"
         claude_json_mount=()
         if [ -f "''${claude_json}" ]; then
-          claude_json_mount=(-v "''${claude_json}:/root/.claude.json")
+          claude_json_mount=(-v "''${claude_json}:/home/user/.claude.json")
         fi
 
         sandbox_dir="/sandbox$(pwd)"
 
+        # --user is required so that files created/modified in the volume mount
+        # are owned by the calling user rather than root.
+        # HOME must point to a world-writable path since the container user is
+        # a dynamic UID with no real home directory.
         docker run --rm -it \
+          --user "$(id -u):$(id -g)" \
+          -e HOME=/home/user \
           -e TERM="''${TERM}" \
           --workdir "''${sandbox_dir}" \
           -v "$(pwd):''${sandbox_dir}" \
-          -v "''${HOME}/.claude:/root/.claude" \
+          -v "''${HOME}/.claude:/home/user/.claude" \
           "''${claude_json_mount[@]}" \
           "''${image_name}" "''${@}"
       '';
