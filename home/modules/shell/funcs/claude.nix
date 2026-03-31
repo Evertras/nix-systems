@@ -13,6 +13,8 @@ let
 
     RUN curl -fsSL https://claude.ai/install.sh | bash
 
+    RUN git config --global --add safe.directory '*'
+
     WORKDIR /sandbox
 
     ENTRYPOINT ["claude"]
@@ -23,12 +25,16 @@ in {
       body = ''
         image_name="evertras-claude-sandbox"
 
+        need_build=false
         if [ "''${1:-}" = "--rebuild" ]; then
           shift
           docker rmi "''${image_name}" 2>/dev/null || true
+          need_build=true
+        elif ! docker image inspect "''${image_name}" &>/dev/null; then
+          need_build=true
         fi
 
-        if ! docker image inspect "''${image_name}" &>/dev/null; then
+        if "''${need_build}"; then
           echo "Building Claude sandbox image..."
           docker build -t "''${image_name}" - < ${dockerfileSrc}
         fi
