@@ -80,11 +80,11 @@
     },
     "ever-tdb": {
       "locked": {
-        "lastModified": 1765841929,
-        "narHash": "sha256-lCu6z9uSDEdrxNjrq3hHBlhpS9cAawF7rBqt0V4ymlk=",
+        "lastModified": 1775149029,
+        "narHash": "sha256-mBnAS8CGPnMXyxwJf6FdcCeEf1OBNWMVFrm118QNqlY=",
         "ref": "refs/heads/main",
-        "rev": "04c62351dbce17a22da8c7c30e39b68af8f41f63",
-        "revCount": 132,
+        "rev": "d4d24daf2fc6bfb20966fe0ca2815e3a73cf6b5c",
+        "revCount": 136,
         "type": "git",
         "url": "ssh://git@github.com/Evertras/nix-tdb"
       },
