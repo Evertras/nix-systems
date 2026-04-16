@@ -25,12 +25,14 @@ in {
     home.packages = [
       # Don't need this often, but useful to have when needed
       pkgs.git-filter-repo
+      pkgs.gh
     ];
 
     programs.git = {
       enable = true;
 
       settings = {
+        credential.helper = "${pkgs.gh}/bin/gh auth git-helper";
         init.defaultBranch = "main";
         user = {
           email = cfg.userEmail;
