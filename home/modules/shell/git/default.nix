@@ -32,7 +32,7 @@ in {
       enable = true;
 
       settings = {
-        credential.helper = "${pkgs.gh}/bin/gh auth git-helper";
+        credential.helper = "${pkgs.gh}/bin/gh auth git-credential";
         init.defaultBranch = "main";
         user = {
           email = cfg.userEmail;
