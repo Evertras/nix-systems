@@ -64,6 +64,7 @@ in {
         google-cloud-sdk
         kubectl
         kubelogin
+        terraform
 
         # Data processing
         asciigraph
