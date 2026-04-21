@@ -81,6 +81,7 @@ in {
         k = "kubectl";
         kctx = "kubectl config use-context";
         kns = "kubectl config set-context --current --namespace";
+        kssh = "kitty +kitten ssh";
         ls = "eza";
         ndf = "nix develop --command fish";
         # https://github.com/nix-community/nix-index
