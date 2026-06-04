@@ -7,8 +7,15 @@
 
       users.evertras = {
         isNormalUser = true;
-        extraGroups =
-          [ "audio" "docker" "autologin" "wheel" "libvirtd" "input" ];
+        extraGroups = [
+          "audio"
+          "docker"
+          "autologin"
+          "wheel"
+          "libvirtd"
+          "input"
+          "wpa_supplicant"
+        ];
         hashedPasswordFile = "/etc/nixos/passwords/evertras";
       };
     };

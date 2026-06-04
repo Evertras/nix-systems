@@ -98,9 +98,6 @@
     wireless = {
       # Enables wireless support via wpa_supplicant.
       enable = true;
-      userControlled = {
-        group = "wheel";
-      };
       networks = {
         # https://nixos.wiki/wiki/Wpa_supplicant
         # Encrypted, and if you crack it then I guess you can
