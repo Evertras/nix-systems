@@ -1,7 +1,9 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.home.shell.pass;
-in {
+let
+  cfg = config.evertras.home.shell.pass;
+in
+{
   options.evertras.home.shell.pass = {
     # NOTE: Currently need to bootstrap in a GPG key,
     # figure out a nicer way to avoid juggling this later
@@ -17,6 +19,7 @@ in {
       # https://www.mankier.com/1/pass
       settings = {
         PASSWORD_STORE_KEY = cfg.gpgKey;
+        PASSWORD_STORE_DIR = "${config.home.homeDirectory}/.local/share/password-store";
         EDITOR = "nvim";
       };
     };
