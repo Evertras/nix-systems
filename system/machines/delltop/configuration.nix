@@ -99,7 +99,6 @@
       # Enables wireless support via wpa_supplicant.
       enable = true;
       userControlled = {
-        enable = true;
         group = "wheel";
       };
       networks = {
@@ -107,20 +106,17 @@
         # Encrypted, and if you crack it then I guess you can
         # drive by my house somewhere and watch Netflix?
         Lowriders = {
-          pskRaw =
-            "e68178a8d25b7e61d309900870f543b71941288aa187c6245fb10ca31922bc9c";
+          pskRaw = "e68178a8d25b7e61d309900870f543b71941288aa187c6245fb10ca31922bc9c";
           priority = 20;
         };
 
         SpectrumSetup-D3 = {
-          pskRaw =
-            "e23b2a89c3883c9b78fb3c3689deebf11739b590c8e8b56eb624a89b58188701";
+          pskRaw = "e23b2a89c3883c9b78fb3c3689deebf11739b590c8e8b56eb624a89b58188701";
           priority = 20;
         };
 
         OhBeaufy = {
-          pskRaw =
-            "d406744fa2fef95124c172c7222689b0a9c018b0dffa6fe2ab48a4961fa0be95";
+          pskRaw = "d406744fa2fef95124c172c7222689b0a9c018b0dffa6fe2ab48a4961fa0be95";
           priority = 20;
           # Need to do this explicitly for reasons...
           authProtocols = [ "WPA-PSK" ];
@@ -129,7 +125,10 @@
     };
   };
 
-  networking.nameservers = [ "8.8.8.8" "10.20.0.2" ];
+  networking.nameservers = [
+    "8.8.8.8"
+    "10.20.0.2"
+  ];
 
   ##############################################################################
   # Nvidia stuff
@@ -225,4 +224,3 @@
   # For more information, see `man configuration.nix` or https://nixos.org/manual/nixos/stable/options#opt-system.stateVersion .
   system.stateVersion = "23.11"; # Did you read the comment?
 }
-

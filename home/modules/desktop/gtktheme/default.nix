@@ -1,4 +1,9 @@
-{ config, everlib, lib, ... }:
+{
+  config,
+  everlib,
+  lib,
+  ...
+}:
 with lib;
 with everlib;
 let
@@ -13,7 +18,8 @@ let
     package = existsOr cfg.font.package theme.fonts.desktop.package;
     size = cfg.font.size;
   };
-in {
+in
+{
   options.evertras.home.desktop.gtktheme = {
     enable = mkEnableOption "gtktheme";
 
@@ -104,7 +110,10 @@ in {
       };
 
       gtk3.extraConfig.gtk-application-prefer-dark-theme = 1;
-      gtk4.extraConfig.gtk-application-prefer-dark-theme = 1;
+      gtk4 = {
+        theme = config.gtk.theme;
+        extraConfig.gtk-application-prefer-dark-theme = 1;
+      };
     };
 
     qt = {

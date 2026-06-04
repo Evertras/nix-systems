@@ -1,4 +1,9 @@
-{ lib, nerdfonts, pkgs, ... }:
+{
+  lib,
+  nerdfonts,
+  pkgs,
+  ...
+}:
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
@@ -15,11 +20,14 @@ let
   };
 
   gpgKey = "ABFFF058F479311F";
-in {
-  imports = [ ../../modules ../../../shared/themes/select.nix ];
+in
+{
+  imports = [
+    ../../modules
+    ../../../shared/themes/select.nix
+  ];
 
-  evertras.themes.selected =
-    (theme // { fonts = (theme.fonts // fontOverrides); });
+  evertras.themes.selected = (theme // { fonts = (theme.fonts // fontOverrides); });
 
   evertras.home = {
     core.username = "evertras";
@@ -35,7 +43,9 @@ in {
 
     #games = { lutris.enable = true; };
 
-    laptop = { enable = true; };
+    laptop = {
+      enable = true;
+    };
 
     shell = {
       core = { inherit gpgKey; };
@@ -49,8 +59,6 @@ in {
         nodejs.enable = true;
         rust.enable = true;
       };
-
-      minikube.enable = true;
 
       funcs = {
         copy.body = ''
@@ -100,7 +108,10 @@ in {
 
   home = {
     # Other fun things
-    packages = with pkgs; [ cockatrice slack ];
+    packages = with pkgs; [
+      cockatrice
+      slack
+    ];
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.

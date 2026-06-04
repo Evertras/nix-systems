@@ -1,12 +1,19 @@
 # Technically a compositor and not a window manager,
 # but close enough.
-{ config, everlib, lib, pkgs, ... }:
+{
+  config,
+  everlib,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 with everlib;
 let
   cfg = config.evertras.home.desktop.windowmanager.hyprland;
   theme = config.evertras.themes.selected;
-in {
+in
+{
   imports = [ ./pyprland.nix ];
 
   options.evertras.home.desktop.windowmanager.hyprland = {
@@ -48,108 +55,130 @@ in {
 
   config = mkIf cfg.enable {
     # Extra helpers in other files
-    evertras.home.desktop.windowmanager.hyprland = { pyprland.enable = true; };
+    evertras.home.desktop.windowmanager.hyprland = {
+      pyprland.enable = true;
+    };
 
     wayland.windowManager.hyprland = {
       enable = true;
 
       # Regarding monitor configuration:
       # https://wiki.hyprland.org/Configuring/Monitors/
-      extraConfig = let
-        displayConfigs = builtins.map (display:
-          "monitor=${display.name},${display.resolution}@${
-            toString (display.refreshRate or 60)
-          },${display.position or "0x0"},${toString (display.scale or 1)}")
-          cfg.displays;
-      in ''
-        exec-once=${pkgs.swww}/bin/swww init
-        exec-once=${pkgs.pyprland}/bin/pypr
-        ${strings.concatStringsSep "\n" displayConfigs}
-        monitor=,preferred,auto,1
-      '';
+      extraConfig =
+        let
+          displayConfigs = builtins.map (
+            display:
+            "monitor=${display.name},${display.resolution}@${
+              toString (display.refreshRate or 60)
+            },${display.position or "0x0"},${toString (display.scale or 1)}"
+          ) cfg.displays;
+        in
+        ''
+          exec-once=${pkgs.awww}/bin/awww-daemon
+          exec-once=${pkgs.pyprland}/bin/pypr
+          ${strings.concatStringsSep "\n" displayConfigs}
+          monitor=,preferred,auto,1
+        '';
 
-      settings = let mkColor = color: "0xff" + (strings.removePrefix "#" color);
-      in {
-        # https://wiki.hyprland.org/Configuring/Variables/
-        "$mod" = "SUPER";
+      settings =
+        let
+          mkColor = color: "0xff" + (strings.removePrefix "#" color);
+        in
+        {
+          # https://wiki.hyprland.org/Configuring/Variables/
+          "$mod" = "SUPER";
 
-        bind = [
-          # Quit and really quit
-          "$mod, Q, killactive"
-          "$mod SHIFT, Q, exit"
+          bind = [
+            # Quit and really quit
+            "$mod, Q, killactive"
+            "$mod SHIFT, Q, exit"
 
-          # Application shortcuts
-          "$mod, R, exec, ${cfg.browser}"
-          "$mod, space, exec, ${cfg.terminal}"
-          "$mod, P, exec, launch-app"
-          "$mod, V, exec, ${pkgs.pyprland}/bin/pypr toggle pavucontrol"
+            # Application shortcuts
+            "$mod, R, exec, ${cfg.browser}"
+            "$mod, space, exec, ${cfg.terminal}"
+            "$mod, P, exec, launch-app"
+            "$mod, V, exec, ${pkgs.pyprland}/bin/pypr toggle pavucontrol"
 
-          # Navigate
-          "$mod, J, movefocus, d"
-          "$mod, K, movefocus, u"
-          "$mod, H, movefocus, l"
-          "$mod, L, movefocus, r"
+            # Navigate
+            "$mod, J, movefocus, d"
+            "$mod, K, movefocus, u"
+            "$mod, H, movefocus, l"
+            "$mod, L, movefocus, r"
 
-          # Media keys
-          ", XF86AudioRaiseVolume, exec, volume-up"
-          ", XF86AudioLowerVolume, exec, volume-down"
-          ", XF86AudioLowerMute, exec, volume-mute-toggle"
-          ", XF86MonBrightnessUp, exec, brightness-up"
-          ", XF86MonBrightnessDown, exec, brightness-down"
+            # Media keys
+            ", XF86AudioRaiseVolume, exec, volume-up"
+            ", XF86AudioLowerVolume, exec, volume-down"
+            ", XF86AudioLowerMute, exec, volume-mute-toggle"
+            ", XF86MonBrightnessUp, exec, brightness-up"
+            ", XF86MonBrightnessDown, exec, brightness-down"
 
-          # Master layout
-          "$mod, return, layoutmsg, swapwithmaster"
-          "$mod SHIFT, return, layoutmsg, orientationcycle left top"
+            # Master layout
+            "$mod, return, layoutmsg, swapwithmaster"
+            "$mod SHIFT, return, layoutmsg, orientationcycle left top"
 
-          # Fullscreen
-          "$mod, F, fullscreen, 0"
-        ] ++ (
-          # workspaces
-          # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
-          # Stolen/modified from https://wiki.hyprland.org/Nix/Hyprland-on-Home-Manager/
-          builtins.concatLists (builtins.genList (x:
-            let ws = toString (x + 1);
-            in [
-              "$mod, ${ws}, workspace, ${ws}"
-              "$mod SHIFT, ${ws}, movetoworkspace, ${ws}"
-              # Sneak in layout tweaks
-              "$mod CTRL, ${ws}, layoutmsg, mfact 0.${ws}"
-            ]) 9));
+            # Fullscreen
+            "$mod, F, fullscreen, 0"
+          ]
+          ++ (
+            # workspaces
+            # binds $mod + [shift +] {1..9} to [move to] workspace {1..9}
+            # Stolen/modified from https://wiki.hyprland.org/Nix/Hyprland-on-Home-Manager/
+            builtins.concatLists (
+              builtins.genList (
+                x:
+                let
+                  ws = toString (x + 1);
+                in
+                [
+                  "$mod, ${ws}, workspace, ${ws}"
+                  "$mod SHIFT, ${ws}, movetoworkspace, ${ws}"
+                  # Sneak in layout tweaks
+                  "$mod CTRL, ${ws}, layoutmsg, mfact 0.${ws}"
+                ]
+              ) 9
+            )
+          );
 
-        decoration = { rounding = 10; };
+          decoration = {
+            rounding = 10;
+          };
 
-        general = {
-          gaps_out = 2;
-          gaps_in = 2;
-          layout = "master";
-          border_size = 2;
-          "col.active_border" = mkColor theme.colors.primary;
+          general = {
+            gaps_out = 2;
+            gaps_in = 2;
+            layout = "master";
+            border_size = 2;
+            "col.active_border" = mkColor theme.colors.primary;
+          };
+
+          gestures = {
+            # Leaving as reference to play with later
+            workspace_swipe = false;
+            workspace_swipe_distance = 100;
+          };
+
+          input = {
+            kb_layout = cfg.kbLayout;
+
+            repeat_delay = 250;
+            repeat_rate = 40;
+          };
+
+          xwayland = {
+            force_zero_scaling = true;
+          };
+
+          ecosystem = {
+            no_donation_nag = true;
+          };
+
+          misc = {
+            force_default_wallpaper = 0;
+
+            # Disable fullscreen if a new window pops up
+            new_window_takes_over_fullscreen = 2;
+          };
         };
-
-        gestures = {
-          # Leaving as reference to play with later
-          workspace_swipe = false;
-          workspace_swipe_distance = 100;
-        };
-
-        input = {
-          kb_layout = cfg.kbLayout;
-
-          repeat_delay = 250;
-          repeat_rate = 40;
-        };
-
-        xwayland = { force_zero_scaling = true; };
-
-        ecosystem = { no_donation_nag = true; };
-
-        misc = {
-          force_default_wallpaper = 0;
-
-          # Disable fullscreen if a new window pops up
-          new_window_takes_over_fullscreen = 2;
-        };
-      };
     };
 
     home.packages = with pkgs; [ wl-clipboard ];

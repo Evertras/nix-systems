@@ -1,4 +1,9 @@
-{ lib, nerdfonts, pkgs, ... }:
+{
+  lib,
+  nerdfonts,
+  pkgs,
+  ...
+}:
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
@@ -11,11 +16,14 @@ let
   gpgKey = "57F346A9FC11B688";
   wirelessInterface = "wlp0s20f3";
   externalOutput = "DP-2";
-in {
-  imports = [ ../../modules ../../../shared/themes/select.nix ];
+in
+{
+  imports = [
+    ../../modules
+    ../../../shared/themes/select.nix
+  ];
 
-  evertras.themes.selected =
-    (theme // { fonts = (theme.fonts // fontOverrides); });
+  evertras.themes.selected = (theme // { fonts = (theme.fonts // fontOverrides); });
 
   evertras.home = {
     core.username = "evertras";
@@ -29,7 +37,9 @@ in {
       volumeLimit = 60;
     };
 
-    laptop = { enable = true; };
+    laptop = {
+      enable = true;
+    };
 
     shell = {
       core = { inherit gpgKey; };
@@ -39,8 +49,6 @@ in {
         nodejs.enable = true;
         rust.enable = true;
       };
-
-      minikube.enable = true;
 
       funcs = {
         copy.body = ''
@@ -78,8 +86,7 @@ in {
       };
 
       wallpaper = {
-        randomWallpapersDir =
-          "~/dev/github/evertras/wallpapers/external-rotation";
+        randomWallpapersDir = "~/dev/github/evertras/wallpapers/external-rotation";
 
         outputs.external = externalOutput;
       };
@@ -95,7 +102,10 @@ in {
   };
 
   home = {
-    packages = with pkgs; [ packer slack ];
+    packages = with pkgs; [
+      packer
+      slack
+    ];
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.

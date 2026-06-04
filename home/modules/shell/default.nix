@@ -1,9 +1,16 @@
-{ config, everlib, lib, pkgs, ... }:
+{
+  config,
+  everlib,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 let
   cfg = config.evertras.home.shell.core;
   theme = config.evertras.themes.selected;
-in {
+in
+{
   imports = everlib.allSubdirs ./.;
 
   options.evertras.home.shell.core = {
@@ -75,7 +82,7 @@ in {
         yq
 
         # Format nix things
-        nixfmt-classic
+        nixfmt
 
         # Funsies
         cynomys
@@ -139,7 +146,9 @@ in {
       tealdeer = {
         enable = true;
 
-        settings = { updates.auto_update = true; };
+        settings = {
+          updates.auto_update = true;
+        };
       };
 
       # Nicer cd
