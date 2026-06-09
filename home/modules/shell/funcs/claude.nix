@@ -25,18 +25,36 @@ let
 
     ENTRYPOINT ["claude"]
   '';
-in {
+in
+{
   evertras.home.shell.funcs = {
     claude-sandbox = {
       body = ''
         image_name="evertras-claude-sandbox"
 
         need_build=false
-        if [ "''${1:-}" = "--rebuild" ]; then
-          shift
-          docker rmi "''${image_name}" 2>/dev/null || true
-          need_build=true
-        elif ! docker image inspect "''${image_name}" &>/dev/null; then
+        dirs=()
+        passthrough_args=()
+
+        while [[ $# -gt 0 ]]; do
+          case "''${1}" in
+            --rebuild)
+              docker rmi "''${image_name}" 2>/dev/null || true
+              need_build=true
+              shift
+              ;;
+            -d)
+              dirs+=("$(realpath "''${2}")")
+              shift 2
+              ;;
+            *)
+              passthrough_args+=("''${1}")
+              shift
+              ;;
+          esac
+        done
+
+        if ! docker image inspect "''${image_name}" &>/dev/null; then
           need_build=true
         fi
 
@@ -51,7 +69,17 @@ in {
           claude_json_mount=(-v "''${claude_json}:/home/user/.claude.json")
         fi
 
-        sandbox_dir="/sandbox$(pwd)"
+        # If no -d flags given, default to current directory
+        if [ "''${#dirs[@]}" -eq 0 ]; then
+          dirs=("$(pwd)")
+        fi
+
+        volume_mounts=()
+        for dir in "''${dirs[@]}"; do
+          volume_mounts+=(-v "''${dir}:/sandbox''${dir}")
+        done
+
+        sandbox_dir="/sandbox''${dirs[0]}"
 
         # --user is required so that files created/modified in the volume mount
         # are owned by the calling user rather than root.
@@ -62,10 +90,10 @@ in {
           -e HOME=/home/user \
           -e TERM="''${TERM}" \
           --workdir "''${sandbox_dir}" \
-          -v "$(pwd):''${sandbox_dir}" \
+          "''${volume_mounts[@]}" \
           -v "''${HOME}/.claude:/home/user/.claude" \
           "''${claude_json_mount[@]}" \
-          "''${image_name}" "''${@}"
+          "''${image_name}" "''${passthrough_args[@]}"
       '';
     };
   };
