@@ -326,6 +326,21 @@
         "type": "github"
       }
     },
+    "nixpkgs-aws-vault": {
+      "locked": {
+        "lastModified": 1781577229,
+        "narHash": "sha256-lrp67w8AulE9Ks53n27I45ADSzbOCn4H+CNW1Ck8B+8=",
+        "owner": "NixOS",
+        "repo": "nixpkgs",
+        "rev": "567a49d1913ce81ac6e9582e3553dd90a955875f",
+        "type": "github"
+      },
+      "original": {
+        "id": "nixpkgs",
+        "ref": "nixos-unstable",
+        "type": "indirect"
+      }
+    },
     "nixpkgs-python": {
       "inputs": {
         "flake-compat": "flake-compat",
@@ -499,6 +514,7 @@
         "home-manager": "home-manager",
         "nixgl": "nixgl",
         "nixpkgs": "nixpkgs_6",
+        "nixpkgs-aws-vault": "nixpkgs-aws-vault",
         "nixpkgs-python": "nixpkgs-python",
         "nixpkgs-unstable": "nixpkgs-unstable",
         "nixvim": "nixvim"

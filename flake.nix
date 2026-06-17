@@ -6,6 +6,9 @@
 
     nixpkgs-unstable.url = "nixpkgs/nixos-unstable";
 
+    # Version lock for aws-vault, may be removed during the next major upgrade
+    nixpkgs-aws-vault.url = "nixpkgs/nixos-unstable";
+
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
@@ -42,6 +45,7 @@
     {
       nixpkgs,
       nixpkgs-unstable,
+      nixpkgs-aws-vault,
       home-manager,
       nixvim,
       nixgl,
@@ -85,7 +89,7 @@
           };
 
           overlays = [
-            (_: _: {
+            (_: prev: {
               cynomys = inputs.ever-cyn.packages.${system}.default;
               quickview = inputs.ever-quickview.packages.${system}.default;
               everfont-berkeley = inputs.ever-fonts.packages.${system}.berkeley;
@@ -96,6 +100,9 @@
 
               # Allow access to some unstable packages for updates
               unstable = import nixpkgs-unstable { inherit system; };
+
+              # Use unstable aws-vault for newer version
+              aws-vault = (import nixpkgs-aws-vault { inherit system; }).aws-vault;
             })
 
             claude-code.overlays.default
