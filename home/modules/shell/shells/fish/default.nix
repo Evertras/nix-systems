@@ -3,7 +3,8 @@ with lib;
 let
   cfg = config.evertras.home.shell.shells.fish;
   theme = config.evertras.themes.selected;
-in {
+in
+{
   options.evertras.home.shell.shells.fish = {
     enable = mkEnableOption "Fish shell";
   };
@@ -65,8 +66,7 @@ in {
       };
 
       shellAbbrs = {
-        aws-profile-select = ''
-          export AWS_PROFILE=$(aws-profile-list | fzf --height 20% || echo "none")'';
+        aws-profile-select = ''export AWS_PROFILE=$(aws-profile-list | fzf --height 20% || echo "none")'';
         cat = "bat -p";
         g = "git";
         gb = "git branch";
@@ -74,7 +74,7 @@ in {
         gd = "git diff";
         gds = "git diff --staged";
         gp = "git push";
-        gpu = "git push -u origin";
+        gpu = "git push -u origin (git branch --show-current)";
         grpo = "git remote prune origin";
         gs = "git status";
         jctlu = "journalctl --user";
@@ -104,57 +104,58 @@ in {
         wget = "wget --hsts-file=$XDG_DATA_HOME/wget-hsts";
       };
 
-      shellInit = let
-        rmp = strings.removePrefix "#";
-        #colorPrimary = rmp theme.colors.primary;
-        #colorText = rmp theme.colors.text;
-        colorUrgent = rmp theme.colors.urgent;
+      shellInit =
+        let
+          rmp = strings.removePrefix "#";
+          #colorPrimary = rmp theme.colors.primary;
+          #colorText = rmp theme.colors.text;
+          colorUrgent = rmp theme.colors.urgent;
 
-        mkEnvVar = name: value: "set -x ${name} ${value}";
-        envVars =
-          attrsets.mapAttrsToList mkEnvVar config.evertras.home.shell.env.vars;
-      in ''
-        set fish_greeting
+          mkEnvVar = name: value: "set -x ${name} ${value}";
+          envVars = attrsets.mapAttrsToList mkEnvVar config.evertras.home.shell.env.vars;
+        in
+        ''
+          set fish_greeting
 
-        # Stop underlining
-        set fish_color_valid_path
+          # Stop underlining
+          set fish_color_valid_path
 
-        fish_add_path -g ~/.evertras/bin
+          fish_add_path -g ~/.evertras/bin
 
-        set GPG_TTY (tty)
+          set GPG_TTY (tty)
 
-        # Env vars from config.evertras.home.shell.env.vars
-        ${concatStringsSep "\n" envVars}
+          # Env vars from config.evertras.home.shell.env.vars
+          ${concatStringsSep "\n" envVars}
 
-        # Theme
-        # TODO: Move this into theme file
-        set fish_color_normal c6d0f5
-        set fish_color_command 8caaee
-        set fish_color_param eebebe
-        set fish_color_keyword e78284
-        set fish_color_quote a6d189
-        set fish_color_redirection f4b8e4
-        set fish_color_end ef9f76
-        set fish_color_comment 838ba7
-        set fish_color_error ${colorUrgent}
-        set fish_color_gray 737994
-        set fish_color_selection --background=414559
-        set fish_color_search_match --background=414559
-        set fish_color_option a6d189
-        set fish_color_operator f4b8e4
-        set fish_color_escape ea999c
-        set fish_color_autosuggestion 737994
-        set fish_color_cancel e78284
-        set fish_color_cwd e5c890
-        set fish_color_user 81c8be
-        set fish_color_host 8caaee
-        set fish_color_host_remote a6d189
-        set fish_color_status e78284
-        set fish_pager_color_progress 737994
-        set fish_pager_color_prefix f4b8e4
-        set fish_pager_color_completion c6d0f5
-        set fish_pager_color_description 737994
-      '';
+          # Theme
+          # TODO: Move this into theme file
+          set fish_color_normal c6d0f5
+          set fish_color_command 8caaee
+          set fish_color_param eebebe
+          set fish_color_keyword e78284
+          set fish_color_quote a6d189
+          set fish_color_redirection f4b8e4
+          set fish_color_end ef9f76
+          set fish_color_comment 838ba7
+          set fish_color_error ${colorUrgent}
+          set fish_color_gray 737994
+          set fish_color_selection --background=414559
+          set fish_color_search_match --background=414559
+          set fish_color_option a6d189
+          set fish_color_operator f4b8e4
+          set fish_color_escape ea999c
+          set fish_color_autosuggestion 737994
+          set fish_color_cancel e78284
+          set fish_color_cwd e5c890
+          set fish_color_user 81c8be
+          set fish_color_host 8caaee
+          set fish_color_host_remote a6d189
+          set fish_color_status e78284
+          set fish_pager_color_progress 737994
+          set fish_pager_color_prefix f4b8e4
+          set fish_pager_color_completion c6d0f5
+          set fish_pager_color_description 737994
+        '';
     };
   };
 }
