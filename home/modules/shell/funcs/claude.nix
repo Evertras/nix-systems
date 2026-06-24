@@ -41,6 +41,7 @@ in
         image_name="evertras-claude-sandbox"
 
         need_build=false
+        build_flags=()
         dirs=()
         passthrough_args=()
 
@@ -49,6 +50,15 @@ in
             --rebuild)
               docker rmi "''${image_name}" 2>/dev/null || true
               need_build=true
+              shift
+              ;;
+            --update)
+              # Like --rebuild but bypasses the layer cache and re-pulls the
+              # base image, so the apt packages and the claude install.sh step
+              # actually re-run and pick up new versions.
+              docker rmi "''${image_name}" 2>/dev/null || true
+              need_build=true
+              build_flags=(--no-cache --pull)
               shift
               ;;
             -d)
@@ -68,7 +78,7 @@ in
 
         if "''${need_build}"; then
           echo "Building Claude sandbox image..."
-          docker build -t "''${image_name}" - < ${dockerfileSrc}
+          docker build "''${build_flags[@]}" -t "''${image_name}" - < ${dockerfileSrc}
         fi
 
         claude_json="''${HOME}/.claude.json"
@@ -99,6 +109,7 @@ in
           --user "$(id -u):$(id -g)" \
           -e HOME=/home/user \
           -e TERM="''${TERM}" \
+          -e DISABLE_AUTOUPDATER=1 \
           -e NIX_REMOTE=daemon \
           -e PATH="''${nix_bin_dir}:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
           --workdir "''${sandbox_dir}" \
