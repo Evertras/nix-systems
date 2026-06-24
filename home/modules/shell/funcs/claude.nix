@@ -17,6 +17,10 @@ let
 
     RUN curl -fsSL https://claude.ai/install.sh | bash
 
+    RUN chmod a+rx /root /root/.local /root/.local/bin \
+        && mkdir -p /home/user/.local/bin \
+        && ln -s /root/.local/bin/claude /home/user/.local/bin/claude
+
     RUN git config --global --add safe.directory '*'
 
     RUN mkdir -p /home/user && chmod 777 /home/user
@@ -81,6 +85,8 @@ in
 
         sandbox_dir="/sandbox''${dirs[0]}"
 
+        nix_bin_dir="$(dirname "$(readlink -f "$(which nix)")")"
+
         # --user is required so that files created/modified in the volume mount
         # are owned by the calling user rather than root.
         # HOME must point to a world-writable path since the container user is
@@ -89,8 +95,13 @@ in
           --user "$(id -u):$(id -g)" \
           -e HOME=/home/user \
           -e TERM="''${TERM}" \
+          -e NIX_REMOTE=daemon \
+          -e PATH="''${nix_bin_dir}:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
           --workdir "''${sandbox_dir}" \
           "''${volume_mounts[@]}" \
+          -v "/nix:/nix:ro" \
+          -v "/nix/var/nix/daemon-socket/socket:/nix/var/nix/daemon-socket/socket" \
+          -v "''${HOME}/.config/nix:/home/user/.config/nix:ro" \
           -v "''${HOME}/.claude:/home/user/.claude" \
           "''${claude_json_mount[@]}" \
           "''${image_name}" "''${passthrough_args[@]}"
