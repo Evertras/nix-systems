@@ -97,6 +97,7 @@ in
       };
 
       shellAliases = {
+        cs = "claude-sandbox";
         grep = "grep --color=auto";
         mux = "tmuxinator";
         vi = "nvim";
