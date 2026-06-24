@@ -27,6 +27,10 @@ let
 
     WORKDIR /sandbox
 
+    COPY <<EOF /sandbox/CLAUDE.md
+    If a flake.nix file exists in the working directory, use nix develop to enter the development environment before running project commands (build, test, lint, etc). This ensures the correct toolchain and dependencies are available.
+    EOF
+
     ENTRYPOINT ["claude"]
   '';
 in
@@ -101,7 +105,7 @@ in
           "''${volume_mounts[@]}" \
           -v "/nix:/nix:ro" \
           -v "/nix/var/nix/daemon-socket/socket:/nix/var/nix/daemon-socket/socket" \
-          -v "''${HOME}/.config/nix:/home/user/.config/nix:ro" \
+          -v "/etc/nix/nix.conf:/etc/nix/nix.conf:ro" \
           -v "''${HOME}/.claude:/home/user/.claude" \
           "''${claude_json_mount[@]}" \
           "''${image_name}" "''${passthrough_args[@]}"
