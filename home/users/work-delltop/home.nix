@@ -82,7 +82,7 @@ in
       terminals.kitty = {
         fontName = fontOverrides.terminal.name;
         fontSize = 12;
-        opacity = 0.8;
+        opacity = 1;
       };
 
       wallpaper = {
