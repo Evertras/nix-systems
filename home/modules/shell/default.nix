@@ -125,14 +125,19 @@ in
           # Where typing
           prompt = theme.colors.primary;
 
-          # What the selection is pointing at right now
-          # Sits behind "fg+", so make it blend in with text
-          pointer = theme.colors.background;
+          # The ">" pointer at the current line
+          pointer = theme.colors.primary;
 
-          "bg+" = theme.colors.highlight;
-          "fg+" = theme.colors.background;
+          # Selected line: a dark background with light text, so the
+          # highlight bar reads as a subtle dark tint rather than a
+          # bright block. (theme.colors.highlight is a light pastel and
+          # made this far too bright.)
+          "bg+" = theme.colors.darker;
+          "fg+" = theme.colors.text;
+
+          # Matched characters
           "hl" = theme.colors.primary;
-          "hl+" = theme.colors.background;
+          "hl+" = theme.colors.highlight;
         };
       };
 
