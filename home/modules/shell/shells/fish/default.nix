@@ -68,6 +68,7 @@ in
       shellAbbrs = {
         aws-profile-select = ''export AWS_PROFILE=$(aws-profile-list | fzf --height 20% || echo "none")'';
         cat = "bat -p";
+        cs = "claude-sandbox";
         g = "git";
         gb = "git branch";
         gc = "git commit -m";
@@ -97,7 +98,6 @@ in
       };
 
       shellAliases = {
-        cs = "claude-sandbox";
         grep = "grep --color=auto";
         mux = "tmuxinator";
         vi = "nvim";
