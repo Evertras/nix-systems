@@ -1,8 +1,19 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-let cfg = config.evertras.home.desktop.notifications;
-in {
-  imports = [ ./dunst ./mako ];
+let
+  cfg = config.evertras.home.desktop.notifications;
+  timeoutSecondsOption = import ./timeout-seconds-option.nix { inherit lib; };
+in
+{
+  imports = [
+    ./dunst
+    ./mako
+  ];
 
   options.evertras.home.desktop.notifications = {
     enable = mkEnableOption "Notifications";
@@ -15,18 +26,20 @@ in {
       default = "bottom-center";
       description = "The location of notifications on the screen";
     };
+
+    timeoutSeconds = timeoutSecondsOption;
   };
 
   config = mkIf cfg.enable {
-    home.packages = with pkgs;
-      [
-        # (Future investigation: https://github.com/Sweets/tiramisu)
-        libnotify
-      ];
+    home.packages = with pkgs; [
+      # (Future investigation: https://github.com/Sweets/tiramisu)
+      libnotify
+    ];
 
     evertras.home.desktop.notifications.mako = {
       enable = cfg.wayland;
       origin = cfg.origin;
+      timeoutSeconds = cfg.timeoutSeconds;
     };
 
     evertras.home.desktop.notifications.dunst = {

@@ -79,6 +79,8 @@ in
 
       discord.enable = true;
 
+      notifications.timeoutSeconds.kitty = 1;
+
       terminals.kitty = {
         fontName = fontOverrides.terminal.name;
         fontSize = 12;
