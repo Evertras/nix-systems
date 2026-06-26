@@ -68,6 +68,7 @@ let
         "${name})"
       ]
       ++ map (d: "  dirs+=(\"${d}\")") profile.dirs
+      ++ map (e: "  extra_env_keys+=(\"${e}\")") profile.env
       ++ optional (profile.workdir != null) "  profile_workdir=\"${profile.workdir}\""
       ++ optional (instr != null) "  profile_claude_md=\"${instr}\""
       ++ [ "  ;;" ];
@@ -130,6 +131,7 @@ in
         tdb = {
           dirs = [ "$HOME/dev/tdb" "$HOME/dev/tdb-docs" ];
           workdir = "$HOME/dev/tdb";
+          env = [ "AWS_PROFILE" "GITHUB_TOKEN" ];
           instructions = '''
             Always run tests with `make test`.
             Use conventional commit messages.
@@ -144,6 +146,16 @@ in
             type = types.listOf types.str;
             default = [ ];
             description = "Host directories to mount into the sandbox.";
+          };
+          env = mkOption {
+            type = types.listOf types.str;
+            default = [ ];
+            description = ''
+              Environment variable keys to import from the host into the
+              sandbox.  Each key is passed through to `docker run` as `-e
+              <KEY>`, so the value is taken from the calling environment.
+              Extra `-e` flags on the command line are added to these.
+            '';
           };
           workdir = mkOption {
             type = types.nullOr types.str;
@@ -176,6 +188,7 @@ in
         need_build=false
         build_flags=()
         dirs=()
+        extra_env_keys=()
         passthrough_args=()
         profile_workdir=""
         profile_claude_md=""
@@ -200,6 +213,11 @@ in
               ;;
             -d)
               dirs+=("$(realpath "''${2}")")
+              shift 2
+              ;;
+            -e)
+              # Import an env var key from the host; docker resolves the value.
+              extra_env_keys+=("''${2}")
               shift 2
               ;;
             *)
@@ -251,6 +269,13 @@ in
           claude_md_mount=(-v "''${profile_claude_md}:/sandbox/CLAUDE.md:ro")
         fi
 
+        # Pass through requested env var keys (from profiles and -e flags);
+        # `-e KEY` with no value tells docker to take it from this environment.
+        env_flags=()
+        for env_key in "''${extra_env_keys[@]}"; do
+          env_flags+=(-e "''${env_key}")
+        done
+
         nix_bin_dir="$(dirname "$(readlink -f "$(which nix)")")"
 
         # --user is required so that files created/modified in the volume mount
@@ -264,6 +289,7 @@ in
           -e DISABLE_AUTOUPDATER=1 \
           -e NIX_REMOTE=daemon \
           -e PATH="''${nix_bin_dir}:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+          "''${env_flags[@]}" \
           --workdir "''${sandbox_dir}" \
           "''${volume_mounts[@]}" \
           -v "/nix:/nix:ro" \
