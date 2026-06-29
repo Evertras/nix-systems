@@ -87,6 +87,7 @@ let
       ++ envLines
       ++ map (m: "  mcp_configs+=(\"${m}\")") profile.mcp
       ++ optional (profile.workdir != null) "  profile_workdir=\"${profile.workdir}\""
+      ++ optional (profile.network != null) "  profile_network=\"${profile.network}\""
       ++ optional (instr != null) "  profile_claude_md=\"${instr}\""
       ++ [ "  ;;" ];
     in
@@ -230,6 +231,25 @@ in
             default = null;
             description = "Host directory to start claude in; defaults to the first of `dirs`.";
           };
+          network = mkOption {
+            type = types.nullOr types.str;
+            default = null;
+            example = "host";
+            description = ''
+              Docker network mode for the sandbox, passed straight through to
+              `docker run --network`.  When null (the default) docker's normal
+              bridge network is used, which keeps the sandbox in its own
+              network namespace.
+
+              Setting this to `host` shares the host's entire network stack
+              with the sandbox: it can reach every service bound to the host's
+              localhost, bind host ports, and follow host routes such as a VPN
+              tunnel.  This removes the network isolation the sandbox otherwise
+              provides, so only use it when you specifically need it.
+
+              A `--network` flag on the command line overrides this.
+            '';
+          };
           instructions = mkOption {
             type = types.nullOr types.lines;
             default = null;
@@ -262,6 +282,8 @@ in
         mcp_configs=()
         passthrough_args=()
         profile_workdir=""
+        profile_network=""
+        cli_network=""
         profile_claude_md=""
         ${profileSelectedDecl}
 
@@ -294,6 +316,12 @@ in
             -m)
               # Mount an MCP server config file and pass it to claude.
               mcp_configs+=("''${2}")
+              shift 2
+              ;;
+            --network)
+              # Override docker's network mode (e.g. `host` to follow a VPN
+              # tunnel).  Takes precedence over a profile's `network` setting.
+              cli_network="''${2}"
               shift 2
               ;;
             *)
@@ -383,6 +411,14 @@ in
           mcp_args+=(--mcp-config "/sandbox''${rp}")
         done
 
+        # Resolve the network mode: a `--network` flag wins over the profile's
+        # `network`, which wins over docker's default bridge (no flag).
+        network_flags=()
+        network_mode="''${cli_network:-''${profile_network}}"
+        if [ -n "''${network_mode}" ]; then
+          network_flags=(--network "''${network_mode}")
+        fi
+
         nix_bin_dir="$(dirname "$(readlink -f "$(which nix)")")"
 
         # --user is required so that files created/modified in the volume mount
@@ -396,6 +432,7 @@ in
           -e DISABLE_AUTOUPDATER=1 \
           -e NIX_REMOTE=daemon \
           -e PATH="''${nix_bin_dir}:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
+          "''${network_flags[@]}" \
           "''${env_flags[@]}" \
           "''${env_file_flags[@]}" \
           --workdir "''${sandbox_dir}" \
@@ -404,6 +441,7 @@ in
           -v "/nix:/nix:ro" \
           -v "/nix/var/nix/daemon-socket/socket:/nix/var/nix/daemon-socket/socket" \
           -v "/etc/nix/nix.conf:/etc/nix/nix.conf:ro" \
+          -v "/etc/resolv.conf:/etc/resolv.conf:ro" \
           -v "''${HOME}/.claude:/home/user/.claude" \
           "''${claude_md_mount[@]}" \
           "''${claude_json_mount[@]}" \
