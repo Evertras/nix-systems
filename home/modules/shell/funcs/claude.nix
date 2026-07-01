@@ -419,6 +419,19 @@ in
           network_flags=(--network "''${network_mode}")
         fi
 
+        # By default we bind the host's resolv.conf so the sandbox inherits the
+        # host's DNS (e.g. a VPN's resolvers).  On a user-defined docker network
+        # that would break things: name resolution there goes through docker's
+        # embedded DNS (127.0.0.11), which resolves other containers by name and
+        # forwards external lookups.  Overriding resolv.conf hides it, so a
+        # profile pointing at another container by name (e.g. an MCP server)
+        # can't resolve it.  So skip the override for user-defined networks
+        # (anything other than the default bridge or host).
+        resolv_mount=(-v "/etc/resolv.conf:/etc/resolv.conf:ro")
+        if [ -n "''${network_mode}" ] && [ "''${network_mode}" != "host" ]; then
+          resolv_mount=()
+        fi
+
         nix_bin_dir="$(dirname "$(readlink -f "$(which nix)")")"
 
         # --user is required so that files created/modified in the volume mount
@@ -441,7 +454,7 @@ in
           -v "/nix:/nix:ro" \
           -v "/nix/var/nix/daemon-socket/socket:/nix/var/nix/daemon-socket/socket" \
           -v "/etc/nix/nix.conf:/etc/nix/nix.conf:ro" \
-          -v "/etc/resolv.conf:/etc/resolv.conf:ro" \
+          "''${resolv_mount[@]}" \
           -v "''${HOME}/.claude:/home/user/.claude" \
           "''${claude_md_mount[@]}" \
           "''${claude_json_mount[@]}" \

@@ -50,6 +50,13 @@ in
         rust.enable = true;
       };
 
+      claude-sandbox.profiles.nix = {
+        dirs = [
+          "$HOME/dev/github/evertras/nix"
+          "$HOME/dev/github/evertras/nix-tdb"
+        ];
+      };
+
       funcs = {
         copy.body = ''
           if [ -n "''${1:-}" ]; then
