@@ -285,6 +285,7 @@ in
         profile_network=""
         cli_network=""
         profile_claude_md=""
+        yolo=false
         ${profileSelectedDecl}
 
         while [[ $# -gt 0 ]]; do
@@ -323,6 +324,14 @@ in
               # tunnel).  Takes precedence over a profile's `network` setting.
               cli_network="''${2}"
               shift 2
+              ;;
+            --yolo)
+              # Run claude with --dangerously-skip-permissions so every command
+              # runs without prompting.  This is only safe because the sandbox
+              # already isolates claude to the mounted dirs and its own network
+              # namespace; the container is the blast radius, not the host.
+              yolo=true
+              shift
               ;;
             *)
               passthrough_args+=("''${1}")
@@ -432,6 +441,13 @@ in
           resolv_mount=()
         fi
 
+        # In --yolo mode, tell claude to skip every permission prompt.  Safe
+        # here because the sandbox is the blast radius, not the host.
+        claude_flags=()
+        if "''${yolo}"; then
+          claude_flags+=(--dangerously-skip-permissions)
+        fi
+
         nix_bin_dir="$(dirname "$(readlink -f "$(which nix)")")"
 
         # --user is required so that files created/modified in the volume mount
@@ -458,7 +474,7 @@ in
           -v "''${HOME}/.claude:/home/user/.claude" \
           "''${claude_md_mount[@]}" \
           "''${claude_json_mount[@]}" \
-          "''${image_name}" "''${mcp_args[@]}" "''${passthrough_args[@]}"
+          "''${image_name}" "''${claude_flags[@]}" "''${mcp_args[@]}" "''${passthrough_args[@]}"
       '';
     };
   };
