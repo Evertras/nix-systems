@@ -52,6 +52,15 @@ let
     + ''
       run_args=(-d --rm --name ${escapeShellArg s.containerName} --network "''${network_name}" --env-file "''${env_file}")
     ''
+    # Extra resolvers/search domains (e.g. a VPN's split-horizon DNS server).
+    # On a user-defined network these set the embedded DNS's upstream, so
+    # container-name resolution still works.
+    + concatMapStrings (d: ''
+      run_args+=(--dns ${escapeShellArg d})
+    '') s.dns
+    + concatMapStrings (d: ''
+      run_args+=(--dns-search ${escapeShellArg d})
+    '') s.dnsSearch
     # Volumes are emitted raw inside double quotes so $HOME (etc.) expands at
     # runtime, matching the claude-sandbox convention.
     + concatMapStrings (v: ''
@@ -186,6 +195,25 @@ in
                   `docker run -v` mount specs.  Expanded by the shell at
                   runtime, so `$HOME` works (a bare `~` does not).
                 '';
+              };
+
+              dns = mkOption {
+                type = types.listOf types.str;
+                default = [ ];
+                example = [ "10.20.0.2" ];
+                description = ''
+                  Extra DNS resolvers (`docker run --dns`).  Use this to reach a
+                  split-horizon name served only by a VPN's DNS server; on a
+                  user-defined network it sets the embedded DNS upstream, so
+                  container-name resolution keeps working.  The resolver must be
+                  routable from the container (e.g. via the host's VPN route).
+                '';
+              };
+
+              dnsSearch = mkOption {
+                type = types.listOf types.str;
+                default = [ ];
+                description = "DNS search domains (`docker run --dns-search`).";
               };
             };
           }
