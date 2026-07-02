@@ -15,7 +15,9 @@ let
   globalInstructions = ''
     If a flake.nix file exists in the working directory, use nix develop to enter the development environment before running project commands (build, test, lint, etc). This ensures the correct toolchain and dependencies are available.
 
-    When a GitHub MCP server is available, use it for GitHub operations (issues, pull requests, repositories, code search, etc.) instead of the `gh` CLI.'';
+    When a GitHub MCP server is available, use it for GitHub operations (issues, pull requests, repositories, code search, etc.) instead of the `gh` CLI.
+
+    You do not have credentials to write to GitHub, so writes will fail. This includes pushing commits or branches, opening or editing pull requests, creating or commenting on issues, editing releases, or any other operation that modifies remote GitHub state. Read-only GitHub operations work fine. If a task appears to require writing to GitHub, don't attempt it — stop and explain that you lack write access instead.'';
 
   globalInstructionsFile = pkgs.writeText "claude-sandbox-global-claude-md" (
     globalInstructions + "\n"
