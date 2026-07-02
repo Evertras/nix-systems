@@ -12,19 +12,28 @@ let
   # /sandbox/CLAUDE.md and prepended to any profile's own instructions, so
   # sandbox-wide guidance always applies.  Put shared guidance here rather
   # than duplicating it into individual profiles.
-  globalInstructions = ''
+  baseInstructions = ''
     If a flake.nix file exists in the working directory, use nix develop to enter the development environment before running project commands (build, test, lint, etc). This ensures the correct toolchain and dependencies are available.
 
     When a GitHub MCP server is available, use it for GitHub operations (issues, pull requests, repositories, code search, etc.) instead of the `gh` CLI.
 
     You do not have credentials to write to GitHub, so writes will fail. This includes pushing commits or branches, opening or editing pull requests, creating or commenting on issues, editing releases, or any other operation that modifies remote GitHub state. Read-only GitHub operations work fine. If a task appears to require writing to GitHub, don't attempt it — stop and explain that you lack write access instead.'';
 
+  # The baked instructions plus any `extraInstructions` contributed by other
+  # modules (e.g. the sem MCP module), joined as separate paragraphs.
+  globalInstructions = concatStringsSep "\n\n" (
+    [ baseInstructions ] ++ map (s: removeSuffix "\n" s) cfg.extraInstructions
+  );
+
   globalInstructionsFile = pkgs.writeText "claude-sandbox-global-claude-md" (
     globalInstructions + "\n"
   );
 
   dockerfileSrc = pkgs.writeText "claude-sandbox-dockerfile" ''
-    FROM node:lts-slim
+    # Debian 13 "trixie" (glibc >=2.39), not the default bookworm-based
+    # node:lts-slim (glibc 2.36): the sem MCP binary is built against
+    # GLIBC_2.39 and fails to start on the older base.
+    FROM node:lts-trixie-slim
 
     RUN apt-get update && apt-get install -y \
         git \
@@ -60,6 +69,8 @@ let
     COPY <<EOF /sandbox/CLAUDE.md
     ${globalInstructions}
     EOF
+
+    ${cfg.extraDockerfile}
 
     ENTRYPOINT ["claude"]
   '';
@@ -162,6 +173,10 @@ let
                   echo "claude-sandbox: no profiles are defined" >&2
                   exit 1
                   ;;'';
+
+  # Bash array literal of the always-loaded MCP configs, each double-quoted so
+  # `$HOME` (etc.) expands at runtime.  Empty when none are declared.
+  globalMcpArray = concatMapStringsSep " " (m: ''"${m}"'') cfg.globalMcp;
 in
 {
   options.evertras.home.shell.claude-sandbox.profiles = mkOption {
@@ -301,6 +316,40 @@ in
     );
   };
 
+  options.evertras.home.shell.claude-sandbox.extraInstructions = mkOption {
+    type = types.listOf types.lines;
+    default = [ ];
+    description = ''
+      Extra paragraphs appended to the baked, sandbox-wide CLAUDE.md (after
+      the built-in guidance, before any profile's own instructions).  Meant
+      for other modules to contribute always-on guidance, e.g. the sem MCP
+      module telling the agent when to use its entity-level tools.
+    '';
+  };
+
+  options.evertras.home.shell.claude-sandbox.extraDockerfile = mkOption {
+    type = types.lines;
+    default = "";
+    description = ''
+      Extra Dockerfile lines appended to the sandbox image build (just before
+      the ENTRYPOINT).  Meant for other modules to bake tools into every
+      sandbox, e.g. the sem MCP module fetching its release binary.  Changes
+      here take effect on the next `claude-sandbox --rebuild`.
+    '';
+  };
+
+  options.evertras.home.shell.claude-sandbox.globalMcp = mkOption {
+    type = types.listOf types.str;
+    default = [ ];
+    description = ''
+      MCP server config JSON paths loaded in every sandbox, regardless of
+      profile, mounted read-only and passed to claude via `--mcp-config`
+      before any profile/`-m` configs.  Use for repo-agnostic servers that
+      should always be available (e.g. sem).  Path strings are expanded by
+      the shell at runtime, so `$HOME` works (but a bare `~` does not).
+    '';
+  };
+
   config.evertras.home.shell.funcs = {
     claude-sandbox = {
       body = ''
@@ -312,7 +361,9 @@ in
         extra_env_keys=()
         env_cmd_keys=()
         env_cmd_vals=()
-        mcp_configs=()
+        # Seed with the always-loaded global configs; profile and `-m` configs
+        # are appended after, so globals load first.
+        mcp_configs=(${globalMcpArray})
         passthrough_args=()
         profile_workdir=""
         profile_network=""

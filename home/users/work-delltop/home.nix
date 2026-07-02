@@ -55,6 +55,12 @@ in
       # (bring it up with `mcp-up`).  Its definition lives in the main repo.
       mcp.github.enable = true;
 
+      # sem semantic-diff MCP server: a local, offline binary baked into the
+      # sandbox image and loaded in every sandbox (no fleet container, no
+      # network).  Rebuild the image with `claude-sandbox --rebuild` to pick
+      # it up.
+      mcp.sem.enable = true;
+
       claude-sandbox.profiles.nix = {
         dirs = [
           "$HOME/dev/github/evertras/nix"
