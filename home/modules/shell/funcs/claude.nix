@@ -8,6 +8,19 @@ with lib;
 let
   cfg = config.evertras.home.shell.claude-sandbox;
 
+  # Instructions applied to EVERY claude-sandbox: baked in as the default
+  # /sandbox/CLAUDE.md and prepended to any profile's own instructions, so
+  # sandbox-wide guidance always applies.  Put shared guidance here rather
+  # than duplicating it into individual profiles.
+  globalInstructions = ''
+    If a flake.nix file exists in the working directory, use nix develop to enter the development environment before running project commands (build, test, lint, etc). This ensures the correct toolchain and dependencies are available.
+
+    When a GitHub MCP server is available, use it for GitHub operations (issues, pull requests, repositories, code search, etc.) instead of the `gh` CLI.'';
+
+  globalInstructionsFile = pkgs.writeText "claude-sandbox-global-claude-md" (
+    globalInstructions + "\n"
+  );
+
   dockerfileSrc = pkgs.writeText "claude-sandbox-dockerfile" ''
     FROM node:lts-slim
 
@@ -38,25 +51,43 @@ let
 
     WORKDIR /sandbox
 
-    # Default sandbox-wide instructions.  A profile may override this by
-    # mounting its own CLAUDE.md over /sandbox/CLAUDE.md at runtime.
+    # Global sandbox-wide instructions, baked in as the default CLAUDE.md.
+    # Profiles with their own instructions mount a combined file (these plus
+    # the profile's extras) over this at runtime, so this guidance always
+    # applies.  Kept in sync from the single globalInstructions definition.
     COPY <<EOF /sandbox/CLAUDE.md
-    If a flake.nix file exists in the working directory, use nix develop to enter the development environment before running project commands (build, test, lint, etc). This ensures the correct toolchain and dependencies are available.
+    ${globalInstructions}
     EOF
 
     ENTRYPOINT ["claude"]
   '';
 
-  # Resolve a profile's CLAUDE.md to a store path, or null if it has none.
+  # Resolve a profile's CLAUDE.md to a store path, or null if it has none (in
+  # which case the baked global default applies).  When a profile does supply
+  # instructions, the global instructions are prepended so sandbox-wide
+  # guidance always applies and profiles only carry their own extras.
   # instructionsFile wins over inline instructions when both are set.
   mkInstrPath =
     name: profile:
-    if profile.instructionsFile != null then
-      profile.instructionsFile
-    else if profile.instructions != null then
-      pkgs.writeText "claude-sandbox-claude-md-${name}" profile.instructions
+    let
+      profileFile =
+        if profile.instructionsFile != null then
+          profile.instructionsFile
+        else if profile.instructions != null then
+          pkgs.writeText "claude-sandbox-claude-md-${name}-profile" profile.instructions
+        else
+          null;
+    in
+    if profileFile == null then
+      null
     else
-      null;
+      pkgs.runCommand "claude-sandbox-claude-md-${name}" { } ''
+        {
+          cat ${globalInstructionsFile}
+          printf '\n'
+          cat ${profileFile}
+        } > "$out"
+      '';
 
   # Build a bash `case` branch for one profile.  Indentation inside a case
   # branch is cosmetic, so we keep it simple.

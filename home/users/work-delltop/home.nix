@@ -1,4 +1,5 @@
 {
+  config,
   lib,
   nerdfonts,
   pkgs,
@@ -50,11 +51,20 @@ in
         rust.enable = true;
       };
 
+      # Read-only GitHub MCP server, run as part of the dockerized MCP fleet
+      # (bring it up with `mcp-up`).  Its definition lives in the main repo.
+      mcp.github.enable = true;
+
       claude-sandbox.profiles.nix = {
         dirs = [
           "$HOME/dev/github/evertras/nix"
           "$HOME/dev/github/evertras/nix-tdb"
         ];
+
+        # Join the fleet network so claude can reach the GitHub MCP server by
+        # DNS over HTTP, while staying isolated from the host.
+        network = config.evertras.home.shell.mcp.network;
+        mcp = [ config.evertras.home.shell.mcp.claude.paths.github ];
       };
 
       funcs = {
