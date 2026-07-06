@@ -71,6 +71,17 @@ in
         # DNS over HTTP, while staying isolated from the host.
         network = config.evertras.home.shell.mcp.network;
         mcp = [ config.evertras.home.shell.mcp.claude.paths.github ];
+
+        instructions = ''
+          # Related Repositories
+
+          Two sibling repositories are mounted here:
+
+          - **`nix`** (`/sandbox/home/evertras/dev/github/evertras/nix/`) — this repo: the base personal Nix / home-manager configuration and reusable modules (the MCP-server fleet module, the claude-sandbox module, shell/desktop/system modules).
+          - **`nix-tdb`** (`/sandbox/home/evertras/dev/github/evertras/nix-tdb/`) — a TileDB-specific overlay that consumes this repo's modules and supplies the concrete config: the actual MCP servers (k8s clusters, Grafana), AWS profiles/roles, TileDB devshells, and the `tile-ai` claude-sandbox profile.
+
+          The two are tightly coupled: generic options and their `example` docs live in `nix`, while the values that fill them in live in `nix-tdb`. When a request touches MCP servers, claude-sandbox profiles, AWS/k8s setup, or any TileDB-specific configuration, check `nix-tdb` as well — the answer or change often spans both repos (e.g. a module option in `nix`, its usage in `nix-tdb`).
+        '';
       };
 
       funcs = {
