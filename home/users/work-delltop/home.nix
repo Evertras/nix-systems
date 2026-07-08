@@ -53,7 +53,23 @@ in
 
       # Read-only GitHub MCP server, run as part of the dockerized MCP fleet
       # (bring it up with `mcp-up`).  Its definition lives in the main repo.
-      mcp.github.enable = true;
+      #
+      # `--toolsets` replaces the server's default selection rather than
+      # appending, so the list re-states the defaults
+      # (context/repos/issues/pull_requests/users/orgs) plus `actions` for
+      # read-only access to GHA workflows, runs, and job logs.
+      mcp.github = {
+        enable = true;
+        toolsets = [
+          "context"
+          "repos"
+          "issues"
+          "pull_requests"
+          "users"
+          "orgs"
+          "actions"
+        ];
+      };
 
       # sem semantic-diff MCP server: a local, offline binary baked into the
       # sandbox image and loaded in every sandbox (no fleet container, no
