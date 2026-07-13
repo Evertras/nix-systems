@@ -46,9 +46,19 @@ let
         exit 1
       fi
     ''
-    + concatMapStrings (k: ''
-      printf '%s\n' "${k}=${s.env.${k}}" >> "''${env_file}"
-    '') (attrNames s.env)
+    # Append all static env entries in a single redirect (a per-line `>>` trips
+    # shellcheck SC2129 once a server has more than one static env var).
+    + optionalString (s.env != { }) (
+      ''
+        {
+      ''
+      + concatMapStrings (k: ''
+        printf '%s\n' "${k}=${s.env.${k}}"
+      '') (attrNames s.env)
+      + ''
+        } >> "''${env_file}"
+      ''
+    )
     + ''
       run_args=(-d --rm --name ${escapeShellArg s.containerName} --network "''${network_name}" --env-file "''${env_file}")
     ''
