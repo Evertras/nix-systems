@@ -50,6 +50,10 @@ in
         fish_user_key_bindings = ''
           bind ! bind_bang
           bind '$' bind_dollar
+
+          # Ctrl+G as an easier-to-reach alias for fzf's Alt+C "cd into
+          # subdirectory" widget (Alt+C still works too).
+          bind \cg fzf-cd-widget
         '';
 
         coln = ''
