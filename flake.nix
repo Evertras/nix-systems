@@ -37,6 +37,7 @@
     ever-quickview.url = "github:Evertras/quickview";
 
     # Private stuff - run `nix flake update ever-tdb` etc to update
+    ever-dockerhub-tui.url = "git+ssh://git@github.com/Evertras/dockerhub-tui";
     ever-fonts.url = "git+ssh://git@github.com/Evertras/nix-fonts";
     ever-tdb.url = "git+ssh://git@github.com/Evertras/nix-tdb";
   };
@@ -91,6 +92,7 @@
           overlays = [
             (_: prev: {
               cynomys = inputs.ever-cyn.packages.${system}.default;
+              dockerhub-tui = inputs.ever-dockerhub-tui.packages.${system}.default;
               quickview = inputs.ever-quickview.packages.${system}.default;
               everfont-berkeley = inputs.ever-fonts.packages.${system}.berkeley;
               everfont-berkeley-dashed = inputs.ever-fonts.packages.${system}.berkeley-dashed;

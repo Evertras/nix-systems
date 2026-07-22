@@ -50,6 +50,7 @@ update-flake: .git/hooks/pre-commit
 # This is more commonly done
 .PHONY: update-private
 update-private:
+	nix flake update ever-dockerhub-tui
 	nix flake update ever-fonts
 	nix flake update ever-tdb
 

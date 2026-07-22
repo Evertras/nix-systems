@@ -86,6 +86,7 @@ in
 
         # Funsies
         cynomys
+        dockerhub-tui
         fastfetch
         presenterm
         quickview
