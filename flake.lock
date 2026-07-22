@@ -45,11 +45,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1784746973,
-        "narHash": "sha256-6a5NoOTsX9BFE4nmdMkc+4sYnYhJbCeG4Zq5TPTRGsw=",
+        "lastModified": 1784752529,
+        "narHash": "sha256-0CkDnI/bCR5HSoVIzIpc9iXo+TlgB+0lnTnBFddlgIw=",
         "ref": "refs/heads/main",
-        "rev": "6a2dd68aa7349cf5d3341aaeb9b7b9b5a43af35b",
-        "revCount": 13,
+        "rev": "649c95e4af0258b38fa67a1cfa9ac8149bdc39e6",
+        "revCount": 14,
         "type": "git",
         "url": "ssh://git@github.com/Evertras/dockerhub-tui"
       },
