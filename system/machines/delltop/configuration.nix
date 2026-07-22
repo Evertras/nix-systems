@@ -193,6 +193,9 @@
 
     # lsusb
     usbutils
+
+    # Run unpatched binaries in an FHS environment
+    steam-run
   ];
 
   programs.gnupg.agent = {
