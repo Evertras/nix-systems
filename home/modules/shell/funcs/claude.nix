@@ -174,6 +174,22 @@ let
                   exit 1
                   ;;'';
 
+  # The `-l` arg handler: list the available profiles, one per line.
+  # attrNames is already sorted alphabetically, so the baked list is too.
+  profileListFlagCase =
+    if hasProfiles then
+      ''
+        -l)
+                  printf '%s\n' ${concatMapStringsSep " " escapeShellArg (attrNames cfg.profiles)}
+                  exit 0
+                  ;;''
+    else
+      ''
+        -l)
+                  echo "claude-sandbox: no profiles are defined" >&2
+                  exit 1
+                  ;;'';
+
   # Bash array literal of the always-loaded MCP configs, each double-quoted so
   # `$HOME` (etc.) expands at runtime.  Empty when none are declared.
   globalMcpArray = concatMapStringsSep " " (m: ''"${m}"'') cfg.globalMcp;
@@ -182,7 +198,8 @@ in
   options.evertras.home.shell.claude-sandbox.profiles = mkOption {
     default = { };
     description = ''
-      Named claude-sandbox profiles, selected with `claude-sandbox -p <name>`.
+      Named claude-sandbox profiles, selected with `claude-sandbox -p <name>`
+      and listed with `claude-sandbox -l`.
 
       Each profile preloads a set of mounted directories, an optional
       working directory, and optional CLAUDE.md instructions.  Extra `-d`
@@ -375,6 +392,7 @@ in
         while [[ $# -gt 0 ]]; do
           case "''${1}" in
             ${profileFlagCase}
+            ${profileListFlagCase}
             --rebuild)
               docker rmi "''${image_name}" 2>/dev/null || true
               need_build=true
