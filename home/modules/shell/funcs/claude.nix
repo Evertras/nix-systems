@@ -39,6 +39,7 @@ let
         git \
         ca-certificates \
         curl \
+        jq \
         python3 \
         python3-pip \
         python3-venv \
@@ -47,6 +48,15 @@ let
         && echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/githubcli-archive-keyring.gpg] https://cli.github.com/packages stable main" > /etc/apt/sources.list.d/github-cli.list \
         && apt-get update && apt-get install -y gh \
         && rm -rf /var/lib/apt/lists/*
+
+    # yq (mikefarah's Go binary, not Debian's python jq-wrapper of the same
+    # name): a single arch-aware binary dropped in /usr/local/bin, matching the
+    # `yq <path-expr>` syntax used in the repos' shell functions.
+    RUN set -eu; \
+        arch="$(dpkg --print-architecture)"; \
+        curl -fsSL "https://github.com/mikefarah/yq/releases/download/v4.53.3/yq_linux_''${arch}" \
+          -o /usr/local/bin/yq; \
+        chmod +x /usr/local/bin/yq
 
     ENV PATH="/root/.local/bin:${"$"}{PATH}"
 
