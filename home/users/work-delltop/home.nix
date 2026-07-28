@@ -135,6 +135,7 @@ in
         fontName = fontOverrides.terminal.name;
         fontSize = 12;
         opacity = 1;
+        backgroundOverride = "#0f0f17";
       };
 
       wallpaper = {
