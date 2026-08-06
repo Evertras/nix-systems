@@ -16,7 +16,6 @@ let
 
   gpgKey = "57F346A9FC11B688";
   wirelessInterface = "wlp0s20f3";
-  externalOutput = "DP-2";
 in
 {
   imports = [
@@ -140,8 +139,6 @@ in
 
       wallpaper = {
         randomWallpapersDir = "~/dev/github/evertras/wallpapers/external-rotation";
-
-        outputs.external = externalOutput;
       };
 
       windowmanager = {

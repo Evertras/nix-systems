@@ -13,16 +13,15 @@ in
     # For now just awww, but add others in this subdir later if we want
     enable = mkEnableOption "Enable wallpaper manager via awww";
 
-    outputs = {
-      laptop = mkOption {
-        type = types.str;
-        default = "eDP-1";
-      };
-
-      external = mkOption {
-        type = types.str;
-        default = "DP-3";
-      };
+    internalOutputRegex = mkOption {
+      type = types.str;
+      default = "^(eDP|LVDS|DSI)";
+      description = ''
+        Outputs matching this are the built in laptop panel, everything else
+        is treated as external.  Outputs are discovered from awww at runtime
+        rather than hardcoded, so a display keeps working when the kernel
+        renames it (DP-2 -> DP-1 after a dock or firmware change).
+      '';
     };
 
     randomWallpapersDir = mkOption {
@@ -37,9 +36,11 @@ in
     systemd.user =
       let
         rotateServiceName = "evertras-wallpaper-rotate";
+        rotateFuncName = "wallpaper-external-random";
+        rotateFunc = config.evertras.home.shell.funcPackages.${rotateFuncName};
       in
       {
-        timers.wallpaper-rotate = {
+        timers.${rotateServiceName} = {
           Unit.Description = "Wallpaper rotator";
 
           Timer = {
@@ -60,43 +61,94 @@ in
 
           Service = {
             Type = "oneshot";
-            Environment = "WAYLAND_DISPLAY=wayland-1";
-            # Is there a better way to do this?
-            ExecStart = "${config.home.homeDirectory}/.nix-profile/bin/wallpaper-external-random";
+            # WAYLAND_DISPLAY comes from the compositor importing it into the
+            # systemd user environment, so don't pin a socket name here.
+            ExecStart = "${rotateFunc}/bin/${rotateFuncName}";
           };
         };
       };
 
     evertras.home.shell.funcs =
       let
-        checkOutput = output: ''
-          if ! awww query | grep '${output}'; then
-            echo "Output ${output} not connected."
-            exit 0;
+        funcPkgs = config.evertras.home.shell.funcPackages;
+
+        deps = with pkgs; [
+          awww
+          coreutils
+          gawk
+          gnugrep
+        ];
+
+        # awww query prints one line per connected output:
+        #
+        #   ": DP-1: 4267x1800, scale: 1.2, currently displaying: color: 000000"
+        #    ^ namespace, empty by default
+        #      ^ output name
+        listConnected = "awww query | awk -F': ' '{ print $2 }'";
+
+        # Select the outputs to act on.  grepArgs is "-v" to invert, i.e. to
+        # pick the externals.  Matching whole lines matters here: a substring
+        # match for DP-1 would also hit eDP-1.
+        #
+        # A failing query means the daemon is down and should fail loudly, so
+        # only the grep gets an || true - matching nothing is normal.
+        selectOutputs = grepArgs: ''
+          connected=$(${listConnected})
+          outputs=$(echo "$connected" | grep -E ${grepArgs} '${cfg.internalOutputRegex}' || true)
+
+          if [ -z "$outputs" ]; then
+            echo "No matching displays connected.  awww sees: $(echo "$connected" | tr '\n' ' ')"
+            exit 0
           fi
         '';
 
-        mkSwitch = output: ''
-          ${checkOutput output}
-          awww img -o ${output} "$1"
+        # Run cmd once per selected output, with $output set each time.
+        forEach = grepArgs: cmd: ''
+          ${selectOutputs grepArgs}
+
+          while read -r output; do
+            ${cmd}
+          done <<< "$outputs"
         '';
 
-        mkRandom = output: ''
-          ${checkOutput output}
-          awww img -o ${output} "$(random-file ${cfg.randomWallpapersDir})"
-        '';
+        mkSwitch = grepArgs: {
+          runtimeInputs = deps;
+          body = ''
+            if [ "$#" -ne 1 ]; then
+              echo "Usage: $(basename "$0") <image-file>" >&2
+              exit 1
+            fi
 
-        mkClear = output: ''
-          ${checkOutput output}
-          awww clear -o ${output} 000000
-        '';
+            ${forEach grepArgs ''awww img -o "$output" "$1"''}
+          '';
+        };
+
+        mkRandom = grepArgs: {
+          runtimeInputs = deps ++ [ funcPkgs.random-file ];
+          # A separate pick per output, so two monitors don't end up matching.
+          body = forEach grepArgs ''awww img -o "$output" "$(random-file ${cfg.randomWallpapersDir})"'';
+        };
+
+        mkClear = grepArgs: {
+          runtimeInputs = deps;
+          body = forEach grepArgs ''awww clear -o "$output" 000000'';
+        };
+
+        internal = "";
+        external = "-v";
       in
       mkIf cfg.enable {
-        wallpaper-laptop.body = mkSwitch cfg.outputs.laptop;
-        wallpaper-laptop-random.body = mkRandom cfg.outputs.laptop;
-        wallpaper-external.body = mkSwitch cfg.outputs.external;
-        wallpaper-external-random.body = mkRandom cfg.outputs.external;
-        wallpaper-external-black.body = mkClear cfg.outputs.external;
+        # Handy on its own for checking what awww currently sees
+        wallpaper-outputs = {
+          runtimeInputs = deps;
+          body = listConnected;
+        };
+
+        wallpaper-laptop = mkSwitch internal;
+        wallpaper-laptop-random = mkRandom internal;
+        wallpaper-external = mkSwitch external;
+        wallpaper-external-random = mkRandom external;
+        wallpaper-external-black = mkClear external;
       };
   };
 }
