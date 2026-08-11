@@ -14,6 +14,8 @@ let
     terminal = nerdfonts.make "Hasklug";
   };
 
+  terminalBackground = "#000000";
+
   gpgKey = "57F346A9FC11B688";
   wirelessInterface = "wlp0s20f3";
 in
@@ -134,7 +136,7 @@ in
         fontName = fontOverrides.terminal.name;
         fontSize = 12;
         opacity = 1;
-        backgroundOverride = "#0f0f17";
+        backgroundOverride = terminalBackground;
       };
 
       wallpaper = {
