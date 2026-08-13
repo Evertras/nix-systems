@@ -87,7 +87,16 @@
     settings = {
       # Enable A2DP sink
       General.Enable = "Source,Sink,Media,Socket";
+
+      # A sleeping mouse pages us when it wakes; tighter page scan means it
+      # reconnects in about a second instead of five.  Costs a little idle
+      # power on the adapter, which beats waiting on every first click.
+      General.FastConnectable = true;
     };
+
+    # Never tear down an idle HID device.  BlueZ ships this commented out, so
+    # we set it explicitly rather than trust the compiled-in default.
+    input.General.IdleTimeout = 0;
   };
 
   ##############################################################################
