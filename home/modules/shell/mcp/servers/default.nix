@@ -103,6 +103,22 @@ in
       '';
     };
 
+    refresh = mkOption {
+      type = types.nullOr types.lines;
+      default = null;
+      example = "tdb-aws-login-all";
+      description = ''
+        Host command(s) `mcp-restart` runs after stopping the fleet and before
+        bringing it back up, for the work that belongs to the fleet as a whole
+        rather than to one server — typically warming a credential cache so the
+        servers' `prepare` steps don't each prompt for MFA in turn.
+
+        Unlike a server's `prepare`, stdout is not captured; it goes to the
+        terminal like any other interactive step.  A failure here aborts the
+        restart, leaving the fleet down.
+      '';
+    };
+
     servers = mkOption {
       default = { };
       description = ''
@@ -258,6 +274,22 @@ in
           fi
         '') (attrValues enabledServers)}
         echo "mcp-down: done"
+      '';
+
+      # Stop the fleet, refresh whatever the fleet as a whole needs (see
+      # `refresh`), then bring it back up with fresh credentials.  This is the
+      # normal way to renew the fleet once its temporary creds age out.
+      mcp-restart.body = ''
+        mcp-down
+      ''
+      + optionalString (cfg.refresh != null) ''
+
+        echo "mcp-restart: refreshing before bringing the fleet back up..."
+        ${cfg.refresh}
+      ''
+      + ''
+
+        mcp-up
       '';
 
       mcp-status.body = ''
