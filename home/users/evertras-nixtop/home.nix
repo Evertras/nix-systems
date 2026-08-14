@@ -96,7 +96,6 @@ in
       terminals.kitty = {
         fontName = fontOverrides.terminal.name;
         opacity = 0.8;
-        backgroundOverride = "#000000";
       };
 
       windowmanager.niri = {
