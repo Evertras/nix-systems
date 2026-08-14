@@ -122,6 +122,21 @@ in
       bars.waybar = {
         battery.name = "BAT0";
         monitorNetworkInterface = wirelessInterface;
+
+        # Same as the module defaults, spelled out here so this machine's bar
+        # can be rearranged without touching the shared module
+        modules = {
+          left = [
+            "network"
+            "custom/vpn"
+          ];
+
+          center = [ "clock" ];
+
+          right = [ 
+            "niri/workspaces"
+          ];
+        };
       };
 
       display.sleep.enable = true;

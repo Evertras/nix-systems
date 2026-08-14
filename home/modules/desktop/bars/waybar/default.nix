@@ -8,6 +8,46 @@ in {
   options.evertras.home.desktop.bars.waybar = {
     enable = mkEnableOption "Enable Waybar";
 
+    outputs = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      example = [ "eDP-1" ];
+      description = ''
+        Outputs to show the bar on, matched by connector name or monitor
+        description. An empty list shows the bar on every output.
+      '';
+    };
+
+    # Only which modules appear, and in what order.  Each module's own
+    # settings stay in this file; other modules can add their own definitions
+    # by merging into programs.waybar.settings.mainBar, so any string is
+    # allowed here rather than a fixed enum.
+    modules = let
+      mkModulesOption = position: default:
+        mkOption {
+          type = types.listOf types.str;
+          inherit default;
+          description = ''
+            Modules to show on the ${position} of the bar, in order. A module
+            listed here must have a definition, either in the waybar module
+            itself or merged in via programs.waybar.settings.mainBar.
+          '';
+        };
+    in {
+      left = mkModulesOption "left" [
+        "battery"
+        "keyboard-state"
+        "niri/language"
+        "network"
+        "custom/vpn"
+        "niri/workspaces"
+      ];
+
+      center = mkModulesOption "center" [ ];
+
+      right = mkModulesOption "right" [ "pulseaudio" "bluetooth" "backlight" "clock" ];
+    };
+
     monitorNetworkInterface = mkOption {
       type = types.str;
       default = "wlo1";
@@ -34,19 +74,12 @@ in {
       enable = true;
 
       settings = {
-        mainBar = {
-          # Unhardcode this later
-          output = [ "eDP-1" ];
-          modules-left = [
-            "battery"
-            "keyboard-state"
-            "niri/language"
-            "network"
-            "custom/vpn"
-            "niri/workspaces"
-          ];
-          modules-center = [ ];
-          modules-right = [ "pulseaudio" "bluetooth" "backlight" "clock" ];
+        # Omitting `output` entirely is what tells waybar to draw the bar on
+        # every monitor, so only set it when outputs are actually pinned
+        mainBar = optionalAttrs (cfg.outputs != [ ]) { output = cfg.outputs; } // {
+          modules-left = cfg.modules.left;
+          modules-center = cfg.modules.center;
+          modules-right = cfg.modules.right;
 
           "niri/workspaces" = { format = "{value}"; };
 
