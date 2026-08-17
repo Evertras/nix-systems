@@ -1,9 +1,22 @@
 { }: {
   # Note to future self: be VERY careful about preserving
   # whitespace/tabs inside the actual strings...
-  mkBasePatch = { autostartCmds, borderpx, browser, colorBackground
-    , colorPrimary, colorText, fontName, fontSize, gappx, lock, modKey
-    , swapFocusKey, terminal }:
+  mkBasePatch =
+    {
+      autostartCmds,
+      borderpx,
+      browser,
+      colorBackground,
+      colorPrimary,
+      colorText,
+      fontName,
+      fontSize,
+      gappx,
+      lock,
+      modKey,
+      swapFocusKey,
+      terminal,
+    }:
     builtins.toFile "ever-dwm.diff" ''
 
       From 367332d7573337448e1efbc6ce94327543b3295f Mon Sep 17 00:00:00 2001
@@ -29,13 +42,9 @@
       +
        /* appearance */
       -static const unsigned int borderpx  = 1;        /* border pixel of windows */
-      +static const unsigned int borderpx  = ${
-        toString borderpx
-      }; /* border pixel of windows */
+      +static const unsigned int borderpx  = ${toString borderpx}; /* border pixel of windows */
        static const unsigned int snap      = 32;       /* snap pixel */
-      +static const unsigned int gappx     = ${
-        toString gappx
-      }; /* gaps between windows */
+      +static const unsigned int gappx     = ${toString gappx}; /* gaps between windows */
        static const int showbar            = 1;        /* 0 means no bar */
        static const int topbar             = 1;        /* 0 means bottom bar */
       -static const char *fonts[]          = { "monospace:size=10" };
@@ -45,9 +54,7 @@
       -static const char col_gray3[]       = "#bbbbbb";
       -static const char col_gray4[]       = "#eeeeee";
       -static const char col_cyan[]        = "#005577";
-      +static const char *fonts[]          = { "${fontName}:size=${
-        toString fontSize
-      }" };
+      +static const char *fonts[]          = { "${fontName}:size=${toString fontSize}" };
       +static const char col_background[]  = "${colorBackground}";
       +static const char col_text[]        = "${colorText}";
       +static const char col_primary[]     = "${colorPrimary}";

@@ -3,7 +3,8 @@ with lib;
 let
   cfg = config.evertras.home.shell.starship;
   theme = config.evertras.themes.selected;
-in {
+in
+{
   options.evertras.home.shell.starship = {
     enable = mkEnableOption "starship";
 
@@ -32,15 +33,17 @@ in {
         # unaware of it, so just disable it everywhere for simplicity.
         container.disabled = true;
 
-        character = let
-          # Funsies:
-          # https://unicode-explorer.com/b/2980
-          #char = "⟫";
-          char = "❱❯";
-        in {
-          success_symbol = "[${char}](bold ${theme.colors.primary})";
-          error_symbol = "[${char}](bold ${theme.colors.urgent})";
-        };
+        character =
+          let
+            # Funsies:
+            # https://unicode-explorer.com/b/2980
+            #char = "⟫";
+            char = "❱❯";
+          in
+          {
+            success_symbol = "[${char}](bold ${theme.colors.primary})";
+            error_symbol = "[${char}](bold ${theme.colors.urgent})";
+          };
 
         directory.style = "bold ${theme.colors.primary}";
 

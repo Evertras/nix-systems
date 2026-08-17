@@ -1,8 +1,15 @@
-{ config, everlib, lib, ... }:
+{
+  config,
+  everlib,
+  lib,
+  ...
+}:
 with lib;
 with everlib;
-let cfg = config.evertras.home.desktop.launchers;
-in {
+let
+  cfg = config.evertras.home.desktop.launchers;
+in
+{
   imports = allSubdirs ./.;
 
   options.evertras.home.desktop.launchers = {
@@ -21,8 +28,15 @@ in {
 
     evertras.home.shell.funcs = {
       # Default app launcher
-      launch-app = let launchFuncs = { tofi = "launch-app-tofi-fullscreen"; };
-      in { body = launchFuncs.${cfg.defaultLauncher}; };
+      launch-app =
+        let
+          launchFuncs = {
+            tofi = "launch-app-tofi-fullscreen";
+          };
+        in
+        {
+          body = launchFuncs.${cfg.defaultLauncher};
+        };
     };
   };
 }

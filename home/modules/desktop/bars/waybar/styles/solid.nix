@@ -5,7 +5,8 @@ let
     margin: 0;
   '';
   mkBorder = color: "border-top: 3px solid ${color}";
-in ''
+in
+''
   /* NOTE: this rule overrides things
     at random, use with caution despite
     it being in the doc example...

@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 
 let
   cfg = config.evertras.home.desktop.dmenu;
@@ -11,21 +16,24 @@ let
     # DWM top bar height
     lineHeight = 26;
   };
-in {
+in
+{
   options.evertras.home.desktop.dmenu = with lib; {
     enable = mkEnableOption "dmenu";
   };
 
   config = lib.mkIf cfg.enable {
-    home.packages = let patchList = [ mainPatch ];
-    in [
-      (pkgs.dmenu.overrideAttrs (self: super: {
-        src = ./src;
-        patches = if super.patches == null then
-          patchList
-        else
-          super.patches ++ patchList;
-      }))
-    ];
+    home.packages =
+      let
+        patchList = [ mainPatch ];
+      in
+      [
+        (pkgs.dmenu.overrideAttrs (
+          self: super: {
+            src = ./src;
+            patches = if super.patches == null then patchList else super.patches ++ patchList;
+          }
+        ))
+      ];
   };
 }

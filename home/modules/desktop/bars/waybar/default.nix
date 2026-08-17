@@ -4,7 +4,8 @@ let
   cfg = config.evertras.home.desktop.bars.waybar;
   theme = config.evertras.themes.selected;
   palette = (import ../../../../../shared/themes/palette-catppuccin.nix).Frappe;
-in {
+in
+{
   options.evertras.home.desktop.bars.waybar = {
     enable = mkEnableOption "Enable Waybar";
 
@@ -22,31 +23,39 @@ in {
     # settings stay in this file; other modules can add their own definitions
     # by merging into programs.waybar.settings.mainBar, so any string is
     # allowed here rather than a fixed enum.
-    modules = let
-      mkModulesOption = position: default:
-        mkOption {
-          type = types.listOf types.str;
-          inherit default;
-          description = ''
-            Modules to show on the ${position} of the bar, in order. A module
-            listed here must have a definition, either in the waybar module
-            itself or merged in via programs.waybar.settings.mainBar.
-          '';
-        };
-    in {
-      left = mkModulesOption "left" [
-        "battery"
-        "keyboard-state"
-        "niri/language"
-        "network"
-        "custom/vpn"
-        "niri/workspaces"
-      ];
+    modules =
+      let
+        mkModulesOption =
+          position: default:
+          mkOption {
+            type = types.listOf types.str;
+            inherit default;
+            description = ''
+              Modules to show on the ${position} of the bar, in order. A module
+              listed here must have a definition, either in the waybar module
+              itself or merged in via programs.waybar.settings.mainBar.
+            '';
+          };
+      in
+      {
+        left = mkModulesOption "left" [
+          "battery"
+          "keyboard-state"
+          "niri/language"
+          "network"
+          "custom/vpn"
+          "niri/workspaces"
+        ];
 
-      center = mkModulesOption "center" [ ];
+        center = mkModulesOption "center" [ ];
 
-      right = mkModulesOption "right" [ "pulseaudio" "bluetooth" "backlight" "clock" ];
-    };
+        right = mkModulesOption "right" [
+          "pulseaudio"
+          "bluetooth"
+          "backlight"
+          "clock"
+        ];
+      };
 
     monitorNetworkInterface = mkOption {
       type = types.str;
@@ -81,7 +90,9 @@ in {
           modules-center = cfg.modules.center;
           modules-right = cfg.modules.right;
 
-          "niri/workspaces" = { format = "{value}"; };
+          "niri/workspaces" = {
+            format = "{value}";
+          };
 
           "niri/language" = {
             format-ja = "JP";
@@ -91,15 +102,34 @@ in {
           "battery" = {
             bat = cfg.battery.name;
             interval = 60;
-            states = { "low" = 30; };
+            states = {
+              "low" = 30;
+            };
             format = "{icon} {capacity}%";
-            format-icons = [ "" "" "" "" "" ];
+            format-icons = [
+              ""
+              ""
+              ""
+              ""
+              ""
+            ];
             max-length = 25;
           };
 
           "backlight" = {
             format = "{percent} {icon}";
-            format-icons = [ "󱩎" "󱩏" "󱩐" "󱩑" "󱩒" "󱩓" "󱩔" "󱩕" "󱩖" "󰛨" ];
+            format-icons = [
+              "󱩎"
+              "󱩏"
+              "󱩐"
+              "󱩑"
+              "󱩒"
+              "󱩓"
+              "󱩔"
+              "󱩕"
+              "󱩖"
+              "󰛨"
+            ];
           };
 
           # Show date and time
@@ -133,7 +163,9 @@ in {
             max-length = 50;
           };
 
-          "bluetooth" = { on-click = "headphones-toggle"; };
+          "bluetooth" = {
+            on-click = "headphones-toggle";
+          };
 
           "pulseaudio" = {
             format = "{volume} 󰓃 ";
@@ -143,15 +175,16 @@ in {
             on-click = "volume-mute-toggle";
           };
 
-          /* For some fun later
-             "custom/hello-from-waybar" = {
-               format = "hello {}";
-               max-length = 40;
-               interval = "once";
-               exec = pkgs.writeShellScript "hello-from-waybar" ''
-                 echo "from within waybar"
-               '';
-             };
+          /*
+            For some fun later
+            "custom/hello-from-waybar" = {
+              format = "hello {}";
+              max-length = 40;
+              interval = "once";
+              exec = pkgs.writeShellScript "hello-from-waybar" ''
+                echo "from within waybar"
+              '';
+            };
           */
         };
       };

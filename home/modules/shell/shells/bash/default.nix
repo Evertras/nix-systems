@@ -1,8 +1,12 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.home.shell.shells.bash;
-in {
-  options.evertras.home.shell.shells.bash = { enable = mkEnableOption "bash"; };
+let
+  cfg = config.evertras.home.shell.shells.bash;
+in
+{
+  options.evertras.home.shell.shells.bash = {
+    enable = mkEnableOption "bash";
+  };
 
   config = mkIf cfg.enable {
     programs = {
@@ -25,14 +29,15 @@ in {
           wget = "wget --hsts-file=$XDG_DATA_HOME/wget-hsts";
         };
 
-        bashrcExtra = let
-          mkExport = name: value: "export ${name}=${value}";
-          exports = attrsets.mapAttrsToList mkExport
-            config.evertras.home.shell.env.vars;
-        in ''
-          # Env vars from config.evertras.shell.env.vars
-          ${concatStringsSep "\n" exports}
-        '';
+        bashrcExtra =
+          let
+            mkExport = name: value: "export ${name}=${value}";
+            exports = attrsets.mapAttrsToList mkExport config.evertras.home.shell.env.vars;
+          in
+          ''
+            # Env vars from config.evertras.shell.env.vars
+            ${concatStringsSep "\n" exports}
+          '';
 
         # bashrcExtra for all shells, initExtra for interactive only
         initExtra = ''

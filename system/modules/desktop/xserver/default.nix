@@ -3,7 +3,8 @@ with lib;
 let
   cfg = config.evertras.desktop.xserver;
   theme = config.evertras.themes.selected;
-in {
+in
+{
   options.evertras.desktop.xserver = {
     enable = mkEnableOption "Desktop xserver";
 
@@ -28,14 +29,16 @@ in {
           ${cfg.extraSessionCommands}
         '';
 
-        session = [{
-          manage = "desktop";
-          name = "dwm";
-          start = ''
-            dwm
-            waitPID=$!
-          '';
-        }];
+        session = [
+          {
+            manage = "desktop";
+            name = "dwm";
+            start = ''
+              dwm
+              waitPID=$!
+            '';
+          }
+        ];
 
         # Explicitly enable lightDM in case we log back out,
         # just to remind ourselves which thing we're using...

@@ -4,7 +4,9 @@
 # easily switched
 with lib;
 let
-  palette = { catppuccin = import ./palette-catppuccin.nix; };
+  palette = {
+    catppuccin = import ./palette-catppuccin.nix;
+  };
 
   nerdfonts = import ../nerdfonts { inherit pkgs; };
 
@@ -25,8 +27,7 @@ let
     "Lavender"
   ];
 
-  assertCatppuccinColor = color:
-    lib.asserts.assertOneOf "catppuccin color" color catppuccinColors;
+  assertCatppuccinColor = color: lib.asserts.assertOneOf "catppuccin color" color catppuccinColors;
 
   defaults = {
     fonts = {
@@ -68,27 +69,41 @@ let
   };
 
   # https://github.com/catppuccin/cursors
-  mkCatppuccinCursor = { color, flavor ? "Frappe" }: {
-    _checkColor = assertCatppuccinColor color;
-    name = "catppuccin-${toLower flavor}-${toLower color}-cursors";
-    package = pkgs.catppuccin-cursors."${toLower flavor}${color}";
-  };
-in {
-  mkCatppuccin = { color, flavor ? "Frappe" }:
-    defaults // {
+  mkCatppuccinCursor =
+    {
+      color,
+      flavor ? "Frappe",
+    }:
+    {
+      _checkColor = assertCatppuccinColor color;
+      name = "catppuccin-${toLower flavor}-${toLower color}-cursors";
+      package = pkgs.catppuccin-cursors."${toLower flavor}${color}";
+    };
+in
+{
+  mkCatppuccin =
+    {
+      color,
+      flavor ? "Frappe",
+    }:
+    defaults
+    // {
       _checkColor = assertCatppuccinColor color;
 
-      colors = let p = palette.catppuccin.${flavor};
-      in {
-        primary = p.${color};
-        highlight = p.highlight.${color};
-        background = p.Base;
-        backgroundDeep = p.Crust;
-        text = p.Text;
-        urgent = p.urgent.${color};
-        contrast = p.contrast.${color};
-        darker = p.darker.${color};
-      };
+      colors =
+        let
+          p = palette.catppuccin.${flavor};
+        in
+        {
+          primary = p.${color};
+          highlight = p.highlight.${color};
+          background = p.Base;
+          backgroundDeep = p.Crust;
+          text = p.Text;
+          urgent = p.urgent.${color};
+          contrast = p.contrast.${color};
+          darker = p.darker.${color};
+        };
 
       cursorTheme = mkCatppuccinCursor { inherit color flavor; };
     };

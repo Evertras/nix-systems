@@ -1,7 +1,9 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.home.shell.neovim;
-in {
+let
+  cfg = config.evertras.home.shell.neovim;
+in
+{
   options.evertras.home.shell.neovim = {
     # Must explicitly enable to avoid running in sensitive environments
     enableCopilot = mkEnableOption "copilot";
@@ -13,7 +15,9 @@ in {
     copilot-lua = mkIf cfg.enableCopilot {
       enable = true;
 
-      filetypes = { markdown = true; };
+      filetypes = {
+        markdown = true;
+      };
 
       suggestion = {
         # Experiment with this, may want it off for perf?
@@ -60,117 +64,125 @@ in {
       '';
 
       # https://github.com/nix-community/nixvim/blob/10d114f5a6e0a9591d13a28a92905e71cc100b39/plugins/lsp/language-servers/default.nix
-      servers = let langs = config.evertras.home.shell.coding;
-      in {
-        bashls.enable = true;
-        cssls.enable = true;
-        gopls.enable = true;
-        helm_ls.enable = true;
-        # Specific check for now due to being multiple gigabytes
-        hls.enable = langs.haskell.enable;
-        html.enable = true;
-        lua_ls.enable = true;
-        nil_ls.enable = true;
-        svelte.enable = true;
-        terraformls.enable = true;
-        ts_ls.enable = true;
-        yamlls.enable = true;
-      };
+      servers =
+        let
+          langs = config.evertras.home.shell.coding;
+        in
+        {
+          bashls.enable = true;
+          cssls.enable = true;
+          gopls.enable = true;
+          helm_ls.enable = true;
+          # Specific check for now due to being multiple gigabytes
+          hls.enable = langs.haskell.enable;
+          html.enable = true;
+          lua_ls.enable = true;
+          nil_ls.enable = true;
+          svelte.enable = true;
+          terraformls.enable = true;
+          ts_ls.enable = true;
+          yamlls.enable = true;
+        };
     };
 
-    lualine = let
-      filename = [{
-        __unkeyed-1 = "filename";
+    lualine =
+      let
+        filename = [
+          {
+            __unkeyed-1 = "filename";
 
-        # Show relative path
-        path = 1;
-      }];
-    in {
-      enable = true;
+            # Show relative path
+            path = 1;
+          }
+        ];
+      in
+      {
+        enable = true;
 
-      settings = let
-        breadcrumb = {
-          # Custom logic for navigating larger files like helm chart values,
-          # where we want to see what root key we're in.
-          __unkeyed-1.__raw = ''
-            function()
-              local navic = require("nvim-navic")
-              local data = navic.get_data() or {}
+        settings =
+          let
+            breadcrumb = {
+              # Custom logic for navigating larger files like helm chart values,
+              # where we want to see what root key we're in.
+              __unkeyed-1.__raw = ''
+                function()
+                  local navic = require("nvim-navic")
+                  local data = navic.get_data() or {}
 
-              if #data == 0 then return "" end
+                  if #data == 0 then return "" end
 
-              -- How many keys to show at the start when limit is reached
-              local limitPrefix = 4
-              -- How many keys to show at the end when limit is reached
-              local limitSuffix = 2
-              local limit = limitPrefix + limitSuffix
-              local hlSep = "%#LineNr#"
-              local hlRoot = "%#Directory#"
-              local hlLeaf = "%#Type#"
-              local hlComment = "%#Comment#"
-              local hlTerm = "%*"
-              local sep = hlSep .. "." .. hlTerm
+                  -- How many keys to show at the start when limit is reached
+                  local limitPrefix = 4
+                  -- How many keys to show at the end when limit is reached
+                  local limitSuffix = 2
+                  local limit = limitPrefix + limitSuffix
+                  local hlSep = "%#LineNr#"
+                  local hlRoot = "%#Directory#"
+                  local hlLeaf = "%#Type#"
+                  local hlComment = "%#Comment#"
+                  local hlTerm = "%*"
+                  local sep = hlSep .. "." .. hlTerm
 
-              if #data == 1 then return hlLeaf .. data[1].name .. hlTerm end
+                  if #data == 1 then return hlLeaf .. data[1].name .. hlTerm end
 
-              local root = hlRoot .. data[1].name .. hlTerm
-              local leaf = hlLeaf .. data[#data].name .. hlTerm
+                  local root = hlRoot .. data[1].name .. hlTerm
+                  local leaf = hlLeaf .. data[#data].name .. hlTerm
 
-              local parts = {
-                root
-              }
+                  local parts = {
+                    root
+                  }
 
-              if #data <= limit then
-                for i = 2, #data-1 do
-                  table.insert(parts, data[i].name)
+                  if #data <= limit then
+                    for i = 2, #data-1 do
+                      table.insert(parts, data[i].name)
+                    end
+                    table.insert(parts, leaf)
+                  else
+                    parts = {
+                      root,
+                    }
+
+                    for i = 2, limitPrefix do
+                      table.insert(parts, data[i].name)
+                    end
+
+                    table.insert(parts, hlComment .. "..." .. hlTerm)
+
+                    local start = #data - limitSuffix + 1
+                    for i = start, #data-1 do
+                      table.insert(parts, data[i].name)
+                    end
+                    table.insert(parts, leaf)
+                  end
+
+                  return table.concat(parts, sep)
                 end
-                table.insert(parts, leaf)
-              else
-                parts = {
-                  root,
-                }
+              '';
 
-                for i = 2, limitPrefix do
-                  table.insert(parts, data[i].name)
-                end
+              cond.__raw = "function () return require('nvim-navic').is_available() end";
+            };
+          in
+          {
+            sections = {
+              lualine_b = filename;
+              lualine_c = [ "diagnostics" ];
+              lualine_x = [ breadcrumb ];
+              lualine_y = [ "filesize" ];
+            };
 
-                table.insert(parts, hlComment .. "..." .. hlTerm)
-
-                local start = #data - limitSuffix + 1
-                for i = start, #data-1 do
-                  table.insert(parts, data[i].name)
-                end
-                table.insert(parts, leaf)
-              end
-
-              return table.concat(parts, sep)
-            end
-          '';
-
-          cond.__raw =
-            "function () return require('nvim-navic').is_available() end";
-        };
-      in {
-        sections = {
-          lualine_b = filename;
-          lualine_c = [ "diagnostics" ];
-          lualine_x = [ breadcrumb ];
-          lualine_y = [ "filesize" ];
-        };
-
-        inactive_sections = {
-          lualine_b = filename;
-          lualine_c = [ "diagnostics" ];
-          lualine_x = [ breadcrumb ];
-          lualine_y = [ "filesize" ];
-        };
+            inactive_sections = {
+              lualine_b = filename;
+              lualine_c = [ "diagnostics" ];
+              lualine_x = [ breadcrumb ];
+              lualine_y = [ "filesize" ];
+            };
+          };
       };
-    };
 
     luasnip = {
       enable = true;
 
-      fromLua = [{ paths = ./snippets; }];
+      fromLua = [ { paths = ./snippets; } ];
     };
 
     cmp = {
@@ -259,8 +271,12 @@ in {
     telescope = {
       enable = true;
       keymaps = {
-        "<leader>gg" = { action = "git_files"; };
-        "<leader>gG" = { action = "find_files"; };
+        "<leader>gg" = {
+          action = "git_files";
+        };
+        "<leader>gG" = {
+          action = "find_files";
+        };
       };
     };
 
@@ -268,7 +284,12 @@ in {
       enable = true;
       settings = {
         highlight.enable = true;
-        ensure_installed = [ "gotmpl" "helm" "lua" "yaml" ];
+        ensure_installed = [
+          "gotmpl"
+          "helm"
+          "lua"
+          "yaml"
+        ];
       };
     };
   };

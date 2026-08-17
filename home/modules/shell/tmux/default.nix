@@ -4,7 +4,8 @@ let
   cfg = config.evertras.home.shell.tmux;
   colors = config.evertras.themes.selected.colors;
   shellBin = config.evertras.home.shell.core.shellBin;
-in {
+in
+{
   options.evertras.home.shell.tmux = {
     enable = mkEnableOption "tmux";
     shell = mkOption {
@@ -104,4 +105,3 @@ in {
     };
   };
 }
-

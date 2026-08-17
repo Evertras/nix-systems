@@ -1,7 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-let cfg = config.evertras.home.shell.asdf;
-in {
+let
+  cfg = config.evertras.home.shell.asdf;
+in
+{
   options.evertras.home.shell.asdf = {
     enable = mkEnableOption "asdf version manager";
   };

@@ -1,7 +1,9 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.system.services.nomad;
-in {
+let
+  cfg = config.evertras.system.services.nomad;
+in
+{
   options.evertras.system.services.nomad = {
     enable = lib.mkEnableOption "single node nomad sandbox";
   };

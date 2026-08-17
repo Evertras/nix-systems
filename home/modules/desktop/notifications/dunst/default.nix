@@ -3,7 +3,8 @@ with lib;
 let
   cfg = config.evertras.home.desktop.notifications.dunst;
   theme = config.evertras.themes.selected;
-in {
+in
+{
   options.evertras.home.desktop.notifications.dunst = {
     enable = mkEnableOption "Dunst";
 

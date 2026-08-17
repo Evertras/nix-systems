@@ -1,7 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-let cfg = config.evertras.home.desktop.windowmanager.hyprland.pyprland;
-in {
+let
+  cfg = config.evertras.home.desktop.windowmanager.hyprland.pyprland;
+in
+{
   options.evertras.home.desktop.windowmanager.hyprland.pyprland = {
     enable = mkEnableOption "Enable Pyprland plugins for Hyprland";
   };

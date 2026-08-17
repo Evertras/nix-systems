@@ -1,5 +1,11 @@
 { }: {
-  mkPatch = { fontName, fontSize, colors, bgImage }:
+  mkPatch =
+    {
+      fontName,
+      fontSize,
+      colors,
+      bgImage,
+    }:
 
     builtins.toFile "ever-st.diff" ''
 
@@ -24,9 +30,7 @@
         * font: see http://freedesktop.org/software/fontconfig/fontconfig-user.html
         */
       -static char *font = "Liberation Mono:pixelsize=12:antialias=true:autohint=true";
-      +static char *font = "${fontName}:pixelsize=${
-        toString fontSize
-      }:antialias=true:autohint=true";
+      +static char *font = "${fontName}:pixelsize=${toString fontSize}:antialias=true:autohint=true";
        static int borderpx = 2;
        
       +/*

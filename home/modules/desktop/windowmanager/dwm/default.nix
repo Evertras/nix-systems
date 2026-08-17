@@ -1,4 +1,9 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
 let
   patch = (import ./patch.nix) { };
@@ -27,13 +32,15 @@ let
     terminal = cfg.terminal;
   };
   patchList = [ basePatch ];
-  customDwm = pkgs.dwm.overrideAttrs (self: super: {
-    src = ./src;
-    patches =
-      if super.patches == null then patchList else super.patches ++ patchList;
-    buildInputs = super.buildInputs ++ [ pkgs.xorg.libXcursor ];
-  });
-in {
+  customDwm = pkgs.dwm.overrideAttrs (
+    self: super: {
+      src = ./src;
+      patches = if super.patches == null then patchList else super.patches ++ patchList;
+      buildInputs = super.buildInputs ++ [ pkgs.xorg.libXcursor ];
+    }
+  );
+in
+{
   options.evertras.home.desktop.windowmanager.dwm = {
     enable = mkEnableOption "dwm";
 
@@ -94,33 +101,38 @@ in {
     };
   };
 
-  config = let systemfile-path = ".evertras/systemfiles/dwm.desktop";
-  in mkIf cfg.enable {
-    home.packages = [ customDwm ];
+  config =
+    let
+      systemfile-path = ".evertras/systemfiles/dwm.desktop";
+    in
+    mkIf cfg.enable {
+      home.packages = [ customDwm ];
 
-    home.file = {
-      "${systemfile-path}" = {
-        text = ''
-          [Desktop Entry]
-          Name=dwm-nix-hm
-          Comment=dwm via home-manager
-          Exec=${customDwm}/bin/dwm
-          Type=XSession
-          DesktopNames=dwm
-        '';
+      home.file = {
+        "${systemfile-path}" = {
+          text = ''
+            [Desktop Entry]
+            Name=dwm-nix-hm
+            Comment=dwm via home-manager
+            Exec=${customDwm}/bin/dwm
+            Type=XSession
+            DesktopNames=dwm
+          '';
+        };
       };
-    };
 
-    # This unfortunately seems necessary if we're not using NixOS...
-    evertras.home.shell.funcs = if usingNixOS then
-      { }
-    else {
-      "install-dwm-without-nixos".body = ''
-        linkfile=/usr/share/xsessions/dwm-nix-hm.desktop
-        echo "Upserting linkfile $linkfile"
-        sudo rm -f "$linkfile"
-        sudo ln -s ~/${systemfile-path} "$linkfile"
-      '';
+      # This unfortunately seems necessary if we're not using NixOS...
+      evertras.home.shell.funcs =
+        if usingNixOS then
+          { }
+        else
+          {
+            "install-dwm-without-nixos".body = ''
+              linkfile=/usr/share/xsessions/dwm-nix-hm.desktop
+              echo "Upserting linkfile $linkfile"
+              sudo rm -f "$linkfile"
+              sudo ln -s ~/${systemfile-path} "$linkfile"
+            '';
+          };
     };
-  };
 }

@@ -1,11 +1,17 @@
-{ config, everlib, lib, ... }:
+{
+  config,
+  everlib,
+  lib,
+  ...
+}:
 with everlib;
 with lib;
 let
   cfg = config.evertras.home.desktop.terminals.kitty;
   theme = config.evertras.themes.selected;
   shellBin = config.evertras.home.shell.core.shellBin;
-in {
+in
+{
   options.evertras.home.desktop.terminals.kitty = {
     enable = mkEnableOption "kitty";
 
@@ -45,35 +51,39 @@ in {
   config = mkIf cfg.enable {
     evertras.home.shell.funcs = {
       "kitty-reload".body = "kill -SIGUSR1 $(pgrep kitty)";
-      "kitty-theme".body = if cfg.allowThemeOverrides then ''
-        kitten theme --reload-in=all --config-file-name theme.conf
-        sleep 1 && kitty-reload
-      '' else
-        "echo 'Kitty theme overrides are disabled'";
+      "kitty-theme".body =
+        if cfg.allowThemeOverrides then
+          ''
+            kitten theme --reload-in=all --config-file-name theme.conf
+            sleep 1 && kitty-reload
+          ''
+        else
+          "echo 'Kitty theme overrides are disabled'";
 
-      /* # Keeping for reference but not actually using it...
-         "retheme".body = ''
-               searchterm="$@"
-               if [ -z "''${searchterm}" ]; then
-                 searchterm=mountain
-               fi
+      /*
+        # Keeping for reference but not actually using it...
+        "retheme".body = ''
+              searchterm="$@"
+              if [ -z "''${searchterm}" ]; then
+                searchterm=mountain
+              fi
 
-               if ! type schemer2 &> /dev/null; then
-                 mkdir -p ~/bin
-                 GOBIN=~/bin/schemer2 go install github.com/thefryscorer/schemer2@latest
-               fi
+              if ! type schemer2 &> /dev/null; then
+                mkdir -p ~/bin
+                GOBIN=~/bin/schemer2 go install github.com/thefryscorer/schemer2@latest
+              fi
 
-               echo "Retheming to ''${searchterm}"
-               styli.sh -s "''${searchterm}"
-               colors=$(schemer2 -format img::colors -in ~/.cache/styli.sh/wallpaper.jpg)
-               IFS=$'\n'
-               for color in ''${colors}; do
-                 # Hijacked from show-color above
-                 perl -e 'foreach $a(@ARGV){print "\e[48:2::".join(":",unpack("C*",pack("H*",$a)))."m \e[49m"};' "''${color:1}"
-               done
-               schemer2 -format img::kitty -in ~/.cache/styli.sh/wallpaper.jpg > ~/.config/kitty/theme.conf
-               kill -SIGUSR1 $(pgrep kitty)
-             }
+              echo "Retheming to ''${searchterm}"
+              styli.sh -s "''${searchterm}"
+              colors=$(schemer2 -format img::colors -in ~/.cache/styli.sh/wallpaper.jpg)
+              IFS=$'\n'
+              for color in ''${colors}; do
+                # Hijacked from show-color above
+                perl -e 'foreach $a(@ARGV){print "\e[48:2::".join(":",unpack("C*",pack("H*",$a)))."m \e[49m"};' "''${color:1}"
+              done
+              schemer2 -format img::kitty -in ~/.cache/styli.sh/wallpaper.jpg > ~/.config/kitty/theme.conf
+              kill -SIGUSR1 $(pgrep kitty)
+            }
       */
     };
 
@@ -88,50 +98,57 @@ in {
         package = theme.fonts.terminal.package;
       };
 
-      extraConfig = let
-        fontSizeDemo = cfg.fontSize * 1.5;
-        opacityKeybinds = map (a:
-          "map ctrl+shift+${toString a} set_background_opacity 0.${
-            toString a
-          }") [ 0 1 2 3 4 5 6 7 8 9 ];
-      in ''
-        ${if cfg.allowThemeOverrides then ''
-          # I like changing the theme a lot on a whim, this
-          # file is created/modified by the bash function kitty-theme
-          include theme.conf
-        '' else
-          ""}
+      extraConfig =
+        let
+          fontSizeDemo = cfg.fontSize * 1.5;
+          opacityKeybinds = map (a: "map ctrl+shift+${toString a} set_background_opacity 0.${toString a}") [
+            0
+            1
+            2
+            3
+            4
+            5
+            6
+            7
+            8
+            9
+          ];
+        in
+        ''
+          ${
+            if cfg.allowThemeOverrides then
+              ''
+                # I like changing the theme a lot on a whim, this
+                # file is created/modified by the bash function kitty-theme
+                include theme.conf
+              ''
+            else
+              ""
+          }
 
-        # Font size adjustments
-        map ctrl+shift+o change_font_size current -2.0
-        map ctrl+shift+i change_font_size current +2.0
-        map ctrl+shift+u change_font_size current 0
+          # Font size adjustments
+          map ctrl+shift+o change_font_size current -2.0
+          map ctrl+shift+i change_font_size current +2.0
+          map ctrl+shift+u change_font_size current 0
 
-        # Demo mode
-        map ctrl+shift+b combine : change_font_size current ${
-          toString fontSizeDemo
-        } : set_background_opacity 1.0
-        map ctrl+shift+r combine : change_font_size current ${
-          toString cfg.fontSize
-        } : set_background_opacity ${toString cfg.opacity}
+          # Demo mode
+          map ctrl+shift+b combine : change_font_size current ${toString fontSizeDemo} : set_background_opacity 1.0
+          map ctrl+shift+r combine : change_font_size current ${toString cfg.fontSize} : set_background_opacity ${toString cfg.opacity}
 
-        # Simple opacity toggle
-        map ctrl+shift+n set_background_opacity 1.0
-        map ctrl+shift+m set_background_opacity ${toString cfg.opacity}
+          # Simple opacity toggle
+          map ctrl+shift+n set_background_opacity 1.0
+          map ctrl+shift+m set_background_opacity ${toString cfg.opacity}
 
-        # Complicated opacity toggle
-        ${concatStringsSep "\n" opacityKeybinds}
+          # Complicated opacity toggle
+          ${concatStringsSep "\n" opacityKeybinds}
 
-        ${if cfg.backgroundOverride != null then
-          "background ${cfg.backgroundOverride}"
-        else
-          ""}
+          ${if cfg.backgroundOverride != null then "background ${cfg.backgroundOverride}" else ""}
 
-        map ctrl+v paste_from_clipboard
+          map ctrl+v paste_from_clipboard
 
-        # Overriding things in a pinch
-        include override.conf
-      '';
+          # Overriding things in a pinch
+          include override.conf
+        '';
 
       settings = {
         # Background opacity

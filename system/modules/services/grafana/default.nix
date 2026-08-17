@@ -1,7 +1,9 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.system.services.grafana;
-in {
+let
+  cfg = config.evertras.system.services.grafana;
+in
+{
   options.evertras.system.services.grafana = {
     enable = mkEnableOption "Grafana";
 
@@ -17,9 +19,13 @@ in {
       enable = true;
 
       settings = {
-        server = { "http_port" = cfg.httpPort; };
+        server = {
+          "http_port" = cfg.httpPort;
+        };
 
-        auth = { "anonymous.enabled" = true; };
+        auth = {
+          "anonymous.enabled" = true;
+        };
       };
     };
   };

@@ -1,10 +1,17 @@
-{ config, everlib, lib, pkgs, ... }:
+{
+  config,
+  everlib,
+  lib,
+  pkgs,
+  ...
+}:
 with everlib;
 with lib;
 let
   cfg = config.evertras.home.desktop.terminals.alacritty;
   theme = config.evertras.themes.selected;
-in {
+in
+{
   options.evertras.home.desktop.terminals.alacritty = {
     enable = mkEnableOption "alacritty";
 
@@ -66,11 +73,12 @@ in {
 
         keyboard.bindings = [
           # JP Mac keyboard fix
-          /* {
-               key = "Yen";
-               mods = "None";
-               chars = "\\\\";
-             }
+          /*
+            {
+              key = "Yen";
+              mods = "None";
+              chars = "\\\\";
+            }
           */
           {
             key = "I";
@@ -91,11 +99,15 @@ in {
           }
         ];
 
-        mouse = { hide_when_typing = true; };
+        mouse = {
+          hide_when_typing = true;
+        };
 
         scrolling.multiplier = 5;
 
-        terminal = { shell = cfg.shellBin; };
+        terminal = {
+          shell = cfg.shellBin;
+        };
 
         window = {
           decorations = "none";

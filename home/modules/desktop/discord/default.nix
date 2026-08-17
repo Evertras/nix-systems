@@ -1,7 +1,14 @@
-{ config, pkgs, lib, ... }:
+{
+  config,
+  pkgs,
+  lib,
+  ...
+}:
 with lib;
-let cfg = config.evertras.home.desktop.discord;
-in {
+let
+  cfg = config.evertras.home.desktop.discord;
+in
+{
   options.evertras.home.desktop.discord = {
     enable = mkEnableOption "discord";
   };

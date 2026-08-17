@@ -7,7 +7,8 @@ let
     "Terminess" = "terminess-ttf";
     "Hasklug" = "hasklug";
   };
-in {
+in
+{
   make = name: {
     name = "${name} Nerd Font";
     package = pkgs.nerd-fonts.${pkgMapping.${name}};

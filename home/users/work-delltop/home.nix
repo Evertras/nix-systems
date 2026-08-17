@@ -133,7 +133,7 @@ in
 
           center = [ "clock" ];
 
-          right = [ 
+          right = [
             "niri/workspaces"
           ];
         };

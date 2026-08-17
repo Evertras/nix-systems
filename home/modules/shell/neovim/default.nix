@@ -1,12 +1,17 @@
 { ... }:
 
 {
-  imports = [ ./colorscheme.nix ./plugins.nix ];
+  imports = [
+    ./colorscheme.nix
+    ./plugins.nix
+  ];
 
   config.programs.nixvim = {
     enable = true;
 
-    globals = { mapleader = ","; };
+    globals = {
+      mapleader = ",";
+    };
 
     autoCmd = [
       {
@@ -37,11 +42,13 @@
         event = "BufEnter";
         pattern = "*";
         command = "set formatoptions-=cro";
-        desc =
-          "Don't automatically create comment leads on new lines after a comment";
+        desc = "Don't automatically create comment leads on new lines after a comment";
       }
       {
-        event = [ "BufWinEnter" "BufWinEnter" ];
+        event = [
+          "BufWinEnter"
+          "BufWinEnter"
+        ];
         pattern = "*";
         command = "set foldlevel=99";
         desc = "Start unfolded";
@@ -66,65 +73,76 @@
       }
     ];
 
-    keymaps = let
-      # Jump between panes more easily
-      keymapsNav = map (key: {
-        mode = "n";
-        key = "<C-${key}>";
-        action = "<C-W><C-${key}>";
-      }) [ "H" "J" "K" "L" ];
-    in keymapsNav ++ [
-      {
-        mode = "i";
-        key = "jk";
-        action = "<Esc>";
-      }
+    keymaps =
+      let
+        # Jump between panes more easily
+        keymapsNav =
+          map
+            (key: {
+              mode = "n";
+              key = "<C-${key}>";
+              action = "<C-W><C-${key}>";
+            })
+            [
+              "H"
+              "J"
+              "K"
+              "L"
+            ];
+      in
+      keymapsNav
+      ++ [
+        {
+          mode = "i";
+          key = "jk";
+          action = "<Esc>";
+        }
 
-      {
-        mode = "n";
-        key = ";";
-        action = ":";
-      }
+        {
+          mode = "n";
+          key = ";";
+          action = ":";
+        }
 
-      {
-        mode = "n";
-        key = "<leader><space>";
-        action.__raw = "vim.cmd.nohlsearch";
-      }
+        {
+          mode = "n";
+          key = "<leader><space>";
+          action.__raw = "vim.cmd.nohlsearch";
+        }
 
-      # Format
-      {
-        mode = "n";
-        key = "<leader>F";
-        action.__raw = "vim.lsp.buf.format";
-      }
+        # Format
+        {
+          mode = "n";
+          key = "<leader>F";
+          action.__raw = "vim.lsp.buf.format";
+        }
 
-      # Rename
-      {
-        mode = "n";
-        key = "<leader>R";
-        action.__raw = "vim.lsp.buf.rename";
-      }
+        # Rename
+        {
+          mode = "n";
+          key = "<leader>R";
+          action.__raw = "vim.lsp.buf.rename";
+        }
 
-      # Filetree
-      {
-        mode = "n";
-        key = "<C-N>";
-        action.__raw = "vim.cmd.NvimTreeToggle";
-      }
+        # Filetree
+        {
+          mode = "n";
+          key = "<C-N>";
+          action.__raw = "vim.cmd.NvimTreeToggle";
+        }
 
-      # Folding
-      {
-        mode = "n";
-        key = "<space>";
-        action = "za";
-      }
-      {
-        mode = "n";
-        key = "zz";
-        action = "zR";
-      }
-    ];
+        # Folding
+        {
+          mode = "n";
+          key = "<space>";
+          action = "za";
+        }
+        {
+          mode = "n";
+          key = "zz";
+          action = "zR";
+        }
+      ];
 
     opts = {
       # Line numbers are relative

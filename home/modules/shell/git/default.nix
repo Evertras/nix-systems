@@ -1,7 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-let cfg = config.evertras.home.shell.git;
-in {
+let
+  cfg = config.evertras.home.shell.git;
+in
+{
   options.evertras.home.shell.git = {
     enable = mkEnableOption "git";
 
@@ -42,11 +49,14 @@ in {
 
       lfs.enable = true;
 
-      signing = if cfg.gpgKey != null then {
-        signByDefault = true;
-        key = cfg.gpgKey;
-      } else
-        null;
+      signing =
+        if cfg.gpgKey != null then
+          {
+            signByDefault = true;
+            key = cfg.gpgKey;
+          }
+        else
+          null;
 
     };
   };

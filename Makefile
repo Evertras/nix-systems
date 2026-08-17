@@ -27,8 +27,10 @@ clean-system: .git/hooks/pre-commit
 	nixos-rebuild boot --flake . --sudo
 
 .PHONY: fmt
+# Hand nixfmt the files directly; passing it a directory is deprecated.
+# Tracked plus new-but-not-ignored files, so a fresh .nix still gets formatted.
 fmt: .git/hooks/pre-commit
-	@nixfmt .
+	@git ls-files -z --cached --others --exclude-standard '*.nix' | xargs -0 nixfmt
 
 .PHONY: lint
 lint: .git/hooks/pre-commit

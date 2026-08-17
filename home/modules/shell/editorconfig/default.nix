@@ -1,7 +1,9 @@
 { config, lib, ... }:
 with lib;
-let cfg = config.evertras.home.shell.editorconfig;
-in {
+let
+  cfg = config.evertras.home.shell.editorconfig;
+in
+{
   options.evertras.home.shell.editorconfig = {
     enable = mkEnableOption "editorconfig";
   };
@@ -18,9 +20,13 @@ in {
           trim_trailing_whitespace = true;
         };
 
-        "*.go" = { indent_style = "tab"; };
+        "*.go" = {
+          indent_style = "tab";
+        };
 
-        "Makefile" = { indent_style = "tab"; };
+        "Makefile" = {
+          indent_style = "tab";
+        };
       };
     };
   };

@@ -1,9 +1,16 @@
 # Non-negotiables that every user config must have defined
-{ config, everlib, lib, ... }:
+{
+  config,
+  everlib,
+  lib,
+  ...
+}:
 with everlib;
 with lib;
-let cfg = config.evertras.home.core;
-in {
+let
+  cfg = config.evertras.home.core;
+in
+{
   options.evertras.home.core = {
     username = mkOption { type = types.str; };
 

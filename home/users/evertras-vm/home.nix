@@ -3,8 +3,12 @@
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
   theme = themes.mkCatppuccin { color = "Green"; };
-in {
-  imports = [ ../../modules ../../../shared/themes/select.nix ];
+in
+{
+  imports = [
+    ../../modules
+    ../../../shared/themes/select.nix
+  ];
 
   evertras.themes.selected = theme;
 

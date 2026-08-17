@@ -1,4 +1,8 @@
-{ type, lib, theme }:
+{
+  type,
+  lib,
+  theme,
+}:
 with lib;
 let
   mkColor = strings.removePrefix "#";
@@ -43,7 +47,10 @@ let
       width = "100%";
     };
   };
-  tofiFlags =
-    (attrsets.mapAttrsToList (key: value: "--${key}='${toString value}'")
-      (tofiThemes.${type} // sharedSettings));
-in "tofi-run " + (strings.concatStringsSep " " tofiFlags)
+  tofiFlags = (
+    attrsets.mapAttrsToList (key: value: "--${key}='${toString value}'") (
+      tofiThemes.${type} // sharedSettings
+    )
+  );
+in
+"tofi-run " + (strings.concatStringsSep " " tofiFlags)

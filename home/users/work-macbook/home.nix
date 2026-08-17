@@ -1,4 +1,10 @@
-{ config, lib, nerdfonts, pkgs, ... }:
+{
+  config,
+  lib,
+  nerdfonts,
+  pkgs,
+  ...
+}:
 
 let
   themes = import ../../../shared/themes/themes.nix { inherit pkgs lib; };
@@ -9,7 +15,8 @@ let
   terminalFont = nerdfonts.makeMono terminalFontName;
 
   gpgKey = "11CB11BBC416774E";
-in {
+in
+{
   #imports = [ ../../modules ../../../shared/themes/select.nix ];
   imports = [
     ../../modules/desktop/terminals
@@ -19,8 +26,7 @@ in {
     ../../../shared/themes/select.nix
   ];
 
-  evertras.themes.selected =
-    (theme // { fonts = (theme.fonts // { terminal = terminalFont; }); });
+  evertras.themes.selected = (theme // { fonts = (theme.fonts // { terminal = terminalFont; }); });
 
   evertras.home = {
     core = {
@@ -37,7 +43,9 @@ in {
     # Other local things
     packages = [ terminalFont.package ];
 
-    file = { ".asdfrc".text = "legacy_version_file = yes"; };
+    file = {
+      ".asdfrc".text = "legacy_version_file = yes";
+    };
 
     # Don't change this, this is the initial install version
     stateVersion = "23.05"; # Please read the comment before changing.
@@ -48,7 +56,11 @@ in {
 
   # https://github.com/nix-community/home-manager/issues/1341#issuecomment-1870352014
   # Install MacOS applications to the user Applications folder. Also update Docked applications
-  home.extraActivationPath = with pkgs; [ rsync dockutil gawk ];
+  home.extraActivationPath = with pkgs; [
+    rsync
+    dockutil
+    gawk
+  ];
 
   home.activation.trampolineApps = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
     ${builtins.readFile ./sync-apps.sh}

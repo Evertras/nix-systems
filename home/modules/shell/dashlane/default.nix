@@ -1,7 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-let cfg = config.evertras.home.shell.dashlane;
-in {
+let
+  cfg = config.evertras.home.shell.dashlane;
+in
+{
   options.evertras.home.shell.dashlane = {
     enable = mkEnableOption "Dashlane CLI";
   };

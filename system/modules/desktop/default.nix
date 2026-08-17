@@ -1,10 +1,20 @@
-{ config, everlib, lib, pkgs, ... }:
+{
+  config,
+  everlib,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-let cfg = config.evertras.desktop;
-in {
+let
+  cfg = config.evertras.desktop;
+in
+{
   imports = (everlib.allSubdirs ./.) ++ [ ../../../shared/themes/select.nix ];
 
-  options.evertras.desktop = { enable = mkEnableOption "desktop"; };
+  options.evertras.desktop = {
+    enable = mkEnableOption "desktop";
+  };
 
   config = mkIf cfg.enable {
     # Needed for GTK tweaks
@@ -20,14 +30,13 @@ in {
       ];
     };
 
-    environment.systemPackages = with pkgs;
-      [
-        # Need to install it here. Just install it, let's face it, I'm using firefox and stop
-        # trying to finagle it otherwise...
-        #
-        # https://discourse.nixos.org/t/screen-sharing-with-wayland-gnome/12449/8
-        firefox
-      ];
+    environment.systemPackages = with pkgs; [
+      # Need to install it here. Just install it, let's face it, I'm using firefox and stop
+      # trying to finagle it otherwise...
+      #
+      # https://discourse.nixos.org/t/screen-sharing-with-wayland-gnome/12449/8
+      firefox
+    ];
 
     environment.sessionVariables = {
       NIXOS_OZONE_WL = "1";

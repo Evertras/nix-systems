@@ -1,7 +1,14 @@
-{ config, lib, pkgs, ... }:
+{
+  config,
+  lib,
+  pkgs,
+  ...
+}:
 with lib;
-let cfg = config.evertras.home.desktop.ime;
-in {
+let
+  cfg = config.evertras.home.desktop.ime;
+in
+{
   options.evertras.home.desktop.ime = {
     enable = mkEnableOption "extra input methods (IME)";
   };

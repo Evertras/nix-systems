@@ -45,7 +45,9 @@
       Lavender = "#e5c890";
     };
 
-    darker = { Green = "#365521"; };
+    darker = {
+      Green = "#365521";
+    };
 
     highlight = {
       Green = "#d7eaca";

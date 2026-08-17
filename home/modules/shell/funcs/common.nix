@@ -2,12 +2,16 @@
 let
   # https://pkg.go.dev/time#pkg-constants
   logTimeFormat = "2006-01-02 15:04:05 MST";
-in {
+in
+{
   evertras.home.shell.funcs = {
     # Outside of code because I want to use this with ASDF on a non-NixOS system
     # without installing Go, but it does feel odd
     go-watch-test = {
-      runtimeInputs = with pkgs; [ entr fzf ];
+      runtimeInputs = with pkgs; [
+        entr
+        fzf
+      ];
       body = ''
         base="''${1:-.}"
 

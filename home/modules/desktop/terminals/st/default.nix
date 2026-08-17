@@ -1,11 +1,16 @@
-{ config, everlib, lib, pkgs, ... }:
+{
+  config,
+  everlib,
+  lib,
+  pkgs,
+  ...
+}:
 with everlib;
 let
   cfg = config.evertras.home.desktop.terminals.st;
   theme = config.evertras.themes.selected;
   patchlib = import ./patch.nix { };
-  catppuccinPalette =
-    import ../../../../../shared/themes/palette-catppuccin.nix;
+  catppuccinPalette = import ../../../../../shared/themes/palette-catppuccin.nix;
   colorsFrappe = catppuccinPalette.Frappe;
   mainPatch = patchlib.mkPatch {
     fontName = existsOr cfg.font.name theme.fonts.terminal.name;
@@ -23,12 +28,14 @@ let
       cyan = colorsFrappe.Sky;
     };
 
-    bgImage = if cfg.bgImage == "" then
-      "${config.home.homeDirectory}/.evertras/backgrounds/wallpaper.ff"
-    else
-      cfg.bgImage;
+    bgImage =
+      if cfg.bgImage == "" then
+        "${config.home.homeDirectory}/.evertras/backgrounds/wallpaper.ff"
+      else
+        cfg.bgImage;
   };
-in {
+in
+{
   options.evertras.home.desktop.terminals.st = with lib; {
     enable = mkEnableOption "st";
 
@@ -157,18 +164,21 @@ in {
         gen-st-bg "$HOME/.cache/styli.sh/wallpaper.jpg" "$HOME/.evertras/backgrounds/wallpaper.ff"
       '';
     };
-    home.packages = let patchList = [ mainPatch ];
-    in [
-      # To generate background images with jpg2ff and png2ff
-      pkgs.farbfeld
-      (pkgs.st.overrideAttrs (self: super: {
-        src = ./src;
-        patches = if super.patches == null then
-          patchList
-        else
-          super.patches ++ patchList;
-        buildInputs = super.buildInputs ++ [ pkgs.xorg.libXcursor ];
-      }))
-    ] ++ (if cfg.font.package == null then [ ] else [ cfg.font.package ]);
+    home.packages =
+      let
+        patchList = [ mainPatch ];
+      in
+      [
+        # To generate background images with jpg2ff and png2ff
+        pkgs.farbfeld
+        (pkgs.st.overrideAttrs (
+          self: super: {
+            src = ./src;
+            patches = if super.patches == null then patchList else super.patches ++ patchList;
+            buildInputs = super.buildInputs ++ [ pkgs.xorg.libXcursor ];
+          }
+        ))
+      ]
+      ++ (if cfg.font.package == null then [ ] else [ cfg.font.package ]);
   };
 }
