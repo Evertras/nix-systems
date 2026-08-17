@@ -49,14 +49,10 @@ in
 
       lfs.enable = true;
 
-      signing =
-        if cfg.gpgKey != null then
-          {
-            signByDefault = true;
-            key = cfg.gpgKey;
-          }
-        else
-          null;
+      signing = {
+        signByDefault = cfg.gpgKey != null;
+        key = cfg.gpgKey;
+      };
 
     };
   };

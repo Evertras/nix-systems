@@ -8,7 +8,7 @@ in
   options.evertras.themes = {
     selected = mkOption {
       type = with types; attrsOf anything;
-      default = themes.mint;
+      default = themes.mkCatppuccin { color = "Green"; };
     };
   };
 }
