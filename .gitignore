@@ -3,3 +3,4 @@
 # VMs
 *.qcow2
 /result
+/.vscode
