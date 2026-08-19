@@ -173,8 +173,6 @@ in
 
       ime.enable = true;
 
-      display.sleep.enable = true;
-
       notifications = {
         enable = true;
         origin = "top-right";

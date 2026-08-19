@@ -89,7 +89,7 @@ in
       enable = true;
       kbLayout = "jp";
 
-      display.sleep.enable = true;
+      display.sleep.standbyMinutes = 5;
 
       discord.enable = true;
 

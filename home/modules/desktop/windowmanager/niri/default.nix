@@ -64,6 +64,7 @@ in
         niriBin = "${pkgs.niri}/bin/niri";
         monitorsOn = "${niriBin} msg action power-on-monitors";
         monitorsOff = "${niriBin} msg action power-off-monitors";
+        sleepCfg = cfgDesktop.display.sleep;
       in
       {
         enable = true;
@@ -71,9 +72,10 @@ in
           # The big monitor doesn't like to turn on on its own, but it will respect this command
           after-resume = monitorsOn;
         };
-        timeouts = [
+        # Niri only powers monitors off or on, so standby is the only stage we use here
+        timeouts = optionals sleepCfg.enable [
           {
-            timeout = 300;
+            timeout = sleepCfg.standbyMinutes * 60;
             command = monitorsOff;
             resumeCommand = monitorsOn;
           }

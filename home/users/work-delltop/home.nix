@@ -139,7 +139,7 @@ in
         };
       };
 
-      display.sleep.enable = true;
+      display.sleep.standbyMinutes = 20;
 
       discord.enable = true;
 
