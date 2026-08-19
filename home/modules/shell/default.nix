@@ -67,6 +67,7 @@ in
 
         # Extras
         ssm-session-manager-plugin
+        crane
         glow
         google-cloud-sdk
         kubectl
