@@ -11,9 +11,67 @@
 
   ##############################################################################
   # Hardware stuff
+
+  # Closing the lid is usually a walk to another room or a dock swap, not
+  # "goodnight", so it should never suspend on the spot.  logind has no notion
+  # of a delay -- its handlers fire the instant the switch flips -- so ignore
+  # the lid switch there entirely and drive the decision from the ACPI event
+  # instead: ten quiet minutes of staying shut earns a suspend, and opening
+  # the lid before then calls it off.
   services.logind.settings.Login = {
-    HandleLidSwitch = "suspend";
+    HandleLidSwitch = "ignore";
     HandleLidSwitchExternalPower = "ignore";
+    HandleLidSwitchDocked = "ignore";
+  };
+
+  services.acpid = {
+    enable = true;
+
+    # acpid hands the handler the raw event as $1, e.g. "button/lid LID close
+    # 00000001".  Starting an already-running timer is a no-op, so repeated
+    # close events won't push the deadline back.
+    lidEventCommands = ''
+      case "$1" in
+        *close*) ${pkgs.systemd}/bin/systemctl start lid-delayed-suspend.timer ;;
+        *open*) ${pkgs.systemd}/bin/systemctl stop lid-delayed-suspend.timer ;;
+      esac
+    '';
+  };
+
+  # Deliberately no wantedBy: nothing arms this at boot, only the lid handler
+  # above.
+  systemd.timers.lid-delayed-suspend = {
+    description = "Countdown to suspending a laptop left closed";
+    timerConfig = {
+      OnActiveSec = "10min";
+      AccuracySec = "10s";
+      Unit = "lid-delayed-suspend.service";
+    };
+  };
+
+  systemd.services.lid-delayed-suspend = {
+    description = "Suspend if the lid is still closed";
+    serviceConfig = {
+      Type = "oneshot";
+
+      # Re-read the lid rather than trusting the timer to have been stopped.
+      # A missed open event shouldn't put a machine to sleep while someone is
+      # looking at it.  If the kernel exposes no lid state at all we fall
+      # through and suspend, since the only way to get here is a close event
+      # that was never cancelled.
+      ExecStart = pkgs.writeShellScript "lid-delayed-suspend" ''
+        for state in /proc/acpi/button/lid/*/state; do
+          [ -r "$state" ] || continue
+          if ${pkgs.gnugrep}/bin/grep -q open "$state"; then
+            echo "Lid is open, staying awake"
+            exit 0
+          fi
+        done
+
+        echo "Lid still closed, suspending"
+        exec ${pkgs.systemd}/bin/systemctl suspend
+      '';
+    };
   };
 
   ##############################################################################
