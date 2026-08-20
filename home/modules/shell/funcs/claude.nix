@@ -138,6 +138,7 @@ let
         "${name})"
       ]
       ++ map (d: "  dirs+=(\"${d}\")") profile.dirs
+      ++ map (d: "  dirs_ro+=(\"${d}\")") profile.dirsRo
       ++ envLines
       ++ map (m: "  mcp_configs+=(\"${m}\")") profile.mcp
       ++ optional (profile.workdir != null) "  profile_workdir=\"${profile.workdir}\""
@@ -211,10 +212,11 @@ in
       Named claude-sandbox profiles, selected with `claude-sandbox -p <name>`
       and listed with `claude-sandbox -l`.
 
-      Each profile preloads a set of mounted directories, an optional
-      working directory, and optional CLAUDE.md instructions.  Extra `-d`
-      flags passed on the command line are appended to the profile's dirs,
-      and any remaining args are passed through to claude.
+      Each profile preloads a set of mounted directories (read-write via
+      `dirs`, read-only via `dirsRo`), an optional working directory, and
+      optional CLAUDE.md instructions.  Extra `-d` flags passed on the
+      command line are appended to the profile's read-write dirs, and any
+      remaining args are passed through to claude.
 
       Directory strings are expanded by the shell at runtime, so `$HOME`
       works (but a bare `~` does not, since it is quoted).
@@ -223,6 +225,8 @@ in
       {
         tdb = {
           dirs = [ "$HOME/dev/tdb" "$HOME/dev/tdb-docs" ];
+          # Mounted :ro - readable and copyable, but unwritable.
+          dirsRo = [ "$HOME/dev/tdb-legacy" ];
           workdir = "$HOME/dev/tdb";
           env = {
             # Import the value from the calling environment.
@@ -245,7 +249,26 @@ in
           dirs = mkOption {
             type = types.listOf types.str;
             default = [ ];
-            description = "Host directories to mount into the sandbox.";
+            description = "Host directories to mount into the sandbox, read-write.";
+          };
+          dirsRo = mkOption {
+            type = types.listOf types.str;
+            default = [ ];
+            example = [ "$HOME/dev/some-reference-repo" ];
+            description = ''
+              Host directories to mount into the sandbox read-only, mounted at
+              the same `/sandbox`-prefixed paths as `dirs`.  The agent can read
+              and copy out of them, but the kernel refuses every write, so this
+              is enforcement rather than a CLAUDE.md request not to touch them.
+
+              Use for source/reference repos the agent should learn from but
+              never edit.  Inspecting git history still works (`git log`,
+              `git status`, and `git diff` tolerate an unwritable index), while
+              anything that writes - `commit`, `checkout`, `fetch` - fails.
+
+              These are appended after `dirs`, so when no `workdir` is set the
+              default working directory still comes from `dirs`.
+            '';
           };
           env = mkOption {
             default = { };
@@ -385,6 +408,7 @@ in
         need_build=false
         build_flags=()
         dirs=()
+        dirs_ro=()
         extra_env_keys=()
         env_cmd_keys=()
         env_cmd_vals=()
@@ -467,8 +491,10 @@ in
           claude_json_mount=(-v "''${claude_json}:/home/user/.claude.json")
         fi
 
-        # If no dirs given (neither profile nor -d), default to current directory
-        if [ "''${#dirs[@]}" -eq 0 ]; then
+        # If no dirs given at all (neither profile nor -d), default to the
+        # current directory.  A profile with only read-only dirs counts as
+        # having dirs, so we don't silently mount the cwd read-write alongside.
+        if [ "''${#dirs[@]}" -eq 0 ] && [ "''${#dirs_ro[@]}" -eq 0 ]; then
           dirs=("$(pwd)")
         fi
 
@@ -480,6 +506,16 @@ in
           rp="$(realpath "''${dir}")"
           resolved_dirs+=("''${rp}")
           volume_mounts+=(-v "''${rp}:/sandbox''${rp}")
+        done
+
+        # Read-only dirs mount the same way but with :ro, so the agent can read
+        # and copy from them while the kernel refuses any write.  Appended after
+        # the read-write dirs so resolved_dirs[0] (the fallback workdir) stays a
+        # writable one whenever the profile has any.
+        for dir in "''${dirs_ro[@]}"; do
+          rp="$(realpath "''${dir}")"
+          resolved_dirs+=("''${rp}")
+          volume_mounts+=(-v "''${rp}:/sandbox''${rp}:ro")
         done
 
         if [ -n "''${profile_workdir}" ]; then
