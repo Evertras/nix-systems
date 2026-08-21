@@ -29,6 +29,21 @@ let
     globalInstructions + "\n"
   );
 
+  jsonFormat = pkgs.formats.json { };
+
+  # Session settings file carrying the contributed deny rules, or null when no
+  # module contributed any.  Deny is the only permission control worth anything
+  # in a --yolo sandbox: it is evaluated ahead of allow rules from every
+  # settings scope and still applies with --dangerously-skip-permissions, and a
+  # bare tool/server name deny drops the tool from claude's context outright.
+  settingsFile =
+    if cfg.denyPermissions == [ ] then
+      null
+    else
+      jsonFormat.generate "claude-sandbox-settings.json" {
+        permissions.deny = cfg.denyPermissions;
+      };
+
   dockerfileSrc = pkgs.writeText "claude-sandbox-dockerfile" ''
     # Debian 13 "trixie" (glibc >=2.39), not the default bookworm-based
     # node:lts-slim (glibc 2.36): the sem MCP binary is built against
@@ -388,6 +403,29 @@ in
     '';
   };
 
+  options.evertras.home.shell.claude-sandbox.denyPermissions = mkOption {
+    type = types.listOf types.str;
+    default = [ ];
+    example = [ "mcp__claude_ai_Linear" ];
+    description = ''
+      Permission deny rules applied in every sandbox, passed to claude as a
+      `--settings` file.  Meant for other modules to fence off tools the
+      sandbox should never be able to call, e.g. the Linear MCP module denying
+      the read-write claude.ai Linear connector.
+
+      Deny rules are what hold in a `--yolo` sandbox: they are evaluated before
+      any allow rule, from every settings scope, and still apply under
+      `--dangerously-skip-permissions`.  A bare tool or server name (`Bash`,
+      `mcp__claude_ai_Linear`) removes the tool from claude's context entirely;
+      a scoped rule (`Bash(rm *)`, `mcp__foo__bar`) leaves the tool in place and
+      blocks matching calls.
+
+      These layer on top of the host's own ~/.claude/settings.json, which the
+      sandbox already sees via the mounted ~/.claude, so put rules that should
+      also apply outside the sandbox there instead.
+    '';
+  };
+
   options.evertras.home.shell.claude-sandbox.globalMcp = mkOption {
     type = types.listOf types.str;
     default = [ ];
@@ -589,9 +627,14 @@ in
           resolv_mount=()
         fi
 
+        # Deny rules contributed by other modules (see `denyPermissions`) ride
+        # in as a session settings file.  No mount is needed: /nix is already
+        # bind-mounted read-only below, so the store path resolves in-sandbox.
+        #
         # In --yolo mode, tell claude to skip every permission prompt.  Safe
-        # here because the sandbox is the blast radius, not the host.
-        claude_flags=()
+        # here because the sandbox is the blast radius, not the host - and the
+        # deny rules above still apply, prompts or not.
+        claude_flags=(${optionalString (settingsFile != null) "--settings ${settingsFile}"})
         if "''${yolo}"; then
           claude_flags+=(--dangerously-skip-permissions)
         fi

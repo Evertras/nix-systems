@@ -76,6 +76,14 @@ in
       # it up.
       mcp.sem.enable = true;
 
+      # Linear, read-only: claude talks straight to Linear's hosted read-only
+      # endpoint (no fleet container, no credential here), with the mutating
+      # tool names denied locally as a backstop.  The claude.ai Linear
+      # connector is disconnected at claude.ai - its own per-tool blocking did
+      # not actually stop writes - and denied here so it can't come back.
+      # Run `/mcp` in a sandbox once to do Linear's OAuth flow.
+      mcp.linear.enable = true;
+
       claude-sandbox.profiles.nix = {
         dirs = [
           "$HOME/dev/github/evertras/nix"
