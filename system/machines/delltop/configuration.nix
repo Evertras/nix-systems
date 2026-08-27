@@ -26,6 +26,11 @@
     HandleLidSwitchDocked = "ignore";
   };
 
+  # acpid runs here whether we like it or not, since the nvidia module turns it
+  # on, and it always registers power/lid/ac handlers.  Setting no
+  # lidEventCommands leaves the lid one an empty script, so the events land
+  # nowhere -- an active acpid.service is not a lid still being acted on.
+
   ##############################################################################
   # Boot stuff
 
