@@ -39,6 +39,10 @@ in
 
     laptop = {
       enable = true;
+
+      # Half an hour of nobody touching it on battery is a real "goodnight".
+      # Plugged in it stays up forever, lid open or shut.
+      suspendOnBatteryIdleMinutes = 30;
     };
 
     shell = {
