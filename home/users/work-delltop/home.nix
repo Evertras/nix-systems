@@ -128,7 +128,14 @@ in
       enable = true;
 
       bars.waybar = {
-        battery.name = "BAT0";
+        battery = {
+          name = "BAT0";
+
+          # Docked most of the time, so the battery is only worth a spot in
+          # the bar when it's actually being drained
+          hideWhenPlugged = true;
+        };
+
         monitorNetworkInterface = wirelessInterface;
 
         # Same as the module defaults, spelled out here so this machine's bar
@@ -137,6 +144,7 @@ in
           left = [
             "network"
             "custom/vpn"
+            "battery"
           ];
 
           center = [ "clock" ];

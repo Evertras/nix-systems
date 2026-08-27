@@ -75,6 +75,15 @@ in
         default = "BAT1";
         description = "Name of the battery, found in /sys/class/power_supply";
       };
+
+      hideWhenPlugged = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Only show the battery module while actually running on battery, so
+          the bar stays quiet whenever the machine is on wall power.
+        '';
+      };
     };
   };
 
@@ -114,6 +123,18 @@ in
               ""
             ];
             max-length = 25;
+          }
+          # An empty format makes waybar drop the module's label entirely, so
+          # spelling out an empty format for every status that isn't
+          # "discharging" is what hides the indicator while on wall power.  A
+          # status is the contents of /sys/class/power_supply/<bat>/status,
+          # lowercased with spaces turned into dashes, plus waybar's own
+          # synthesized "plugged" for a charged battery on a live adapter.
+          // optionalAttrs cfg.battery.hideWhenPlugged {
+            format-charging = "";
+            format-full = "";
+            format-not-charging = "";
+            format-plugged = "";
           };
 
           "backlight" = {
@@ -189,7 +210,23 @@ in
         };
       };
 
-      style = import ./styles/${cfg.style}.nix { inherit theme palette; };
+      style =
+        import ./styles/${cfg.style}.nix { inherit theme palette; }
+        # Appended last so it wins over the style's own #battery rules: the
+        # label is empty in these statuses, so drop the padding and border
+        # too and leave no stray bubble sitting in the bar
+        + optionalString cfg.battery.hideWhenPlugged ''
+
+          #battery.charging,
+          #battery.full,
+          #battery.not-charging,
+          #battery.plugged {
+            padding: 0;
+            margin: 0;
+            border: none;
+            background-color: transparent;
+          }
+        '';
 
       systemd.enable = true;
     };
