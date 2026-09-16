@@ -55,7 +55,9 @@ in
         the default column width at runtime, so the live value lives in
         ~/.config/niri/column-width.kdl, which the main config `include`s and
         which niri's config watcher reloads on write.  The niri-columns func
-        rewrites that file and resizes the already-open columns to match.
+        rewrites that file and resizes the already-open columns to match, and
+        the niri-column-cycle func reads the count back out of it to decide
+        which widths Mod+R cycles the focused column through.
       '';
     };
   };
@@ -71,10 +73,17 @@ in
       # It has to be a window-rule and not a `layout` node because only one
       # top-level `layout` node is allowed, and `include` only works at the top
       # level.  A window-rule with no `match` applies to every window.
+      # Each side strut is negative, so the two of them widen the working area
+      # that column proportions are measured against.  The struts node below and
+      # niri-column-cycle both derive from this, so they cannot drift apart.
+      sideStrutPixels = cfg.borderWidthPixels * 2;
+
       columnWidthFile = "column-width.kdl";
       columnWidthDir = "${config.xdg.configHome}/niri";
       columnWidthPath = "${columnWidthDir}/${columnWidthFile}";
 
+      # niri-column-cycle reads the count back out of this with a regex over a
+      # single line, so keep default-column-width and proportion together.
       mkColumnWidth = columns: ''
         // Generated - rewritten by the niri-columns func, do not edit by hand.
         window-rule {
@@ -125,7 +134,7 @@ in
         ".config/niri/config.kdl" =
           let
             borderWidthPixels = toString cfg.borderWidthPixels;
-            doubleBorderWidthPixels = toString (cfg.borderWidthPixels * 2);
+            doubleBorderWidthPixels = toString sideStrutPixels;
 
             # Hardcoded for the beast for easy hardcode switching depending on performance wants, make this more configurable later
             externalResolutionOptions = {
@@ -237,14 +246,18 @@ in
                   //   together with the previously focused column.
                   center-focused-column "never"
 
-                  // You can customize the widths that "switch-preset-column-width" (Mod+R) toggles between.
+                  // Only floating windows use these now, via
+                  // switch-preset-window-width - niri has no separate preset list
+                  // for them.  Tiled columns go through niri-column-cycle on
+                  // Mod+R, which derives its stops from the live column count
+                  // instead of this fixed list.
                   preset-column-widths {
                       proportion 0.3333
                       proportion 0.5
                       proportion 0.6666
                   }
 
-                  // You can also customize the heights that "switch-preset-window-height" (Mod+Shift+R) toggles between.
+                  // You can also customize the heights that "switch-preset-window-height" (Mod+E) toggles between.
                   preset-window-heights {
                     proportion 0.3
                     proportion 0.5
@@ -534,7 +547,11 @@ in
                   Mod+Alt+3 hotkey-overlay-title="Fit 3 Columns On Screen" { spawn "niri-columns" "3"; }
                   Mod+Alt+4 hotkey-overlay-title="Fit 4 Columns On Screen" { spawn "niri-columns" "4"; }
 
-                  Mod+R { switch-preset-column-width; }
+                  // Cycles the focused column through the widths that fit the
+                  // current column count, e.g. 1/4, 2/4, 3/4 with 4 columns.
+                  // No repeat: each press spawns a process that reads the current
+                  // width, so held-down repeats would race each other.
+                  Mod+R repeat=false hotkey-overlay-title="Cycle Column Width" { spawn "niri-column-cycle"; }
                   Mod+E { switch-preset-window-height; }
                   Mod+Ctrl+R { reset-window-height; }
                   Mod+F { maximize-column; }
@@ -608,6 +625,156 @@ in
         fi
       '';
 
+      # An included file can carry its own layout node, so the preset list could
+      # in principle be rewritten at runtime the way the default width is.  It
+      # still wouldn't do what we want: niri cycles presets by index, so a
+      # one-entry list re-applies that width instead of leaving a 2-column layout
+      # alone, and an empty list parses but then has niri indexing a list with
+      # nothing in it.  So do the cycling ourselves instead.
+      evertras.home.shell.funcs.niri-column-cycle = {
+        runtimeInputs = with pkgs; [
+          gawk
+          jq
+          niri
+        ];
+
+        body = ''
+          usage() {
+            cat >&2 <<'USAGE'
+          usage: niri-column-cycle
+
+          Cycles the focused column through the widths that fit the number of
+          columns currently set by niri-columns: 1/N through (N-1)/N.  Fewer
+          than 3 columns leaves at most one such width, so nothing happens.
+          USAGE
+          }
+
+          case "''${1-}" in
+            "") ;;
+            -h | --help)
+              usage
+              exit 0
+              ;;
+            *)
+              usage
+              exit 1
+              ;;
+          esac
+
+          # Every query below tolerates its own failure rather than letting
+          # errexit kill the script mid-way: niri spawns this with nowhere for
+          # stderr to go, so a hard exit and a handled one look the same from
+          # the keyboard, and the handled one at least leaves the width alone.
+          window=$(niri msg -j focused-window) || window=""
+
+          if [ -z "$window" ] || [ "$window" = "null" ]; then
+            exit 0
+          fi
+
+          # Floating windows aren't in the scrolling layout at all, so leave them
+          # to niri's own presets.
+          if [ "$(jq -r '.is_floating' <<< "$window" || true)" = "true" ]; then
+            niri msg action switch-preset-window-width
+            exit 0
+          fi
+
+          # How many columns fit on screen is whatever proportion niri-columns
+          # last wrote as the default width, so the count is 1/proportion.  The
+          # file is only readable if it has been seeded, and awk exits non-zero
+          # on a missing one, which under errexit would skip the fallback below.
+          widthFile="${columnWidthPath}"
+          columns=""
+
+          # Regular file only: awk on a fifo or a character device would sit
+          # there reading forever, and this runs off a keypress.
+          if [ -f "$widthFile" ] && [ -r "$widthFile" ]; then
+            columns=$(awk '
+              /default-column-width/ && match($0, /proportion[[:space:]]+[0-9.]+/) {
+                p = substr($0, RSTART, RLENGTH)
+                sub(/proportion[[:space:]]+/, "", p)
+
+                # Only a count that could have been written here in the first
+                # place - 1000 is just past anything sane.  A tiny proportion
+                # inverts to something huge, or to an infinity that %d prints as
+                # text, either of which the stop search below would grind on.
+                if (p + 0 > 0) {
+                  n = int(1 / p + 0.5)
+
+                  if (n >= 1 && n <= 1000) {
+                    printf "%d", n
+                    exit
+                  }
+                }
+              }
+            ' "$widthFile")
+          fi
+
+          case "$columns" in
+            "" | *[!0-9]*) columns=${toString cfg.defaultColumns} ;;
+          esac
+
+          # Stops are k/columns for k in 1..columns-1, so under 3 columns there
+          # is only the one width the column already opens at - nowhere to go.
+          if [ "$columns" -lt 3 ]; then
+            exit 0
+          fi
+
+          tileWidth=$(jq -r '.layout.tile_size[0] // empty' <<< "$window" || true)
+
+          if [ -z "$tileWidth" ]; then
+            echo "no tile size for the focused window" >&2
+            exit 1
+          fi
+
+          # Whichever monitor holds the focused window is by definition the
+          # focused one, so its width is what this column is measured against
+          # and there is no need to walk workspaces looking for the output.
+          outputWidth=$(niri msg -j focused-output | jq -r '.logical.width // empty' || true)
+
+          if [ -z "$outputWidth" ]; then
+            echo "no logical size for the focused output" >&2
+            exit 1
+          fi
+
+          # Proportions are measured against the working area, which our negative
+          # side struts make wider than the output itself.  Layer surfaces would
+          # narrow it too, but waybar is a top bar and takes no width.
+          percent=$(awk \
+            -v tile="$tileWidth" \
+            -v output="$outputWidth" \
+            -v struts="${toString (sideStrutPixels * 2)}" \
+            -v n="$columns" '
+            BEGIN {
+              current = tile / (output + struts)
+              target = 1 / n
+
+              # Slack to keep rounding, and any struts we guessed wrong about,
+              # from making the stop we sit on look like the next one.  It has
+              # to stay well under the 1/n gap between stops, and well over the
+              # sub-pixel error, which a fixed value stops doing once n is large.
+              slack = 0.25 / n
+
+              if (slack > 0.01) {
+                slack = 0.01
+              }
+
+              # Take the first stop wider than where we are now, wrapping back
+              # around to the narrowest.
+              for (k = 1; k < n; k++) {
+                if (k / n > current + slack) {
+                  target = k / n
+                  break
+                }
+              }
+
+              printf "%.4f", target * 100
+            }
+          ')
+
+          niri msg action set-column-width "$percent%"
+        '';
+      };
+
       evertras.home.shell.funcs.niri-columns = {
         runtimeInputs = with pkgs; [
           gawk
@@ -624,6 +791,7 @@ in
             --all  also resize columns on workspaces that aren't currently visible
 
           Resizes the open columns and sets the width new windows open at.
+          The count also decides which widths niri-column-cycle steps through.
           USAGE
           }
 
@@ -648,7 +816,10 @@ in
               ;;
           esac
 
-          if [ "$columns" -lt 1 ]; then
+          # Length first: a number too long to compare as an integer makes the
+          # test itself fail, which reads the same as passing it.  The ceiling
+          # also keeps the proportion meaningful once written out.
+          if [ "''${#columns}" -gt 4 ] || [ "$columns" -lt 1 ] || [ "$columns" -gt 1000 ]; then
             usage
             exit 1
           fi
@@ -667,6 +838,8 @@ in
           tmpFile=$(mktemp "$widthFile.XXXXXX")
           trap 'rm -f "$tmpFile"' EXIT
 
+          # niri-column-cycle reads the count back out of this with a regex over
+          # a single line, so keep default-column-width and proportion together.
           cat > "$tmpFile" <<EOF
           // Generated - rewritten by the niri-columns func, do not edit by hand.
           window-rule {
@@ -707,8 +880,12 @@ in
           while IFS= read -r id; do
             [ -n "$id" ] || continue
 
-            niri msg action focus-window --id "$id"
-            niri msg action set-column-width "$percent%"
+            # A window can close between the snapshot above and getting here.
+            # Skip it rather than letting errexit strand focus mid-walk, which
+            # would also skip putting it back at the end.
+            if niri msg action focus-window --id "$id"; then
+              niri msg action set-column-width "$percent%" || true
+            fi
           done <<< "$columnWindowIds"
 
           # Focusing windows moved us around, so put every workspace back on the
