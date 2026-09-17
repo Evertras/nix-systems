@@ -163,7 +163,10 @@ in
 
       discord.enable = true;
 
-      notifications.timeoutSeconds.kitty = 1;
+      notifications = {
+        origin = "top-left";
+        timeoutSeconds.kitty = 1;
+      };
 
       terminals.kitty = {
         fontName = fontOverrides.terminal.name;
