@@ -29,6 +29,38 @@ let
     globalInstructions + "\n"
   );
 
+  # Where a profile's scratch directory lives, by convention
+  # `<scratchBase>/<profile>-scratch`.  The `-scratch` suffix is the point:
+  # the bare profile name collides with the repo it's named after (the
+  # `tile-ai` profile's main repo is also `tile-ai`), and the basename is what
+  # actually gets read in isolation - in grep output, in `cd`, in the agent's
+  # own prose.  Carrying the meaning in the leaf makes that unambiguous
+  # wherever it surfaces.
+  scratchPathOf = name: "${cfg.scratchBase}/${name}-scratch";
+
+  # The CLAUDE.md section describing a profile's scratch directory, generated
+  # rather than written per-profile so every scratch space is explained the
+  # same way - including what does *not* belong in it.
+  mkScratchInstructions =
+    name:
+    let
+      leaf = "${name}-scratch";
+      path = "/sandbox${scratchPathOf name}";
+    in
+    ''
+      # Scratch Directory
+
+      `${path}/` is this sandbox's persistent scratch directory, mounted read-write.  Use it for work that should outlive a single session but belongs in no repository: investigation notes, plans, throwaway scripts, query output, sample data, and intermediate results.
+
+      It is a git repository with no remote.  Commit anything worth finding again, so `git log` and `git diff` can answer "what was tried last time"; nothing here is ever pushed anywhere.
+
+      `${leaf}` is a scratch directory, not a clone - do not confuse it with a similarly named repository mounted elsewhere in this sandbox.
+
+      Code, tests, docs, and configuration belong in their own repository, not here.  In particular, do not use this directory to stash edits you could not make in a repo, or to keep an editable copy of a read-only mount.  If a task needs a change somewhere you cannot write, say so instead.
+
+      This is not the ephemeral per-session scratchpad under `/tmp` that the harness may also point you at.  That one is thrown away when the session ends; this one persists.  When in doubt about whether something will matter tomorrow, put it here.
+    '';
+
   jsonFormat = pkgs.formats.json { };
 
   # Session settings file carrying the contributed deny rules, or null when no
@@ -100,10 +132,11 @@ let
     ENTRYPOINT ["claude"]
   '';
 
-  # Resolve a profile's CLAUDE.md to a store path, or null if it has none (in
-  # which case the baked global default applies).  When a profile does supply
-  # instructions, the global instructions are prepended so sandbox-wide
-  # guidance always applies and profiles only carry their own extras.
+  # Resolve a profile's CLAUDE.md to a store path, or null if it has nothing
+  # of its own to say (in which case the baked global default applies).  The
+  # global instructions are always prepended so sandbox-wide guidance applies,
+  # and a profile with a scratch directory gets the generated scratch section
+  # appended last, as an addendum after its own prose.
   # instructionsFile wins over inline instructions when both are set.
   mkInstrPath =
     name: profile:
@@ -115,15 +148,31 @@ let
           pkgs.writeText "claude-sandbox-claude-md-${name}-profile" profile.instructions
         else
           null;
+
+      scratchFile =
+        if profile.scratch then
+          pkgs.writeText "claude-sandbox-claude-md-${name}-scratch" (mkScratchInstructions name)
+        else
+          null;
+
+      parts = [
+        globalInstructionsFile
+      ]
+      ++ filter (p: p != null) [
+        profileFile
+        scratchFile
+      ];
+
+      # Joined with a blank line between each part, so the sections stay
+      # separate paragraphs regardless of how each file ends.
+      catLines = concatStringsSep "\n  printf '\\n'\n" (map (p: "  cat ${p}") parts);
     in
-    if profileFile == null then
+    if profileFile == null && scratchFile == null then
       null
     else
       pkgs.runCommand "claude-sandbox-claude-md-${name}" { } ''
         {
-          cat ${globalInstructionsFile}
-          printf '\n'
-          cat ${profileFile}
+        ${catLines}
         } > "$out"
       '';
 
@@ -154,6 +203,7 @@ let
       ]
       ++ map (d: "  dirs+=(\"${d}\")") profile.dirs
       ++ map (d: "  dirs_ro+=(\"${d}\")") profile.dirsRo
+      ++ optional profile.scratch "  scratch_dirs+=(\"${scratchPathOf name}\")"
       ++ envLines
       ++ map (m: "  mcp_configs+=(\"${m}\")") profile.mcp
       ++ optional (profile.workdir != null) "  profile_workdir=\"${profile.workdir}\""
@@ -242,6 +292,9 @@ in
           dirs = [ "$HOME/dev/tdb" "$HOME/dev/tdb-docs" ];
           # Mounted :ro - readable and copyable, but unwritable.
           dirsRo = [ "$HOME/dev/tdb-legacy" ];
+          # Created and git-initialized on first launch, at
+          # <scratchBase>/tdb-scratch.
+          scratch = true;
           workdir = "$HOME/dev/tdb";
           env = {
             # Import the value from the calling environment.
@@ -339,6 +392,26 @@ in
               works (but a bare `~` does not, since it is quoted).
             '';
           };
+          scratch = mkOption {
+            type = types.bool;
+            default = false;
+            description = ''
+              Give this profile a persistent scratch directory at
+              `<scratchBase>/<profile>-scratch`, mounted read-write alongside
+              its other dirs.  The directory is created and `git init`ed on
+              first launch, so there is nothing to set up by hand, and a
+              generated CLAUDE.md section tells the agent what it is for.
+
+              It is for work that should outlive a session but belongs in no
+              repository: notes, plans, throwaway scripts, sample data.
+
+              The `-scratch` suffix is deliberate and not configurable: the
+              basename is what gets read in isolation, and a bare profile name
+              would collide with the repository the profile is named after.
+              A scratch space under some other path is just an entry in
+              `dirs`.
+            '';
+          };
           workdir = mkOption {
             type = types.nullOr types.str;
             default = null;
@@ -379,6 +452,23 @@ in
         };
       }
     );
+  };
+
+  options.evertras.home.shell.claude-sandbox.scratchBase = mkOption {
+    type = types.str;
+    default = "${config.home.homeDirectory}/dev/scratch";
+    defaultText = literalExpression ''"''${config.home.homeDirectory}/dev/scratch"'';
+    description = ''
+      Parent directory holding the per-profile scratch directories created for
+      profiles with `scratch = true`, each at `<scratchBase>/<profile>-scratch`.
+
+      One container directory keeps them out of the clone tree and gives a
+      single place to exclude from backups or wipe.
+
+      Must be an absolute path: unlike `dirs` this is not only run through the
+      shell but also baked into the generated CLAUDE.md, where a `$HOME` would
+      appear to the agent literally.
+    '';
   };
 
   options.evertras.home.shell.claude-sandbox.extraInstructions = mkOption {
@@ -450,6 +540,10 @@ in
 
   config.evertras.home.shell.funcs = {
     claude-sandbox = {
+      # git is needed to initialize a profile's scratch directory on first
+      # launch; everything else (docker, realpath) comes from the host PATH.
+      runtimeInputs = [ pkgs.git ];
+
       body = ''
         image_name="evertras-claude-sandbox"
 
@@ -457,6 +551,7 @@ in
         build_flags=()
         dirs=()
         dirs_ro=()
+        scratch_dirs=()
         extra_env_keys=()
         env_cmd_keys=()
         env_cmd_vals=()
@@ -538,6 +633,22 @@ in
         if [ -f "''${claude_json}" ]; then
           claude_json_mount=(-v "''${claude_json}:/home/user/.claude.json")
         fi
+
+        # A profile's scratch directory is created and git-initialized on
+        # demand, so it exists from the first launch with no manual setup.
+        # There is no remote and never will be; the repo is just history for
+        # throwaway work.  Appended to dirs last, after any -d flags, so the
+        # fallback workdir (resolved_dirs[0]) stays a real repo.
+        for scratch_dir in "''${scratch_dirs[@]}"; do
+          if [ ! -d "''${scratch_dir}" ]; then
+            echo "Creating scratch directory ''${scratch_dir}"
+            mkdir -p "''${scratch_dir}"
+          fi
+          if [ ! -e "''${scratch_dir}/.git" ]; then
+            git init -q -b main "''${scratch_dir}"
+          fi
+          dirs+=("''${scratch_dir}")
+        done
 
         # If no dirs given at all (neither profile nor -d), default to the
         # current directory.  A profile with only read-only dirs counts as
