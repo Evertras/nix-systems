@@ -438,6 +438,16 @@ in
     '';
   };
 
+  # Personal skills, available in every sandbox for free: ~/.claude is
+  # bind-mounted into the container and /nix is mounted read-only there, so
+  # these store symlinks resolve inside the sandbox as well as on the host.
+  # `recursive` links each file individually rather than the directory, so
+  # hand-placed skills in ~/.claude/skills keep working alongside these.
+  config.home.file.".claude/skills/local-iteration" = {
+    source = ./skills/local-iteration;
+    recursive = true;
+  };
+
   config.evertras.home.shell.funcs = {
     claude-sandbox = {
       body = ''
