@@ -542,7 +542,9 @@ in
                   Mod+Period { expel-window-from-column; }
 
                   // Set how many columns fit on screen: resizes every open column
-                  // and changes the default width for new windows.
+                  // and changes the default width for new windows.  One column is
+                  // full width, and leaves Mod+R with nowhere to cycle to.
+                  Mod+Alt+1 hotkey-overlay-title="Fit 1 Column On Screen" { spawn "niri-columns" "1"; }
                   Mod+Alt+2 hotkey-overlay-title="Fit 2 Columns On Screen" { spawn "niri-columns" "2"; }
                   Mod+Alt+3 hotkey-overlay-title="Fit 3 Columns On Screen" { spawn "niri-columns" "3"; }
                   Mod+Alt+4 hotkey-overlay-title="Fit 4 Columns On Screen" { spawn "niri-columns" "4"; }
