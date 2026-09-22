@@ -61,12 +61,25 @@ let
       This is not the ephemeral per-session scratchpad under `/tmp` that the harness may also point you at.  That one is thrown away when the session ends; this one persists.  When in doubt about whether something will matter tomorrow, put it here.
     '';
 
-  # The CLAUDE.md section describing host docker access, generated for any
-  # profile with `docker = true`.  The two things that actually trip an agent
-  # up are that the containers it starts are siblings on the host rather than
-  # children of this sandbox, and that mount paths are resolved by the host
-  # daemon, so the `/sandbox` prefix must be dropped.
-  dockerInstructions = ''
+  # Normalize the `docker` option to a mode string.  `true` and `false` are
+  # the option's original spelling, still accepted so existing profiles keep
+  # working: `true` meant the host's socket, and that is what it still means.
+  dockerModeOf =
+    profile:
+    if profile.docker == true then
+      "host"
+    else if profile.docker == false then
+      "none"
+    else
+      profile.docker;
+
+  # The CLAUDE.md section describing docker access, generated per mode.  What
+  # actually trips an agent up differs between them.  With `host` it is that
+  # the containers it starts are siblings on the host rather than children of
+  # this sandbox, and that mount paths are resolved by the host daemon, so the
+  # `/sandbox` prefix must be dropped.  With `dind` it is the opposite: the
+  # paths line up, but none of the host's images or containers are there.
+  dockerInstructionsHost = ''
     # Host Docker
 
     `docker` here talks to the host's docker daemon over a bind-mounted socket; there is no daemon inside the sandbox.  Containers you start are siblings of this sandbox running directly on the host, they share the host's docker state with everything else on it, and they outlive this session unless you remove them.
@@ -75,6 +88,21 @@ let
 
     Name what you create so it can be found again, and clean up containers, images, and volumes you no longer need.
   '';
+
+  dockerInstructionsDind = ''
+    # Sandboxed Docker
+
+    `docker` here talks to a docker-in-docker daemon started alongside this sandbox, not to the host's daemon.  It has its own images, containers, volumes, and networks: the host's containers are neither visible nor reachable from here, and nothing you do affects them.
+
+    The image cache starts empty the first time a profile uses it, so early pulls are slow; it persists between sessions, so later ones are not.  Registry credentials are not carried over, so a private pull needs a `docker login` here first.
+
+    This sandbox's mounted directories are mounted into that daemon at the same paths, so `-v /sandbox/...:/...` works with the paths you actually see.  Anything outside them does not exist to the daemon, and a path it cannot resolve is silently created as an empty directory rather than failing.
+
+    Containers you start are children of that daemon and go away when this session ends.  Images and named volumes survive.
+  '';
+
+  dockerInstructionsOf =
+    mode: if mode == "host" then dockerInstructionsHost else dockerInstructionsDind;
 
   jsonFormat = pkgs.formats.json { };
 
@@ -171,8 +199,11 @@ let
           null;
 
       dockerFile =
-        if profile.docker then
-          pkgs.writeText "claude-sandbox-claude-md-${name}-docker" dockerInstructions
+        let
+          dockerMode = dockerModeOf profile;
+        in
+        if dockerMode != "none" then
+          pkgs.writeText "claude-sandbox-claude-md-${name}-docker" (dockerInstructionsOf dockerMode)
         else
           null;
 
@@ -226,7 +257,7 @@ let
       ++ map (d: "  dirs+=(\"${d}\")") profile.dirs
       ++ map (d: "  dirs_ro+=(\"${d}\")") profile.dirsRo
       ++ optional profile.scratch "  scratch_dirs+=(\"${scratchPathOf name}\")"
-      ++ optional profile.docker "  docker_access=true"
+      ++ optional (dockerModeOf profile != "none") "  docker_mode=\"${dockerModeOf profile}\""
       ++ envLines
       ++ map (m: "  mcp_configs+=(\"${m}\")") profile.mcp
       ++ optional (profile.workdir != null) "  profile_workdir=\"${profile.workdir}\""
@@ -257,6 +288,7 @@ let
                     exit 1
                   fi
                   profile_selected=1
+                  profile_name="''${2}"
                   case "''${2}" in
                     ${profileCases}
                     *)
@@ -318,8 +350,9 @@ in
           # Created and git-initialized on first launch, at
           # <scratchBase>/tdb-scratch.
           scratch = true;
-          # Reach the host's docker daemon - see the option's warning.
-          docker = true;
+          # A contained daemon of its own; "host" shares the host's
+          # instead - read the option's warning before choosing that.
+          docker = "dind";
           workdir = "$HOME/dev/tdb";
           env = {
             # Import the value from the calling environment.
@@ -438,32 +471,66 @@ in
             '';
           };
           docker = mkOption {
-            type = types.bool;
-            default = false;
+            type = types.either types.bool (
+              types.enum [
+                "none"
+                "host"
+                "dind"
+              ]
+            );
+            default = "none";
+            example = "dind";
             description = ''
-              Give this profile access to the host's docker daemon: the host
-              socket is bind-mounted in, the host's own `docker` binary is
-              mounted at `/usr/local/bin/docker`, and the socket's group is
-              added to the container user so the calls are actually permitted.
-              A generated CLAUDE.md section explains the two things that catch
-              an agent out - sibling containers and host-resolved mount paths.
+              How this profile reaches docker.  A generated CLAUDE.md section
+              explains whichever mode is set, since the footguns differ.
 
-              Understand what this gives up.  The docker socket is a root API:
-              anything that can reach it can start a privileged container that
-              bind-mounts `/`, which is full control of the host.  The sandbox
-              stops being a boundary and becomes a convenience, so turn this on
-              only for profiles whose work genuinely needs to build or run
-              containers, and think twice about combining it with `--yolo`.
+              `"none"` (the default) gives the sandbox no docker at all.
 
-              Containers started from inside are siblings on the host, not
-              children of the sandbox: they survive the session, share the
-              host's images and networks, and are not cleaned up automatically.
+              `"dind"` starts a docker-in-docker sidecar for the session and
+              points the sandbox at it over the docker network.  The daemon is
+              a separate one from the host's, with its own images, containers,
+              and networks, so an agent cannot stop the host's containers or
+              delete its images.  The sandbox's mounted dirs are mounted into
+              the sidecar at the same paths, so `-v` arguments work with the
+              paths the agent actually sees.  The image cache starts cold and
+              then persists per profile in a named volume.
 
-              Registry credentials are not mounted, so private pulls need a
-              `docker login` inside the sandbox (or an already-pulled image).
+              `"dind"` contains mistakes, not a determined attacker: the
+              sidecar runs privileged, and a privileged container can reach the
+              host through `/dev`.  It also cannot be combined with
+              `network = "host"`, which leaves no way to reach the sidecar by
+              name; the launcher refuses that combination.
 
-              The `--docker` flag turns this on for a single launch, without
-              the generated instructions.
+              `"host"` bind-mounts the host's docker socket, mounts the host's
+              own `docker` binary at `/usr/local/bin/docker`, and adds the
+              socket's group to the container user so the calls are permitted.
+              This shares the host's image cache and drives real host
+              containers, which is what work like Tilt builds or minikube
+              needs.
+
+              Understand what `"host"` gives up.  The docker socket is a root
+              API: anything that can reach it can start a privileged container
+              that bind-mounts `/`, which is full control of the host.  The
+              sandbox stops being a boundary and becomes a convenience, so turn
+              this on only for profiles whose work genuinely needs the host's
+              own docker state, and think twice about combining it with
+              `--yolo`.
+
+              Under `"host"`, containers started from inside are siblings on
+              the host, not children of the sandbox: they survive the session,
+              share the host's images and networks, and are not cleaned up
+              automatically.  Registry credentials are not mounted either, so
+              private pulls need a `docker login` inside the sandbox (or an
+              already-pulled image).
+
+              `true` and `false` are accepted as the original spellings of
+              `"host"` and `"none"`.
+
+              A bare `--docker` flag turns on `"dind"` for a single launch,
+              and `--docker=<mode>` picks a mode explicitly; both override
+              whatever the profile sets.  The generated CLAUDE.md section is
+              baked per profile, so a mode reached only through the flag runs
+              without it and the agent has to work the footguns out for itself.
             '';
           };
           workdir = mkOption {
@@ -617,9 +684,29 @@ in
         profile_network=""
         cli_network=""
         profile_claude_md=""
-        docker_access=false
+        docker_mode="none"
+        profile_name="default"
         yolo=false
         ${profileSelectedDecl}
+
+        # One EXIT trap for everything needing teardown: bash replaces a trap
+        # rather than stacking it, so a second `trap ... EXIT` further down
+        # would silently drop the env-file cleanup and leave a secret on disk.
+        env_file=""
+        dind_name=""
+        dind_network=""
+        cleanup() {
+          if [ -n "''${env_file}" ]; then
+            rm -f "''${env_file}"
+          fi
+          if [ -n "''${dind_name}" ]; then
+            docker rm -f "''${dind_name}" >/dev/null 2>&1 || true
+          fi
+          if [ -n "''${dind_network}" ]; then
+            docker network rm "''${dind_network}" >/dev/null 2>&1 || true
+          fi
+        }
+        trap cleanup EXIT
 
         while [[ $# -gt 0 ]]; do
           case "''${1}" in
@@ -660,11 +747,23 @@ in
               shift 2
               ;;
             --docker)
-              # Hand the sandbox the host's docker daemon.  This is an escape
-              # hatch out of the sandbox as much as a feature: the socket is a
-              # root API, so anything in here can run a privileged container
-              # mounting the host's filesystem.  Only for work that needs it.
-              docker_access=true
+              # Bare --docker gets the contained daemon.  Handing over the
+              # host's socket is an escape hatch out of the sandbox as much as
+              # a feature - it is a root API, so anything in here can run a
+              # privileged container mounting the host's filesystem - so that
+              # one has to be asked for by name.
+              docker_mode="dind"
+              shift
+              ;;
+            --docker=*)
+              docker_mode="''${1#--docker=}"
+              case "''${docker_mode}" in
+                none | host | dind) ;;
+                *)
+                  echo "claude-sandbox: unknown docker mode: ''${docker_mode} (expected none, host, or dind)" >&2
+                  exit 1
+                  ;;
+              esac
               shift
               ;;
             --yolo)
@@ -767,7 +866,6 @@ in
         if [ "''${#env_cmd_keys[@]}" -gt 0 ]; then
           env_file="$(mktemp)"
           chmod 600 "''${env_file}"
-          trap 'rm -f "''${env_file}"' EXIT
           for i in "''${!env_cmd_keys[@]}"; do
             env_key="''${env_cmd_keys[$i]}"
             env_cmd="''${env_cmd_vals[$i]}"
@@ -823,38 +921,120 @@ in
           claude_flags+=(--dangerously-skip-permissions)
         fi
 
-        # Host docker access: bind the daemon's socket in and give the sandbox
-        # the host's own docker binary to drive it with, rather than baking a
-        # second copy of the CLI into the image.  On NixOS that binary is a
-        # store path whose dependencies resolve through the read-only /nix
-        # mount below, so the single file is all that needs mounting.
+        # Docker access.
+        #
+        # `host` binds the daemon's socket in and gives the sandbox the host's
+        # own docker binary to drive it with, rather than baking a second copy
+        # of the CLI into the image.  On NixOS that binary is a store path
+        # whose dependencies resolve through the read-only /nix mount below, so
+        # the single file is all that needs mounting.
+        #
+        # `dind` instead starts a private daemon in a sidecar container and
+        # points DOCKER_HOST at it, leaving the host's docker state unreachable
+        # from in here.  The same host binary drives it; only the endpoint
+        # differs.
         docker_flags=()
-        if "''${docker_access}"; then
-          docker_sock="/var/run/docker.sock"
-          case "''${DOCKER_HOST:-}" in
-            "") ;;
-            unix://*) docker_sock="''${DOCKER_HOST#unix://}" ;;
-            *)
-              echo "claude-sandbox: docker access needs a unix:// DOCKER_HOST, got ''${DOCKER_HOST}" >&2
+        case "''${docker_mode}" in
+          host)
+            docker_sock="/var/run/docker.sock"
+            case "''${DOCKER_HOST:-}" in
+              "") ;;
+              unix://*) docker_sock="''${DOCKER_HOST#unix://}" ;;
+              *)
+                echo "claude-sandbox: docker access needs a unix:// DOCKER_HOST, got ''${DOCKER_HOST}" >&2
+                exit 1
+                ;;
+            esac
+
+            if [ ! -S "''${docker_sock}" ]; then
+              echo "claude-sandbox: docker access requested but ''${docker_sock} is not a socket" >&2
               exit 1
-              ;;
-          esac
+            fi
 
-          if [ ! -S "''${docker_sock}" ]; then
-            echo "claude-sandbox: docker access requested but ''${docker_sock} is not a socket" >&2
-            exit 1
-          fi
+            # The socket is root:docker 0660 while the container runs as the
+            # calling user's uid:gid, whose *primary* group is not docker - so
+            # the socket's group has to be added explicitly or every call comes
+            # back as a permission denied on /var/run/docker.sock.
+            docker_flags=(
+              --group-add "$(stat -c %g "''${docker_sock}")"
+              -v "''${docker_sock}:/var/run/docker.sock"
+              -v "$(readlink -f "$(which docker)"):/usr/local/bin/docker:ro"
+            )
+            ;;
+          dind)
+            # The sandbox reaches the sidecar by container name, which needs a
+            # user-defined network: the default bridge has no name resolution,
+            # and host networking has no container names to resolve at all.
+            # Publishing the daemon on the host's loopback instead would hand
+            # an unauthenticated root-equivalent API to every process on the
+            # host, which is most of what this mode exists to avoid.
+            if [ "''${network_mode}" = "host" ]; then
+              echo "claude-sandbox: docker=dind cannot be combined with host networking; use --docker=host, or drop the host network" >&2
+              exit 1
+            fi
 
-          # The socket is root:docker 0660 while the container runs as the
-          # calling user's uid:gid, whose *primary* group is not docker - so
-          # the socket's group has to be added explicitly or every call comes
-          # back as a permission denied on /var/run/docker.sock.
-          docker_flags=(
-            --group-add "$(stat -c %g "''${docker_sock}")"
-            -v "''${docker_sock}:/var/run/docker.sock"
-            -v "$(readlink -f "$(which docker)"):/usr/local/bin/docker:ro"
-          )
-        fi
+            dind_name="claude-sandbox-dind-$$"
+
+            # Image cache keyed by profile so repeat sessions do not re-pull
+            # everything; the daemon container itself is disposable.
+            dind_volume="claude-sandbox-dind-''${profile_name}"
+
+            if [ -z "''${network_mode}" ]; then
+              # Nothing chose a network, so make a throwaway one for this
+              # session.  It has to be user-defined for the same DNS reason -
+              # and since docker's embedded DNS is what resolves the sidecar's
+              # name, the resolv.conf override has to go, exactly as the block
+              # above drops it for an explicitly chosen user-defined network.
+              dind_network="claude-sandbox-net-$$"
+              docker network create "''${dind_network}" >/dev/null
+              network_mode="''${dind_network}"
+              network_flags=(--network "''${dind_network}")
+              resolv_mount=()
+            fi
+
+            # DOCKER_TLS_CERTDIR= turns off dind's default TLS-on-2376 in
+            # favour of plain TCP on 2375.  Nothing is published to the host,
+            # so the daemon is reachable only from this network - though note
+            # that on a profile's own network, every other container on it
+            # (the MCP fleet, say) can reach it too.
+            #
+            # The sandbox's mounts are repeated into the sidecar at the same
+            # paths, because a `-v` from inside the sandbox is resolved by
+            # *this* daemon: without them every bind mount of a repo would
+            # silently turn into an empty directory.
+            echo "Starting docker-in-docker sidecar..."
+            docker run -d --rm \
+              --name "''${dind_name}" \
+              --privileged \
+              --network "''${network_mode}" \
+              -e DOCKER_TLS_CERTDIR= \
+              -v "''${dind_volume}:/var/lib/docker" \
+              "''${volume_mounts[@]}" \
+              docker:dind \
+              --host=tcp://0.0.0.0:2375 >/dev/null
+
+            # The container is up well before the daemon is listening, so wait
+            # for it to actually answer rather than racing claude's first call.
+            dind_ready=false
+            for _ in {1..60}; do
+              if docker exec "''${dind_name}" docker version >/dev/null 2>&1; then
+                dind_ready=true
+                break
+              fi
+              sleep 0.5
+            done
+            if ! "''${dind_ready}"; then
+              echo "claude-sandbox: the docker-in-docker sidecar did not come up" >&2
+              docker logs "''${dind_name}" || true
+              exit 1
+            fi
+
+            docker_flags=(
+              -e "DOCKER_HOST=tcp://''${dind_name}:2375"
+              -v "$(readlink -f "$(which docker)"):/usr/local/bin/docker:ro"
+            )
+            ;;
+        esac
 
         nix_bin_dir="$(dirname "$(readlink -f "$(which nix)")")"
 
