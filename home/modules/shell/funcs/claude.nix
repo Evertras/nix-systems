@@ -61,6 +61,21 @@ let
       This is not the ephemeral per-session scratchpad under `/tmp` that the harness may also point you at.  That one is thrown away when the session ends; this one persists.  When in doubt about whether something will matter tomorrow, put it here.
     '';
 
+  # The CLAUDE.md section describing host docker access, generated for any
+  # profile with `docker = true`.  The two things that actually trip an agent
+  # up are that the containers it starts are siblings on the host rather than
+  # children of this sandbox, and that mount paths are resolved by the host
+  # daemon, so the `/sandbox` prefix must be dropped.
+  dockerInstructions = ''
+    # Host Docker
+
+    `docker` here talks to the host's docker daemon over a bind-mounted socket; there is no daemon inside the sandbox.  Containers you start are siblings of this sandbox running directly on the host, they share the host's docker state with everything else on it, and they outlive this session unless you remove them.
+
+    Paths do not carry over.  `-v`, `--mount`, and `--build-context` arguments are resolved by the host daemon against the host filesystem, so pass the host path (`/home/...`) rather than the `/sandbox`-prefixed path you see here.  A `/sandbox/...` path will not fail loudly - docker will happily create an empty directory on the host and mount that instead.
+
+    Name what you create so it can be found again, and clean up containers, images, and volumes you no longer need.
+  '';
+
   jsonFormat = pkgs.formats.json { };
 
   # Session settings file carrying the contributed deny rules, or null when no
@@ -155,19 +170,26 @@ let
         else
           null;
 
+      dockerFile =
+        if profile.docker then
+          pkgs.writeText "claude-sandbox-claude-md-${name}-docker" dockerInstructions
+        else
+          null;
+
       parts = [
         globalInstructionsFile
       ]
       ++ filter (p: p != null) [
         profileFile
         scratchFile
+        dockerFile
       ];
 
       # Joined with a blank line between each part, so the sections stay
       # separate paragraphs regardless of how each file ends.
       catLines = concatStringsSep "\n  printf '\\n'\n" (map (p: "  cat ${p}") parts);
     in
-    if profileFile == null && scratchFile == null then
+    if profileFile == null && scratchFile == null && dockerFile == null then
       null
     else
       pkgs.runCommand "claude-sandbox-claude-md-${name}" { } ''
@@ -204,6 +226,7 @@ let
       ++ map (d: "  dirs+=(\"${d}\")") profile.dirs
       ++ map (d: "  dirs_ro+=(\"${d}\")") profile.dirsRo
       ++ optional profile.scratch "  scratch_dirs+=(\"${scratchPathOf name}\")"
+      ++ optional profile.docker "  docker_access=true"
       ++ envLines
       ++ map (m: "  mcp_configs+=(\"${m}\")") profile.mcp
       ++ optional (profile.workdir != null) "  profile_workdir=\"${profile.workdir}\""
@@ -295,6 +318,8 @@ in
           # Created and git-initialized on first launch, at
           # <scratchBase>/tdb-scratch.
           scratch = true;
+          # Reach the host's docker daemon - see the option's warning.
+          docker = true;
           workdir = "$HOME/dev/tdb";
           env = {
             # Import the value from the calling environment.
@@ -410,6 +435,35 @@ in
               would collide with the repository the profile is named after.
               A scratch space under some other path is just an entry in
               `dirs`.
+            '';
+          };
+          docker = mkOption {
+            type = types.bool;
+            default = false;
+            description = ''
+              Give this profile access to the host's docker daemon: the host
+              socket is bind-mounted in, the host's own `docker` binary is
+              mounted at `/usr/local/bin/docker`, and the socket's group is
+              added to the container user so the calls are actually permitted.
+              A generated CLAUDE.md section explains the two things that catch
+              an agent out - sibling containers and host-resolved mount paths.
+
+              Understand what this gives up.  The docker socket is a root API:
+              anything that can reach it can start a privileged container that
+              bind-mounts `/`, which is full control of the host.  The sandbox
+              stops being a boundary and becomes a convenience, so turn this on
+              only for profiles whose work genuinely needs to build or run
+              containers, and think twice about combining it with `--yolo`.
+
+              Containers started from inside are siblings on the host, not
+              children of the sandbox: they survive the session, share the
+              host's images and networks, and are not cleaned up automatically.
+
+              Registry credentials are not mounted, so private pulls need a
+              `docker login` inside the sandbox (or an already-pulled image).
+
+              The `--docker` flag turns this on for a single launch, without
+              the generated instructions.
             '';
           };
           workdir = mkOption {
@@ -563,6 +617,7 @@ in
         profile_network=""
         cli_network=""
         profile_claude_md=""
+        docker_access=false
         yolo=false
         ${profileSelectedDecl}
 
@@ -603,6 +658,14 @@ in
               # tunnel).  Takes precedence over a profile's `network` setting.
               cli_network="''${2}"
               shift 2
+              ;;
+            --docker)
+              # Hand the sandbox the host's docker daemon.  This is an escape
+              # hatch out of the sandbox as much as a feature: the socket is a
+              # root API, so anything in here can run a privileged container
+              # mounting the host's filesystem.  Only for work that needs it.
+              docker_access=true
+              shift
               ;;
             --yolo)
               # Run claude with --dangerously-skip-permissions so every command
@@ -760,6 +823,39 @@ in
           claude_flags+=(--dangerously-skip-permissions)
         fi
 
+        # Host docker access: bind the daemon's socket in and give the sandbox
+        # the host's own docker binary to drive it with, rather than baking a
+        # second copy of the CLI into the image.  On NixOS that binary is a
+        # store path whose dependencies resolve through the read-only /nix
+        # mount below, so the single file is all that needs mounting.
+        docker_flags=()
+        if "''${docker_access}"; then
+          docker_sock="/var/run/docker.sock"
+          case "''${DOCKER_HOST:-}" in
+            "") ;;
+            unix://*) docker_sock="''${DOCKER_HOST#unix://}" ;;
+            *)
+              echo "claude-sandbox: docker access needs a unix:// DOCKER_HOST, got ''${DOCKER_HOST}" >&2
+              exit 1
+              ;;
+          esac
+
+          if [ ! -S "''${docker_sock}" ]; then
+            echo "claude-sandbox: docker access requested but ''${docker_sock} is not a socket" >&2
+            exit 1
+          fi
+
+          # The socket is root:docker 0660 while the container runs as the
+          # calling user's uid:gid, whose *primary* group is not docker - so
+          # the socket's group has to be added explicitly or every call comes
+          # back as a permission denied on /var/run/docker.sock.
+          docker_flags=(
+            --group-add "$(stat -c %g "''${docker_sock}")"
+            -v "''${docker_sock}:/var/run/docker.sock"
+            -v "$(readlink -f "$(which docker)"):/usr/local/bin/docker:ro"
+          )
+        fi
+
         nix_bin_dir="$(dirname "$(readlink -f "$(which nix)")")"
 
         # --user is required so that files created/modified in the volume mount
@@ -774,6 +870,7 @@ in
           -e NIX_REMOTE=daemon \
           -e PATH="''${nix_bin_dir}:/root/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin" \
           "''${network_flags[@]}" \
+          "''${docker_flags[@]}" \
           "''${env_flags[@]}" \
           "''${env_file_flags[@]}" \
           --workdir "''${sandbox_dir}" \
