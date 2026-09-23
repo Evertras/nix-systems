@@ -526,11 +526,16 @@ in
               `true` and `false` are accepted as the original spellings of
               `"host"` and `"none"`.
 
-              A bare `--docker` flag turns on `"dind"` for a single launch,
-              and `--docker=<mode>` picks a mode explicitly; both override
-              whatever the profile sets.  The generated CLAUDE.md section is
-              baked per profile, so a mode reached only through the flag runs
-              without it and the agent has to work the footguns out for itself.
+              A bare `--docker` flag turns on `"dind"` for a single launch;
+              `--docker <mode>` and `--docker=<mode>` pick one explicitly.  All
+              of them override whatever the profile sets.  Only the `=` form
+              rejects an unknown mode - after the bare flag an unrecognized
+              word is left alone as a passthrough arg, since it is far more
+              likely to be a prompt than a typo.
+
+              The generated CLAUDE.md section is baked per profile, so a mode
+              reached only through the flag runs without it and the agent has
+              to work the footguns out for itself.
             '';
           };
           workdir = mkOption {
@@ -752,7 +757,21 @@ in
               # a feature - it is a root API, so anything in here can run a
               # privileged container mounting the host's filesystem - so that
               # one has to be asked for by name.
+              #
+              # The mode is optional, so the next arg is only swallowed when it
+              # actually is one.  Every other value-taking flag here spells its
+              # value with a space, so `--docker dind` is the natural thing to
+              # type; anything else stays a passthrough arg, which keeps
+              # `--docker --yolo` and `--docker "some prompt"` working.  A
+              # mistyped mode therefore lands in the prompt rather than being
+              # caught, so `--docker=<mode>` is the form that always validates.
               docker_mode="dind"
+              case "''${2:-}" in
+                none | host | dind)
+                  docker_mode="''${2}"
+                  shift
+                  ;;
+              esac
               shift
               ;;
             --docker=*)
