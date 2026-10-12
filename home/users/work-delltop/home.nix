@@ -142,6 +142,9 @@ in
 
         monitorNetworkInterface = wirelessInterface;
 
+        # Let the clock's top border run all the way to the side modules
+        expandCenter = true;
+
         # Same as the module defaults, spelled out here so this machine's bar
         # can be rearranged without touching the shared module
         modules = {

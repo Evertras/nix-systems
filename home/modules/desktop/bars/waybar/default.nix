@@ -57,6 +57,16 @@ in
         ];
       };
 
+    expandCenter = mkOption {
+      type = types.bool;
+      default = false;
+      description = ''
+        Stretch the center modules across all the space left between the left
+        and right modules, so the center block reaches their edges.  This
+        centers the center block in that gap rather than on the screen.
+      '';
+    };
+
     monitorNetworkInterface = mkOption {
       type = types.str;
       default = "wlo1";
@@ -94,120 +104,139 @@ in
       settings = {
         # Omitting `output` entirely is what tells waybar to draw the bar on
         # every monitor, so only set it when outputs are actually pinned
-        mainBar = optionalAttrs (cfg.outputs != [ ]) { output = cfg.outputs; } // {
-          modules-left = cfg.modules.left;
-          modules-center = cfg.modules.center;
-          modules-right = cfg.modules.right;
+        mainBar = mkMerge [
+          (
+            optionalAttrs (cfg.outputs != [ ]) { output = cfg.outputs; }
+            // {
+              modules-left = cfg.modules.left;
+              modules-center = cfg.modules.center;
+              modules-right = cfg.modules.right;
 
-          "niri/workspaces" = {
-            format = "{value}";
-          };
+              "niri/workspaces" = {
+                format = "{value}";
+              };
 
-          "niri/language" = {
-            format-ja = "JP";
-            format-en = "EN";
-          };
+              "niri/language" = {
+                format-ja = "JP";
+                format-en = "EN";
+              };
 
-          "battery" = {
-            bat = cfg.battery.name;
-            interval = 60;
-            states = {
-              "low" = 30;
-            };
-            format = "{icon} {capacity}%";
-            format-icons = [
-              ""
-              ""
-              ""
-              ""
-              ""
-            ];
-            max-length = 25;
-          }
-          # An empty format makes waybar drop the module's label entirely, so
-          # spelling out an empty format for every status that isn't
-          # "discharging" is what hides the indicator while on wall power.  A
-          # status is the contents of /sys/class/power_supply/<bat>/status,
-          # lowercased with spaces turned into dashes, plus waybar's own
-          # synthesized "plugged" for a charged battery on a live adapter.
-          // optionalAttrs cfg.battery.hideWhenPlugged {
-            format-charging = "";
-            format-full = "";
-            format-not-charging = "";
-            format-plugged = "";
-          };
+              "battery" = {
+                bat = cfg.battery.name;
+                interval = 60;
+                states = {
+                  "low" = 30;
+                };
+                format = "{icon} {capacity}%";
+                format-icons = [
+                  ""
+                  ""
+                  ""
+                  ""
+                  ""
+                ];
+                max-length = 25;
+              }
+              # An empty format makes waybar drop the module's label entirely, so
+              # spelling out an empty format for every status that isn't
+              # "discharging" is what hides the indicator while on wall power.  A
+              # status is the contents of /sys/class/power_supply/<bat>/status,
+              # lowercased with spaces turned into dashes, plus waybar's own
+              # synthesized "plugged" for a charged battery on a live adapter.
+              // optionalAttrs cfg.battery.hideWhenPlugged {
+                format-charging = "";
+                format-full = "";
+                format-not-charging = "";
+                format-plugged = "";
+              };
 
-          "backlight" = {
-            format = "{percent} {icon}";
-            format-icons = [
-              "󱩎"
-              "󱩏"
-              "󱩐"
-              "󱩑"
-              "󱩒"
-              "󱩓"
-              "󱩔"
-              "󱩕"
-              "󱩖"
-              "󰛨"
-            ];
-          };
+              "backlight" = {
+                format = "{percent} {icon}";
+                format-icons = [
+                  "󱩎"
+                  "󱩏"
+                  "󱩐"
+                  "󱩑"
+                  "󱩒"
+                  "󱩓"
+                  "󱩔"
+                  "󱩕"
+                  "󱩖"
+                  "󰛨"
+                ];
+              };
 
-          # Show date and time
-          "clock" = {
-            format = "{:%a %b %d %H:%M}";
-            interval = 60;
-            max-length = 50;
-          };
+              # Show date and time
+              "clock" = {
+                format = "{:%a %b %d %H:%M}";
+                interval = 60;
+                max-length = 50;
+              };
 
-          "keyboard-state" = {
-            numlock = true;
+              "keyboard-state" = {
+                numlock = true;
 
-            format.numlock = "{icon}";
+                format.numlock = "{icon}";
 
-            format-icons = {
-              locked = "";
-              unlocked = "";
-            };
-          };
+                format-icons = {
+                  locked = "";
+                  unlocked = "";
+                };
+              };
 
-          "network" = {
-            interface = cfg.monitorNetworkInterface;
-            format = "{ifname}";
-            format-wifi = "  {essid} ({signalStrength}%)";
-            format-ethernet = "󰊗 {ipaddr}/{cidr}";
-            format-disconnected = "  None";
-            tooltip-format = "󰊗 {ifname} via {gwaddr}";
-            tooltip-format-wifi = "  {essid} ({signalStrength}%)";
-            tooltip-format-ethernet = " {ifname}";
-            tooltip-format-disconnected = "Disconnected";
-            max-length = 50;
-          };
+              "network" = {
+                interface = cfg.monitorNetworkInterface;
+                format = "{ifname}";
+                format-wifi = "  {essid} ({signalStrength}%)";
+                format-ethernet = "󰊗 {ipaddr}/{cidr}";
+                format-disconnected = "  None";
+                tooltip-format = "󰊗 {ifname} via {gwaddr}";
+                tooltip-format-wifi = "  {essid} ({signalStrength}%)";
+                tooltip-format-ethernet = " {ifname}";
+                tooltip-format-disconnected = "Disconnected";
+                max-length = 50;
+              };
 
-          "bluetooth" = {
-            on-click = "headphones-toggle";
-          };
+              "bluetooth" = {
+                on-click = "headphones-toggle";
+              };
 
-          "pulseaudio" = {
-            format = "{volume} 󰓃 ";
-            format-bluetooth = "{volume} 󰋋 ";
-            format-muted = "{volume}  ";
-            max-volume = 40;
-            on-click = "volume-mute-toggle";
-          };
+              "pulseaudio" = {
+                format = "{volume} 󰓃 ";
+                format-bluetooth = "{volume} 󰋋 ";
+                format-muted = "{volume}  ";
+                max-volume = 40;
+                on-click = "volume-mute-toggle";
+              };
 
-          /*
-            For some fun later
-            "custom/hello-from-waybar" = {
-              format = "hello {}";
-              max-length = 40;
-              interval = "once";
-              exec = pkgs.writeShellScript "hello-from-waybar" ''
-                echo "from within waybar"
-              '';
-            };
-          */
-        };
+              /*
+                For some fun later
+                "custom/hello-from-waybar" = {
+                  format = "hello {}";
+                  max-length = 40;
+                  interval = "once";
+                  exec = pkgs.writeShellScript "hello-from-waybar" ''
+                    echo "from within waybar"
+                  '';
+                };
+              */
+            }
+          )
+
+          # A fixed center is always given only its natural width, so it has
+          # to give up its fixed position to grow into the gap.  The modules
+          # themselves must expand as well or the box grows around them while
+          # they keep their natural width.
+          (mkIf cfg.expandCenter (
+            {
+              fixed-center = false;
+              expand-center = true;
+            }
+            // genAttrs cfg.modules.center (_: {
+              expand = true;
+            })
+          ))
+        ];
       };
 
       style =
