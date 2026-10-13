@@ -88,6 +88,10 @@ in
       # Run `/mcp` in a sandbox once to do Linear's OAuth flow.
       mcp.linear.enable = true;
 
+      # Codex mirror of claude-sandbox: same profiles, MCP servers, and
+      # mounted dirs, with ChatGPT/Codex as the agent.
+      codex-sandbox.enable = true;
+
       claude-sandbox.profiles.nix = {
         dirs = [
           "$HOME/dev/github/evertras/nix"

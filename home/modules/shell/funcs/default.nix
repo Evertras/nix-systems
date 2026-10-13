@@ -37,6 +37,7 @@ with lib;
   imports = [
     ./aws.nix
     ./claude.nix
+    ./codex.nix
     ./common.nix
     ./kubectl.nix
     ./git.nix
