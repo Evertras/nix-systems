@@ -31,7 +31,13 @@ in
       (pkgs.writeShellApplication {
         name = "tailscale-up";
         text = ''
-          sudo tailscale up --accept-dns=false --accept-routes "$@"
+          args=(--accept-dns=false --accept-routes "$@")
+
+          echo "tailscale-up: --accept-dns=false  keep MagicDNS out of resolv.conf (avoids fighting the wireguard VPN's DNS)"
+          echo "tailscale-up: --accept-routes     use subnet routes advertised in the tailnet (e.g. demo UIs on 10.60.x)"
+          echo "tailscale-up: running: sudo tailscale up ''${args[*]}"
+
+          sudo tailscale up "''${args[@]}"
         '';
       })
     ];
