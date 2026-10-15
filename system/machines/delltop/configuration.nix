@@ -73,6 +73,8 @@
 
   evertras.system.docker.enable = true;
 
+  evertras.system.vpn.tailscale.enable = true;
+
   evertras.dev.tiledb.enable = true;
 
   ##############################################################################
