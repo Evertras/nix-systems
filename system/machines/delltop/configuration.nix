@@ -148,9 +148,14 @@
     };
   };
 
+  # systemd-resolved instead of openresolv so each interface can own its own
+  # DNS: the TileDB wireguard VPN gets its split-horizon domains and tailscale
+  # gets its tailnet names without fighting over resolv.conf
+  services.resolved.enable = true;
+
+  # Global fallback; the VPN's resolver is attached to its own interface
   networking.nameservers = [
     "8.8.8.8"
-    "10.20.0.2"
   ];
 
   ##############################################################################
