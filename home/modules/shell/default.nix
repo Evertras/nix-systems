@@ -107,6 +107,11 @@ in
         '';
       };
 
+      # Nix's gpg-agent defaults to a pinentry path inside its own store path that doesn't exist
+      file.".gnupg/gpg-agent.conf".text = ''
+        pinentry-program ${pkgs.pinentry-curses}/bin/pinentry-curses
+      '';
+
       sessionVariables = {
         EDITOR = "nvim";
         SHELL = cfg.shellBin;
@@ -145,9 +150,7 @@ in
 
       gpg = {
         enable = true;
-        settings = {
-          #pinentry-program = "${pkgs.pinentry}/bin/pinentry";
-        };
+        settings = { };
       };
 
       tealdeer = {
