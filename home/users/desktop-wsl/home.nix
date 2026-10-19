@@ -1,5 +1,7 @@
 { ... }:
-
+let
+  gpgKey = "8A328FE58AAC42CE";
+in
 {
   imports = [
     ../../modules
@@ -12,6 +14,8 @@
     # WSL runs on top of Ubuntu, not NixOS
     usingNixOS = false;
   };
+
+  evertras.home.shell.core = { inherit gpgKey; };
 
   home = {
     # Don't change this, this is the initial install version

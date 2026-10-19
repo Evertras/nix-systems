@@ -127,7 +127,7 @@ in
 
           fish_add_path -g ~/.evertras/bin
 
-          set GPG_TTY (tty)
+          set -gx GPG_TTY (tty)
 
           # Env vars from config.evertras.home.shell.env.vars
           ${concatStringsSep "\n" envVars}

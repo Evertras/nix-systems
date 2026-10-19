@@ -184,6 +184,9 @@ in
         enable = true;
         gpgKey = cfg.gpgKey;
       };
+
+      # Backed by pass, so only possible with a GPG key
+      aws-vault.enable = mkDefault (cfg.gpgKey != null);
     };
   };
 }
