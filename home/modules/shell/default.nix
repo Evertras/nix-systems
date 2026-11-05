@@ -48,6 +48,7 @@ in
         gum # for terminal scripts https://github.com/charmbracelet/gum
         ncdu # disk space usage
         nethogs # network usage monitoring
+        openssl # for certs, hashing, etc
         pinentry-curses # for gpg
         ranger # file explorer
         scc # code stats
