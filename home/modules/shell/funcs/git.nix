@@ -24,12 +24,12 @@
     # asked of the remote each time rather than guessed, so main/master/other
     # all work and a renamed default is picked up.  Only ever fast-forwards:
     # diverged branches and conflicting local changes are reported, not merged.
-    git-update-main.body = ''
+    git-pull-all-mains.body = ''
       root="''${1:-''${HOME}/dev/github}"
       jobs=8
 
       update_repo() {
-        local repo="''${1}" default current
+        local repo="''${1}" default current ref before after
 
         if ! git -C "''${repo}" remote get-url origin &>/dev/null; then
           echo "skip: no origin remote"
@@ -51,6 +51,15 @@
 
         current="$(git -C "''${repo}" symbolic-ref --quiet --short HEAD 2>/dev/null || true)"
 
+        # The ref this run moves: the local branch when there is one,
+        # otherwise just origin's tracking ref.  Captured before and after so
+        # the report says what actually changed.
+        ref="refs/remotes/origin/''${default}"
+        if git -C "''${repo}" show-ref --verify --quiet "refs/heads/''${default}"; then
+          ref="refs/heads/''${default}"
+        fi
+        before="$(git -C "''${repo}" rev-parse --verify --quiet "''${ref}" || true)"
+
         if [ "''${current}" = "''${default}" ]; then
           # Checked out: fetch, then fast-forward the working tree.
           if ! git -C "''${repo}" fetch --quiet origin "''${default}" \
@@ -58,7 +67,7 @@
             echo "FAIL: could not fast-forward ''${default} (checked out)"
             return 1
           fi
-        elif git -C "''${repo}" show-ref --verify --quiet "refs/heads/''${default}"; then
+        elif [ "''${ref}" = "refs/heads/''${default}" ]; then
           # Not checked out: update the local branch ref directly.  The fetch
           # refuses anything that isn't a fast-forward.
           git -C "''${repo}" fetch --quiet origin "''${default}:''${default}" \
@@ -69,11 +78,22 @@
             || { echo "FAIL: could not fetch ''${default}"; return 1; }
         fi
 
-        echo "ok: ''${default} @ $(git -C "''${repo}" rev-parse --short "origin/''${default}")"
+        after="$(git -C "''${repo}" rev-parse --verify --quiet "''${ref}" || true)"
+        short() { git -C "''${repo}" rev-parse --short "''${1}"; }
+
+        if [ -z "''${before}" ]; then
+          echo "fetched: ''${default} @ $(short "''${after}")"
+          touch "''${2}"
+        elif [ "''${before}" = "''${after}" ]; then
+          echo "up to date: ''${default} @ $(short "''${after}")"
+        else
+          echo "updated: ''${default} $(short "''${before}") -> $(short "''${after}") ($(git -C "''${repo}" rev-list --count "''${before}..''${after}") commits)"
+          touch "''${2}"
+        fi
       }
 
       if [ ! -d "''${root}" ]; then
-        echo "git-update-main: no such directory: ''${root}" >&2
+        echo "git-pull-all-mains: no such directory: ''${root}" >&2
         exit 1
       fi
 
@@ -81,7 +101,7 @@
       # given an org dir.  A .git file (worktree/submodule) counts too.
       mapfile -t repos < <(find "''${root}" -mindepth 2 -maxdepth 3 -name .git -printf '%h\n' | sort)
       if [ "''${#repos[@]}" -eq 0 ]; then
-        echo "git-update-main: no repositories found under ''${root}" >&2
+        echo "git-pull-all-mains: no repositories found under ''${root}" >&2
         exit 1
       fi
 
@@ -99,7 +119,7 @@
           wait -n || true
         done
         (
-          if update_repo "''${repos[$i]}" > "''${out_dir}/''${i}" 2>&1; then
+          if update_repo "''${repos[$i]}" "''${out_dir}/''${i}.updated" > "''${out_dir}/''${i}" 2>&1; then
             touch "''${out_dir}/''${i}.ok"
           fi
         ) &
@@ -107,12 +127,27 @@
       wait
 
       failed=0
+      updated=()
       for i in "''${!repos[@]}"; do
-        printf '%-60s %s\n' "''${repos[$i]#"''${root}/"}" "$(tr '\n' ' ' < "''${out_dir}/''${i}")"
+        name="''${repos[$i]#"''${root}/"}"
+        line="$(tr '\n' ' ' < "''${out_dir}/''${i}")"
+        printf '%-60s %s\n' "''${name}" "''${line}"
         if [ ! -e "''${out_dir}/''${i}.ok" ]; then
           failed=$((failed + 1))
+        elif [ -e "''${out_dir}/''${i}.updated" ]; then
+          updated+=("$(printf '  %-58s %s' "''${name}" "''${line#*: }")")
         fi
       done
+
+      # The full table can run to dozens of unchanged repos, so repeat just
+      # the ones that moved at the end where they can't be missed.
+      echo
+      if [ "''${#updated[@]}" -gt 0 ]; then
+        echo "Updated ''${#updated[@]} of ''${#repos[@]} repositories:"
+        printf '%s\n' "''${updated[@]}"
+      else
+        echo "No repositories needed updating."
+      fi
 
       if [ "''${failed}" -gt 0 ]; then
         echo "''${failed} of ''${#repos[@]} repositories failed" >&2
