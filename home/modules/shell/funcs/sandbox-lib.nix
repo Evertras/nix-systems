@@ -319,6 +319,46 @@ let
                   exit 1
                   ;;'';
 
+  # The `-h`/`--help` text: every launcher flag, then the baked profile names
+  # (attrNames is already sorted, matching `-l`).
+  usageText =
+    agent:
+    let
+      agentCmd = toLower agent.label;
+    in
+    ''
+      Usage: ${agent.name} [options] [--] [${agentCmd} args...]
+
+      Run ${agent.label} in a docker sandbox with only the chosen directories mounted.
+
+      Options:
+        -p <profile>        Load a named profile (see below); at most one
+        -l                  List profile names and exit
+        -d <dir>            Mount an extra directory read-write (repeatable)
+        -e <KEY>            Import env var KEY from the host (repeatable)
+        -m <file>           Load an extra MCP server config file (repeatable)
+        --network <mode>    Docker network mode, overriding the profile's
+        --docker [<mode>]   Docker access: none, host, or dind (bare flag: dind)
+        --docker=<mode>     Same, but rejects an unknown mode
+        --yolo              Skip all of ${agent.label}'s permission prompts
+        --rebuild           Rebuild the sandbox image
+        --update            Rebuild without the layer cache, re-pulling the base image
+        -h, --help          Show this help and exit
+        --                  Stop option parsing; pass everything after it to ${agentCmd}
+
+      Arguments the launcher does not recognize are also passed to ${agentCmd}, in
+      order.  A ${agentCmd} flag that shares a name with one above (e.g. -p, -d, -h)
+      is taken by the launcher unless it comes after --.
+
+      Profiles:
+    ''
+    + (
+      if hasProfiles then
+        concatMapStrings (n: "  ${n}\n") (attrNames cfg.profiles)
+      else
+        "  (none defined)\n"
+    );
+
   # Bash array literal of the always-loaded MCP configs, each double-quoted so
   # `$HOME` (etc.) expands at runtime.  Empty when none are declared.
   globalMcpArray = concatMapStringsSep " " (m: ''"${m}"'') cfg.globalMcp;
@@ -379,6 +419,17 @@ in
         case "''${1}" in
           ${profileFlagCase agent}
           ${profileListFlagCase agent}
+          -h | --help)
+            printf '%s' ${escapeShellArg (usageText agent)}
+            exit 0
+            ;;
+          --)
+            # Everything after the separator belongs to the agent, verbatim,
+            # even args that look like launcher flags (claude's own -p, say).
+            shift
+            passthrough_args+=("$@")
+            break
+            ;;
           --rebuild)
             docker rmi "''${image_name}" 2>/dev/null || true
             need_build=true

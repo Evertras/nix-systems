@@ -100,7 +100,8 @@ in
       `dirs`, read-only via `dirsRo`), an optional working directory, and
       optional CLAUDE.md instructions.  Extra `-d` flags passed on the
       command line are appended to the profile's read-write dirs, and any
-      remaining args are passed through to claude.
+      remaining args are passed through to claude.  Args after a `--` are
+      passed through verbatim, even ones that look like launcher flags.
 
       Directory strings are expanded by the shell at runtime, so `$HOME`
       works (but a bare `~` does not, since it is quoted).
