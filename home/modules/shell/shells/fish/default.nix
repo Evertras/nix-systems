@@ -78,6 +78,7 @@ in
         gc = "git commit -m";
         gd = "git diff";
         gds = "git diff --staged";
+        gpf = "git push --force-with-lease origin";
         gp = "git push";
         gpu = "git push -u origin (git branch --show-current)";
         grpo = "git remote prune origin";
